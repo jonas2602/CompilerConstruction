@@ -9,7 +9,7 @@ public class ExpressionVisitor extends GramBaseVisitor<Float> {
     public Float visitExpression(GramParser.ExpressionContext ctx) {
         System.out.println("Visit expression");
 
-        return new ExpressionVisitor().visit(ctx.additive());
+        return this.visit(ctx.additive());
     }
 
     @Override
@@ -17,15 +17,15 @@ public class ExpressionVisitor extends GramBaseVisitor<Float> {
         System.out.println("Visit additive");
 
         ParseTree childTree = ctx.getChild(0);
-        return new ExpressionVisitor().visit(childTree);
+        return this.visit(childTree);
     }
 
     @Override
     public Float visitSum(GramParser.SumContext ctx) {
         System.out.println("Visit sum");
 
-        Float mult = new ExpressionVisitor().visit(ctx.multiplicative());
-        Float add = new ExpressionVisitor().visit(ctx.additive());
+        Float mult = this.visit(ctx.multiplicative());
+        Float add = this.visit(ctx.additive());
         return mult + add;
     }
 
@@ -33,8 +33,8 @@ public class ExpressionVisitor extends GramBaseVisitor<Float> {
     public Float visitSubtract(GramParser.SubtractContext ctx) {
         System.out.println("Visit subtract");
 
-        Float mult = new ExpressionVisitor().visit(ctx.multiplicative());
-        Float add = new ExpressionVisitor().visit(ctx.additive());
+        Float mult = this.visit(ctx.multiplicative());
+        Float add = this.visit(ctx.additive());
         return mult - add;
     }
 
@@ -43,15 +43,15 @@ public class ExpressionVisitor extends GramBaseVisitor<Float> {
         System.out.println("Visit multiplicative");
 
         ParseTree childTree = ctx.getChild(0);
-        return new ExpressionVisitor().visit(childTree);
+        return this.visit(childTree);
     }
 
     @Override
     public Float visitProduct(GramParser.ProductContext ctx) {
         System.out.println("Visit product");
 
-        Float cons = new ExpressionVisitor().visit(ctx.constant());
-        Float mult = new ExpressionVisitor().visit(ctx.multiplicative());
+        Float cons = this.visit(ctx.constant());
+        Float mult = this.visit(ctx.multiplicative());
         return cons * mult;
     }
 
@@ -59,8 +59,8 @@ public class ExpressionVisitor extends GramBaseVisitor<Float> {
     public Float visitDivide(GramParser.DivideContext ctx) {
         System.out.println("Visit divide");
 
-        Float cons = new ExpressionVisitor().visit(ctx.constant());
-        Float mult = new ExpressionVisitor().visit(ctx.multiplicative());
+        Float cons = this.visit(ctx.constant());
+        Float mult = this.visit(ctx.multiplicative());
         return cons / mult;
     }
 
@@ -70,7 +70,7 @@ public class ExpressionVisitor extends GramBaseVisitor<Float> {
 
         if (ctx.additive() != null)
         {
-            return new ExpressionVisitor().visit(ctx.additive());
+            return this.visit(ctx.additive());
         }
         else
         {

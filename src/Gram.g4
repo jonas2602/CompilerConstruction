@@ -13,19 +13,34 @@ divide : constant '/' multiplicative;
 constant: NUMBER
         | '(' additive ')';
 
-//sum: product sum2;
-//sum2: '+' product sum2
+
+sum1: product1 sum2;
+sum2: '+' product1 sum2
+    | /** EPSILON */
+    ;
+
+product1: constant1 product2;
+product2: '*' constant1 product2
+        | /** EPSILON */
+        ;
+
+constant1: '(' sum1 ')'
+         | NUMBER
+         ;
+
+//sum1: product1 sum2;
+//sum2: '+' sum1
 //    | /** EPSILON */
 //    ;
 //
-//product: constant product2;
-//product2: '*' constant product2
+//product1: constant1 product2;
+//product2: '*' product1
 //        | /** EPSILON */
 //        ;
 //
-//constant: '(' sum ')'
-//        | NUMBER
-//        ;
+//constant1: '(' sum1 ')'
+//         | NUMBER
+//         ;
 
 NUMBER: FLOAT | INTEGER;
 FLOAT: [0-9]+ ('.' [0-9]+)?;
