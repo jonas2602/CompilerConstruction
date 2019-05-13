@@ -1,6 +1,15 @@
-package FirstGrammar;
+package FirstGrammar.parser;
 
 import java.util.List;
+
+import FirstGrammar.lexer.Token;
+import FirstGrammar.lexer.TokenType;
+import FirstGrammar.parser.tree.RuleNode;
+import FirstGrammar.parser.tree.TokenNode;
+import FirstGrammar.parser.tree.rules.Rule_CONSTANT;
+import FirstGrammar.parser.tree.rules.Rule_EXP;
+import FirstGrammar.parser.tree.rules.Rule_EXPPRIME;
+import FirstGrammar.parser.tree.rules.Rule_STM;
 
 public class Parser {
 	
@@ -47,15 +56,15 @@ public class Parser {
 		switch(getCurrent()) {
 			case IF: {
 				eat(TokenType.IF);
-				n.ID = eat(TokenType.ID);
+				n.setID(eat(TokenType.ID));
 				eat(TokenType.THEN);
-				n.thenStm = stm();
+				n.setThenStm(stm());
 				eat(TokenType.ELSE);
-				n.elseStm = stm();
+				n.setElseStm(stm());
 				break;
 			}
 			default: {
-				n.exp = exp();
+				n.setExp(exp());
 				break;
 			}
 		}
@@ -64,8 +73,8 @@ public class Parser {
 	
 	public Rule_EXP exp() {
 		Rule_EXP n = new Rule_EXP();
-		n.constant = constants();
-		n.expprime = expPrime();
+		n.setConstant(constants());
+		n.setExpprime(expPrime());
 		return n;
 	}
 	
@@ -74,8 +83,8 @@ public class Parser {
 		switch(getCurrent()) {
 			case PLUS: {
 				eat(TokenType.PLUS);
-				n.constant = constants();
-				n.expprime = expPrime();
+				n.setConstant(constants());
+				n.setExpprime(expPrime());
 				break;
 			}
 			default: {
@@ -89,16 +98,16 @@ public class Parser {
 		Rule_CONSTANT n = new Rule_CONSTANT();
 		switch(getCurrent()) {
 			case ID: {
-				n.ID = eat(TokenType.ID);
+				n.setId(eat(TokenType.ID));
 				break;
 			}
 			case NUM: {
-				n.NUM = eat(TokenType.NUM);
+				n.setNum(eat(TokenType.NUM));
 				break;
 			}
 			case LEFTBRACKET: {
 				eat(TokenType.LEFTBRACKET);
-				n.exp = exp();
+				n.setExp(exp());
 				eat(TokenType.RIGHTBRACKET);
 				break;
 			}

@@ -1,4 +1,4 @@
-package FirstGrammar;
+package FirstGrammar.lexer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -177,7 +177,7 @@ public class Lexer {
 
 	public List<Token> tokenize(InputStream input) throws IOException {
 		
-		List<Token> tokenstream = new LinkedList<Token>();
+		List<Token> tokenStream = new LinkedList<Token>();
 		
 		StateMachine highestEndStateMachine = null;
 		
@@ -190,8 +190,6 @@ public class Lexer {
 			boolean stillvalid = false;
 			
 			for(StateMachine s: stateMachines) {
-				// System.out.println(s.getTokenType());
-				
 				if(s.next(c)) {
 					stillvalid = true;
 					highestEndStateMachine = s;
@@ -206,10 +204,8 @@ public class Lexer {
 				
 				input.reset();
 				
-				System.out.println("test");
-				
 				if(!highestEndStateMachine.isSkipable()) {
-					tokenstream.add(new Token(highestEndStateMachine.getTokenType(), sb.toString()));
+					tokenStream.add(new Token(highestEndStateMachine.getTokenType(), sb.toString()));
 				}
 				
 				highestEndStateMachine = null;
@@ -227,10 +223,10 @@ public class Lexer {
 		
 		if(highestEndStateMachine != null && highestEndStateMachine.isInEndState()) {
 			if(!highestEndStateMachine.isSkipable()) {
-				tokenstream.add(new Token(highestEndStateMachine.getTokenType(), sb.toString()));
+				tokenStream.add(new Token(highestEndStateMachine.getTokenType(), sb.toString()));
 			}
 		}
 		
-		return tokenstream;
+		return tokenStream;
 	}
 }

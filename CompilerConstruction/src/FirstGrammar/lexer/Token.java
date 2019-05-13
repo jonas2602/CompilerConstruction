@@ -1,4 +1,4 @@
-package FirstGrammar;
+package FirstGrammar.lexer;
 
 public class Token {
 	

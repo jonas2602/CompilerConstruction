@@ -1,6 +1,5 @@
-package FirstGrammar;
+package FirstGrammar.lexer;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
