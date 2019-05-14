@@ -1,4 +1,4 @@
-package FirstGrammar.parser;
+package FirstGrammar.parser.visitors;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +9,7 @@ import FirstGrammar.parser.tree.rules.Rule_EXP;
 import FirstGrammar.parser.tree.rules.Rule_EXPPRIME;
 import FirstGrammar.parser.tree.rules.Rule_STM;
 
-public class Visitor {
+public class PrettyPrintVisitor {
 
 	public List<String> visit(RuleNode ctx) {
 		if(ctx instanceof Rule_STM) return visitRule_STM((Rule_STM)ctx);

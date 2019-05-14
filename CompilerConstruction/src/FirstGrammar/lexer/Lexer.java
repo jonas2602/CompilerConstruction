@@ -224,11 +224,13 @@ public class Lexer {
 			}
 		}
 		
-		if(highestEndStateMachine != null && highestEndStateMachine.isInEndState()) {
+		if(highestEndStateMachine != null) {
 			if(!highestEndStateMachine.isSkipable()) {
 				tokenStream.add(new Token(highestEndStateMachine.getTokenType(), sb.toString()));
 			}
 		}
+		
+		tokenStream.add(new Token(TokenType.EOF, "EOF"));
 		
 		return tokenStream;
 	}

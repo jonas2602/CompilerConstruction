@@ -7,8 +7,8 @@ import java.util.List;
 import FirstGrammar.lexer.Lexer;
 import FirstGrammar.lexer.Token;
 import FirstGrammar.parser.Parser;
-import FirstGrammar.parser.Visitor;
 import FirstGrammar.parser.tree.RuleNode;
+import FirstGrammar.parser.visitors.PrettyPrintVisitor;
 
 public class App {
 	public static void main(String[] args) throws IOException {
@@ -26,7 +26,7 @@ public class App {
 		Parser p = new Parser();
 		RuleNode root = p.parse(tokens);
 		
-		List<String> result =new Visitor().visit(root);
+		List<String> result =new PrettyPrintVisitor().visit(root);
 		for(String line : result) {
 			System.out.println(line);
 		}
