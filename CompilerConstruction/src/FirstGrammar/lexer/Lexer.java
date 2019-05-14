@@ -192,7 +192,10 @@ public class Lexer {
 			for(StateMachine s: stateMachines) {
 				if(s.next(c)) {
 					stillvalid = true;
-					highestEndStateMachine = s;
+					if(s.isInEndState()) {
+						highestEndStateMachine = s;
+					}
+					
 					System.out.println(s.getTokenType()+" "+s.getCurrentState()+" "+c);
 				}
 			}
