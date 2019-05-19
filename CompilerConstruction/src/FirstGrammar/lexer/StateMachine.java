@@ -2,19 +2,27 @@ package FirstGrammar.lexer;
 
 public class StateMachine {
 
-	private TokenType tokentype;
+	private TokenType tokenType;
 	private State startState;
 	private State currentState;
-	private boolean skipable;
+	private boolean isSkipable;
+	
+	public StateMachine(TokenType t, State startState, boolean skip) {
+		tokenType = t;
+		isSkipable = skip;
+		setStartState(startState);
+	}
+	
+	public StateMachine(TokenType t, State startState) {
+		this(t, startState, false);
+	}
 	
 	public StateMachine(TokenType t, boolean skip) {
-		tokentype = t;
-		currentState = null;
-		skipable = skip;
+		this(t, null, skip);
 	}
 	
 	public StateMachine(TokenType t) {
-		this(t, false);
+		this(t, null, false);
 	}
 	
 	public boolean next(char c) {
@@ -37,15 +45,19 @@ public class StateMachine {
 	}
 	
 	public boolean isInEndState() {
+		if(currentState == null) {
+			return false;
+		}
+		
 		return currentState.isEndState();
 	}
 	
 	public boolean isSkipable() {
-		return skipable;
+		return isSkipable;
 	}
 	
 	public TokenType getTokenType() {
-		return tokentype;
+		return tokenType;
 	}
 	
 	public State getCurrentState() {

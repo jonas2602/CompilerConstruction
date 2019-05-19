@@ -29,8 +29,6 @@ public class Lexer {
 	}
 	
 	public StateMachine buildNum() {
-		StateMachine s = new StateMachine(TokenType.NUM);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", true);
 		State s3 = new State("3", true);
@@ -39,14 +37,10 @@ public class Lexer {
 		s1.addTransition(s3, '0');
 		s2.addTransition(s2, '0', '9');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.NUM, s1);
 	}
 	
 	public StateMachine buildWhiteSpace() {
-		StateMachine s = new StateMachine(TokenType.WS, true);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", true);
 		
@@ -60,14 +54,10 @@ public class Lexer {
 		s2.addTransition(s2, '\n');
 		s2.addTransition(s2, '\r');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.WS, s1, true);
 	}
 	
 	public StateMachine buildID() {
-		StateMachine s = new StateMachine(TokenType.ID);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", true);
 		
@@ -78,53 +68,37 @@ public class Lexer {
 		s2.addTransition(s2, 'A', 'Z');
 		s2.addTransition(s2, '0', '9');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.ID, s1);
 	}
 	
 	public StateMachine buildLeftBracket() {
-		StateMachine s = new StateMachine(TokenType.LEFTBRACKET);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", true);
 		
 		s1.addTransition(s2, '(');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.LEFTBRACKET, s1);
 	}
 	
 	public StateMachine buildRightBracket() {
-		StateMachine s = new StateMachine(TokenType.RIGHTBRACKET);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", true);
 		
 		s1.addTransition(s2, ')');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.RIGHTBRACKET, s1);
 	}
 	
 	public StateMachine buildPlus() {
-		StateMachine s = new StateMachine(TokenType.PLUS);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", true);
 		
 		s1.addTransition(s2, '+');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.PLUS, s1);
 	}
 	
 	public StateMachine buildIf() {
-		StateMachine s = new StateMachine(TokenType.IF);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", false);
 		State s3 = new State("3", true);
@@ -132,14 +106,10 @@ public class Lexer {
 		s1.addTransition(s2, 'i');
 		s2.addTransition(s3, 'f');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.IF, s1);
 	}
 	
 	public StateMachine buildThen() {
-		StateMachine s = new StateMachine(TokenType.THEN);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", false);
 		State s3 = new State("3", false);
@@ -151,14 +121,10 @@ public class Lexer {
 		s3.addTransition(s4, 'e');
 		s4.addTransition(s5, 'n');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.THEN, s1);
 	}
 	
 	public StateMachine buildElse() {
-		StateMachine s = new StateMachine(TokenType.ELSE);
-		
 		State s1 = new State("1", false);
 		State s2 = new State("2", false);
 		State s3 = new State("3", false);
@@ -170,9 +136,7 @@ public class Lexer {
 		s3.addTransition(s4, 's');
 		s4.addTransition(s5, 'e');
 		
-		s.setStartState(s1);
-		
-		return s;
+		return new StateMachine(TokenType.ELSE, s1);
 	}
 
 	public List<Token> tokenize(InputStream input) throws IOException {
@@ -187,11 +151,11 @@ public class Lexer {
 		while((i = input.read()) != -1) {
 			char c = (char) i;
 			
-			boolean stillvalid = false;
+			boolean foundValidState = false;
 			
 			for(StateMachine s: stateMachines) {
 				if(s.next(c)) {
-					stillvalid = true;
+					foundValidState = true;
 					if(s.isInEndState()) {
 						highestEndStateMachine = s;
 					}
@@ -200,7 +164,7 @@ public class Lexer {
 				}
 			}
 			
-			if(!stillvalid) {
+			if(!foundValidState) {
 				if(highestEndStateMachine == null) {
 					throw new IOException("mööp");
 				}
@@ -220,7 +184,7 @@ public class Lexer {
 			else {
 				sb.append(c);
 				System.out.println("Adding "+c);
-				input.mark(1000);
+				input.mark(1);
 			}
 		}
 		

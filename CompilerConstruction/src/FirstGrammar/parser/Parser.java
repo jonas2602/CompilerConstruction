@@ -4,7 +4,7 @@ import java.util.List;
 
 import FirstGrammar.lexer.Token;
 import FirstGrammar.lexer.TokenType;
-import FirstGrammar.parser.tree.RuleNode;
+import FirstGrammar.parser.tree.Node;
 import FirstGrammar.parser.tree.TokenNode;
 import FirstGrammar.parser.tree.rules.Rule_CONSTANT;
 import FirstGrammar.parser.tree.rules.Rule_EXP;
@@ -45,7 +45,7 @@ public class Parser {
 		return tokenStream.get(current).getTokenType();
 	}
 	
-	public RuleNode parse(List<Token> t) {
+	public Node parse(List<Token> t) {
 		tokenStream = t;
 		current = 0;
 		return stm();

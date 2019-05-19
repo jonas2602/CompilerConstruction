@@ -1,14 +1,14 @@
 package FirstGrammar;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
 import FirstGrammar.lexer.Lexer;
 import FirstGrammar.lexer.Token;
 import FirstGrammar.parser.Parser;
-import FirstGrammar.parser.tree.RuleNode;
+import FirstGrammar.parser.tree.Node;
 import FirstGrammar.parser.visitors.PrettyPrintVisitor;
+import FirstGrammar.utils.InputStreamUtils;
 
 public class App {
 	public static void main(String[] args) throws IOException {
@@ -16,17 +16,17 @@ public class App {
 		
 		//LEXER
 		Lexer l = new Lexer();
-		List<Token> tokens = l.tokenize(new ByteArrayInputStream(test.getBytes()));
+		List<Token> tokenStream = l.tokenize(InputStreamUtils.streamFromString(test));
 		
-		for(Token t: tokens) {
+		for(Token t: tokenStream) {
 			System.out.println(t);
 		}
 		
 		//PARSER
 		Parser p = new Parser();
-		RuleNode root = p.parse(tokens);
+		Node root = p.parse(tokenStream);
 		
-		List<String> result =new PrettyPrintVisitor().visit(root);
+		List<String> result = new PrettyPrintVisitor().visit(root);
 		for(String line : result) {
 			System.out.println(line);
 		}

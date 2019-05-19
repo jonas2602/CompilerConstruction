@@ -3,7 +3,7 @@ package FirstGrammar.parser.visitors;
 import java.util.LinkedList;
 import java.util.List;
 
-import FirstGrammar.parser.tree.RuleNode;
+import FirstGrammar.parser.tree.Node;
 import FirstGrammar.parser.tree.rules.Rule_CONSTANT;
 import FirstGrammar.parser.tree.rules.Rule_EXP;
 import FirstGrammar.parser.tree.rules.Rule_EXPPRIME;
@@ -11,7 +11,7 @@ import FirstGrammar.parser.tree.rules.Rule_STM;
 
 public class PrettyPrintVisitor {
 
-	public List<String> visit(RuleNode ctx) {
+	public List<String> visit(Node ctx) {
 		if(ctx instanceof Rule_STM) return visitRule_STM((Rule_STM)ctx);
 		else if(ctx instanceof Rule_EXP) return visitRule_EXP((Rule_EXP)ctx);
 		else if(ctx instanceof Rule_EXPPRIME) return visitRule_EXPPRIME((Rule_EXPPRIME)ctx);
@@ -48,6 +48,7 @@ public class PrettyPrintVisitor {
 		if(ctx.getConstant() != null) {
 			expString += visit(ctx.getConstant()).get(0);
 		}
+		
 		if(ctx.getExpprime() != null) {
 			expString += visit(ctx.getExpprime()).get(0);	
 		}
@@ -63,6 +64,7 @@ public class PrettyPrintVisitor {
 		if(ctx.getConstant() != null) {
 			expPrimeString += " + " + visit(ctx.getConstant()).get(0);
 		}
+		
 		if(ctx.getExpprime() != null) {
 			expPrimeString += visit(ctx.getExpprime()).get(0);	
 		}
