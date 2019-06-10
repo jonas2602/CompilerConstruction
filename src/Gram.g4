@@ -8,17 +8,10 @@ unsignedNumber
     : NUM_REAL
     | NUM_INT
     ;
-signedNumber
-    : NUM_REAL
-    | sign NUM_REAL
-    | NUM_INT
-    | sign NUM_INT
-    ;
-
 sign: PLUS | MINUS;
 
 
-// Order is relevant?
+// ASK: Order is relevant?
 block: labelDeclarationPart constantDefinitionPart typeDefinitionPart variableDeclarationPart procedureAndFunctionDeclarationPart statementPart;
 
 
@@ -35,6 +28,7 @@ constantDefinitionPart
     | /* EPSILON */
     ;
 constantDefinition: identifier EQUAL constant;
+// ASK: Function calls like chr() allowed?
 constant
     : sign? (unsignedNumber | constantIdentifier)
     | STRING_LITERAL
@@ -42,20 +36,22 @@ constant
 constantIdentifier: identifier;
 
 
-typeDefinitionPart: TYPE ( typeDefinition SEMICOLON)+;
+
+typeDefinitionPart
+    : TYPE ( typeDefinition SEMICOLON)+
+    | /* EPSILON */
+    ;
 typeDefinition: identifier EQUAL typeDenoter;
+// ASK: Function/Procedure Types allowed? (param, param, param):returnType
 typeDenoter: typeIdentifier | newType;
 newType: newOrdinalType | newStructuredType | newPointerType;
-// replace?
+// replace following rules?
 simpleTypeIdentifier: typeIdentifier;
 structuredTypeIdentifier: typeIdentifier;
 pointerTypeIdentifier: typeIdentifier;
 typeIdentifier: identifier;
 
-simpleType
-    : ordinalType | realTypeIdentifier
-    //| CHAR | INTEGER | BOOLEAN | REAL | STRING
-    ;
+simpleType: ordinalType | realTypeIdentifier;
 ordinalType: newOrdinalType | ordinalTypeIdentifier;
 newOrdinalType: enumeratedType | subrangeType;
 // replace?
@@ -65,10 +61,7 @@ enumeratedType: LPARENTHESE identifierList RPARENTHESE;
 identifierList: identifier (COMMA identifier)*;
 subrangeType: constant DOTDOT constant;
 
-structuredType
-    : newStructuredType
-    | structuredTypeIdentifier
-    ;
+structuredType: newStructuredType | structuredTypeIdentifier;
 newStructuredType: PACKED? unpackedStructuredType;
 unpackedStructuredType: arrayType | recordType | setType | fileType;
 arrayType: ARRAY LBRACKET indexType (COMMA indexType)* RBRACKET OF  componentType;
@@ -95,35 +88,53 @@ baseType: ordinalType;
 
 fileType: FILE OF componentType;
 
-pointerType: newPointerType| pointerTypeIdentifier;
+pointerType: newPointerType | pointerTypeIdentifier;
 newPointerType: POINTER domainType;
 domainType: typeIdentifier;
 
 
-variableDeclarationPart: VAR (variableDeclaration SEMICOLON)+;
+
+variableDeclarationPart
+    : VAR (variableDeclaration SEMICOLON)+
+    | /* EPSILON */
+    ;
 variableDeclaration: identifierList COLON typeDenoter;
-variableAccess: entireVariable | componentVariable | identifiedVariable | bufferVariable;
-entireVariable: variableIdentifier;
+
+// allows random combinations of the variable access types
+variableAccess: variableIdentifier (indexedVariable | fieldDesignator | pointerVariable)*;
+// var
 variableIdentifier: identifier;
-componentVariable: indexedVariable | fieldDesignator;
-indexedVariable: arrayVariable LBRACKET indexExpression (COMMA indexExpression)* RBRACKET;
-arrayVariable: variableAccess;
-indexExpression: expression;
-fieldDesignator
-    : recordVariable DOT fieldSpecifier
-    | fieldDesignatorIdentifier;
-recordVariable: variableAccess;
-fieldSpecifier: fieldIdentifier;
-bufferVariable: fileVariable POINTER;
-fileVariable: variableAccess;
+// var[exp,exp,...]
+indexedVariable: LBRACKET expression (COMMA expression)* RBRACKET;
+// var.id
+fieldDesignator: DOT identifier;
+// var^
+pointerVariable: POINTER;
 
-identifiedVariable: pointerVariable POINTER;
-pointerVariable: variableAccess;
+//variableAccess: entireVariable | componentVariable | identifiedVariable | bufferVariable;
+//entireVariable: variableIdentifier;
+//variableIdentifier: identifier;
+//componentVariable: indexedVariable | fieldDesignator;
+//indexedVariable: arrayVariable LBRACKET indexExpression (COMMA indexExpression)* RBRACKET;
+//arrayVariable: variableAccess;
+//indexExpression: expression;
+//fieldDesignator
+//    : recordVariable DOT fieldSpecifier
+//    | fieldDesignatorIdentifier;
+//recordVariable: variableAccess;
+//fieldSpecifier: fieldIdentifier;
+//bufferVariable: fileVariable POINTER;
+//fileVariable: variableAccess;
+//
+//identifiedVariable: pointerVariable POINTER;
+//pointerVariable: variableAccess;
 
-procedureAndFunctionDeclarationPart: (procedureDeclaration | functionDeclaration) SEMICOLON;
+
+
+procedureAndFunctionDeclarationPart: ((procedureDeclaration | functionDeclaration) SEMICOLON)*;
 procedureDeclaration
     : procedureHeading SEMICOLON directive
-    | procedureIdentifier SEMICOLON procedureBlock
+    | procedureIdentification SEMICOLON procedureBlock
     | procedureHeading SEMICOLON procedureBlock
     ;
 procedureHeading: PROCEDURE identifier formalParameterList?;
@@ -201,7 +212,7 @@ booleanExpression: expression;
 
 functionDesignator: functionIdentifier actualParameterList?;
 actualParameterList: LPARENTHESE actualParameter (COMMA actualParameter)* RPARENTHESE;
-actualParameter: expression| variableAccess | procedureIdentifier | functionIdentifier;
+actualParameter: expression | variableAccess | procedureIdentifier | functionIdentifier;
 
 statement: (label COLON)? (simpleStatement | structuredStatement);
 simpleStatement
@@ -243,24 +254,24 @@ repetitiveStatement
 repeatStatement: REPEAT statementSequence UNTIL booleanExpression;
 whileStatement: WHILE booleanExpression DO statement;
 forStatement: FOR controlVariable ASSIGN initialValue (TO | DOWNTO) finalValue DO statement;
-controlVariable: entireVariable;
+controlVariable: variableIdentifier;
 initialValue: expression;
 finalValue: expression;
 
 withStatement: WITH recordVariableList DO statement;
-recordVariableList: recordVariable (COMMA recordVariable)*;
+recordVariableList: variableAccess (COMMA variableAccess)*;
 fieldDesignatorIdentifier: identifier;
 
-readParameterList: LPARENTHESE (fileVariable COMMA)? variableAccess (COMMA variableAccess)* RPARENTHESE;
+readParameterList: LPARENTHESE (variableAccess COMMA)? variableAccess (COMMA variableAccess)* RPARENTHESE;
 readlnParameterList
-    : LPARENTHESE (fileVariable | variableAccess) (COMMA variableAccess)* RPARENTHESE
+    : LPARENTHESE (variableAccess) (COMMA variableAccess)* RPARENTHESE
     | /* EPSILON */
     ;
 
-writeParameterList: LPARENTHESE (fileVariable COMMA)? writeParameter (COMMA writeParameter)* RPARENTHESE;
+writeParameterList: LPARENTHESE (variableAccess COMMA)? writeParameter (COMMA writeParameter)* RPARENTHESE;
 writeParameter: expression (COLON expression (COLON expression)?)?;
 writelnParameterList
-    : LPARENTHESE (fileVariable | writeParameter) (COMMA writeParameter)* RPARENTHESE
+    : LPARENTHESE (variableAccess | writeParameter) (COMMA writeParameter)* RPARENTHESE
     | /* EPSILON */
     ;
 
