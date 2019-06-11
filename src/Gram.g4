@@ -16,7 +16,7 @@ sign: PLUS | MINUS;
 
 
 // ASK: Order is relevant?
-block: labelDeclarationPart constantDefinitionPart typeDefinitionPart variableDeclarationPart procedureAndFunctionDeclarationPart statementPart;
+block: labelDeclarationPart constantDefinitionPart typeDefinitionPart variableDeclarationPart procedureAndFunctionDeclarationPart compoundStatement;
 
 
 labelDeclarationPart
@@ -84,61 +84,6 @@ fileType: FILE OF typeDenoter;
 
 newPointerType: POINTER typeIdentifier;
 
-//typeDefinitionPart
-//    : TYPE ( typeDefinition SEMICOLON)+
-//    | /* EPSILON */
-//    ;
-//typeDefinition: identifier EQUAL typeDenoter;
-//// ASK: Function/Procedure Types allowed? (param, param, param):returnType
-//typeDenoter: typeIdentifier | newType;
-//newType: newOrdinalType | newStructuredType | newPointerType;
-//// replace following rules?
-//simpleTypeIdentifier: typeIdentifier;
-//structuredTypeIdentifier: typeIdentifier;
-//pointerTypeIdentifier: typeIdentifier;
-//typeIdentifier: identifier;
-//
-//simpleType: ordinalType | realTypeIdentifier;
-//ordinalType: newOrdinalType | ordinalTypeIdentifier;
-//newOrdinalType: enumeratedType | subrangeType;
-//// replace?
-//ordinalTypeIdentifier: typeIdentifier;
-//realTypeIdentifier: typeIdentifier;
-//enumeratedType: LPARENTHESE identifierList RPARENTHESE;
-//identifierList: identifier (COMMA identifier)*;
-//subrangeType: constant DOTDOT constant;
-//
-//structuredType: newStructuredType | structuredTypeIdentifier;
-//newStructuredType: PACKED? unpackedStructuredType;
-//unpackedStructuredType: arrayType | recordType | setType | fileType;
-//arrayType: ARRAY LBRACKET indexType (COMMA indexType)* RBRACKET OF  componentType;
-//indexType: ordinalType;
-//componentType: typeDenoter;
-//recordType: RECORD fieldList END;
-//fieldList
-//    : (fixedPart (SEMICOLON variantPart)? | variantPart) SEMICOLON?
-//    | /* EPSILON */
-//    ;
-//fixedPart: recordSection (SEMICOLON recordSection)*;
-//recordSection: identifierList COLON typeDenoter;
-//fieldIdentifier: identifier;
-//variantPart: CASE variantSelector OF variant (SEMICOLON variant)*;
-//variantSelector: (tagField COLON)? tagType;
-//tagField: identifier;
-//variant: caseConstantList COLON LPARENTHESE fieldList RPARENTHESE;
-//tagType: ordinalTypeIdentifier;
-//caseConstantList: caseConstant (COMMA caseConstant)*;
-//caseConstant: constant;
-//
-//setType: SET OF baseType;
-//baseType: ordinalType;
-//
-//fileType: FILE OF componentType;
-//
-//pointerType: newPointerType | pointerTypeIdentifier;
-//newPointerType: POINTER domainType;
-//domainType: typeIdentifier;
-
 
 
 variableDeclarationPart
@@ -158,27 +103,10 @@ fieldDesignator: DOT identifier;
 // var^
 pointerVariable: POINTER;
 
-//variableAccess: entireVariable | componentVariable | identifiedVariable | bufferVariable;
-//entireVariable: variableIdentifier;
-//variableIdentifier: identifier;
-//componentVariable: indexedVariable | fieldDesignator;
-//indexedVariable: arrayVariable LBRACKET indexExpression (COMMA indexExpression)* RBRACKET;
-//arrayVariable: variableAccess;
-//indexExpression: expression;
-//fieldDesignator
-//    : recordVariable DOT fieldSpecifier
-//    | fieldDesignatorIdentifier;
-//recordVariable: variableAccess;
-//fieldSpecifier: fieldIdentifier;
-//bufferVariable: fileVariable POINTER;
-//fileVariable: variableAccess;
-//
-//identifiedVariable: pointerVariable POINTER;
-//pointerVariable: variableAccess;
-
 
 
 procedureAndFunctionDeclarationPart: ((procedureDeclaration | functionDeclaration) SEMICOLON)*;
+
 procedureDeclaration
     : procedureHeading SEMICOLON directive
     | procedureIdentification SEMICOLON procedureBlock
@@ -224,7 +152,7 @@ conformantArraySchema
     | unpackedConformantArraySchema
     ;
 packedConformantArraySchema: PACKED ARRAY indexTypeSpecification? OF typeIdentifier;
-unpackedConformantArraySchema: ARRAY (indexTypeSpecification (SEMICOLON indexTypeSpecification)*)? OF (typeIdentifier | conformantArraySchema);
+unpackedConformantArraySchema: ARRAY LBRACKET indexTypeSpecification (SEMICOLON indexTypeSpecification)* RBRACKET OF (typeIdentifier | conformantArraySchema);
 indexTypeSpecification: identifier DOTDOT identifier COLON typeIdentifier;
 
 factor
@@ -262,59 +190,61 @@ actualParameterList: LPARENTHESE actualParameter (COMMA actualParameter)* RPAREN
 actualParameter: expression | variableAccess | procedureIdentifier | functionIdentifier;
 
 statement: (label COLON)? (simpleStatement | structuredStatement);
+statementSequence: statement (SEMICOLON statement)*;
+
 simpleStatement
-    : emptyStatement
-    | assignmentStatement
+    : assignmentStatement
     | procedureStatement
     | gotoStatement
+    | /* EPSILON */
     ;
-emptyStatement: /* EPSILON */;
+// ASK: WTF? Assignment to function? like lambda expression?
+// e.g. test[12] := 1+2
 assignmentStatement: (variableAccess | functionIdentifier) ASSIGN expression;
-procedureStatement: procedureIdentifier (actualParameterList* | readParameterList | readlnParameterList | writeParameterList | writelnParameterList);
+// e.g. println("Hello", "World")
+procedureStatement: procedureIdentifier (actualParameterList? | readParameterList | readlnParameterList | writeParameterList | writelnParameterList);
+// goto id
+// ASK: Labels are defined as Numbers. Are names also valid? (used in the lecture)
 gotoStatement: GOTO label;
+
 structuredStatement
     : compoundStatement
     | conditionalStatement
     | repetitiveStatement
     | withStatement
     ;
-statementSequence: statement (SEMICOLON statement)*;
-
-// could this level get removed?
-statementPart: compoundStatement;
-
 compoundStatement: BEGIN statementSequence END;
 conditionalStatement: ifStatement | caseStatement;
 
-ifStatement: IF booleanExpression THEN statement (elsePart)?;
-elsePart: ELSE statement;
+ifStatement: IF booleanExpression THEN statement (ELSE statement)?;
 
-caseStatement: CASE caseIndex OF caseListElement (SEMICOLON caseListElement)* SEMICOLON? END;
+caseStatement: CASE expression OF caseListElement (SEMICOLON caseListElement)* SEMICOLON? END;
 caseListElement: caseConstantList COLON statement;
-caseIndex: expression;
 
 repetitiveStatement
     : repeatStatement
     | whileStatement
     | forStatement
     ;
+// equivalent of do-while?
 repeatStatement: REPEAT statementSequence UNTIL booleanExpression;
 whileStatement: WHILE booleanExpression DO statement;
-forStatement: FOR controlVariable ASSIGN initialValue (TO | DOWNTO) finalValue DO statement;
-controlVariable: variableIdentifier;
-initialValue: expression;
-finalValue: expression;
+forStatement: FOR variableIdentifier ASSIGN expression (TO | DOWNTO) expression DO statement;
 
+// The with statement serves to access the elements of a record or object or class, without having to specify the element’s name each time
+// pretty certain there is an equivalent in C++ called "using" or sth like this
 withStatement: WITH recordVariableList DO statement;
 recordVariableList: variableAccess (COMMA variableAccess)*;
-fieldDesignatorIdentifier: identifier;
 
-readParameterList: LPARENTHESE (variableAccess COMMA)? variableAccess (COMMA variableAccess)* RPARENTHESE;
+// optional fileVariable as first element
+// could get combined?
+readParameterList: LPARENTHESE variableAccess (COMMA variableAccess)* RPARENTHESE;
 readlnParameterList
-    : LPARENTHESE (variableAccess) (COMMA variableAccess)* RPARENTHESE
+    : LPARENTHESE variableAccess (COMMA variableAccess)* RPARENTHESE
     | /* EPSILON */
     ;
 
+// optional variable is fileVariable
 writeParameterList: LPARENTHESE (variableAccess COMMA)? writeParameter (COMMA writeParameter)* RPARENTHESE;
 writeParameter: expression (COLON expression (COLON expression)?)?;
 writelnParameterList
@@ -322,9 +252,10 @@ writelnParameterList
     | /* EPSILON */
     ;
 
+
+
 program: programHeading SEMICOLON programBlock DOT;
-programHeading: PROGRAM identifier (LPARENTHESE programParameterList RPARENTHESE )?;
-programParameterList: identifierList;
+programHeading: PROGRAM identifier (LPARENTHESE identifierList RPARENTHESE )?;
 programBlock: block;
 
 
