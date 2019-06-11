@@ -62,6 +62,8 @@ subrangeType: constant DOTDOT constant;
 // packed -> compiler uses as little memoty as possible
 newStructuredType: PACKED? (arrayType | recordType | setType | fileType);
 // [ordType, ordType, ...] of anyType
+// ASK: How to implement strings? "string[100]" allowed or "array[100] of char" (ISO page 24-25)
+// ASK: "array of integer" possible? missing length?
 arrayType: ARRAY LBRACKET ordinalType (COMMA ordinalType)* RBRACKET OF  typeDenoter;
 // equivalent to structs in C?
 recordType: RECORD fieldList END;
@@ -253,7 +255,7 @@ writelnParameterList
     ;
 
 
-
+// ASK: Multiple "program" definitions in the same file?
 program: programHeading SEMICOLON programBlock DOT;
 programHeading: PROGRAM identifier (LPARENTHESE identifierList RPARENTHESE )?;
 programBlock: block;

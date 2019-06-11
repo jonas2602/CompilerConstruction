@@ -1,0 +1,29 @@
+TYPE
+natural = 0 .. maxint;
+count = integer;
+range = integer;
+colour = (red, yellow, green, blue);
+sex = (male, female);
+year = 1900 .. 1999;
+shape = (triangle, rectangle, circle);
+punchedcard = array [1 .. 80] of char;
+charsequence = file of char;
+polar = record
+r : real;
+theta : angle
+end;
+indextype = 1 .. limit;
+vector = array [indextype] of real;
+person = ^ persondetails;
+persondetails = record
+name, firstname : charsequence;
+age : natural;
+married : Boolean ;
+father, child, sibling : person;
+case s : sex of
+male :
+(enlisted, bearded : Boolean);
+female :
+(mother, programmer : Boolean)
+end;
+FileOfInteger = file of integer;

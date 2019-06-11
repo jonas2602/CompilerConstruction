@@ -1,0 +1,72 @@
+procedure AddVectors (var A, B, C : array [low .. high : natural] of real);
+var
+    i : natural;
+begin
+    for i := low to high do A[i] := B[i] + C[i]
+end { of AddVectors };
+
+procedure readinteger (var f : text; var x : integer);
+var
+    i : natural;
+begin
+while ff = ' ' do get(f);
+{The buffer-variable contains the first non-space char}
+i := 0;
+while ff in [' 0 ' . . ' 9 ' ] do begin
+    i := (10 * i) + (ord(ff) - ord( ' 0 ' ));
+    get(f)
+end;
+{The buffer-variable contains a non-digit}
+x := i
+{Of course if there are no digits, x is zero}
+end;
+
+procedure bisect (function f(x : real) : real;
+a, b : real;
+var result : real);
+{This procedure attempts to find a zero of f(x) in (a,b) by
+the method of bisection . It is assumed that the procedure is
+called with suitable values of a and b such that
+(f(a) < 0) and (f(b) >= 0)
+The estimate is returned in the last parameter .}
+const
+eps = 1e-10;
+var
+midpoint : real;
+begin
+{The invariant P is true by calling assumption}
+midpoint := a;
+while abs(a - b) > eps * abs(a) do begin
+midpoint := (a + b) / 2;
+if f(midpoint) < 0 then a := midpoint
+else b := midpoint
+{Which re-establishes the invariant:
+P = (f(a) < 0) and (f(b) >= 0)
+and reduces the interval (a,b) provided that the
+value of midpoint is distinct from both a and b .}
+end;
+{P together with the loop exit condition assures that a zero
+is contained in a small subinterval . Return the midpoint as
+the zero .}
+result := midpoint
+end;
+
+procedure PrepareForAppending (var f : FileOfInteger);
+{ This procedure takes a file in any state suitable for reset and
+places it in a condition for appending data to its end . Simpler
+conditioning is only possible if assumptions are made about the
+initial state of the file . }
+var
+    LocalCopy : FileOfInteger;
+    procedure CopyFiles (var from, into : FileOfInteger);
+    begin
+    reset(from) ; rewrite(into);
+    while not eof(from) do begin
+    into' := from';
+    put(into) ; get(from)
+    end
+    end { of CopyFiles };
+begin { of body of PrepareForAppending }
+CopyFiles(f, LocalCopy);
+CopyFiles(LocalCopy, f)
+end { of PrepareForAppending };
