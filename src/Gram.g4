@@ -1,6 +1,8 @@
 grammar Gram;
 
 identifier: IDENT;
+identifierList: identifier (COMMA identifier)*;
+
 directive: IDENT;
 
 // TODO: Complete Number rules if required (Page 13-15)
@@ -45,52 +47,95 @@ typeDefinition: identifier EQUAL typeDenoter;
 // ASK: Function/Procedure Types allowed? (param, param, param):returnType
 typeDenoter: typeIdentifier | newType;
 newType: newOrdinalType | newStructuredType | newPointerType;
-// replace following rules?
-simpleTypeIdentifier: typeIdentifier;
-structuredTypeIdentifier: typeIdentifier;
-pointerTypeIdentifier: typeIdentifier;
 typeIdentifier: identifier;
 
-simpleType: ordinalType | realTypeIdentifier;
-ordinalType: newOrdinalType | ordinalTypeIdentifier;
+ordinalType: newOrdinalType | typeIdentifier;
 newOrdinalType: enumeratedType | subrangeType;
-// replace?
-ordinalTypeIdentifier: typeIdentifier;
-realTypeIdentifier: typeIdentifier;
+// (type, type, type, ...)
 enumeratedType: LPARENTHESE identifierList RPARENTHESE;
-identifierList: identifier (COMMA identifier)*;
+// const .. const
 subrangeType: constant DOTDOT constant;
 
-structuredType: newStructuredType | structuredTypeIdentifier;
-newStructuredType: PACKED? unpackedStructuredType;
-unpackedStructuredType: arrayType | recordType | setType | fileType;
-arrayType: ARRAY LBRACKET indexType (COMMA indexType)* RBRACKET OF  componentType;
-indexType: ordinalType;
-componentType: typeDenoter;
+// packed or unpacked complex types
+// packed -> compiler uses as little memoty as possible
+newStructuredType: PACKED? (arrayType | recordType | setType | fileType);
+// [ordType, ordType, ...] of anyType
+arrayType: ARRAY LBRACKET ordinalType (COMMA ordinalType)* RBRACKET OF  typeDenoter;
+// equivalent to structs in C?
 recordType: RECORD fieldList END;
 fieldList
     : (fixedPart (SEMICOLON variantPart)? | variantPart) SEMICOLON?
     | /* EPSILON */
     ;
 fixedPart: recordSection (SEMICOLON recordSection)*;
+// id, id, ... : type
+// e.g.: name, firstname : string;
 recordSection: identifierList COLON typeDenoter;
-fieldIdentifier: identifier;
+
 variantPart: CASE variantSelector OF variant (SEMICOLON variant)*;
-variantSelector: (tagField COLON)? tagType;
-tagField: identifier;
+variantSelector: (identifier COLON)? typeIdentifier;
 variant: caseConstantList COLON LPARENTHESE fieldList RPARENTHESE;
-tagType: ordinalTypeIdentifier;
-caseConstantList: caseConstant (COMMA caseConstant)*;
-caseConstant: constant;
+caseConstantList: constant (COMMA constant)*;
 
-setType: SET OF baseType;
-baseType: ordinalType;
+setType: SET OF ordinalType;
+fileType: FILE OF typeDenoter;
 
-fileType: FILE OF componentType;
+newPointerType: POINTER typeIdentifier;
 
-pointerType: newPointerType | pointerTypeIdentifier;
-newPointerType: POINTER domainType;
-domainType: typeIdentifier;
+//typeDefinitionPart
+//    : TYPE ( typeDefinition SEMICOLON)+
+//    | /* EPSILON */
+//    ;
+//typeDefinition: identifier EQUAL typeDenoter;
+//// ASK: Function/Procedure Types allowed? (param, param, param):returnType
+//typeDenoter: typeIdentifier | newType;
+//newType: newOrdinalType | newStructuredType | newPointerType;
+//// replace following rules?
+//simpleTypeIdentifier: typeIdentifier;
+//structuredTypeIdentifier: typeIdentifier;
+//pointerTypeIdentifier: typeIdentifier;
+//typeIdentifier: identifier;
+//
+//simpleType: ordinalType | realTypeIdentifier;
+//ordinalType: newOrdinalType | ordinalTypeIdentifier;
+//newOrdinalType: enumeratedType | subrangeType;
+//// replace?
+//ordinalTypeIdentifier: typeIdentifier;
+//realTypeIdentifier: typeIdentifier;
+//enumeratedType: LPARENTHESE identifierList RPARENTHESE;
+//identifierList: identifier (COMMA identifier)*;
+//subrangeType: constant DOTDOT constant;
+//
+//structuredType: newStructuredType | structuredTypeIdentifier;
+//newStructuredType: PACKED? unpackedStructuredType;
+//unpackedStructuredType: arrayType | recordType | setType | fileType;
+//arrayType: ARRAY LBRACKET indexType (COMMA indexType)* RBRACKET OF  componentType;
+//indexType: ordinalType;
+//componentType: typeDenoter;
+//recordType: RECORD fieldList END;
+//fieldList
+//    : (fixedPart (SEMICOLON variantPart)? | variantPart) SEMICOLON?
+//    | /* EPSILON */
+//    ;
+//fixedPart: recordSection (SEMICOLON recordSection)*;
+//recordSection: identifierList COLON typeDenoter;
+//fieldIdentifier: identifier;
+//variantPart: CASE variantSelector OF variant (SEMICOLON variant)*;
+//variantSelector: (tagField COLON)? tagType;
+//tagField: identifier;
+//variant: caseConstantList COLON LPARENTHESE fieldList RPARENTHESE;
+//tagType: ordinalTypeIdentifier;
+//caseConstantList: caseConstant (COMMA caseConstant)*;
+//caseConstant: constant;
+//
+//setType: SET OF baseType;
+//baseType: ordinalType;
+//
+//fileType: FILE OF componentType;
+//
+//pointerType: newPointerType | pointerTypeIdentifier;
+//newPointerType: POINTER domainType;
+//domainType: typeIdentifier;
 
 
 
@@ -150,7 +195,7 @@ functionDeclaration
 functionHeading: FUNCTION identifier formalParameterList? COLON resultType;
 functionIdentification: FUNCTION functionIdentifier;
 functionIdentifier: identifier;
-resultType: simpleTypeIdentifier | pointerTypeIdentifier;
+resultType: typeIdentifier;
 functionBlock: block;
 
 formalParameterList: LPARENTHESE formalParameterSection (SEMICOLON formalParameterSection)* RPARENTHESE;
@@ -178,7 +223,7 @@ conformantArraySchema
     ;
 packedConformantArraySchema: PACKED ARRAY indexTypeSpecification? OF typeIdentifier;
 unpackedConformantArraySchema: ARRAY (indexTypeSpecification (SEMICOLON indexTypeSpecification)*)? OF (typeIdentifier | conformantArraySchema);
-indexTypeSpecification: identifier DOTDOT identifier COLON ordinalTypeIdentifier;
+indexTypeSpecification: identifier DOTDOT identifier COLON typeIdentifier;
 
 factor
     : boundIdentifier
