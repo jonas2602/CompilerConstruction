@@ -1,5 +1,7 @@
 grammar Gram;
 
+startRule: program EOF;
+
 identifier: IDENT;
 directive: IDENT;
 
@@ -275,7 +277,7 @@ writelnParameterList
     | /* EPSILON */
     ;
 
-program: programHeading SEMICOLON programBlock;
+program: programHeading SEMICOLON programBlock DOT;
 programHeading: PROGRAM identifier (LPARENTHESE programParameterList RPARENTHESE )?;
 programParameterList: identifierList;
 programBlock: block;
