@@ -1,4 +1,6 @@
-package ast;
+package ast.expression;
+
+import ast.AbstractSyntaxTree;
 
 public class ArrayAccessNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Child;

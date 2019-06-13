@@ -1,4 +1,10 @@
+package visitors;
+
 import ast.*;
+import ast.expression.ArrayAccessNode;
+import ast.expression.FieldAccessNode;
+import ast.expression.PointerAccessNode;
+import ast.expression.VariableNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 

@@ -447,7 +447,7 @@ conditionalStatement
    ;
 
 ifStatement
-   : IF expression THEN statement (: ELSE statement)?
+   : IF expression THEN statement (ELSE statement)?
    ;
 
 caseStatement
@@ -473,11 +473,7 @@ repeatStatement
    ;
 
 forStatement
-   : FOR identifier ASSIGN forList DO statement
-   ;
-
-forList
-   : initialValue (TO | DOWNTO) finalValue
+   : FOR identifier ASSIGN initialValue (TO | DOWNTO) finalValue DO statement
    ;
 
 initialValue

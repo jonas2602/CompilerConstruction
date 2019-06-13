@@ -1,4 +1,6 @@
-package ast;
+package ast.expression;
+
+import ast.AbstractSyntaxTree;
 
 public class RelationalNode extends AbstractSyntaxTree {
     public enum ERelationalOperator {

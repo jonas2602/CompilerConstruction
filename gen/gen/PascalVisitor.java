@@ -587,12 +587,6 @@ public interface PascalVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForStatement(PascalParser.ForStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PascalParser#forList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForList(PascalParser.ForListContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PascalParser#initialValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

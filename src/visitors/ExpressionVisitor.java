@@ -1,4 +1,10 @@
+package visitors;
+
 import ast.*;
+import ast.expression.AdditiveNode;
+import ast.expression.ConstantNode;
+import ast.expression.MultiplicativeNode;
+import ast.expression.RelationalNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 

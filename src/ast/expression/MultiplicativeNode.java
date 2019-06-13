@@ -1,4 +1,6 @@
-package ast;
+package ast.expression;
+
+import ast.AbstractSyntaxTree;
 
 public class MultiplicativeNode extends AbstractSyntaxTree {
     public enum EMultiplicativeOperator {
