@@ -1,6 +1,8 @@
-package test.syntaxtree;
+package test.syntaxtree.declarations;
 
 import gen.PascalParser;
+import test.syntaxtree.BlockNode;
+import test.syntaxtree.Node;
 
 public class VariableDeclarationNode extends Node {
     private String name;
