@@ -13,8 +13,11 @@ label
 procedure test;
     var
         temp, a12: integer;
-     label
+    label
         123;
+
+    const
+        test = 5;
 
     procedure test22;
         var
@@ -24,7 +27,12 @@ procedure test;
     end;
 begin
     writeln('TEST');
-    123:
+    Begin
+        123:
+        Begin
+            goto 123;
+        End
+    End
 end;
 
 function testfunc: integer;

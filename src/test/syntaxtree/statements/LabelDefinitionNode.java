@@ -1,25 +1,32 @@
 package test.syntaxtree.statements;
 
+import gen.PascalParser;
+import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
+import test.visitors.PascalVisitor;
 
 public class LabelDefinitionNode extends Node {
-    private int name;
+    private int value;
 
-    public LabelDefinitionNode() {
-        super();
+    public LabelDefinitionNode(BlockNode parent) {
+        super(parent);
     }
 
-    public void setName(int name) {
-        this.name = name;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public int getName() {
-        return this.name;
+    public int getValue() {
+        return this.value;
+    }
+
+    public void buildAST(PascalParser.LabelContext ctx) {
+        value = PascalVisitor.visitUnsignedInt(ctx.unsignedInteger());
     }
 
     @Override
     public String toString() {
-        return "LABEL "+name;
+        return "LABEL "+value;
     }
 
     @Override

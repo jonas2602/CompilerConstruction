@@ -1,7 +1,11 @@
 package test.syntaxtree;
 
 import gen.PascalParser;
+import test.syntaxtree.declarations.ConstantDeclarationNode;
+import test.syntaxtree.declarations.LabelDeclarationNode;
+import test.syntaxtree.declarations.VariableDeclarationNode;
 import test.syntaxtree.statements.LabelDefinitionNode;
+import test.syntaxtree.statements.StatementBlock;
 import test.syntaxtree.subs.SubNode;
 import test.visitors.PascalVisitor;
 
@@ -13,6 +17,8 @@ public class BlockNode extends Node {
     private List<VariableDeclarationNode> variables;
     private List<SubNode> subs;
     private List<LabelDeclarationNode> labels;
+    private List<ConstantDeclarationNode> constants;
+
     private List<Node> statements;
 
     public BlockNode() {
@@ -28,6 +34,8 @@ public class BlockNode extends Node {
         variables = new LinkedList<VariableDeclarationNode>();
         subs = new LinkedList<SubNode>();
         labels = new LinkedList<LabelDeclarationNode>();
+        constants = new LinkedList<ConstantDeclarationNode>();
+
         statements = new LinkedList<Node>();
     }
 
@@ -41,6 +49,10 @@ public class BlockNode extends Node {
 
     public void addLabel(LabelDeclarationNode label) {
         labels.add(label);
+    }
+
+    public void addConstant(ConstantDeclarationNode con) {
+        constants.add(con);
     }
 
     public void addStatement(Node statement) {
@@ -85,10 +97,28 @@ public class BlockNode extends Node {
                 addLabel(l);
             }
         }
+
+        //const
+        List<PascalParser.ConstantDefinitionPartContext> constblocks = ctx.constantDefinitionPart();
+        for(PascalParser.ConstantDefinitionPartContext constlist: constblocks) {
+            for(PascalParser.ConstantDefinitionContext con: constlist.constantDefinition()) {
+                ConstantDeclarationNode constant = new ConstantDeclarationNode(this);
+                constant.buildAST(con);
+                addConstant(constant);
+            }
+        }
+
+
+        //Now the "body" ...
+        StatementBlock.processStatementBlock(ctx.compoundStatement(), this);
     }
 
     public void print(int level) {
         level += 2;
+
+        for(Node n: constants) {
+            n.print(level);
+        }
 
         for(Node n: variables) {
             n.print(level);

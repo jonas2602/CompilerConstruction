@@ -2,10 +2,6 @@ package test.syntaxtree;
 
 import org.antlr.v4.runtime.Token;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 public abstract class Node {
     protected Token token;
     protected BlockNode parentBlock;
