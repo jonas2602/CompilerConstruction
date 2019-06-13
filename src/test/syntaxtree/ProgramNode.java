@@ -1,5 +1,7 @@
 package test.syntaxtree;
 
+import gen.PascalParser;
+
 public class ProgramNode extends Node {
     private String name;
     private BlockNode block;
@@ -22,6 +24,12 @@ public class ProgramNode extends Node {
 
     public BlockNode getBlock() {
         return this.block;
+    }
+
+    public void buildAST(PascalParser.ProgramContext ctx) {
+        name = ctx.programHeading().identifier().getText();
+        block = new BlockNode();
+        block.buildAST(ctx.block());
     }
 
     @Override

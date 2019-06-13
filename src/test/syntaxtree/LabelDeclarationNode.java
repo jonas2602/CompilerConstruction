@@ -1,11 +1,14 @@
 package test.syntaxtree;
 
+import gen.PascalParser;
+import test.visitors.PascalVisitor;
+
 public class LabelDeclarationNode extends Node {
 
     private int value;
 
-    public LabelDeclarationNode() {
-        super();
+    public LabelDeclarationNode(BlockNode parent) {
+        super(parent);
     }
 
     public void setValue(int value) {
@@ -14,6 +17,10 @@ public class LabelDeclarationNode extends Node {
 
     public int getValue() {
         return this.value;
+    }
+
+    public void buildAST(PascalParser.LabelContext ctx) {
+        value = PascalVisitor.visitUnsignedInt(ctx.unsignedInteger());
     }
 
     @Override

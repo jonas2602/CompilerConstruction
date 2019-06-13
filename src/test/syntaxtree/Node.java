@@ -7,10 +7,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Node {
-    private Token token;
+    protected Token token;
+    protected BlockNode parentBlock;
 
     public Node() {
         token = null;
+        parentBlock = null;
+    }
+
+    public Node(BlockNode block) {
+        parentBlock = block;
     }
 
     protected void setToken(Token token) {
@@ -19,6 +25,14 @@ public abstract class Node {
 
     public Token getToken() {
         return this.token;
+    }
+
+    public void setParentBlock(BlockNode parentBlock) {
+        this.parentBlock = parentBlock;
+    }
+
+    public BlockNode getParentBlock() {
+        return this.parentBlock;
     }
 
     public void print() {

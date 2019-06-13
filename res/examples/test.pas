@@ -12,18 +12,19 @@ label
 
 procedure test;
     var
-        temp, a12;
+        temp, a12: integer;
      label
         123;
 
     procedure test22;
         var
-            inner;
+            inner: integer;
     begin
 
-    end
+    end;
 begin
     writeln('TEST');
+    123:
 end;
 
 function testfunc: integer;

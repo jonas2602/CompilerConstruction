@@ -1,12 +1,11 @@
 package test.syntaxtree;
 
-import gen.PascalParser;
+public class ConstantDeclarationNode extends Node {
 
-public class VariableDeclarationNode extends Node {
     private String name;
 
-    public VariableDeclarationNode(BlockNode parent) {
-        super(parent);
+    public ConstantDeclarationNode() {
+        super();
     }
 
     public void setName(String name) {
@@ -19,10 +18,11 @@ public class VariableDeclarationNode extends Node {
 
     @Override
     public String toString() {
-        return "VARDEC "+name;
+        return "CONST "+name;
     }
 
+    @Override
     public void print(int level) {
-        super.println(level, this);
+
     }
 }
