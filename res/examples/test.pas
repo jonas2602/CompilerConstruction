@@ -10,7 +10,7 @@ label
 label
     14;
 
-procedure test;
+procedure test(function test: integer; test, test2: integer; test4: human);
     var
         temp, a12: integer;
     label
@@ -28,10 +28,12 @@ procedure test;
 begin
     writeln('TEST');
     Begin
-        123:
+        temp := 5;
         Begin
             goto 123;
-        End
+        End;
+        @temp^ := 12;
+        123:
     End
 end;
 

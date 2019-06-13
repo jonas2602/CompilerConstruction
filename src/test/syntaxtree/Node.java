@@ -35,6 +35,10 @@ public abstract class Node {
         print(0);
     }
 
+    public void print(Object obj) {
+        print(0, obj);
+    }
+
     public abstract void print(int level);
 
     protected void print(int level, Object obj) {

@@ -24,6 +24,7 @@ public class ProcedureDeclarationNode extends SubNode {
     @Override
     public void print(int level) {
         super.println(level, this);
+        super.printParameters(level);
         block.print(level);
     }
 }

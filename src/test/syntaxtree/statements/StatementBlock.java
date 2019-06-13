@@ -35,6 +35,14 @@ public class StatementBlock {
                     GotoStatementNode jmp = new GotoStatementNode(parent);
                     jmp.buildAST(simst.gotoStatement());
                     parent.addStatement(jmp);
+                    continue;
+                }
+
+                if(simst.assignmentStatement() != null) {
+                    AssignmentStatementNode assignment = new AssignmentStatementNode(parent);
+                    assignment.buildAST(simst.assignmentStatement());
+                    parent.addStatement(assignment);
+                    continue;
                 }
             }
         }
