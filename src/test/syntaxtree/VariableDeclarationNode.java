@@ -1,9 +1,9 @@
 package test.syntaxtree;
 
-public class DeclarationNode extends Node {
+public class VariableDeclarationNode extends Node {
     private String name;
 
-    public DeclarationNode() {
+    public VariableDeclarationNode() {
         super();
     }
 
@@ -18,5 +18,9 @@ public class DeclarationNode extends Node {
     @Override
     public String toString() {
         return "VARDEC "+name;
+    }
+
+    public void print(int level) {
+        super.println(level, this);
     }
 }

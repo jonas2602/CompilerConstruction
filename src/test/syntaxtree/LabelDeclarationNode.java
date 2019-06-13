@@ -1,9 +1,10 @@
 package test.syntaxtree;
 
-public class IntConstantNode extends Node {
+public class LabelDeclarationNode extends Node {
+
     private int value;
 
-    public IntConstantNode() {
+    public LabelDeclarationNode() {
         super();
     }
 
@@ -12,15 +13,16 @@ public class IntConstantNode extends Node {
     }
 
     public int getValue() {
-       return this.value;
+        return this.value;
     }
 
     @Override
     public String toString() {
-        return "INTCONST "+value;
+        return "LABELDEC "+value;
     }
 
+    @Override
     public void print(int level) {
-        super.println(level, this);
+        println(level, this);
     }
 }

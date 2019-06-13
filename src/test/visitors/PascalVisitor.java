@@ -1,51 +1,62 @@
 package test.visitors;
 
-import gen.PascalBaseVisitor;
 import gen.PascalParser;
-import test.syntaxtree.BlockNode;
-import test.syntaxtree.DeclarationNode;
-import test.syntaxtree.Node;
-import test.syntaxtree.ProgramNode;
+import test.syntaxtree.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class PascalVisitor extends PascalBaseVisitor<Node> {
-    @Override
-    public Node visitProgram(PascalParser.ProgramContext ctx) {
+public class PascalVisitor {
+
+    public ProgramNode visitProgram(PascalParser.ProgramContext ctx) {
         ProgramNode program = new ProgramNode();
         program.setName(ctx.programHeading().identifier().getText());
         program.setBlock(visitBlock(ctx.block()));
         return program;
     }
 
-    @Override
-    public Node visitBlock(PascalParser.BlockContext ctx) {
+    public BlockNode visitBlock(PascalParser.BlockContext ctx) {
         BlockNode block = new BlockNode();
+        //vars
         List<PascalParser.VariableDeclarationPartContext> variables = ctx.variableDeclarationPart();
         for(PascalParser.VariableDeclarationPartContext vars: variables) {
             visitVariableDeclarationPart(vars, block);
         }
 
+        //subs
         List<PascalParser.ProcedureAndFunctionDeclarationPartContext> subs = ctx.procedureAndFunctionDeclarationPart();
         for(PascalParser.ProcedureAndFunctionDeclarationPartContext sub: subs) {
             block.addSub(visitProcedureOrFunctionDeclaration(sub.procedureOrFunctionDeclaration()));
         }
+
+        //labels
+        List<PascalParser.LabelDeclarationPartContext> labels = ctx.labelDeclarationPart();
+        for(PascalParser.LabelDeclarationPartContext labelblock: labels) {
+            for(PascalParser.LabelContext label: labelblock.label()) {
+                LabelDeclarationNode l = new LabelDeclarationNode();
+                l.setValue(visitUnsignedInt(label.unsignedInteger()));
+                block.addLabel(l);
+            }
+        }
         return block;
+    }
+
+    public int visitUnsignedInt(PascalParser.UnsignedIntegerContext ctx) {
+        return Integer.parseInt(ctx.getText());
     }
 
     public void visitVariableDeclarationPart(PascalParser.VariableDeclarationPartContext ctx, BlockNode block) {
         List<PascalParser.VariableDeclarationContext> vars = ctx.variableDeclaration();
         for(PascalParser.VariableDeclarationContext var: vars) {
-            for(String s: visitIdentifierListCustom(var.identifierList())) {
-                DeclarationNode d = new DeclarationNode();
+            for(String s: visitIdentifierList(var.identifierList())) {
+                VariableDeclarationNode d = new VariableDeclarationNode();
                 d.setName(s);
                 block.addVariable(d);
             }
         }
     }
 
-    public List<String> visitIdentifierListCustom(PascalParser.IdentifierListContext ctx) {
+    public List<String> visitIdentifierList(PascalParser.IdentifierListContext ctx) {
         List<String> identifiers = new LinkedList<String>();
         List<PascalParser.IdentifierContext> list = ctx.identifier();
 
@@ -56,7 +67,6 @@ public class PascalVisitor extends PascalBaseVisitor<Node> {
         return identifiers;
     }
 
-    @Override
     public Node visitProcedureOrFunctionDeclaration(PascalParser.ProcedureOrFunctionDeclarationContext ctx) {
         if(ctx.procedureDeclaration() != null) {
             return visitProcedureDeclaration(ctx.procedureDeclaration());
@@ -64,5 +74,19 @@ public class PascalVisitor extends PascalBaseVisitor<Node> {
         else {
             return visitFunctionDeclaration(ctx.functionDeclaration());
         }
+    }
+
+    public ProcedureDeclarationNode visitProcedureDeclaration(PascalParser.ProcedureDeclarationContext ctx) {
+        ProcedureDeclarationNode proc = new ProcedureDeclarationNode();
+        proc.setName(ctx.identifier().getText());
+        proc.setBlock(visitBlock(ctx.block()));
+        return proc;
+    }
+
+    public FunctionDeclarationNode visitFunctionDeclaration(PascalParser.FunctionDeclarationContext ctx) {
+        FunctionDeclarationNode func = new FunctionDeclarationNode();
+        func.setName(ctx.identifier().getText());
+        func.setBlock(visitBlock(ctx.block()));
+        return func;
     }
 }

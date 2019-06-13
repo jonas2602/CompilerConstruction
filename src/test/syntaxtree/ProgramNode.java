@@ -2,7 +2,7 @@ package test.syntaxtree;
 
 public class ProgramNode extends Node {
     private String name;
-    private Node block;
+    private BlockNode block;
 
     public ProgramNode() {
         super();
@@ -16,16 +16,21 @@ public class ProgramNode extends Node {
         return this.name;
     }
 
-    public void setBlock(Node block) {
+    public void setBlock(BlockNode block) {
         this.block = block;
     }
 
-    public Node getBlock() {
+    public BlockNode getBlock() {
         return this.block;
     }
 
     @Override
     public String toString() {
         return "PROGRAM "+name;
+    }
+
+    public void print(int level) {
+        super.println(level, this);
+        block.print(level);
     }
 }
