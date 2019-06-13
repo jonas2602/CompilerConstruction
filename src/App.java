@@ -22,8 +22,8 @@ public class App {
         //ExpressionVisitor vis = new ExpressionVisitor();
         //vis.visit(tree);
 
-        AntlrBridge brigde = new AntlrBridge();
-        Node abs = brigde.visit(tree);
+        AntlrBridge bridge = new AntlrBridge();
+        Node abs = bridge.visit(tree);
 
         abs.print();
 
