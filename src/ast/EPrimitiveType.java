@@ -1,9 +1,19 @@
 package ast;
 
 public enum EPrimitiveType {
-    INT,
-    BOOL,
-    CHAR,
-    STRING,
-    REAL,
+    INT("integer"),
+    BOOL("boolean"),
+    CHAR("char"),
+    STRING("string"),
+    REAL("real");
+
+    private final String label;
+
+    EPrimitiveType(String label) {
+        this.label = label;
+    }
+
+    public final String label() {
+        return label;
+    }
 }

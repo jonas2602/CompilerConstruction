@@ -15,7 +15,7 @@ public class ArrayAccessNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
-        NamedTypeNode IntTypeNode = NamedTypeNode.IntNode();
+        NamedTypeNode IntTypeNode = NamedTypeNode.IntNode;
         for (AbstractSyntaxTree index : m_IndexExpressions) {
             // Is IndexNode of primitive type INT?
             TypeNode IndexType = index.CheckType();

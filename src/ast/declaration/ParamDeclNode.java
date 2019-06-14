@@ -1,6 +1,5 @@
 package ast.declaration;
 
-import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 
 public class ParamDeclNode extends VarDeclNode {

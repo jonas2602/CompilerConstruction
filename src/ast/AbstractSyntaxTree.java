@@ -27,7 +27,7 @@ public class AbstractSyntaxTree {
         return m_Parent;
     }
 
-    protected void SetParent(AbstractSyntaxTree InParent) {
+    public void SetParent(AbstractSyntaxTree InParent) {
         m_Parent = InParent;
     }
 

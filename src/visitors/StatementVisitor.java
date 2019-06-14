@@ -83,12 +83,19 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitStatements(PascalParser.StatementsContext ctx) {
-        ArrayList<AbstractSyntaxTree> statementList = new ArrayList<AbstractSyntaxTree>();
-        for (PascalParser.StatementContext stmt : ctx.statement()) {
-            statementList.add(visitStatement(stmt));
+        CompStmtNode compStmt = new CompStmtNode();
+        // The last Statement is always an empty statement. Therefore if the amount of stmts is not
+        // more than 2 (actually 1 valid) its not necessary to combine them in a compound statement
+        if (ctx.statement().size() <= 2) {
+            return visitStatement(ctx.statement(0));
         }
 
-        return new CompStmtNode(statementList.toArray(AbstractSyntaxTree[]::new));
+        for (int i = 0; i < ctx.statement().size() - 1; i++) {
+            AbstractSyntaxTree stmtNode = visitStatement(ctx.statement(i));
+            compStmt.AddStatement(stmtNode);
+        }
+
+        return compStmt;
     }
 
     @Override

@@ -39,8 +39,8 @@ public class RelationalNode extends AbstractSyntaxTree {
         }
 
         // check special case of REAL <-> INT comparability
-        NamedTypeNode intType = NamedTypeNode.IntNode();
-        NamedTypeNode realType = NamedTypeNode.RealNode();
+        NamedTypeNode intType = NamedTypeNode.IntNode;
+        NamedTypeNode realType = NamedTypeNode.RealNode;
         if ((leftType.CompareType(intType) || leftType.CompareType(realType))
         && (leftType.CompareType(intType) || leftType.CompareType(realType))) {
             return GetType();
@@ -51,6 +51,6 @@ public class RelationalNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode GetType() {
-        return NamedTypeNode.BoolNode();
+        return NamedTypeNode.BoolNode;
     }
 }

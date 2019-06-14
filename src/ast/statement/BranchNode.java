@@ -17,7 +17,7 @@ public class BranchNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
-        if (!NamedTypeNode.BoolNode().CompareType(m_Condition.CheckType())) {
+        if (!NamedTypeNode.BoolNode.CompareType(m_Condition.CheckType())) {
             throw new RuntimeException("Typecheck failed at Branch Node because Condition is not of type bool");
         }
 

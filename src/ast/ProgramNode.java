@@ -1,23 +1,34 @@
 package ast;
 
+import ast.declaration.ParamDeclNode;
 import ast.types.TypeNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramNode extends AbstractSyntaxTree {
     private String m_Name;
-    private AbstractSyntaxTree[] m_Params;
-    private AbstractSyntaxTree m_Block;
+    private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
+    private BlockNode m_Block;
 
-    public ProgramNode(String InName, AbstractSyntaxTree[] InParams){
+    public ProgramNode(String InName) {
         this.m_Name = InName;
-        this.m_Params = InParams;
     }
 
-    public void SetBlock(AbstractSyntaxTree InBlock){
+    public void AddParameter(AbstractSyntaxTree InParam) {
+        InParam.SetParent(this);
+        m_Params.add(InParam);
+    }
+
+    public void SetBlock(BlockNode InBlock) {
+        InBlock.SetParent(this);
         this.m_Block = InBlock;
     }
 
     @Override
     public TypeNode CheckType() {
+        // the block will take care of checking the parameter types
+
         m_Block.CheckType();
         return null;
     }

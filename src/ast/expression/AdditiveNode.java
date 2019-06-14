@@ -23,8 +23,8 @@ public class AdditiveNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
-        NamedTypeNode intType = NamedTypeNode.IntNode();
-        NamedTypeNode realType = NamedTypeNode.RealNode();
+        NamedTypeNode intType = NamedTypeNode.IntNode;
+        NamedTypeNode realType = NamedTypeNode.RealNode;
         TypeNode outType = intType;
 
         TypeNode leftType = m_Left.CheckType();

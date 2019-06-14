@@ -1,19 +1,36 @@
 package ast.declaration;
 
 import ast.AbstractSyntaxTree;
+import ast.BlockNode;
+import ast.types.TypeNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProcDeclNode extends AbstractSyntaxTree {
     private String m_Name;
-    private AbstractSyntaxTree[] m_Params;
-    private AbstractSyntaxTree m_Block;
+    private List<ParamDeclNode> m_Params = new ArrayList<>();
+    private BlockNode m_Block;
 
-    public ProcDeclNode(String InName, AbstractSyntaxTree[] InParams, AbstractSyntaxTree InBlock){
+    public ProcDeclNode(String InName, BlockNode InBlock) {
         m_Name = InName;
-        m_Params = InParams;
         m_Block = InBlock;
+        InBlock.SetParent(this);
     }
 
-    public String GetName(){
+    public String GetName() {
         return m_Name;
+    }
+
+    public void AddParameter(ParamDeclNode InParam) {
+        InParam.SetParent(this);
+        m_Params.add(InParam);
+    }
+
+    @Override
+    public TypeNode CheckType() {
+        // Block will also Check the Parameters, because they are stored in the block as variables
+        m_Block.CheckType();
+        return GetType();
     }
 }

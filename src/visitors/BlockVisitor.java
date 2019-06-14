@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.declaration.*;
 import ast.expression.ParameterNode;
+import ast.statement.CompStmtNode;
 import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -103,7 +104,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitVariableDeclaration(PascalParser.VariableDeclarationContext ctx) {
-        AbstractSyntaxTree type = new TypeVisitor().visit(ctx.type());
+        TypeNode type = new TypeVisitor().visit(ctx.type());
 
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
             m_BlockNode.AddVariableDeclaration(new VarDeclNode(ident.IDENT().getText(), type));
@@ -114,29 +115,46 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitFunctionDeclaration(PascalParser.FunctionDeclarationContext ctx) {
+        // Create Function Node + Block
         String name = ctx.identifier().IDENT().getText();
-        List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
         TypeNode returnType = new TypeVisitor().visit(ctx.resultType());
+        // Make shure VarDeclNode is created before return type gets added to the FuncDeclNode, so that the paren of ther return type gets overriden by the FuncDeclNode
+        VarDeclNode funcTypeNode = new VarDeclNode(name, returnType);
         BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
+        FuncDeclNode funcDecl = new FuncDeclNode(name, returnType, body);
 
-        // TODO: Add params first to block for more percise Exceptions?
-        body.AddVariableDeclaration(new VarDeclNode(name, returnType));
+        // Add return type to block as variable
+        body.AddParameterDeclaration(funcTypeNode);
+
+        // Add Parameters to both, Procedure and Block
+        List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
         for (AbstractSyntaxTree param : paramList) {
-            body.AddVariableDeclaration((ParamDeclNode) param);
+            // TODO: Add params first to block for more percise Exceptions?
+            funcDecl.AddParameter((ParamDeclNode) param);
+            body.AddParameterDeclaration((ParamDeclNode) param);
         }
 
-        FuncDeclNode funcDecl = new FuncDeclNode(name, paramList, returnType, body);
+        // Add declaration to the new block
         m_BlockNode.AddFunctionDeclaration(funcDecl);
         return funcDecl;
     }
 
     @Override
     public AbstractSyntaxTree visitProcedureDeclaration(PascalParser.ProcedureDeclarationContext ctx) {
+        // Create Procedure Node + Block
         String name = ctx.identifier().IDENT().getText();
-        List<AbstractSyntaxTree> params = new ParameterVisitor().visit(ctx.formalParameterList());
-        AbstractSyntaxTree body = new BlockVisitor().visit(ctx.block());
+        BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
+        ProcDeclNode procDecl = new ProcDeclNode(name, body);
 
-        ProcDeclNode procDecl = new ProcDeclNode(name, params.toArray(AbstractSyntaxTree[]::new), body);
+        // Add Parameters to both, Procedure and Block
+        List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
+        for (AbstractSyntaxTree param : paramList) {
+            // TODO: Add params first to block for more percise Exceptions?
+            procDecl.AddParameter((ParamDeclNode) param);
+            body.AddParameterDeclaration((ParamDeclNode) param);
+        }
+
+        // Add declaration to the new block
         m_BlockNode.AddProcedureDeclaration(procDecl);
         return procDecl;
     }

@@ -1,6 +1,7 @@
 package ast;
 
 import ast.declaration.*;
+import ast.statement.CompStmtNode;
 import ast.types.TypeNode;
 
 import java.util.HashMap;
@@ -47,6 +48,15 @@ public class BlockNode extends AbstractSyntaxTree {
         m_TypeDeclMap.put(Type.GetName(), Type);
     }
 
+    public void AddParameterDeclaration(VarDeclNode Parameter) {
+        if (m_VarDeclMap.containsKey(Parameter.GetName())) {
+            throw new RuntimeException("Variable with Name " + Parameter.GetName() + " already defined in Scope");
+        }
+
+        // Don't set parent, because function/procedure should be the parent;
+        m_VarDeclMap.put(Parameter.GetName(), Parameter);
+    }
+
     public void AddVariableDeclaration(VarDeclNode Variable) {
         if (m_VarDeclMap.containsKey(Variable.GetName())) {
             throw new RuntimeException("Variable with Name " + Variable.GetName() + " already defined in Scope");
@@ -76,6 +86,8 @@ public class BlockNode extends AbstractSyntaxTree {
 
     public void SetCompoundStatement(AbstractSyntaxTree InCompoundStatement) {
         m_CompoundStatement = InCompoundStatement;
+        // TODO: Validate if the compund Statement should be child of the function/procedure/program or of the block
+        m_CompoundStatement.SetParent(this);
     }
 
     public VarDeclNode GetVariableDeclaration(String VariableName) {
@@ -107,6 +119,8 @@ public class BlockNode extends AbstractSyntaxTree {
         for (FuncDeclNode funcDecl : m_FuncDeclMap.values()) {
             funcDecl.CheckType();
         }
+
+        m_CompoundStatement.CheckType();
 
         return null;
     }

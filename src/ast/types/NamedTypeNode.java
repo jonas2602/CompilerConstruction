@@ -10,7 +10,7 @@ public class NamedTypeNode extends TypeNode {
     }
 
     public NamedTypeNode(EPrimitiveType InType){
-        m_Name = InType.name();
+        m_Name = InType.label();
     }
 
     @Override
@@ -23,9 +23,9 @@ public class NamedTypeNode extends TypeNode {
         return m_Name == otherNameNode.m_Name;
     }
 
-    public static NamedTypeNode IntNode() { return new NamedTypeNode((EPrimitiveType.INT)); }
-    public static NamedTypeNode RealNode() { return new NamedTypeNode((EPrimitiveType.REAL)); }
-    public static NamedTypeNode BoolNode() { return new NamedTypeNode((EPrimitiveType.BOOL)); }
-    public static NamedTypeNode CharNode() { return new NamedTypeNode((EPrimitiveType.CHAR)); }
-    public static NamedTypeNode StringNode() { return new NamedTypeNode((EPrimitiveType.STRING)); }
+    public static final NamedTypeNode IntNode = new NamedTypeNode(EPrimitiveType.INT);
+    public static final NamedTypeNode RealNode = new NamedTypeNode(EPrimitiveType.REAL);
+    public static final NamedTypeNode BoolNode = new NamedTypeNode(EPrimitiveType.BOOL);
+    public static final NamedTypeNode CharNode = new NamedTypeNode(EPrimitiveType.CHAR);
+    public static final NamedTypeNode StringNode = new NamedTypeNode(EPrimitiveType.STRING);
 }
