@@ -15,8 +15,6 @@ public class ProgramVisitor extends PascalBaseVisitor<ProgramNode> {
         BlockNode blockNode = (BlockNode) new BlockVisitor().visit(ctx.block());
         programNode.SetBlock(blockNode);
 
-        // TODO: How to handle Program Parameters?
-
         return programNode;
     }
 
@@ -27,7 +25,8 @@ public class ProgramVisitor extends PascalBaseVisitor<ProgramNode> {
 
         if (ctx.identifierList() != null) {
             for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
-                prog.AddParameter(new VariableNode(ident.IDENT().getText()));
+                // TODO: How to handle Program Parameters?
+                // prog.AddParameter(new VariableNode(ident.IDENT().getText()));
             }
         }
 

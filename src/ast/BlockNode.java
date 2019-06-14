@@ -92,8 +92,18 @@ public class BlockNode extends AbstractSyntaxTree {
 
     public VarDeclNode GetVariableDeclaration(String VariableName) {
         VarDeclNode OutDecl = m_VarDeclMap.get(VariableName);
-        if (OutDecl == null) {
+        if (OutDecl == null && GetOwningBlock() != null) {
             OutDecl = GetOwningBlock().GetVariableDeclaration(VariableName);
+        }
+
+        // TODO: Check constants?
+        return OutDecl;
+    }
+
+    public FuncDeclNode GetFunctionDeclaration(String FunctionName) {
+        FuncDeclNode OutDecl = m_FuncDeclMap.get(FunctionName);
+        if (OutDecl == null && GetOwningBlock() != null) {
+            OutDecl = GetOwningBlock().GetFunctionDeclaration(FunctionName);
         }
 
         return OutDecl;

@@ -1,6 +1,7 @@
 package ast.expression;
 
 import ast.AbstractSyntaxTree;
+import ast.TypeCheckException;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 
@@ -8,17 +9,22 @@ public class AdditiveNode extends AbstractSyntaxTree {
     public enum EAdditiveOperator {
         PLUS,
         MINUS,
-        OR
+        OR  // TODO: move OR somewhere else
     }
 
     private AbstractSyntaxTree m_Left;
     private AbstractSyntaxTree m_Right;
     private EAdditiveOperator m_Operator;
 
+    private TypeNode m_CachedType = null;
+
     public AdditiveNode(AbstractSyntaxTree InLeft, AbstractSyntaxTree InRight, EAdditiveOperator InOperator) {
         this.m_Left = InLeft;
         this.m_Right = InRight;
         this.m_Operator = InOperator;
+
+        m_Left.SetParent(this);
+        m_Right.SetParent(this);
     }
 
     @Override
@@ -33,7 +39,7 @@ public class AdditiveNode extends AbstractSyntaxTree {
             // -> left is no INT
             if (!realType.CompareType(leftType)) {
                 // -> left is also no REAL
-                return null;
+                throw new TypeCheckException(this, "Additive operations are not defined for " + leftType);
             }
             outType = realType;
         }
@@ -42,17 +48,32 @@ public class AdditiveNode extends AbstractSyntaxTree {
             // -> right is no INT
             if (!realType.CompareType(rightType)) {
                 // -> right is also no REAL
-                return null;
+                throw new TypeCheckException(this, "Additive operations are not defined for " + rightType);
             }
             outType = realType;
         }
 
+        m_CachedType = outType;
         return outType;
     }
 
     @Override
     public TypeNode GetType() {
-        // TODO: Maybe cache result?
-        return null;
+        if (m_CachedType == null) {
+            NamedTypeNode intType = NamedTypeNode.IntNode;
+
+            // Assume that the Addition was already checked
+            // -> if both types are int, result is int else result is double
+            TypeNode leftType = m_Left.CheckType();
+            TypeNode rightType = m_Right.CheckType();
+            if (intType.CompareType(leftType) && intType.CompareType((rightType))) {
+                m_CachedType = intType;
+            } else {
+                m_CachedType = NamedTypeNode.RealNode;
+            }
+
+        }
+
+        return m_CachedType;
     }
 }

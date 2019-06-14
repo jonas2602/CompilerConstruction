@@ -27,6 +27,18 @@ public class ProcDeclNode extends AbstractSyntaxTree {
         m_Params.add(InParam);
     }
 
+    public int GetParameterCount() {
+        return m_Params.size();
+    }
+
+    public List<ParamDeclNode> GetParameterList() {
+        return m_Params;
+    }
+
+    public ParamDeclNode GetParameter(int Index) {
+        return m_Params.get(Index);
+    }
+
     @Override
     public TypeNode CheckType() {
         // Block will also Check the Parameters, because they are stored in the block as variables

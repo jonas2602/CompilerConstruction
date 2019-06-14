@@ -37,12 +37,12 @@ public class VariableAccessVisitor extends PascalBaseVisitor<AbstractSyntaxTree>
 
     @Override
     public AbstractSyntaxTree visitIndexedVariable(PascalParser.IndexedVariableContext ctx) {
-        ArrayList<AbstractSyntaxTree> indexExpressions = new ArrayList<AbstractSyntaxTree>();
+        ArrayAccessNode accessNode = new ArrayAccessNode(m_Root);
         for (PascalParser.ExpressionContext exp : ctx.expression()) {
-            indexExpressions.add(new ExpressionVisitor().visit(exp));
+            accessNode.AddIndexExpression(new ExpressionVisitor().visit(exp));
         }
 
-        return new ArrayAccessNode(m_Root, indexExpressions.toArray(AbstractSyntaxTree[]::new));
+        return accessNode;
     }
 
     @Override

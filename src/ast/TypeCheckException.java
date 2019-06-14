@@ -1,3 +1,5 @@
+package ast;
+
 import ast.AbstractSyntaxTree;
 
 public class TypeCheckException extends RuntimeException {

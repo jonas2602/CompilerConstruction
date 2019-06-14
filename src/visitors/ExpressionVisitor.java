@@ -115,13 +115,16 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitFunctionDesignator(PascalParser.FunctionDesignatorContext ctx) {
-        String procName = ctx.identifier().IDENT().getText();
-        List<AbstractSyntaxTree> params = new ArrayList<>();
+        String funcName = ctx.identifier().IDENT().getText();
+        FuncCallNode funcCall = new FuncCallNode(funcName);
+
         if (ctx.parameterList() != null) {
-            params = new ParameterVisitor().visit(ctx.parameterList());
+            List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.parameterList());
+            for (AbstractSyntaxTree param : paramList) {
+                funcCall.AddParameter(param);
+            }
         }
 
-        FuncCallNode funcCall = new FuncCallNode(procName, params);
         return funcCall;
     }
 
