@@ -156,7 +156,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         boolean bIncrement = ctx.TO() != null;
         AbstractSyntaxTree body = visitStatement(ctx.statement());
 
-        // TODO: Create Block Node because new Variable (Iterator) created?
+        // TODO: Create Block Node because new Variable (Iterator) created? Not Allowed?
         return new ForNode(variable, initialValue, finalValue, bIncrement, body);
     }
 }

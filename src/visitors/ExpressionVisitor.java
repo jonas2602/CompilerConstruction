@@ -5,6 +5,7 @@ import ast.expression.AdditiveNode;
 import ast.expression.ConstantNode;
 import ast.expression.MultiplicativeNode;
 import ast.expression.RelationalNode;
+import ast.types.NamedTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -94,31 +95,22 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitFactor(PascalParser.FactorContext ctx) {
         if (ctx.variable() != null) {
-            return visitVariable(ctx.variable());
-        }
-        if (ctx.expression() != null) {
+            return new VariableAccessVisitor().visit(ctx.variable());
+        } else if (ctx.expression() != null) {
             return visitExpression(ctx.expression());
-        }
-        if (ctx.functionDesignator() != null) {
+        } else if (ctx.functionDesignator() != null) {
             return visitFunctionDesignator(ctx.functionDesignator());
-        }
-        if (ctx.set() != null) {
+        } else if (ctx.unsignedConstant() != null) {
+            return visitUnsignedConstant(ctx.unsignedConstant());
+        } else if (ctx.set() != null) {
             return visitSet(ctx.set());
-        }
-        if (ctx.factor() != null) {
+        } else if (ctx.factor() != null) {
             // TODO: Negate factor
             return visitFactor(ctx.factor());
-        }
-        if (ctx.bool() != null) {
+        } else {
             return visitBool(ctx.bool());
         }
-
-        return null;
     }
-
-
-
-
 
     @Override
     public AbstractSyntaxTree visitUnsignedConstant(PascalParser.UnsignedConstantContext ctx) {
@@ -146,24 +138,25 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitUnsignedInteger(PascalParser.UnsignedIntegerContext ctx) {
         // TODO: Create Constant Node of type Integer
-        return new ConstantNode();
+        return new ConstantNode(ctx.NUM_INT().getText(), new NamedTypeNode(EPrimitiveType.INT));
     }
 
     @Override
     public AbstractSyntaxTree visitUnsignedReal(PascalParser.UnsignedRealContext ctx) {
         // TODO: Create Constant Node of type Real
-        return new ConstantNode();
+        return new ConstantNode(ctx.NUM_REAL().getText(), new NamedTypeNode(EPrimitiveType.REAL));
     }
 
     @Override
     public AbstractSyntaxTree visitConstantChr(PascalParser.ConstantChrContext ctx) {
         // TODO: Create Constant Node of type Char
-        return new ConstantNode();
+        // TODO: Convert to char?
+        return new ConstantNode(ctx.unsignedInteger().getText(), new NamedTypeNode(EPrimitiveType.CHAR));
     }
 
     @Override
     public AbstractSyntaxTree visitString(PascalParser.StringContext ctx) {
         // TODO: Create Constant Node of type String
-        return new ConstantNode();
+        return new ConstantNode(ctx.STRING_LITERAL().getText(), new NamedTypeNode(EPrimitiveType.STRING));
     }
 }

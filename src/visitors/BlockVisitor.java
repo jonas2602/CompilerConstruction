@@ -110,6 +110,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitFunctionDeclaration(PascalParser.FunctionDeclarationContext ctx) {
         String name = ctx.identifier().IDENT().getText();
+        // TODO: Params
         ArrayList<AbstractSyntaxTree> params = new ArrayList<AbstractSyntaxTree>();
         AbstractSyntaxTree returnType = new TypeVisitor().visit(ctx.resultType());
         AbstractSyntaxTree body = new BlockVisitor().visit(ctx.block());
@@ -120,6 +121,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitProcedureDeclaration(PascalParser.ProcedureDeclarationContext ctx) {
         String name = ctx.identifier().IDENT().getText();
+        // TODO: Params
         ArrayList<AbstractSyntaxTree> params = new ArrayList<AbstractSyntaxTree>();
         AbstractSyntaxTree body = new BlockVisitor().visit(ctx.block());
 

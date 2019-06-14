@@ -10,4 +10,8 @@ public class VarDeclNode extends AbstractSyntaxTree {
         this.m_Name = InName;
         this.m_Type = InType;
     }
+
+    public String GetName() {
+        return m_Name;
+    }
 }

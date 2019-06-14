@@ -20,6 +20,14 @@ public class App {
         ProgramVisitor vis = new ProgramVisitor();
         AbstractSyntaxTree root = vis.visit(tree);
 
+        // type checking
+        try{
+            root.CheckType();
+        }
+        catch(RuntimeException e){
+            e.printStackTrace();
+        }
+
         //Visitor for old grammar won't work anymore
         //new Interpreter().ProcessExpression("3 + 4.5");
     }

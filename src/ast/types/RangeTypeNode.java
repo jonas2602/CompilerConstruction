@@ -1,4 +1,4 @@
 package ast.types;
 
-public class RangeTypeNode {
+public class RangeTypeNode extends TypeNode {
 }
