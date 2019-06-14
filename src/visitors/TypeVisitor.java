@@ -2,12 +2,13 @@ package visitors;
 
 import ast.AbstractSyntaxTree;
 import ast.types.NamedTypeNode;
+import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
-public class TypeVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
+public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
     @Override
-    public AbstractSyntaxTree visitType(PascalParser.TypeContext ctx) {
+    public TypeNode visitType(PascalParser.TypeContext ctx) {
         if (ctx.simpleType() != null) {
             return visitSimpleType(ctx.simpleType());
         } else if (ctx.structuredType() != null) {
@@ -18,7 +19,7 @@ public class TypeVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     }
 
     @Override
-    public AbstractSyntaxTree visitSimpleType(PascalParser.SimpleTypeContext ctx) {
+    public TypeNode visitSimpleType(PascalParser.SimpleTypeContext ctx) {
         if (ctx.scalarType() != null) {
             return visitScalarType(ctx.scalarType());
         } else if (ctx.subrangeType() != null) {
@@ -31,23 +32,22 @@ public class TypeVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     }
 
     @Override
-    public AbstractSyntaxTree visitStructuredType(PascalParser.StructuredTypeContext ctx) {
+    public TypeNode visitStructuredType(PascalParser.StructuredTypeContext ctx) {
         return super.visitStructuredType(ctx);
     }
 
     @Override
-    public AbstractSyntaxTree visitPointerType(PascalParser.PointerTypeContext ctx) {
+    public TypeNode visitPointerType(PascalParser.PointerTypeContext ctx) {
         return super.visitPointerType(ctx);
     }
 
     @Override
-    public AbstractSyntaxTree visitTypeIdentifier(PascalParser.TypeIdentifierContext ctx) {
-        // TODO: How to handle predefinec Types? ToLower?
-        if(ctx.CHAR() != null) return new NamedTypeNode("char");
-        if(ctx.BOOLEAN() != null) return new NamedTypeNode("bool");
-        if(ctx.INTEGER() != null) return new NamedTypeNode("int");
-        if(ctx.REAL() != null) return new NamedTypeNode("real");
-        if(ctx.STRING() != null) return new NamedTypeNode("string");
+    public TypeNode visitTypeIdentifier(PascalParser.TypeIdentifierContext ctx) {
+        if(ctx.CHAR() != null) return NamedTypeNode.CharNode();
+        if(ctx.BOOLEAN() != null) return NamedTypeNode.BoolNode();
+        if(ctx.INTEGER() != null) return NamedTypeNode.IntNode();
+        if(ctx.REAL() != null) return NamedTypeNode.RealNode();
+        if(ctx.STRING() != null) return NamedTypeNode.StringNode();
 
         return new NamedTypeNode(ctx.identifier().IDENT().getText());
     }

@@ -1,5 +1,7 @@
 package ast;
 
+import ast.types.TypeNode;
+
 public class ProgramNode extends AbstractSyntaxTree {
     private String m_Name;
     private AbstractSyntaxTree[] m_Params;
@@ -12,5 +14,11 @@ public class ProgramNode extends AbstractSyntaxTree {
 
     public void SetBlock(AbstractSyntaxTree InBlock){
         this.m_Block = InBlock;
+    }
+
+    @Override
+    public TypeNode CheckType() {
+        m_Block.CheckType();
+        return null;
     }
 }

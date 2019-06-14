@@ -1,47 +1,113 @@
 package ast;
 
-import ast.declaration.VarDeclNode;
+import ast.declaration.*;
+import ast.types.TypeNode;
 
 import java.util.HashMap;
 
 public class BlockNode extends AbstractSyntaxTree {
-    AbstractSyntaxTree[] m_LabelDeclarations;
-    AbstractSyntaxTree[] m_ConstantDeclarations;
-    AbstractSyntaxTree[] m_TypeDeclarations;
-    HashMap<String, VarDeclNode> m_VarDeclMap;
-    AbstractSyntaxTree[] m_VariableDeclarations;
-    AbstractSyntaxTree[] m_ProcedureDeclarations;
-    AbstractSyntaxTree[] m_FunctionDeclarations;
-    AbstractSyntaxTree m_CompoundStatement;
 
-    public BlockNode(AbstractSyntaxTree[] InLabelDeclarations, AbstractSyntaxTree[] InConstantDeclarations, AbstractSyntaxTree[] InTypeDeclarations, AbstractSyntaxTree[] InVariableDeclarations, AbstractSyntaxTree[] InProcedureDeclarations, AbstractSyntaxTree[] InFunctionDeclarations, AbstractSyntaxTree InCompoundStatement) {
-        m_LabelDeclarations = InLabelDeclarations;
-        m_ConstantDeclarations = InConstantDeclarations;
-        m_TypeDeclarations = InTypeDeclarations;
-        m_VariableDeclarations = InVariableDeclarations;
-        m_ProcedureDeclarations = InProcedureDeclarations;
-        m_FunctionDeclarations = InFunctionDeclarations;
-        m_CompoundStatement = InCompoundStatement;
+    private HashMap<String, LabelDeclNode> m_LabelDeclMap = new HashMap<>();
+    private HashMap<String, ConstDeclNode> m_ConstDeclMap = new HashMap<>();
+    private HashMap<String, TypeDeclNode> m_TypeDeclMap = new HashMap<>();
+    private HashMap<String, VarDeclNode> m_VarDeclMap = new HashMap<>();
+    private HashMap<String, ProcDeclNode> m_ProcDeclMap = new HashMap<>();
+    private HashMap<String, FuncDeclNode> m_FuncDeclMap = new HashMap<>();
+
+    private AbstractSyntaxTree m_CompoundStatement;
+
+    public BlockNode() {
+
     }
 
-    void AddVariableDeclaration(VarDeclNode Variable) {
+    public void AddLabelDeclaration(LabelDeclNode Label) {
+        if (m_VarDeclMap.containsKey(Label.GetName())) {
+            throw new RuntimeException("Variable with Name " + Label.GetName() + " already defined in Scope");
+        }
+
+        Label.SetParent(this);
+        m_LabelDeclMap.put(Label.GetName(), Label);
+    }
+
+    public void AddConstantDeclaration(ConstDeclNode Constant) {
+        if (m_VarDeclMap.containsKey(Constant.GetName())) {
+            throw new RuntimeException("Variable with Name " + Constant.GetName() + " already defined in Scope");
+        }
+
+        Constant.SetParent(this);
+        m_ConstDeclMap.put(Constant.GetName(), Constant);
+    }
+
+    public void AddTypeDeclaration(TypeDeclNode Type) {
+        if (m_VarDeclMap.containsKey(Type.GetName())) {
+            throw new RuntimeException("Variable with Name " + Type.GetName() + " already defined in Scope");
+        }
+
+        Type.SetParent(this);
+        m_TypeDeclMap.put(Type.GetName(), Type);
+    }
+
+    public void AddVariableDeclaration(VarDeclNode Variable) {
         if (m_VarDeclMap.containsKey(Variable.GetName())) {
             throw new RuntimeException("Variable with Name " + Variable.GetName() + " already defined in Scope");
         }
 
+        Variable.SetParent(this);
         m_VarDeclMap.put(Variable.GetName(), Variable);
     }
 
-    @Override
-    public BlockNode GetOwningBlock() {
-        if (m_OwningBlock == null && m_Parent != null) {
-            m_OwningBlock = m_Parent.GetOwningBlock();
+    public void AddProcedureDeclaration(ProcDeclNode Procedure) {
+        if (m_VarDeclMap.containsKey(Procedure.GetName())) {
+            throw new RuntimeException("Variable with Name " + Procedure.GetName() + " already defined in Scope");
         }
 
-        return this;
+        Procedure.SetParent(this);
+        m_ProcDeclMap.put(Procedure.GetName(), Procedure);
     }
 
-    public VarDeclNode GetVariableDeclaration(String Variable) {
-        return
+    public void AddFunctionDeclaration(FuncDeclNode Function) {
+        if (m_VarDeclMap.containsKey(Function.GetName())) {
+            throw new RuntimeException("Variable with Name " + Function.GetName() + " already defined in Scope");
+        }
+
+        Function.SetParent(this);
+        m_FuncDeclMap.put(Function.GetName(), Function);
+    }
+
+    public void SetCompoundStatement(AbstractSyntaxTree InCompoundStatement) {
+        m_CompoundStatement = InCompoundStatement;
+    }
+
+    public VarDeclNode GetVariableDeclaration(String VariableName) {
+        VarDeclNode OutDecl = m_VarDeclMap.get(VariableName);
+        if (OutDecl == null) {
+            OutDecl = GetOwningBlock().GetVariableDeclaration(VariableName);
+        }
+
+        return OutDecl;
+    }
+
+    @Override
+    public TypeNode CheckType() {
+        for (LabelDeclNode labelDecl : m_LabelDeclMap.values()) {
+            labelDecl.CheckType();
+        }
+        for (ConstDeclNode constDecl : m_ConstDeclMap.values()) {
+            constDecl.CheckType();
+        }
+        for (TypeDeclNode typeDecl : m_TypeDeclMap.values()) {
+            typeDecl.CheckType();
+        }
+        for (VarDeclNode varDecl : m_VarDeclMap.values()) {
+            varDecl.CheckType();
+        }
+        for (ProcDeclNode procDecl : m_ProcDeclMap.values()) {
+            procDecl.CheckType();
+        }
+        for (FuncDeclNode funcDecl : m_FuncDeclMap.values()) {
+            funcDecl.CheckType();
+        }
+
+        return null;
     }
 }

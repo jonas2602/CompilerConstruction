@@ -1,11 +1,12 @@
 package ast.expression;
 
 import ast.AbstractSyntaxTree;
+import ast.declaration.VarDeclNode;
 import ast.types.TypeNode;
 
 public class VariableNode extends AbstractSyntaxTree {
     private String m_Name;
-    private AbstractSyntaxTree m_Declaration;
+    private VarDeclNode m_Declaration;
 
     public VariableNode(String InName) {
         this.m_Name = InName;
@@ -18,9 +19,8 @@ public class VariableNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode GetType() {
-        if(m_Declaration == null){
-            // TODO: get declaration
-            m_Declaration = GetOwningBlock();
+        if (m_Declaration == null) {
+            m_Declaration = GetOwningBlock().GetVariableDeclaration(m_Name);
         }
 
         return m_Declaration.GetType();

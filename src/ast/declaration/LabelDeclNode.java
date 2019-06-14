@@ -8,4 +8,8 @@ public class LabelDeclNode extends AbstractSyntaxTree {
     public LabelDeclNode(String InName) {
         this.m_Name = InName;
     }
+
+    public String GetName(){
+        return m_Name;
+    }
 }

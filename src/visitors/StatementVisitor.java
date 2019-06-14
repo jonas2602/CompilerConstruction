@@ -1,12 +1,14 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
+import ast.expression.ParameterNode;
 import ast.expression.VariableNode;
 import ast.statement.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
@@ -46,8 +48,14 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitProcedureStatement(PascalParser.ProcedureStatementContext ctx) {
-        // TODO
-        return null;
+        String procName = ctx.identifier().IDENT().getText();
+        List<AbstractSyntaxTree> params = new ArrayList<>();
+        if (ctx.parameterList() != null) {
+            params = new ParameterVisitor().visit(ctx.parameterList());
+        }
+
+        ProcCallNode procCall = new ProcCallNode(procName, params);
+        return procCall;
     }
 
     @Override
@@ -80,7 +88,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             statementList.add(visitStatement(stmt));
         }
 
-        return new CompoundStatement(statementList.toArray(AbstractSyntaxTree[]::new));
+        return new CompStmtNode(statementList.toArray(AbstractSyntaxTree[]::new));
     }
 
     @Override

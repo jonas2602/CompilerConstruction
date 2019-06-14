@@ -3,10 +3,10 @@ package ast;
 import ast.types.TypeNode;
 
 public class AbstractSyntaxTree {
-    protected AbstractSyntaxTree m_Parent;
-    protected BlockNode m_OwningBlock;
+    private AbstractSyntaxTree m_Parent;
+    private BlockNode m_OwningBlock;
 
-    public BlockNode GetOwningBlock() {
+    protected BlockNode GetOwningBlock() {
         if (m_OwningBlock != null) {
             return m_OwningBlock;
         }
@@ -21,6 +21,14 @@ public class AbstractSyntaxTree {
         }
 
         return m_OwningBlock;
+    }
+
+    protected AbstractSyntaxTree GetParent() {
+        return m_Parent;
+    }
+
+    protected void SetParent(AbstractSyntaxTree InParent) {
+        m_Parent = InParent;
     }
 
     public TypeNode GetType() {

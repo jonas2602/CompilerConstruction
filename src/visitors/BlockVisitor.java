@@ -3,6 +3,8 @@ package visitors;
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.declaration.*;
+import ast.expression.ParameterNode;
+import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -10,23 +12,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
+    private BlockNode m_BlockNode;
+
+    public BlockVisitor() {
+        m_BlockNode = new BlockNode();
+    }
+
     @Override
     public AbstractSyntaxTree visitBlock(PascalParser.BlockContext ctx) {
         // Label Declarations
-        ArrayList<AbstractSyntaxTree> labelDeclList = new ArrayList<AbstractSyntaxTree>();
         for (PascalParser.LabelDeclarationPartContext labelPart : ctx.labelDeclarationPart()) {
             for (PascalParser.LabelContext label : labelPart.label()) {
-                AbstractSyntaxTree labelDecl = visitLabel(label);
-                labelDeclList.add(labelDecl);
+                visitLabel(label);
             }
         }
 
         // Constant Declarations
-        ArrayList<AbstractSyntaxTree> constDeclList = new ArrayList<AbstractSyntaxTree>();
         for (PascalParser.ConstantDefinitionPartContext constPart : ctx.constantDefinitionPart()) {
             for (PascalParser.ConstantDefinitionContext constant : constPart.constantDefinition()) {
-                AbstractSyntaxTree constDecl = visitConstantDefinition(constant);
-                constDeclList.add(constDecl);
+                visitConstantDefinition(constant);
             }
         }
 
@@ -34,30 +38,23 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         ArrayList<AbstractSyntaxTree> typeDeclList = new ArrayList<AbstractSyntaxTree>();
         for (PascalParser.TypeDefinitionPartContext typePart : ctx.typeDefinitionPart()) {
             for (PascalParser.TypeDefinitionContext type : typePart.typeDefinition()) {
-                AbstractSyntaxTree typeDecl = visitTypeDefinition(type);
-                typeDeclList.add(typeDecl);
+                visitTypeDefinition(type);
             }
         }
 
         // Variable Declarations
-        ArrayList<AbstractSyntaxTree> varDeclList = new ArrayList<AbstractSyntaxTree>();
         for (PascalParser.VariableDeclarationPartContext varPart : ctx.variableDeclarationPart()) {
             for (PascalParser.VariableDeclarationContext variable : varPart.variableDeclaration()) {
-                List<AbstractSyntaxTree> varDecl = visitVariableDeclarationList(variable);
-                varDeclList.addAll(varDecl);
+                visitVariableDeclaration(variable);
             }
         }
 
         // Procedure + Function Declarations
-        ArrayList<AbstractSyntaxTree> funcDeclList = new ArrayList<AbstractSyntaxTree>();
-        ArrayList<AbstractSyntaxTree> procDeclList = new ArrayList<AbstractSyntaxTree>();
         for (PascalParser.ProcedureAndFunctionDeclarationPartContext procOrFuncPart : ctx.procedureAndFunctionDeclarationPart()) {
             if (procOrFuncPart.procedureOrFunctionDeclaration().procedureDeclaration() != null) {
-                AbstractSyntaxTree procDecl = visitProcedureDeclaration(procOrFuncPart.procedureOrFunctionDeclaration().procedureDeclaration());
-                procDeclList.add(procDecl);
+                visitProcedureDeclaration(procOrFuncPart.procedureOrFunctionDeclaration().procedureDeclaration());
             } else {
-                AbstractSyntaxTree funcDecl = visitFunctionDeclaration(procOrFuncPart.procedureOrFunctionDeclaration().functionDeclaration());
-                funcDeclList.add(funcDecl);
+                visitFunctionDeclaration(procOrFuncPart.procedureOrFunctionDeclaration().functionDeclaration());
             }
         }
 
@@ -65,26 +62,32 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
         // Compound Statement
         AbstractSyntaxTree compound = new StatementVisitor().visit(ctx.compoundStatement());
+        m_BlockNode.SetCompoundStatement(compound);
 
-        return new BlockNode(labelDeclList.toArray(AbstractSyntaxTree[]::new), constDeclList.toArray(AbstractSyntaxTree[]::new), typeDeclList.toArray(AbstractSyntaxTree[]::new), varDeclList.toArray(AbstractSyntaxTree[]::new), procDeclList.toArray(AbstractSyntaxTree[]::new), funcDeclList.toArray(AbstractSyntaxTree[]::new), compound);
+        return m_BlockNode;
     }
 
     @Override
     public AbstractSyntaxTree visitLabel(PascalParser.LabelContext ctx) {
-        return new LabelDeclNode(ctx.unsignedInteger().NUM_INT().getText());
+        LabelDeclNode labelDecl = new LabelDeclNode(ctx.unsignedInteger().NUM_INT().getText());
+        m_BlockNode.AddLabelDeclaration(labelDecl);
+        return labelDecl;
     }
 
     @Override
     public AbstractSyntaxTree visitConstantDefinition(PascalParser.ConstantDefinitionContext ctx) {
         String name = ctx.identifier().IDENT().getText();
         AbstractSyntaxTree constant = new ConstantVisitor().visit(ctx.constant());
-        return new ConstDeclNode(name, constant);
+
+        ConstDeclNode constDecl = new ConstDeclNode(name, constant);
+        m_BlockNode.AddConstantDeclaration(constDecl);
+        return constDecl;
     }
 
     @Override
     public AbstractSyntaxTree visitTypeDefinition(PascalParser.TypeDefinitionContext ctx) {
         String name = ctx.identifier().IDENT().getText();
-        AbstractSyntaxTree type = null;
+        TypeNode type = null;
         if (ctx.type() != null) {
             type = new TypeVisitor().visit(ctx.type());
         } else if (ctx.functionType() != null) {
@@ -93,38 +96,48 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             type = new TypeVisitor().visit(ctx.procedureType());
         }
 
-        return new TypeDeclNode(name, type);
+        TypeDeclNode typeDecl = new TypeDeclNode(name, type);
+        m_BlockNode.AddTypeDeclaration(typeDecl);
+        return typeDecl;
     }
 
-    public List<AbstractSyntaxTree> visitVariableDeclarationList(PascalParser.VariableDeclarationContext ctx) {
+    @Override
+    public AbstractSyntaxTree visitVariableDeclaration(PascalParser.VariableDeclarationContext ctx) {
         AbstractSyntaxTree type = new TypeVisitor().visit(ctx.type());
 
-        ArrayList<AbstractSyntaxTree> varDeclList = new ArrayList<AbstractSyntaxTree>();
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
-            varDeclList.add(new VarDeclNode(ident.IDENT().getText(), type));
+            m_BlockNode.AddVariableDeclaration(new VarDeclNode(ident.IDENT().getText(), type));
         }
 
-        return varDeclList;
+        return null;
     }
 
     @Override
     public AbstractSyntaxTree visitFunctionDeclaration(PascalParser.FunctionDeclarationContext ctx) {
         String name = ctx.identifier().IDENT().getText();
-        // TODO: Params
-        ArrayList<AbstractSyntaxTree> params = new ArrayList<AbstractSyntaxTree>();
-        AbstractSyntaxTree returnType = new TypeVisitor().visit(ctx.resultType());
-        AbstractSyntaxTree body = new BlockVisitor().visit(ctx.block());
+        List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
+        TypeNode returnType = new TypeVisitor().visit(ctx.resultType());
+        BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
 
-        return new FuncDeclNode(name, params.toArray(AbstractSyntaxTree[]::new), returnType, body);
+        // TODO: Add params first to block for more percise Exceptions?
+        body.AddVariableDeclaration(new VarDeclNode(name, returnType));
+        for (AbstractSyntaxTree param : paramList) {
+            body.AddVariableDeclaration((ParamDeclNode) param);
+        }
+
+        FuncDeclNode funcDecl = new FuncDeclNode(name, paramList, returnType, body);
+        m_BlockNode.AddFunctionDeclaration(funcDecl);
+        return funcDecl;
     }
 
     @Override
     public AbstractSyntaxTree visitProcedureDeclaration(PascalParser.ProcedureDeclarationContext ctx) {
         String name = ctx.identifier().IDENT().getText();
-        // TODO: Params
-        ArrayList<AbstractSyntaxTree> params = new ArrayList<AbstractSyntaxTree>();
+        List<AbstractSyntaxTree> params = new ParameterVisitor().visit(ctx.formalParameterList());
         AbstractSyntaxTree body = new BlockVisitor().visit(ctx.block());
 
-        return new ProcDeclNode(name, params.toArray(AbstractSyntaxTree[]::new), body);
+        ProcDeclNode procDecl = new ProcDeclNode(name, params.toArray(AbstractSyntaxTree[]::new), body);
+        m_BlockNode.AddProcedureDeclaration(procDecl);
+        return procDecl;
     }
 }

@@ -12,4 +12,8 @@ public class ProcDeclNode extends AbstractSyntaxTree {
         m_Params = InParams;
         m_Block = InBlock;
     }
+
+    public String GetName(){
+        return m_Name;
+    }
 }

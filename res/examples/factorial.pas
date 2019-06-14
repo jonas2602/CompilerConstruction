@@ -1,6 +1,6 @@
 program factorial;
 
-function fact(n: integer): longint;
+function fact(n: integer): integer;
 begin
     if (n = 0) then
         fact := 1

@@ -1,7 +1,6 @@
 package ast.expression;
 
 import ast.AbstractSyntaxTree;
-import ast.EPrimitiveType;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 

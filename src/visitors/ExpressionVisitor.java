@@ -1,13 +1,14 @@
 package visitors;
 
 import ast.*;
-import ast.expression.AdditiveNode;
-import ast.expression.ConstantNode;
-import ast.expression.MultiplicativeNode;
-import ast.expression.RelationalNode;
+import ast.expression.*;
+import ast.statement.ProcCallNode;
 import ast.types.NamedTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
@@ -110,6 +111,18 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else {
             return visitBool(ctx.bool());
         }
+    }
+
+    @Override
+    public AbstractSyntaxTree visitFunctionDesignator(PascalParser.FunctionDesignatorContext ctx) {
+        String procName = ctx.identifier().IDENT().getText();
+        List<AbstractSyntaxTree> params = new ArrayList<>();
+        if (ctx.parameterList() != null) {
+            params = new ParameterVisitor().visit(ctx.parameterList());
+        }
+
+        FuncCallNode funcCall = new FuncCallNode(procName, params);
+        return funcCall;
     }
 
     @Override

@@ -421,11 +421,6 @@ emptyStatement
    :
    ;
 
-empty
-   :
-   /* empty */
-   ;
-
 structuredStatement
    : compoundStatement
    | conditionalStatement
