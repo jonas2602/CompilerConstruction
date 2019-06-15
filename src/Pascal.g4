@@ -167,20 +167,13 @@ stringtype
    ;
 
 arrayType
-   : ARRAY LBRACK typeList RBRACK OF componentType
-   | ARRAY LBRACK2 typeList RBRACK2 OF componentType
+   : ARRAY LBRACK typeList RBRACK OF type
+   | ARRAY LBRACK2 typeList RBRACK2 OF type
    ;
 
+// What types are allowed here? only subrange?
 typeList
-   : indexType (COMMA indexType)*
-   ;
-
-indexType
-   : simpleType
-   ;
-
-componentType
-   : type
+   : simpleType (COMMA simpleType)*
    ;
 
 recordType
@@ -214,11 +207,7 @@ variant
    ;
 
 setType
-   : SET OF baseType
-   ;
-
-baseType
-   : simpleType
+   : SET OF simpleType
    ;
 
 fileType

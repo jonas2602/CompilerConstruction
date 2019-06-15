@@ -86,6 +86,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitStatements(PascalParser.StatementsContext ctx) {
         CompStmtNode compStmt = new CompStmtNode();
+
         // The last Statement is always an empty statements. Therefore if the amount of stmts is not
         // more than 2 (actually 1 valid) its not necessary to combine them in a compound statements
         if (ctx.statement().size() <= 2) {

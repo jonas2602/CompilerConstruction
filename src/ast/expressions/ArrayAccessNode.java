@@ -1,6 +1,8 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
+import ast.TypeCheckException;
+import ast.types.ArrayTypeNode;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 
@@ -23,6 +25,11 @@ public class ArrayAccessNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
+        TypeNode childType = m_Child.CheckType();
+        if (!(childType instanceof ArrayTypeNode)) {
+            throw new TypeCheckException(this, "Indexed access is only possible on arrays");
+        }
+
         NamedTypeNode IntTypeNode = NamedTypeNode.IntNode;
         for (AbstractSyntaxTree index : m_IndexExpressions) {
             // Is IndexNode of primitive type INT?
@@ -37,6 +44,7 @@ public class ArrayAccessNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode GetType() {
-        return m_Child.GetType();
+        return m_Child.GetType().GetTypeDetails();
+        // TODO: if multiple indices, type is set of arraytype
     }
 }

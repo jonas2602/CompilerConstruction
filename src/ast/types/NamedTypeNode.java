@@ -14,53 +14,60 @@ public class NamedTypeNode extends TypeNode {
     public static final NamedTypeNode StringNode = new NamedTypeNode(EPrimitiveType.STRING);
 
 
-    private String m_Name;
+    private String m_TypeName;
     // Self if primitive type, type of TypeDeclaration if custom type
-    private TypeNode m_CachedActualType;
+    private TypeNode m_TypeDetails;
 
     public NamedTypeNode(String InName) {
-        m_Name = InName;
+        m_TypeName = InName;
     }
 
     public NamedTypeNode(EPrimitiveType InType) {
-        m_Name = InType.label();
+        m_TypeName = InType.label();
     }
 
     @Override
     public boolean CompareType(TypeNode OtherTypeNode) {
+        TypeNode otherCompareType = OtherTypeNode.GetCompareType();
+
         // Is the given type a valid name node?
-        NamedTypeNode otherNameNode = (NamedTypeNode) OtherTypeNode;
-        if (otherNameNode == null) return false;
+        if (!(otherCompareType instanceof NamedTypeNode)) return false;
+        NamedTypeNode otherNameNode = (NamedTypeNode) otherCompareType;
 
         // compare type names
-        return m_Name == otherNameNode.m_Name;
+        return m_TypeName == otherNameNode.m_TypeName;
     }
 
     @Override
     public TypeNode CheckType() {
         // Is primitive Type?
         if (IntNode.CompareType(this) || RealNode.CompareType(this) || BoolNode.CompareType(this) || CharNode.CompareType(this) || StringNode.CompareType(this)) {
-            m_CachedActualType = this;
-            return m_CachedActualType;
+            m_TypeDetails = this;
+            return GetType();
         }
 
         // is defined type
-        TypeDeclNode typeDecl = GetOwningBlock().GetTypeDeclaration(m_Name);
+        TypeDeclNode typeDecl = GetOwningBlock().GetTypeDeclaration(m_TypeName);
         if (typeDecl != null) {
-            m_CachedActualType = typeDecl.GetType();
-            return m_CachedActualType;
+            m_TypeDetails = typeDecl.GetType();
+            return GetType();
         }
 
-        throw new TypeCheckException(this, "Type with name " + m_Name + " is not defined");
+        throw new TypeCheckException(this, "Type with name " + m_TypeName + " is not defined");
     }
 
     @Override
     public TypeNode GetType() {
-        return m_CachedActualType;
+        return this;
+    }
+
+    @Override
+    public TypeNode GetTypeDetails() {
+        return m_TypeDetails;
     }
 
     @Override
     public String toString() {
-        return "Type(" + m_Name + ")";
+        return "Type(" + m_TypeName + ")";
     }
 }

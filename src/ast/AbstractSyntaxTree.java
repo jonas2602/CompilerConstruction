@@ -38,4 +38,8 @@ public class AbstractSyntaxTree {
     public TypeNode CheckType() {
         return null;
     }
+    // TODO: split type checking in TryCheckType() and CheckType_Impl()
+    //  TryCheck will be called from parent and calls the actual implementation only if a local variable (bChecked)
+    //  is false, to avoid duplicate checks.
+    //  CheckType_Impl replaces the current function and gets inherited by all Nodes.
 }

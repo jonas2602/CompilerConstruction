@@ -61,7 +61,9 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
         // Compound Statement
         AbstractSyntaxTree compound = new StatementVisitor().visit(ctx.compoundStatement());
-        m_BlockNode.SetCompoundStatement(compound);
+        if (compound != null) {
+            m_BlockNode.SetCompoundStatement(compound);
+        }
 
         return m_BlockNode;
     }

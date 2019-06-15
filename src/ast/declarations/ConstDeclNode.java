@@ -22,4 +22,9 @@ public class ConstDeclNode extends AbstractSyntaxTree {
         m_Constant.CheckType();
         return null;
     }
+
+    @Override
+    public TypeNode GetType() {
+        return m_Constant.GetType();
+    }
 }

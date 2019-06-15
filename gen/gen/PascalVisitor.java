@@ -197,18 +197,6 @@ public interface PascalVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTypeList(PascalParser.TypeListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PascalParser#indexType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndexType(PascalParser.IndexTypeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PascalParser#componentType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitComponentType(PascalParser.ComponentTypeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PascalParser#recordType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -256,12 +244,6 @@ public interface PascalVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSetType(PascalParser.SetTypeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PascalParser#baseType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBaseType(PascalParser.BaseTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PascalParser#fileType}.
 	 * @param ctx the parse tree
@@ -514,12 +496,6 @@ public interface PascalVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEmptyStatement(PascalParser.EmptyStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PascalParser#empty}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEmpty(PascalParser.EmptyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PascalParser#structuredStatement}.
 	 * @param ctx the parse tree

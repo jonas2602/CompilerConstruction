@@ -138,18 +138,24 @@ public class BlockNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
+        // Labels first because they don't rely on other block elements
         for (LabelDeclNode labelDecl : m_LabelDeclMap.values()) {
             labelDecl.CheckType();
         }
-        for (ConstDeclNode constDecl : m_ConstDeclMap.values()) {
-            constDecl.CheckType();
-        }
+
+        // Types next because the following elements (vars, funcs, ...) could use the new types
         for (TypeDeclNode typeDecl : m_TypeDeclMap.values()) {
             typeDecl.CheckType();
+        }
+
+        // Constants and Variables must be visited next because they are required for everything coming
+        for (ConstDeclNode constDecl : m_ConstDeclMap.values()) {
+            constDecl.CheckType();
         }
         for (VarDeclNode varDecl : m_VarDeclMap.values()) {
             varDecl.CheckType();
         }
+
         for (ProcDeclNode procDecl : m_ProcDeclMap.values()) {
             procDecl.CheckType();
         }
@@ -157,7 +163,10 @@ public class BlockNode extends AbstractSyntaxTree {
             funcDecl.CheckType();
         }
 
-        m_CompoundStatement.CheckType();
+        // statement last because it could use everything above
+        if(m_CompoundStatement != null) {
+            m_CompoundStatement.CheckType();
+        }
 
         return null;
     }
