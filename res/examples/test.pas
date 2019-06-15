@@ -31,15 +31,18 @@ begin
     Begin
         isTest:= not not TRUE and FALSE;
         temp := 5 + -12.54;
+        temp := 5 + test.hallo[7 - i]^;
         Begin
             goto 123;
         End;
         @temp^ := 12;
+        test22;
+        testfunc(5);
         123:
     End
 end;
 
-function testfunc: integer;
+function testfunc(param1: integer): integer;
 begin
     testfunc := 12;
 end;

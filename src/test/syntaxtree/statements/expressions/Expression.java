@@ -4,12 +4,16 @@ import gen.PascalParser.*;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.Constant;
+import test.syntaxtree.statements.calls.FunctionCall;
 import test.syntaxtree.statements.expressions.operators.Operator;
 import test.syntaxtree.statements.expressions.operators.additiveoperators.MinusOperator;
 import test.syntaxtree.statements.expressions.operators.additiveoperators.OrOperator;
 import test.syntaxtree.statements.expressions.operators.additiveoperators.PlusOperator;
 import test.syntaxtree.statements.expressions.operators.multiplicativeoperators.*;
 import test.syntaxtree.statements.expressions.operators.relationaloperators.*;
+import test.syntaxtree.statements.variables.PointerVariable;
+import test.syntaxtree.statements.variables.VariableAccessNode;
+import test.syntaxtree.statements.variables.VariableNode;
 
 public class Expression {
     public static Node visitExpression(ExpressionContext ctx, BlockNode parent) {
@@ -120,15 +124,20 @@ public class Expression {
 
     public static Node visitFactor(FactorContext ctx, BlockNode parent) {
         if(ctx.variable() != null) {
-            //TODO
-            return null;
+            VariableNode variable = new VariableNode(parent);
+            if(ctx.variable().AT() != null) {
+                variable = new PointerVariable(parent);
+            }
+            variable.buildAST(ctx.variable());
+            return variable;
         }
         else if(ctx.expression() != null) {
             return visitExpression(ctx.expression(), parent);
         }
         else if(ctx.functionDesignator() != null) {
-            //TODO
-            return null;
+            FunctionCall func = new FunctionCall(parent);
+            func.buildAST(ctx.functionDesignator());
+            return func;
         }
         else if(ctx.unsignedConstant() != null) {
             return Constant.buildAST(ctx.unsignedConstant(), parent);

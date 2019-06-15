@@ -22,15 +22,10 @@ public class App {
             System.exit(0);
         }
 
-        //ExpressionVisitor vis = new ExpressionVisitor();
-        //vis.visit(tree);
 
         AntlrBridge bridge = new AntlrBridge();
         Node abs = bridge.visit(tree);
 
         abs.print();
-
-        //Visitor for old grammar won't work anymore
-        //new Interpreter().ProcessExpression("3 + 4.5");
     }
 }

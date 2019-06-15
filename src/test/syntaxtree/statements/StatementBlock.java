@@ -2,6 +2,7 @@ package test.syntaxtree.statements;
 
 import gen.PascalParser;
 import test.syntaxtree.BlockNode;
+import test.syntaxtree.statements.calls.ProcedureCall;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class StatementBlock {
                     StatementBlock.processStatementBlock(ststm.compoundStatement(), parent);
                 }
 
-                // ...
+                //TODO: all other control logic
             }
             else {
                 PascalParser.SimpleStatementContext simst = unstm.simpleStatement();
@@ -42,6 +43,13 @@ public class StatementBlock {
                     AssignmentStatementNode assignment = new AssignmentStatementNode(parent);
                     assignment.buildAST(simst.assignmentStatement());
                     parent.addStatement(assignment);
+                    continue;
+                }
+
+                if(simst.procedureStatement() != null) {
+                    ProcedureCall proc = new ProcedureCall(parent);
+                    proc.buildAST(simst.procedureStatement());
+                    parent.addStatement(proc);
                     continue;
                 }
             }

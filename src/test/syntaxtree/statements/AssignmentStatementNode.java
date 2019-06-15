@@ -5,6 +5,7 @@ import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.statements.expressions.Expression;
+import test.syntaxtree.statements.variables.VariableNode;
 
 public class AssignmentStatementNode extends Node implements ASTBuilder<AssignmentStatementContext> {
 
@@ -32,7 +33,7 @@ public class AssignmentStatementNode extends Node implements ASTBuilder<Assignme
     }
 
     public void buildAST(AssignmentStatementContext ctx) {
-        VariableNode var = new VariableNode(super.parentBlock);
+        VariableNode var = new VariableNode(parentBlock);
         var.buildAST(ctx.variable());
         variable = var;
 

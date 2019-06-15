@@ -22,6 +22,8 @@ public class ConstantDeclarationNode extends Node {
 
     public void buildAST(PascalParser.ConstantDefinitionContext ctx) {
         name = ctx.identifier().getText();
+
+        //TODO: type?
     }
 
     @Override
