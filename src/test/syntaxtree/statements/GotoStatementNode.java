@@ -1,11 +1,13 @@
 package test.syntaxtree.statements;
 
-import gen.PascalParser;
+import gen.PascalParser.GotoStatementContext;
+
+import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
-public class GotoStatementNode extends Node {
+public class GotoStatementNode extends Node implements ASTBuilder<GotoStatementContext> {
 
     private int value;
 
@@ -21,8 +23,8 @@ public class GotoStatementNode extends Node {
         this.value = value;
     }
 
-    public void buildAST(PascalParser.GotoStatementContext label) {
-        value = PascalVisitor.visitUnsignedInt(label.label().unsignedInteger());
+    public void buildAST(GotoStatementContext ctx) {
+        value = PascalVisitor.visitUnsignedInt(ctx.label().unsignedInteger());
     }
 
     @Override

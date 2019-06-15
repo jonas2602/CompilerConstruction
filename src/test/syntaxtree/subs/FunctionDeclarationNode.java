@@ -1,11 +1,11 @@
 package test.syntaxtree.subs;
 
-import gen.PascalParser;
+import gen.PascalParser.FunctionDeclarationContext;
+import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
-import test.syntaxtree.subs.SubNode;
 import test.syntaxtree.types.TypeIdentifierNode;
 
-public class FunctionDeclarationNode extends SubNode {
+public class FunctionDeclarationNode extends SubNode implements ASTBuilder<FunctionDeclarationContext> {
 
     private TypeIdentifierNode returnType;
 
@@ -13,7 +13,7 @@ public class FunctionDeclarationNode extends SubNode {
         super(parent);
     }
 
-    public void buildAST(PascalParser.FunctionDeclarationContext ctx) {
+    public void buildAST(FunctionDeclarationContext ctx) {
         name = ctx.identifier().getText();
         block = new BlockNode(parentBlock);
         block.buildAST(ctx.block());

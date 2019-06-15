@@ -1,10 +1,11 @@
 package test.syntaxtree.statements;
 
-import gen.PascalParser;
+import gen.PascalParser.VariableContext;
+import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
 
-public class VariableNode extends Node {
+public class VariableNode extends Node implements ASTBuilder<VariableContext> {
 
     private String name;
     private VariableAccessNode access;
@@ -21,7 +22,7 @@ public class VariableNode extends Node {
         return this.name;
     }
 
-    public void buildAST(PascalParser.VariableContext ctx) {
+    public void buildAST(VariableContext ctx) {
         name = ctx.identifier().getText();
     }
 

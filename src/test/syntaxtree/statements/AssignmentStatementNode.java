@@ -1,23 +1,24 @@
 package test.syntaxtree.statements;
 
-import gen.PascalParser;
+import gen.PascalParser.AssignmentStatementContext;
+import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
 
-public class AssignmentStatementNode extends Node {
+public class AssignmentStatementNode extends Node implements ASTBuilder<AssignmentStatementContext> {
 
-    private Node variable;
+    private VariableNode variable;
     private Node expression;
 
     public AssignmentStatementNode(BlockNode parent) {
         super(parent);
     }
 
-    public Node getVariable() {
+    public VariableNode getVariable() {
         return variable;
     }
 
-    public void setVariable(Node variable) {
+    public void setVariable(VariableNode variable) {
         this.variable = variable;
     }
 
@@ -29,7 +30,7 @@ public class AssignmentStatementNode extends Node {
         this.expression = expression;
     }
 
-    public void buildAST(PascalParser.AssignmentStatementContext ctx) {
+    public void buildAST(AssignmentStatementContext ctx) {
         VariableNode var = new VariableNode(super.parentBlock);
         var.buildAST(ctx.variable());
         variable = var;

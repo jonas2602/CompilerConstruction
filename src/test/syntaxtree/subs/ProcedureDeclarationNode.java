@@ -1,16 +1,16 @@
 package test.syntaxtree.subs;
 
-import gen.PascalParser;
+import gen.PascalParser.ProcedureDeclarationContext;
+import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
-import test.syntaxtree.subs.SubNode;
 
-public class ProcedureDeclarationNode extends SubNode {
+public class ProcedureDeclarationNode extends SubNode implements ASTBuilder<ProcedureDeclarationContext> {
 
     public ProcedureDeclarationNode(BlockNode parent) {
         super(parent);
     }
 
-    public void buildAST(PascalParser.ProcedureDeclarationContext ctx) {
+    public void buildAST(ProcedureDeclarationContext ctx) {
         name = ctx.identifier().getText();
         block = new BlockNode(parentBlock);
         block.buildAST(ctx.block());

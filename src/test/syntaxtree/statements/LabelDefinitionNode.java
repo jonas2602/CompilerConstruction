@@ -1,11 +1,12 @@
 package test.syntaxtree.statements;
 
-import gen.PascalParser;
+import gen.PascalParser.LabelContext;
+import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
-public class LabelDefinitionNode extends Node {
+public class LabelDefinitionNode extends Node implements ASTBuilder<LabelContext> {
     private int value;
 
     public LabelDefinitionNode(BlockNode parent) {
@@ -20,7 +21,7 @@ public class LabelDefinitionNode extends Node {
         return this.value;
     }
 
-    public void buildAST(PascalParser.LabelContext ctx) {
+    public void buildAST(LabelContext ctx) {
         value = PascalVisitor.visitUnsignedInt(ctx.unsignedInteger());
     }
 
