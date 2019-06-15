@@ -24,6 +24,9 @@ public class RelationalNode extends AbstractSyntaxTree {
         this.m_Left = InLeft;
         this.m_Right = InRight;
         this.m_Operator = InOperator;
+
+        m_Left.SetParent(this);
+        m_Right.SetParent(this);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class RelationalNode extends AbstractSyntaxTree {
         NamedTypeNode intType = NamedTypeNode.IntNode;
         NamedTypeNode realType = NamedTypeNode.RealNode;
         if ((leftType.CompareType(intType) || leftType.CompareType(realType))
-        && (leftType.CompareType(intType) || leftType.CompareType(realType))) {
+                && (leftType.CompareType(intType) || leftType.CompareType(realType))) {
             return GetType();
         }
 

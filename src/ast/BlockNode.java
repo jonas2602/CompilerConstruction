@@ -117,10 +117,20 @@ public class BlockNode extends AbstractSyntaxTree {
         return OutDecl;
     }
 
+    // TODO: How to check for functions that are not defined by the user? e.g. writeln(), chr() or Length()
     public FuncDeclNode GetFunctionDeclaration(String FunctionName) {
         FuncDeclNode OutDecl = m_FuncDeclMap.get(FunctionName);
         if (OutDecl == null && GetOwningBlock() != null) {
             OutDecl = GetOwningBlock().GetFunctionDeclaration(FunctionName);
+        }
+
+        return OutDecl;
+    }
+
+    public ProcDeclNode GetProcedureDeclaration(String ProcedureName) {
+        ProcDeclNode OutDecl = m_FuncDeclMap.get(ProcedureName);
+        if (OutDecl == null && GetOwningBlock() != null) {
+            OutDecl = GetOwningBlock().GetProcedureDeclaration(ProcedureName);
         }
 
         return OutDecl;

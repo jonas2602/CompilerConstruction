@@ -31,7 +31,6 @@ public class MultiplicativeNode extends AbstractSyntaxTree {
     public TypeNode CheckType() {
         NamedTypeNode intType = NamedTypeNode.IntNode;
         NamedTypeNode realType = NamedTypeNode.RealNode;
-        TypeNode outType = intType;
 
         TypeNode leftType = m_Left.CheckType();
         TypeNode rightType = m_Right.CheckType();
@@ -47,8 +46,6 @@ public class MultiplicativeNode extends AbstractSyntaxTree {
                 // -> left is also no REAL
                 throw new TypeCheckException(this, m_Operator + " is not defined for " + rightType);
             }
-
-            outType = realType;
         }
 
         if (!intType.CompareType(rightType)) {
@@ -63,11 +60,9 @@ public class MultiplicativeNode extends AbstractSyntaxTree {
                 // -> right is also no REAL
                 throw new TypeCheckException(this, m_Operator + " is not defined for " + rightType);
             }
-
-            outType = realType;
         }
 
-        return outType;
+        return GetType();
     }
 
     @Override

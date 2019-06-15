@@ -251,6 +251,7 @@ procedureDeclaration
    : PROCEDURE identifier (formalParameterList)? SEMI block
    ;
 
+// Empty Parameter Lists?
 formalParameterList
    : LPAREN formalParameterSection (SEMI formalParameterSection)* RPAREN
    ;

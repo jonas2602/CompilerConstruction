@@ -31,11 +31,11 @@ public class ForNode extends AbstractSyntaxTree {
         TypeNode initType = m_InitialValue.CheckType();
         TypeNode finalType = m_FinalValue.CheckType();
         if (!varType.CompareType(initType)) {
-            throw new TypeCheckException(this, "Initial Value does not match variable type");
+            throw new TypeCheckException(this, "Initial Value " + initType + " does not match variable " + varType);
         }
 
         if (!varType.CompareType(finalType)) {
-            throw new TypeCheckException(this, "Final Value does not match variable type");
+            throw new TypeCheckException(this, "Final Value " + finalType + " does not match variable " + varType);
         }
 
         m_Body.CheckType();

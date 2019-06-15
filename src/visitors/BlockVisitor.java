@@ -125,11 +125,13 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         body.AddParameterDeclaration(funcTypeNode);
 
         // Add Parameters to both, Procedure and Block
-        List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
-        for (AbstractSyntaxTree param : paramList) {
-            // TODO: Add params first to block for more percise Exceptions?
-            funcDecl.AddParameter((ParamDeclNode) param);
-            body.AddParameterDeclaration((ParamDeclNode) param);
+        if (ctx.formalParameterList() != null) {
+            List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
+            for (AbstractSyntaxTree param : paramList) {
+                // TODO: Add params first to block for more percise Exceptions?
+                funcDecl.AddParameter((ParamDeclNode) param);
+                body.AddParameterDeclaration((ParamDeclNode) param);
+            }
         }
 
         // Add declarations to the new block

@@ -12,7 +12,7 @@ public class ProcCallNode extends AbstractSyntaxTree {
     private String m_ProcName;
     private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
 
-    public ProcCallNode(String InProcName){
+    public ProcCallNode(String InProcName) {
         this.m_ProcName = InProcName;
     }
 
@@ -23,8 +23,9 @@ public class ProcCallNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
+        // TODO: Also check defined functions?
         // Procedure with Name exists?
-        ProcDeclNode procDecl = GetOwningBlock().GetFunctionDeclaration(m_ProcName);
+        ProcDeclNode procDecl = GetOwningBlock().GetProcedureDeclaration(m_ProcName);
         if (procDecl == null) {
             throw new TypeCheckException(this, "Procedure with Name " + m_ProcName + " is not defined");
         }
