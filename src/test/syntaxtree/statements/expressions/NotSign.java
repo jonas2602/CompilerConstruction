@@ -2,15 +2,15 @@ package test.syntaxtree.statements.expressions;
 
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
+import test.syntaxtree.constants.BoolConstant;
 import test.syntaxtree.constants.IntConstant;
-import test.syntaxtree.constants.NumberConstant;
 import test.syntaxtree.constants.RealConstant;
 
-public class MinusSign extends Node {
+public class NotSign extends Node {
 
     private Node term;
 
-    public MinusSign(BlockNode parent) {
+    public NotSign(BlockNode parent) {
         super(parent);
     }
 
@@ -23,15 +23,10 @@ public class MinusSign extends Node {
     }
 
     public Node check() {
-        if(term instanceof IntConstant) {
-            IntConstant i = (IntConstant) term;
-            i.setValue(- i.getValue());
-            return i;
-        }
-        else if(term instanceof RealConstant) {
-            RealConstant r = (RealConstant) term;
-            r.setValue(- r.getValue());
-            return r;
+        if(term instanceof BoolConstant) {
+            BoolConstant b = (BoolConstant) term;
+            b.setValue(! b.getValue());
+            return b;
         }
 
         return this;
@@ -39,7 +34,7 @@ public class MinusSign extends Node {
 
     @Override
     public String toString() {
-        return " -( "+term+" ) ";
+        return " !( "+term+" ) ";
     }
 
     @Override

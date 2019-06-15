@@ -23,6 +23,10 @@ public class PascalVisitor {
         return ctx.getText().substring(1, ctx.getText().length()-1);
     }
 
+    public static boolean visitBoolean(PascalParser.BoolContext ctx) {
+        return Boolean.parseBoolean(ctx.getText());
+    }
+
     public static List<String> visitIdentifierList(PascalParser.IdentifierListContext ctx) {
         List<String> identifiers = new LinkedList<String>();
         List<PascalParser.IdentifierContext> list = ctx.identifier();

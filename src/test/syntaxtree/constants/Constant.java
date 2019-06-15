@@ -1,6 +1,6 @@
 package test.syntaxtree.constants;
 
-import gen.PascalParser;
+import gen.PascalParser.BoolContext;
 import gen.PascalParser.UnsignedConstantContext;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
@@ -26,6 +26,12 @@ public abstract class Constant extends Node {
             strconst.setValue(PascalVisitor.visitConstantString(ctx.string()));
             return strconst;
         }
+    }
+
+    public static Constant buildAST(BoolContext ctx, BlockNode parent) {
+        BoolConstant b = new BoolConstant(parent);
+        b.setValue(PascalVisitor.visitBoolean(ctx));
+        return b;
     }
 
     @Override

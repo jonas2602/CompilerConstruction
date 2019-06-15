@@ -4,6 +4,7 @@ import gen.PascalParser.AssignmentStatementContext;
 import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
+import test.syntaxtree.statements.expressions.Expression;
 
 public class AssignmentStatementNode extends Node implements ASTBuilder<AssignmentStatementContext> {
 
@@ -34,6 +35,8 @@ public class AssignmentStatementNode extends Node implements ASTBuilder<Assignme
         VariableNode var = new VariableNode(super.parentBlock);
         var.buildAST(ctx.variable());
         variable = var;
+
+        expression = Expression.visitExpression(ctx.expression(), parentBlock);
     }
 
     @Override

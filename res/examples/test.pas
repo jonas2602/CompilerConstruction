@@ -13,6 +13,7 @@ label
 procedure test(function test: integer; test, test2: integer; test4: human);
     var
         temp, a12: integer;
+        isTest: boolean;
     label
         123;
 
@@ -28,7 +29,8 @@ procedure test(function test: integer; test, test2: integer; test4: human);
 begin
     writeln('TEST');
     Begin
-        temp := 5;
+        isTest:= not not TRUE and FALSE;
+        temp := 5 + -12.54;
         Begin
             goto 123;
         End;

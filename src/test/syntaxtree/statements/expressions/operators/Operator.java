@@ -36,4 +36,6 @@ public abstract class Operator extends Node {
     public void print(int level) {
         super.print(level, this);
     }
+
+    public abstract Node check();
 }

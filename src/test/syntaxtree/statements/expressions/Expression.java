@@ -3,6 +3,7 @@ package test.syntaxtree.statements.expressions;
 import gen.PascalParser.*;
 import test.syntaxtree.BlockNode;
 import test.syntaxtree.Node;
+import test.syntaxtree.constants.Constant;
 import test.syntaxtree.statements.expressions.operators.Operator;
 import test.syntaxtree.statements.expressions.operators.additiveoperators.MinusOperator;
 import test.syntaxtree.statements.expressions.operators.additiveoperators.OrOperator;
@@ -11,7 +12,7 @@ import test.syntaxtree.statements.expressions.operators.multiplicativeoperators.
 import test.syntaxtree.statements.expressions.operators.relationaloperators.*;
 
 public class Expression {
-    public Node visitExpression(ExpressionContext ctx, BlockNode parent) {
+    public static Node visitExpression(ExpressionContext ctx, BlockNode parent) {
         Node left = visitSimpleExpression(ctx.simpleExpression(), parent);
 
         if(ctx.relationaloperator() == null) {
@@ -46,7 +47,7 @@ public class Expression {
 
         op.setLeft(left);
         op.setRight(right);
-        return op;
+        return op.check();
     }
 
     public static Node visitSimpleExpression(SimpleExpressionContext ctx, BlockNode parent) {
@@ -72,7 +73,7 @@ public class Expression {
 
         op.setLeft(left);
         op.setRight(right);
-        return op;
+        return op.check();
     }
 
     public static Node visitTerm(TermContext ctx, BlockNode parent) {
@@ -103,7 +104,7 @@ public class Expression {
 
         op.setLeft(left);
         op.setRight(right);
-        return op;
+        return op.check();
     }
 
     public static Node visitSignedFactor(SignedFactorContext ctx, BlockNode parent) {
@@ -111,7 +112,7 @@ public class Expression {
         if(ctx.MINUS() != null) {
             MinusSign minus = new MinusSign(parent);
             minus.setTerm(factor);
-            return minus;
+            return minus.check();
         }
 
         return factor;
@@ -120,26 +121,29 @@ public class Expression {
     public static Node visitFactor(FactorContext ctx, BlockNode parent) {
         if(ctx.variable() != null) {
             //TODO
+            return null;
         }
         else if(ctx.expression() != null) {
-            //TODO
+            return visitExpression(ctx.expression(), parent);
         }
         else if(ctx.functionDesignator() != null) {
             //TODO
+            return null;
+        }
+        else if(ctx.unsignedConstant() != null) {
+            return Constant.buildAST(ctx.unsignedConstant(), parent);
         }
         else if(ctx.set() != null) {
             //TODO
-        }
-        else if(ctx.unsignedConstant() != null) {
-            //TODO
-        }
-        else if(ctx.factor() != null) {
-            return visitFactor(ctx.factor(), parent);
-        }
-        else {
             return null;
         }
-
-        return null;
+        else if(ctx.factor() != null) {
+            NotSign not = new NotSign(parent);
+            not.setTerm(visitFactor(ctx.factor(), parent));
+            return not.check();
+        }
+        else {
+            return Constant.buildAST(ctx.bool(), parent);
+        }
     }
 }

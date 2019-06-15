@@ -21,4 +21,13 @@ public abstract class NumberConstant extends Constant {
         r.setValue(PascalVisitor.visitUnsignedReal(ctx.unsignedReal()));
         return r;
     }
+
+    public static double getDobuleValue(NumberConstant n) {
+        if(n instanceof RealConstant) {
+            return ((RealConstant)n).getValue();
+        }
+        else {
+            return ((IntConstant)n).getValue();
+        }
+    }
 }
