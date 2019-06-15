@@ -12,7 +12,7 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         System.out.println("START");
-        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/factorial.pas"));
+        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/test.pas"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         PascalParser parser = new PascalParser(tokens);
         ParseTree tree = parser.program();

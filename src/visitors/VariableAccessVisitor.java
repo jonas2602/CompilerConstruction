@@ -1,14 +1,12 @@
 package visitors;
 
 import ast.*;
-import ast.expression.ArrayAccessNode;
-import ast.expression.FieldAccessNode;
-import ast.expression.PointerAccessNode;
-import ast.expression.VariableNode;
+import ast.expressions.ArrayAccessNode;
+import ast.expressions.FieldAccessNode;
+import ast.expressions.PointerAccessNode;
+import ast.expressions.VariableNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
-
-import java.util.ArrayList;
 
 public class VariableAccessVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     private AbstractSyntaxTree m_Root;

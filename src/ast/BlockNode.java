@@ -1,7 +1,6 @@
 package ast;
 
-import ast.declaration.*;
-import ast.statement.CompStmtNode;
+import ast.declarations.*;
 import ast.types.TypeNode;
 
 import java.util.HashMap;
@@ -88,6 +87,24 @@ public class BlockNode extends AbstractSyntaxTree {
         m_CompoundStatement = InCompoundStatement;
         // TODO: Validate if the compund Statement should be child of the function/procedure/program or of the block
         m_CompoundStatement.SetParent(this);
+    }
+
+    public LabelDeclNode GetLabelDeclaration(String LabelName) {
+        LabelDeclNode OutDecl = m_LabelDeclMap.get(LabelName);
+        if (OutDecl == null && GetOwningBlock() != null) {
+            OutDecl = GetOwningBlock().GetLabelDeclaration(LabelName);
+        }
+
+        return OutDecl;
+    }
+
+    public TypeDeclNode GetTypeDeclaration(String TypeName) {
+        TypeDeclNode OutDecl = m_TypeDeclMap.get(TypeName);
+        if (OutDecl == null && GetOwningBlock() != null) {
+            OutDecl = GetOwningBlock().GetTypeDeclaration(TypeName);
+        }
+
+        return OutDecl;
     }
 
     public VarDeclNode GetVariableDeclaration(String VariableName) {

@@ -1,8 +1,8 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
-import ast.declaration.ParamDeclNode;
-import ast.expression.ParameterNode;
+import ast.declarations.ParamDeclNode;
+import ast.expressions.ParameterNode;
 import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;

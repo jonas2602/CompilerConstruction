@@ -304,7 +304,7 @@ assignmentStatement
    ;
 
 //variable
-//   : (AT identifier | identifier) (LBRACK expression (COMMA expression)* RBRACK | LBRACK2 expression (COMMA expression)* RBRACK2 | DOT identifier | POINTER)*
+//   : (AT identifier | identifier) (LBRACK expressions (COMMA expressions)* RBRACK | LBRACK2 expressions (COMMA expressions)* RBRACK2 | DOT identifier | POINTER)*
 //   ;
 
 // allows random combinations of the variable access types

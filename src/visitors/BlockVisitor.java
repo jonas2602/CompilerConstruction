@@ -2,9 +2,7 @@ package visitors;
 
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
-import ast.declaration.*;
-import ast.expression.ParameterNode;
-import ast.statement.CompStmtNode;
+import ast.declarations.*;
 import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -134,7 +132,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             body.AddParameterDeclaration((ParamDeclNode) param);
         }
 
-        // Add declaration to the new block
+        // Add declarations to the new block
         m_BlockNode.AddFunctionDeclaration(funcDecl);
         return funcDecl;
     }
@@ -154,7 +152,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             body.AddParameterDeclaration((ParamDeclNode) param);
         }
 
-        // Add declaration to the new block
+        // Add declarations to the new block
         m_BlockNode.AddProcedureDeclaration(procDecl);
         return procDecl;
     }

@@ -1,4 +1,4 @@
-package ast.expression;
+package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;

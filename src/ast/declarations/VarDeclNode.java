@@ -1,4 +1,4 @@
-package ast.declaration;
+package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
@@ -21,5 +21,10 @@ public class VarDeclNode extends AbstractSyntaxTree {
     public TypeNode CheckType() {
         m_Type.CheckType();
         return null;
+    }
+
+    @Override
+    public TypeNode GetType() {
+        return m_Type.GetType();
     }
 }

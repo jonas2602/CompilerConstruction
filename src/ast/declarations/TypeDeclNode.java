@@ -1,4 +1,4 @@
-package ast.declaration;
+package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
@@ -13,7 +13,7 @@ public class TypeDeclNode extends AbstractSyntaxTree {
         m_Type.SetParent(this);
     }
 
-    public String GetName(){
+    public String GetName() {
         return m_Name;
     }
 
@@ -21,5 +21,10 @@ public class TypeDeclNode extends AbstractSyntaxTree {
     public TypeNode CheckType() {
         m_Type.CheckType();
         return null;
+    }
+
+    @Override
+    public TypeNode GetType() {
+        return m_Type;
     }
 }

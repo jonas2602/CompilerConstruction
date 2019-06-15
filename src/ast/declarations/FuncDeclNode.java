@@ -1,4 +1,4 @@
-package ast.declaration;
+package ast.declarations;
 
 import ast.BlockNode;
 import ast.types.TypeNode;

@@ -1,6 +1,5 @@
 package ast;
 
-import ast.declaration.ParamDeclNode;
 import ast.types.TypeNode;
 
 import java.util.ArrayList;

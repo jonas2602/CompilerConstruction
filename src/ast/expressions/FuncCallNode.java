@@ -1,15 +1,16 @@
-package ast.expression;
+package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
-import ast.declaration.FuncDeclNode;
+import ast.declarations.FuncDeclNode;
 import ast.types.TypeNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FuncCallNode extends AbstractSyntaxTree {
     private String m_FuncName;
-    private List<AbstractSyntaxTree> m_Params;
+    private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
 
     public FuncCallNode(String InFuncName) {
         this.m_FuncName = InFuncName;
@@ -41,6 +42,12 @@ public class FuncCallNode extends AbstractSyntaxTree {
             }
         }
 
+        return funcDecl.GetType();
+    }
+
+    @Override
+    public TypeNode GetType() {
+        FuncDeclNode funcDecl = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
         return funcDecl.GetType();
     }
 }

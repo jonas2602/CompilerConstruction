@@ -1,12 +1,14 @@
-package ast.statement;
+package ast.statements;
 
 import ast.AbstractSyntaxTree;
 
+import java.util.List;
+
 public class WithNode extends AbstractSyntaxTree {
-    AbstractSyntaxTree[] m_Variables;
+    List<AbstractSyntaxTree> m_Variables;
     AbstractSyntaxTree m_Statement;
 
-    public WithNode(AbstractSyntaxTree[] InVariables, AbstractSyntaxTree InStatement){
+    public WithNode(List<AbstractSyntaxTree> InVariables, AbstractSyntaxTree InStatement){
         this.m_Variables = InVariables;
         this.m_Statement = InStatement;
     }

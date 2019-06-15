@@ -1,7 +1,7 @@
-package ast.expression;
+package ast.expressions;
 
 import ast.AbstractSyntaxTree;
-import ast.declaration.VarDeclNode;
+import ast.declarations.VarDeclNode;
 import ast.types.TypeNode;
 
 public class VariableNode extends AbstractSyntaxTree {
@@ -14,6 +14,8 @@ public class VariableNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
+        // Variable Declaration should already be checked by the owning Block
+        // -> only return the Declaration Type
         return GetType();
     }
 

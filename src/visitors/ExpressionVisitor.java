@@ -1,13 +1,11 @@
 package visitors;
 
 import ast.*;
-import ast.expression.*;
-import ast.statement.ProcCallNode;
+import ast.expressions.*;
 import ast.types.NamedTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {

@@ -1,9 +1,8 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
-import ast.expression.ParameterNode;
-import ast.expression.VariableNode;
-import ast.statement.*;
+import ast.expressions.VariableNode;
+import ast.statements.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -49,12 +48,15 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitProcedureStatement(PascalParser.ProcedureStatementContext ctx) {
         String procName = ctx.identifier().IDENT().getText();
-        List<AbstractSyntaxTree> params = new ArrayList<>();
+        ProcCallNode procCall = new ProcCallNode(procName);
+
         if (ctx.parameterList() != null) {
-            params = new ParameterVisitor().visit(ctx.parameterList());
+            List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.parameterList());
+            for (AbstractSyntaxTree param : paramList) {
+                procCall.AddParameter(param);
+            }
         }
 
-        ProcCallNode procCall = new ProcCallNode(procName, params);
         return procCall;
     }
 
@@ -84,8 +86,8 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitStatements(PascalParser.StatementsContext ctx) {
         CompStmtNode compStmt = new CompStmtNode();
-        // The last Statement is always an empty statement. Therefore if the amount of stmts is not
-        // more than 2 (actually 1 valid) its not necessary to combine them in a compound statement
+        // The last Statement is always an empty statements. Therefore if the amount of stmts is not
+        // more than 2 (actually 1 valid) its not necessary to combine them in a compound statements
         if (ctx.statement().size() <= 2) {
             return visitStatement(ctx.statement(0));
         }
@@ -126,7 +128,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             variableList.add(new VariableAccessVisitor().visit(var));
         }
 
-        return new WithNode(variableList.toArray(AbstractSyntaxTree[]::new), statement);
+        return new WithNode(variableList, statement);
     }
 
     @Override

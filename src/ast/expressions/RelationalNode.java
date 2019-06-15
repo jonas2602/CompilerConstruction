@@ -1,10 +1,8 @@
-package ast.expression;
+package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
-
-import java.lang.reflect.Type;
 
 public class RelationalNode extends AbstractSyntaxTree {
     public enum ERelationalOperator {
@@ -47,6 +45,8 @@ public class RelationalNode extends AbstractSyntaxTree {
         }
 
         throw new RuntimeException("Type checking failed " + leftType + " and " + rightType + " are not comparable");
+
+        // TODO: IN-Operator
     }
 
     @Override

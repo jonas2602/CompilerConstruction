@@ -1,4 +1,4 @@
-package ast.statement;
+package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.types.NamedTypeNode;

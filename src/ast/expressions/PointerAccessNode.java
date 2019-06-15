@@ -1,4 +1,4 @@
-package ast.expression;
+package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 
@@ -7,5 +7,8 @@ public class PointerAccessNode extends AbstractSyntaxTree {
 
     public PointerAccessNode(AbstractSyntaxTree InChild) {
         this.m_Child = InChild;
+        m_Child.SetParent(this);
     }
+
+    // TODO: Type Checking
 }

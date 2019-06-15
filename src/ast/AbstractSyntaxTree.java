@@ -12,9 +12,8 @@ public class AbstractSyntaxTree {
         }
 
         if (m_Parent != null) {
-            BlockNode parentBlock = (BlockNode) m_Parent;
-            if (parentBlock != null) {
-                m_OwningBlock = parentBlock;
+            if (m_Parent instanceof BlockNode) {
+                m_OwningBlock = (BlockNode) m_Parent;
             } else {
                 m_OwningBlock = m_Parent.GetOwningBlock();
             }

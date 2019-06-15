@@ -200,7 +200,7 @@ simpleStatement
     | gotoStatement
     | /* EPSILON */
     ;
-// ASK: WTF? Assignment to function? like lambda expression?
+// ASK: WTF? Assignment to function? like lambda expressions?
 // e.g. test[12] := 1+2
 assignmentStatement: (variableAccess | functionIdentifier) ASSIGN expression;
 // e.g. println("Hello", "World")
@@ -233,7 +233,7 @@ repeatStatement: REPEAT statementSequence UNTIL booleanExpression;
 whileStatement: WHILE booleanExpression DO statement;
 forStatement: FOR variableIdentifier ASSIGN expression (TO | DOWNTO) expression DO statement;
 
-// The with statement serves to access the elements of a record or object or class, without having to specify the element’s name each time
+// The with statements serves to access the elements of a record or object or class, without having to specify the element’s name each time
 // pretty certain there is an equivalent in C++ called "using" or sth like this
 withStatement: WITH recordVariableList DO statement;
 recordVariableList: variableAccess (COMMA variableAccess)*;

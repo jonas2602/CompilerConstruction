@@ -1,4 +1,4 @@
-package ast.declaration;
+package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;

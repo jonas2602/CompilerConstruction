@@ -2,7 +2,6 @@ package visitors;
 
 import ast.BlockNode;
 import ast.ProgramNode;
-import ast.expression.VariableNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
