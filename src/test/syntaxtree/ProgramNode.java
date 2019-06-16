@@ -1,6 +1,8 @@
 package test.syntaxtree;
 
 import gen.PascalParser;
+import test.syntaxtree.scopes.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class ProgramNode extends Node {
     private String name;
@@ -22,7 +24,7 @@ public class ProgramNode extends Node {
         this.block = block;
     }
 
-    public BlockNode getBlock() {
+    public ScopeNode getBlock() {
         return this.block;
     }
 

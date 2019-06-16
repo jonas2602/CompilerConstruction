@@ -1,13 +1,13 @@
 package test.syntaxtree.statements.expressions.operators.multiplicativeoperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.BoolConstant;
 import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class AndOperator extends Operator {
 
-    public AndOperator(BlockNode parent) {
+    public AndOperator(ScopeNode parent) {
         super(parent);
     }
 

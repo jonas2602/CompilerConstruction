@@ -1,11 +1,11 @@
 package test.syntaxtree.constants;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class BoolConstant extends Constant {
     private boolean value;
 
-    public BoolConstant(BlockNode parent) {
+    public BoolConstant(ScopeNode parent) {
         super(parent);
     }
 

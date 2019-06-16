@@ -1,15 +1,14 @@
 package test.syntaxtree.statements.expressions.operators.relationaloperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.BoolConstant;
 import test.syntaxtree.constants.NumberConstant;
-import test.syntaxtree.constants.RealConstant;
 import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class EqualOperator extends Operator {
 
-    public EqualOperator(BlockNode parent) {
+    public EqualOperator(ScopeNode parent) {
         super(parent);
     }
 

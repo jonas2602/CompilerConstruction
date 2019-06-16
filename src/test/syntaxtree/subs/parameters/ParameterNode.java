@@ -1,6 +1,6 @@
 package test.syntaxtree.subs.parameters;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.types.TypeIdentifierNode;
 
@@ -9,7 +9,7 @@ public abstract class ParameterNode extends Node {
     protected String identifier;
     protected TypeIdentifierNode type;
 
-    public ParameterNode(BlockNode parent) {
+    public ParameterNode(ScopeNode parent) {
         super(parent);
     }
 

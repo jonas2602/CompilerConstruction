@@ -1,18 +1,18 @@
 package test.syntaxtree;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
+import test.syntaxtree.scopes.ScopeNode;
 
 public abstract class Node {
     protected Token token;
-    protected BlockNode parentBlock;
+    protected ScopeNode parentBlock;
 
     public Node() {
         token = null;
         parentBlock = null;
     }
 
-    public Node(BlockNode block) {
+    public Node(ScopeNode block) {
         parentBlock = block;
     }
 
@@ -24,11 +24,11 @@ public abstract class Node {
         return this.token;
     }
 
-    public void setParentBlock(BlockNode parentBlock) {
+    public void setParentBlock(ScopeNode parentBlock) {
         this.parentBlock = parentBlock;
     }
 
-    public BlockNode getParentBlock() {
+    public ScopeNode getParentBlock() {
         return this.parentBlock;
     }
 

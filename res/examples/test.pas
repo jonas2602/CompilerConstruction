@@ -39,6 +39,18 @@ begin
         test22;
         testfunc(5);
         123:
+        if temp = 14 then
+            writeln('YEA')
+        else
+            begin
+                while temp <> 14 do
+                    temp := temp + 1;
+                writeln('NAY');
+                repeat
+                    writeln('TEST');
+                    temp := temp - 1;
+                until temp <= 4;
+            end
     End
 end;
 

@@ -2,7 +2,7 @@ package test.syntaxtree.statements.calls;
 
 import gen.PascalParser.ActualParameterContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.statements.expressions.Expression;
 
@@ -10,7 +10,7 @@ public class Parameter extends Node implements ASTBuilder<ActualParameterContext
 
     private Node expression;
 
-    public Parameter(BlockNode parent) {
+    public Parameter(ScopeNode parent) {
         super(parent);
     }
 

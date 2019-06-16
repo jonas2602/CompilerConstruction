@@ -1,12 +1,12 @@
 package test.syntaxtree.constants;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class CharConstant extends Constant{
 
     private char value;
 
-    public CharConstant(BlockNode parent) {
+    public CharConstant(ScopeNode parent) {
         super(parent);
     }
 

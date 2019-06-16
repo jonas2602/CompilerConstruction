@@ -1,9 +1,9 @@
 package test.syntaxtree.types;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class RealTypeIdentifierNode extends TypeIdentifierNode {
-    public RealTypeIdentifierNode(BlockNode parent) {
+    public RealTypeIdentifierNode(ScopeNode parent) {
         super(parent);
         setType("real");
     }

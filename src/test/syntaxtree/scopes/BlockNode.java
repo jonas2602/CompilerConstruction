@@ -1,10 +1,10 @@
-package test.syntaxtree;
+package test.syntaxtree.scopes;
 
 import gen.PascalParser;
+import test.syntaxtree.Node;
 import test.syntaxtree.declarations.ConstantDeclarationNode;
 import test.syntaxtree.declarations.LabelDeclarationNode;
 import test.syntaxtree.declarations.VariableDeclarationNode;
-import test.syntaxtree.statements.LabelDefinitionNode;
 import test.syntaxtree.statements.StatementBlock;
 import test.syntaxtree.subs.SubNode;
 import test.visitors.PascalVisitor;
@@ -13,19 +13,18 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BlockNode extends Node {
+public class BlockNode extends ScopeNode {
     private List<VariableDeclarationNode> variables;
     private List<SubNode> subs;
     private List<LabelDeclarationNode> labels;
     private List<ConstantDeclarationNode> constants;
 
-    private List<Node> statements;
-
     public BlockNode() {
+        super(null);
         init();
     }
 
-    public BlockNode(BlockNode parent) {
+    public BlockNode(ScopeNode parent) {
         super(parent);
         init();
     }
@@ -35,8 +34,6 @@ public class BlockNode extends Node {
         subs = new LinkedList<SubNode>();
         labels = new LinkedList<LabelDeclarationNode>();
         constants = new LinkedList<ConstantDeclarationNode>();
-
-        statements = new LinkedList<Node>();
     }
 
     public void addVariable(VariableDeclarationNode variable) {
@@ -53,10 +50,6 @@ public class BlockNode extends Node {
 
     public void addConstant(ConstantDeclarationNode con) {
         constants.add(con);
-    }
-
-    public void addStatement(Node statement) {
-        statements.add(statement);
     }
 
     public List<VariableDeclarationNode> getVariables() {
@@ -132,16 +125,6 @@ public class BlockNode extends Node {
             n.print(level);
         }
 
-        super.println(level, "Begin");
-
-        level += 2;
-
-        for(Node n: statements) {
-            n.print(level);
-        }
-
-        level -= 2;
-
-        super.println(level, "End");
+        super.print(level);
     }
 }

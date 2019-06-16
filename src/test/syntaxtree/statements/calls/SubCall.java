@@ -2,7 +2,7 @@ package test.syntaxtree.statements.calls;
 
 import gen.PascalParser;
 import gen.PascalParser.ParameterListContext;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 
 import java.util.Collections;
@@ -13,7 +13,7 @@ public abstract class SubCall extends Node {
     protected String name;
     protected List<Parameter> parameters;
 
-    public SubCall(BlockNode parent) {
+    public SubCall(ScopeNode parent) {
         super(parent);
         parameters = new LinkedList<Parameter>();
     }

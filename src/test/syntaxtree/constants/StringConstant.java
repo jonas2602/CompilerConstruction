@@ -1,12 +1,12 @@
 package test.syntaxtree.constants;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class StringConstant extends Constant{
 
     private String value;
 
-    public StringConstant(BlockNode parent) {
+    public StringConstant(ScopeNode parent) {
         super(parent);
     }
 

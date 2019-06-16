@@ -1,14 +1,14 @@
 package test.syntaxtree.types;
 
 import gen.PascalParser;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 
 public class TypeIdentifierNode extends Node {
 
     protected String type;
 
-    public TypeIdentifierNode(BlockNode parent) {
+    public TypeIdentifierNode(ScopeNode parent) {
         super(parent);
     }
 
@@ -20,7 +20,7 @@ public class TypeIdentifierNode extends Node {
         this.type = type;
     }
 
-    public static TypeIdentifierNode buildAST(PascalParser.TypeIdentifierContext ctx, BlockNode parent) {
+    public static TypeIdentifierNode buildAST(PascalParser.TypeIdentifierContext ctx, ScopeNode parent) {
         if(ctx.BOOLEAN() != null) {
             return new BooleanTypeIdentifierNode(parent);
         }

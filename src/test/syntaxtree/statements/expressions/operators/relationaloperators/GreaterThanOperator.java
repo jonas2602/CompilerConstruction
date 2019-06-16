@@ -1,6 +1,6 @@
 package test.syntaxtree.statements.expressions.operators.relationaloperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.BoolConstant;
 import test.syntaxtree.constants.NumberConstant;
@@ -8,7 +8,7 @@ import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class GreaterThanOperator extends Operator {
 
-    public GreaterThanOperator(BlockNode parent) {
+    public GreaterThanOperator(ScopeNode parent) {
         super(parent);
     }
 

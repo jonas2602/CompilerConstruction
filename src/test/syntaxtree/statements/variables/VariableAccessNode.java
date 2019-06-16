@@ -1,16 +1,16 @@
 package test.syntaxtree.statements.variables;
 
 import gen.PascalParser.VariableAccessContext;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 
 public abstract class VariableAccessNode extends Node {
 
-    public VariableAccessNode(BlockNode parent) {
+    public VariableAccessNode(ScopeNode parent) {
         super(parent);
     }
 
-    public static VariableAccessNode buildAST(VariableAccessContext ctx, BlockNode parent) {
+    public static VariableAccessNode buildAST(VariableAccessContext ctx, ScopeNode parent) {
         if(ctx.fieldDesignator() != null) {
             FieldAccessNode field = new FieldAccessNode(parent);
             field.buildAST(ctx.fieldDesignator());

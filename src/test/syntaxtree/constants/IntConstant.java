@@ -1,12 +1,12 @@
 package test.syntaxtree.constants;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class IntConstant extends NumberConstant {
 
     private int value;
 
-    public IntConstant(BlockNode parent) {
+    public IntConstant(ScopeNode parent) {
         super(parent);
     }
 

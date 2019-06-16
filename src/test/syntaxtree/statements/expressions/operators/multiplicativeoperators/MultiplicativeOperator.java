@@ -1,6 +1,6 @@
 package test.syntaxtree.statements.expressions.operators.multiplicativeoperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.IntConstant;
 import test.syntaxtree.constants.NumberConstant;
@@ -9,7 +9,7 @@ import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class MultiplicativeOperator extends Operator {
 
-    public MultiplicativeOperator(BlockNode parent) {
+    public MultiplicativeOperator(ScopeNode parent) {
         super(parent);
     }
 

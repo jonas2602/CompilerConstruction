@@ -3,7 +3,7 @@ package test.syntaxtree.statements;
 import gen.PascalParser.GotoStatementContext;
 
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
@@ -11,7 +11,7 @@ public class GotoStatementNode extends Node implements ASTBuilder<GotoStatementC
 
     private int value;
 
-    public GotoStatementNode(BlockNode parent) {
+    public GotoStatementNode(ScopeNode parent) {
         super(parent);
     }
 

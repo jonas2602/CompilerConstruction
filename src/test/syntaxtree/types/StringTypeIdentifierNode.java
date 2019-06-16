@@ -1,9 +1,9 @@
 package test.syntaxtree.types;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class StringTypeIdentifierNode extends TypeIdentifierNode {
-    public StringTypeIdentifierNode(BlockNode parent) {
+    public StringTypeIdentifierNode(ScopeNode parent) {
         super(parent);
         setType("string");
     }

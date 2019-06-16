@@ -1,7 +1,7 @@
 package test.syntaxtree.declarations;
 
 import gen.PascalParser;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
@@ -9,7 +9,7 @@ public class LabelDeclarationNode extends Node {
 
     private int value;
 
-    public LabelDeclarationNode(BlockNode parent) {
+    public LabelDeclarationNode(ScopeNode parent) {
         super(parent);
     }
 

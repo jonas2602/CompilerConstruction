@@ -1,10 +1,10 @@
 package test.syntaxtree.subs.parameters;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class VarParameterNode extends ParameterNode {
 
-    public VarParameterNode(BlockNode parent) {
+    public VarParameterNode(ScopeNode parent) {
         super(parent);
     }
 

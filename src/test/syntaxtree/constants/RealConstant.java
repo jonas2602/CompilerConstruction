@@ -1,12 +1,12 @@
 package test.syntaxtree.constants;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class RealConstant extends NumberConstant {
 
     private double value;
 
-    public RealConstant(BlockNode parent) {
+    public RealConstant(ScopeNode parent) {
         super(parent);
     }
 

@@ -1,16 +1,14 @@
 package test.syntaxtree.statements.expressions;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.BoolConstant;
-import test.syntaxtree.constants.IntConstant;
-import test.syntaxtree.constants.RealConstant;
 
 public class NotSign extends Node {
 
     private Node term;
 
-    public NotSign(BlockNode parent) {
+    public NotSign(ScopeNode parent) {
         super(parent);
     }
 

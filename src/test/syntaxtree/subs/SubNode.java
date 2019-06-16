@@ -1,7 +1,8 @@
 package test.syntaxtree.subs;
 
 import gen.PascalParser;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.subs.parameters.*;
 import test.syntaxtree.types.TypeIdentifierNode;
@@ -19,7 +20,7 @@ public abstract class SubNode extends Node {
     protected List<ProcedureParameterNode> procedureParameters;
     protected List<VarParameterNode> varParameters;
 
-    public SubNode(BlockNode parent) {
+    public SubNode(ScopeNode parent) {
         super(parent);
         normalParameters = new LinkedList<NormalParameterNode>();
         functionParameters = new LinkedList<FunctionParameterNode>();
@@ -39,7 +40,7 @@ public abstract class SubNode extends Node {
         this.block = block;
     }
 
-    public BlockNode getBlock() {
+    public ScopeNode getBlock() {
         return this.block;
     }
 
@@ -47,7 +48,7 @@ public abstract class SubNode extends Node {
         return Collections.unmodifiableList(normalParameters);
     }
 
-    public static SubNode buildAST(PascalParser.ProcedureOrFunctionDeclarationContext ctx, BlockNode parent) {
+    public static SubNode buildAST(PascalParser.ProcedureOrFunctionDeclarationContext ctx, ScopeNode parent) {
         if(ctx.functionDeclaration() != null) {
             PascalParser.FunctionDeclarationContext fuctx = ctx.functionDeclaration();
             FunctionDeclarationNode func = new FunctionDeclarationNode(parent);

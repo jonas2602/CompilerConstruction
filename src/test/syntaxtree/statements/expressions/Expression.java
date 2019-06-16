@@ -1,7 +1,7 @@
 package test.syntaxtree.statements.expressions;
 
 import gen.PascalParser.*;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.Constant;
 import test.syntaxtree.statements.calls.FunctionCall;
@@ -12,11 +12,10 @@ import test.syntaxtree.statements.expressions.operators.additiveoperators.PlusOp
 import test.syntaxtree.statements.expressions.operators.multiplicativeoperators.*;
 import test.syntaxtree.statements.expressions.operators.relationaloperators.*;
 import test.syntaxtree.statements.variables.PointerVariable;
-import test.syntaxtree.statements.variables.VariableAccessNode;
 import test.syntaxtree.statements.variables.VariableNode;
 
 public class Expression {
-    public static Node visitExpression(ExpressionContext ctx, BlockNode parent) {
+    public static Node visitExpression(ExpressionContext ctx, ScopeNode parent) {
         Node left = visitSimpleExpression(ctx.simpleExpression(), parent);
 
         if(ctx.relationaloperator() == null) {
@@ -54,7 +53,7 @@ public class Expression {
         return op.check();
     }
 
-    public static Node visitSimpleExpression(SimpleExpressionContext ctx, BlockNode parent) {
+    public static Node visitSimpleExpression(SimpleExpressionContext ctx, ScopeNode parent) {
         Node left = visitTerm(ctx.term(), parent);
 
         if(ctx.additiveoperator() == null) {
@@ -80,7 +79,7 @@ public class Expression {
         return op.check();
     }
 
-    public static Node visitTerm(TermContext ctx, BlockNode parent) {
+    public static Node visitTerm(TermContext ctx, ScopeNode parent) {
         Node left = visitSignedFactor(ctx.signedFactor(), parent);
 
         if(ctx.multiplicativeoperator() == null) {
@@ -111,7 +110,7 @@ public class Expression {
         return op.check();
     }
 
-    public static Node visitSignedFactor(SignedFactorContext ctx, BlockNode parent) {
+    public static Node visitSignedFactor(SignedFactorContext ctx, ScopeNode parent) {
         Node factor = visitFactor(ctx.factor(), parent);
         if(ctx.MINUS() != null) {
             MinusSign minus = new MinusSign(parent);
@@ -122,7 +121,7 @@ public class Expression {
         return factor;
     }
 
-    public static Node visitFactor(FactorContext ctx, BlockNode parent) {
+    public static Node visitFactor(FactorContext ctx, ScopeNode parent) {
         if(ctx.variable() != null) {
             VariableNode variable = new VariableNode(parent);
             if(ctx.variable().AT() != null) {

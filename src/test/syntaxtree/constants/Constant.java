@@ -2,17 +2,17 @@ package test.syntaxtree.constants;
 
 import gen.PascalParser.BoolContext;
 import gen.PascalParser.UnsignedConstantContext;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
 public abstract class Constant extends Node {
 
-    public Constant(BlockNode parent) {
+    public Constant(ScopeNode parent) {
         super(parent);
     }
 
-    public static Constant buildAST(UnsignedConstantContext ctx, BlockNode parent) {
+    public static Constant buildAST(UnsignedConstantContext ctx, ScopeNode parent) {
         if(ctx.unsignedNumber() != null) {
             return NumberConstant.buildAST(ctx.unsignedNumber(), parent);
         }
@@ -28,7 +28,7 @@ public abstract class Constant extends Node {
         }
     }
 
-    public static Constant buildAST(BoolContext ctx, BlockNode parent) {
+    public static Constant buildAST(BoolContext ctx, ScopeNode parent) {
         BoolConstant b = new BoolConstant(parent);
         b.setValue(PascalVisitor.visitBoolean(ctx));
         return b;

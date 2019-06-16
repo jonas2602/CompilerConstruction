@@ -1,13 +1,13 @@
 package test.syntaxtree.statements.expressions.operators.multiplicativeoperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.IntConstant;
 import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class ModOperator extends Operator {
 
-    public ModOperator(BlockNode parent) {
+    public ModOperator(ScopeNode parent) {
         super(parent);
     }
 

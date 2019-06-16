@@ -1,14 +1,14 @@
 package test.syntaxtree.declarations;
 
 import gen.PascalParser;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 
 public class ConstantDeclarationNode extends Node {
 
     private String name;
 
-    public ConstantDeclarationNode(BlockNode parent) {
+    public ConstantDeclarationNode(ScopeNode parent) {
         super(parent);
     }
 

@@ -1,9 +1,9 @@
 package test.syntaxtree.types;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class IntegerTypeIdentifierNode extends TypeIdentifierNode {
-    public IntegerTypeIdentifierNode(BlockNode parent) {
+    public IntegerTypeIdentifierNode(ScopeNode parent) {
         super(parent);
         setType("integer");
     }

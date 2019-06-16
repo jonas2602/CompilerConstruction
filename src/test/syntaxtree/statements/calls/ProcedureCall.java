@@ -2,11 +2,10 @@ package test.syntaxtree.statements.calls;
 
 import gen.PascalParser.ProcedureStatementContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
-import test.syntaxtree.Node;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class ProcedureCall extends SubCall implements ASTBuilder<ProcedureStatementContext> {
-    public ProcedureCall(BlockNode parent) {
+    public ProcedureCall(ScopeNode parent) {
         super(parent);
     }
 

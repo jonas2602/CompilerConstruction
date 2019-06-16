@@ -1,10 +1,10 @@
 package test.syntaxtree.statements.variables;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class PointerAccessNode extends VariableAccessNode {
 
-    public PointerAccessNode(BlockNode parent) {
+    public PointerAccessNode(ScopeNode parent) {
         super(parent);
     }
 

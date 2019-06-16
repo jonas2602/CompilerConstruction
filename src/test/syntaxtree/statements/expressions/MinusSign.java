@@ -1,16 +1,15 @@
 package test.syntaxtree.statements.expressions;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.IntConstant;
-import test.syntaxtree.constants.NumberConstant;
 import test.syntaxtree.constants.RealConstant;
 
 public class MinusSign extends Node {
 
     private Node term;
 
-    public MinusSign(BlockNode parent) {
+    public MinusSign(ScopeNode parent) {
         super(parent);
     }
 

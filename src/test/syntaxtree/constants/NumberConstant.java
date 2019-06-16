@@ -1,16 +1,16 @@
 package test.syntaxtree.constants;
 
 import gen.PascalParser.UnsignedNumberContext;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.visitors.PascalVisitor;
 
 public abstract class NumberConstant extends Constant {
 
-    public NumberConstant(BlockNode parent) {
+    public NumberConstant(ScopeNode parent) {
         super(parent);
     }
 
-    public static NumberConstant buildAST(UnsignedNumberContext ctx, BlockNode parent) {
+    public static NumberConstant buildAST(UnsignedNumberContext ctx, ScopeNode parent) {
         if(ctx.unsignedInteger() != null) {
             IntConstant i = new IntConstant(parent);
             i.setValue(PascalVisitor.visitUnsignedInt(ctx.unsignedInteger()));

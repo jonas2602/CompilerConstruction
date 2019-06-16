@@ -2,14 +2,14 @@ package test.syntaxtree.statements;
 
 import gen.PascalParser.LabelContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
 public class LabelDefinitionNode extends Node implements ASTBuilder<LabelContext> {
     private int value;
 
-    public LabelDefinitionNode(BlockNode parent) {
+    public LabelDefinitionNode(ScopeNode parent) {
         super(parent);
     }
 

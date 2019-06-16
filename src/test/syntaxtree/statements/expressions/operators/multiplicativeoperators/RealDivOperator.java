@@ -1,15 +1,14 @@
 package test.syntaxtree.statements.expressions.operators.multiplicativeoperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
-import test.syntaxtree.constants.IntConstant;
 import test.syntaxtree.constants.NumberConstant;
 import test.syntaxtree.constants.RealConstant;
 import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class RealDivOperator extends Operator {
 
-    public RealDivOperator(BlockNode parent) {
+    public RealDivOperator(ScopeNode parent) {
         super(parent);
     }
 

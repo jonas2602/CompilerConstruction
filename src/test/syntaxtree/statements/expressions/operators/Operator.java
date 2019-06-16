@@ -1,17 +1,17 @@
 package test.syntaxtree.statements.expressions.operators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 
 public abstract class Operator extends Node {
     protected Node left;
     protected Node right;
 
-    public Operator(BlockNode parent) {
+    public Operator(ScopeNode parent) {
         super(parent);
     }
 
-    public Operator(BlockNode parent, Node left, Node right) {
+    public Operator(ScopeNode parent, Node left, Node right) {
         this.left = left;
         this.right = right;
     }

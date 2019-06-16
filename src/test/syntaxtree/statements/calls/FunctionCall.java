@@ -2,11 +2,11 @@ package test.syntaxtree.statements.calls;
 
 import gen.PascalParser.FunctionDesignatorContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class FunctionCall extends SubCall implements ASTBuilder<FunctionDesignatorContext> {
 
-    public FunctionCall(BlockNode parent) {
+    public FunctionCall(ScopeNode parent) {
         super(parent);
     }
 

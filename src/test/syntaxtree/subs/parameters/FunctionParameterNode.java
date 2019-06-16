@@ -1,10 +1,10 @@
 package test.syntaxtree.subs.parameters;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class FunctionParameterNode extends ParameterNode {
 
-    public FunctionParameterNode(BlockNode parent) {
+    public FunctionParameterNode(ScopeNode parent) {
         super(parent);
     }
 

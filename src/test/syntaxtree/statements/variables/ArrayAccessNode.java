@@ -3,7 +3,7 @@ package test.syntaxtree.statements.variables;
 import gen.PascalParser;
 import gen.PascalParser.IndexedVariableContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.statements.expressions.Expression;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class ArrayAccessNode extends VariableAccessNode implements ASTBuilder<IndexedVariableContext> {
     private List<Node> expressions;
 
-    public ArrayAccessNode(BlockNode parent) {
+    public ArrayAccessNode(ScopeNode parent) {
         super(parent);
 
         expressions = new LinkedList<Node>();

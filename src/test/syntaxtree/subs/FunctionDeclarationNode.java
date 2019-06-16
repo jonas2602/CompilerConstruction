@@ -2,14 +2,15 @@ package test.syntaxtree.subs;
 
 import gen.PascalParser.FunctionDeclarationContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.types.TypeIdentifierNode;
 
 public class FunctionDeclarationNode extends SubNode implements ASTBuilder<FunctionDeclarationContext> {
 
     private TypeIdentifierNode returnType;
 
-    public FunctionDeclarationNode(BlockNode parent) {
+    public FunctionDeclarationNode(ScopeNode parent) {
         super(parent);
     }
 

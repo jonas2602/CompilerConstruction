@@ -1,6 +1,6 @@
 package test.syntaxtree.statements.expressions.operators.additiveoperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.IntConstant;
 import test.syntaxtree.constants.NumberConstant;
@@ -9,7 +9,7 @@ import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class MinusOperator extends Operator {
 
-    public MinusOperator(BlockNode parent) {
+    public MinusOperator(ScopeNode parent) {
         super(parent);
     }
 

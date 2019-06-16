@@ -1,6 +1,6 @@
 package test.syntaxtree.statements.expressions.operators.relationaloperators;
 
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.constants.BoolConstant;
 import test.syntaxtree.constants.NumberConstant;
@@ -8,7 +8,7 @@ import test.syntaxtree.statements.expressions.operators.Operator;
 
 public class NotEqualOperator extends Operator {
 
-    public NotEqualOperator(BlockNode parent) {
+    public NotEqualOperator(ScopeNode parent) {
         super(parent);
     }
 

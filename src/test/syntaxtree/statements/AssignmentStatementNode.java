@@ -2,7 +2,7 @@ package test.syntaxtree.statements;
 
 import gen.PascalParser.AssignmentStatementContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.statements.expressions.Expression;
 import test.syntaxtree.statements.variables.VariableNode;
@@ -12,7 +12,7 @@ public class AssignmentStatementNode extends Node implements ASTBuilder<Assignme
     private VariableNode variable;
     private Node expression;
 
-    public AssignmentStatementNode(BlockNode parent) {
+    public AssignmentStatementNode(ScopeNode parent) {
         super(parent);
     }
 

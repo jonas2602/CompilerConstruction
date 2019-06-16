@@ -2,11 +2,12 @@ package test.syntaxtree.subs;
 
 import gen.PascalParser.ProcedureDeclarationContext;
 import test.syntaxtree.ASTBuilder;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 
 public class ProcedureDeclarationNode extends SubNode implements ASTBuilder<ProcedureDeclarationContext> {
 
-    public ProcedureDeclarationNode(BlockNode parent) {
+    public ProcedureDeclarationNode(ScopeNode parent) {
         super(parent);
     }
 

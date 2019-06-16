@@ -1,13 +1,12 @@
 package test.syntaxtree.declarations;
 
-import gen.PascalParser;
-import test.syntaxtree.BlockNode;
+import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 
 public class VariableDeclarationNode extends Node {
     private String name;
 
-    public VariableDeclarationNode(BlockNode parent) {
+    public VariableDeclarationNode(ScopeNode parent) {
         super(parent);
     }
 
