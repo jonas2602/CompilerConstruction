@@ -3,6 +3,7 @@ package test.syntaxtree.statements;
 import gen.PascalParser;
 import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.statements.calls.ProcedureCall;
+import test.syntaxtree.statements.controlstatements.ForStatement;
 import test.syntaxtree.statements.controlstatements.IfStatement;
 import test.syntaxtree.statements.controlstatements.RepeatStatement;
 import test.syntaxtree.statements.controlstatements.WhileStatement;
@@ -46,7 +47,9 @@ public class StatementBlock {
                     parent.addStatement(repstm);
                 }
                 else if(repctx.forStatement() != null) {
-                    //TODO: for
+                    ForStatement forstm = new ForStatement(parent);
+                    forstm.buildAST(repctx.forStatement());
+                    parent.addStatement(forstm);
                 }
             }
         }

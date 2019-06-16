@@ -61,4 +61,6 @@ end;
 
 begin
     writeln('Hello, World!');
+    for test := 0 to 10 do
+        writeln('Hello World')
 end.
