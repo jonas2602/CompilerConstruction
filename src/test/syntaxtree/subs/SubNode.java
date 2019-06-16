@@ -5,7 +5,7 @@ import test.syntaxtree.scopes.BlockNode;
 import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.syntaxtree.subs.parameters.*;
-import test.syntaxtree.types.TypeIdentifierNode;
+import test.syntaxtree.types.typeidentifiers.TypeIdentifierNode;
 import test.visitors.PascalVisitor;
 
 import java.util.Collections;

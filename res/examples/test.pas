@@ -10,6 +10,11 @@ label
 label
     14;
 
+function testfunc(param1: integer): integer;
+begin
+    testfunc := 12;
+end;
+
 procedure test(function test: integer; test, test2: integer; test4: human);
     var
         temp, a12: integer;
@@ -27,7 +32,6 @@ procedure test(function test: integer; test, test2: integer; test4: human);
 
     end;
 begin
-    writeln('TEST');
     Begin
         isTest:= not not TRUE and FALSE;
         temp := 5 + -12.54;
@@ -40,27 +44,19 @@ begin
         testfunc(5);
         123:
         if temp = 14 then
-            writeln('YEA')
+            testfunc(5)
         else
             begin
                 while temp <> 14 do
                     temp := temp + 1;
-                writeln('NAY');
                 repeat
-                    writeln('TEST');
                     temp := temp - 1;
                 until temp <= 4;
             end
     End
 end;
 
-function testfunc(param1: integer): integer;
 begin
-    testfunc := 12;
-end;
-
-begin
-    writeln('Hello, World!');
-    for test := 0 to 10 do
-        writeln('Hello World')
+    for test := 0 to 10-5 do
+        test(1, 2, 3);
 end.

@@ -1,15 +1,9 @@
 package test.syntaxtree.scopes;
 
-import gen.PascalParser;
 import test.syntaxtree.Node;
-import test.syntaxtree.declarations.ConstantDeclarationNode;
 import test.syntaxtree.declarations.LabelDeclarationNode;
-import test.syntaxtree.declarations.VariableDeclarationNode;
-import test.syntaxtree.statements.StatementBlock;
 import test.syntaxtree.subs.SubNode;
-import test.visitors.PascalVisitor;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +19,14 @@ public abstract class ScopeNode extends Node {
     public void addStatement(Node statement) {
         statements.add(statement);
     }
+
+    public abstract LabelDeclarationNode searchLabelDeclaration(String name);
+
+    public LabelDeclarationNode searchLabelDeclarationGoto(String name) {
+        return searchLabelDeclaration(name);
+    }
+
+    public abstract SubNode searchFunctionOrProcedure(String name);
 
     @Override
     public void print(int level) {

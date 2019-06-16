@@ -16,11 +16,11 @@ public abstract class Constant extends Node {
         if(ctx.unsignedNumber() != null) {
             return NumberConstant.buildAST(ctx.unsignedNumber(), parent);
         }
-        else if(ctx.constantChr() != null) {
+        /*else if(ctx.constantChr() != null) {
             CharConstant chrconst = new CharConstant(parent);
             chrconst.setValue(PascalVisitor.visitConstantChar(ctx.constantChr()));
             return chrconst;
-        }
+        }*/
         else {
             StringConstant strconst = new StringConstant(parent);
             strconst.setValue(PascalVisitor.visitConstantString(ctx.string()));

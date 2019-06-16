@@ -1,4 +1,4 @@
-package test.syntaxtree.types;
+package test.syntaxtree.types.typeidentifiers;
 
 import test.syntaxtree.scopes.ScopeNode;
 

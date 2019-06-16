@@ -1,4 +1,4 @@
-// Generated from D:/JetBrains/Projects/Intellij/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
+// Generated from C:/Users/Project_X/gitKraken/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
 package gen;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -74,13 +74,6 @@ public class PascalBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitConstantDefinition(PascalParser.ConstantDefinitionContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitConstantChr(PascalParser.ConstantChrContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

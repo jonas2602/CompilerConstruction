@@ -2,27 +2,34 @@ package test.syntaxtree.statements;
 
 import gen.PascalParser.LabelContext;
 import test.syntaxtree.ASTBuilder;
+import test.syntaxtree.declarations.LabelDeclarationNode;
 import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
 public class LabelDefinitionNode extends Node implements ASTBuilder<LabelContext> {
-    private int value;
+
+    private String value;
 
     public LabelDefinitionNode(ScopeNode parent) {
         super(parent);
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public String getValue() {
         return this.value;
     }
 
     public void buildAST(LabelContext ctx) {
-        value = PascalVisitor.visitUnsignedInt(ctx.unsignedInteger());
+        value = ctx.unsignedInteger().getText();
+        LabelDeclarationNode label = parentBlock.searchLabelDeclaration(value);
+        if(label == null) {
+            throw new RuntimeException("Unable to find declaration for label "+value+"!");
+        }
+        label.setDefinitionNode(this);
     }
 
     @Override

@@ -4,7 +4,7 @@ import gen.PascalParser.FunctionDeclarationContext;
 import test.syntaxtree.ASTBuilder;
 import test.syntaxtree.scopes.BlockNode;
 import test.syntaxtree.scopes.ScopeNode;
-import test.syntaxtree.types.TypeIdentifierNode;
+import test.syntaxtree.types.typeidentifiers.TypeIdentifierNode;
 
 public class FunctionDeclarationNode extends SubNode implements ASTBuilder<FunctionDeclarationContext> {
 

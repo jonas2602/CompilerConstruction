@@ -4,6 +4,7 @@ import gen.PascalParser;
 import gen.PascalParser.ParameterListContext;
 import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
+import test.syntaxtree.subs.SubNode;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public abstract class SubCall extends Node {
     protected String name;
+    protected SubNode target;
     protected List<Parameter> parameters;
 
     public SubCall(ScopeNode parent) {

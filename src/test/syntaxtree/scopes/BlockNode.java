@@ -5,18 +5,17 @@ import test.syntaxtree.Node;
 import test.syntaxtree.declarations.ConstantDeclarationNode;
 import test.syntaxtree.declarations.LabelDeclarationNode;
 import test.syntaxtree.declarations.VariableDeclarationNode;
+import test.syntaxtree.statements.LabelDefinitionNode;
 import test.syntaxtree.statements.StatementBlock;
 import test.syntaxtree.subs.SubNode;
 import test.visitors.PascalVisitor;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BlockNode extends ScopeNode {
     private List<VariableDeclarationNode> variables;
-    private List<SubNode> subs;
-    private List<LabelDeclarationNode> labels;
+    private HashMap<String, SubNode> subs;
+    private HashMap<String, LabelDeclarationNode> labels;
     private List<ConstantDeclarationNode> constants;
 
     public BlockNode() {
@@ -31,8 +30,8 @@ public class BlockNode extends ScopeNode {
 
     private void init() {
         variables = new LinkedList<VariableDeclarationNode>();
-        subs = new LinkedList<SubNode>();
-        labels = new LinkedList<LabelDeclarationNode>();
+        subs = new HashMap<String, SubNode>();
+        labels = new HashMap<String, LabelDeclarationNode>();
         constants = new LinkedList<ConstantDeclarationNode>();
     }
 
@@ -41,23 +40,45 @@ public class BlockNode extends ScopeNode {
     }
 
     public void addSub(SubNode sub) {
-        subs.add(sub);
+        subs.put(sub.getName(), sub);
     }
 
     public void addLabel(LabelDeclarationNode label) {
-        labels.add(label);
+        labels.put(label.getValue(), label);
     }
 
     public void addConstant(ConstantDeclarationNode con) {
         constants.add(con);
     }
 
-    public List<VariableDeclarationNode> getVariables() {
-        return Collections.unmodifiableList(variables);
+    public LabelDeclarationNode searchLabelDeclaration(String name) {
+        //search local labels
+        LabelDeclarationNode local = labels.get(name);
+        if(local != null) {
+            return local;
+        }
+
+        //check if there is an outer scope
+        if(parentBlock != null) {
+            return parentBlock.searchLabelDeclaration(name);
+        }
+
+        return null;
     }
 
-    public List<SubNode> getSubs() {
-        return Collections.unmodifiableList(subs);
+    public SubNode searchFunctionOrProcedure(String name) {
+        //search local
+        SubNode local = subs.get(name);
+        if(local != null) {
+            return local;
+        }
+
+        //check if there is an outer scope
+        if(parentBlock != null) {
+            return parentBlock.searchFunctionOrProcedure(name);
+        }
+
+        return null;
     }
 
     public void buildAST(PascalParser.BlockContext ctx) {
@@ -117,14 +138,15 @@ public class BlockNode extends ScopeNode {
             n.print(level);
         }
 
-        for(Node n: labels) {
-            n.print(level);
-        }
-
-        for(Node n: subs) {
-            n.print(level);
-        }
+        printMap(level, labels);
+        printMap(level, subs);
 
         super.print(level);
+    }
+
+    private <T extends Node> void printMap(int level, Map<?, T> map) {
+        for(Map.Entry<?, T> entry : map.entrySet()) {
+            entry.getValue().print(level);
+        }
     }
 }

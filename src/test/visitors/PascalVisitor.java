@@ -15,10 +15,6 @@ public class PascalVisitor {
         return Double.parseDouble(ctx.getText());
     }
 
-    public static char visitConstantChar(PascalParser.ConstantChrContext ctx) {
-        return ctx.getText().charAt(1);
-    }
-
     public static String visitConstantString(PascalParser.StringContext ctx) {
         return ctx.getText().substring(1, ctx.getText().length()-1);
     }

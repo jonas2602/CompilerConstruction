@@ -1,4 +1,4 @@
-// Generated from D:/JetBrains/Projects/Intellij/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
+// Generated from C:/Users/Project_X/gitKraken/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
 package gen;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -64,12 +64,6 @@ public interface PascalVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitConstantDefinition(PascalParser.ConstantDefinitionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PascalParser#constantChr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConstantChr(PascalParser.ConstantChrContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PascalParser#constant}.
 	 * @param ctx the parse tree

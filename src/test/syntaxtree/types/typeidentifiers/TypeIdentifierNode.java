@@ -1,4 +1,4 @@
-package test.syntaxtree.types;
+package test.syntaxtree.types.typeidentifiers;
 
 import gen.PascalParser;
 import test.syntaxtree.scopes.ScopeNode;

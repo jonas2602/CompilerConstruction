@@ -68,9 +68,6 @@ constantDefinition
    : identifier EQUAL constant
    ;
 
-constantChr
-   : CHR LPAREN unsignedInteger RPAREN
-   ;
 
 constant
    : unsignedNumber
@@ -78,7 +75,6 @@ constant
    | identifier
    | sign identifier
    | string
-   | constantChr
    ;
 
 unsignedNumber
@@ -373,7 +369,6 @@ factor
 
 unsignedConstant
    : unsignedNumber
-   | constantChr
    | string
    | NIL
    ;
@@ -553,11 +548,6 @@ CASE
 
 CHAR
    : C H A R
-   ;
-
-
-CHR
-   : C H R
    ;
 
 

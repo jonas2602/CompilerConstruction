@@ -3,28 +3,35 @@ package test.syntaxtree.statements;
 import gen.PascalParser.GotoStatementContext;
 
 import test.syntaxtree.ASTBuilder;
+import test.syntaxtree.declarations.LabelDeclarationNode;
 import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
 import test.visitors.PascalVisitor;
 
 public class GotoStatementNode extends Node implements ASTBuilder<GotoStatementContext> {
 
-    private int value;
+    private String value;
+    private LabelDefinitionNode target;
 
     public GotoStatementNode(ScopeNode parent) {
         super(parent);
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
     public void buildAST(GotoStatementContext ctx) {
-        value = PascalVisitor.visitUnsignedInt(ctx.label().unsignedInteger());
+        value = ctx.label().unsignedInteger().getText();
+        LabelDeclarationNode label = parentBlock.searchLabelDeclarationGoto(value);
+        if(label == null) {
+            throw new RuntimeException("Unable to find declaration for label "+value+"!");
+        }
+        target = label.getDefinitionNode();
     }
 
     @Override

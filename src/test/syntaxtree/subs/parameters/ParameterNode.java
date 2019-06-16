@@ -2,7 +2,7 @@ package test.syntaxtree.subs.parameters;
 
 import test.syntaxtree.scopes.ScopeNode;
 import test.syntaxtree.Node;
-import test.syntaxtree.types.TypeIdentifierNode;
+import test.syntaxtree.types.typeidentifiers.TypeIdentifierNode;
 
 public abstract class ParameterNode extends Node {
 
