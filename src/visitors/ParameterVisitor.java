@@ -33,8 +33,9 @@ public class ParameterVisitor extends PascalBaseVisitor<List<AbstractSyntaxTree>
         List<AbstractSyntaxTree> outParams = new ArrayList<>();
 
         TypeNode type = new TypeVisitor().visit(ctx.typeIdentifier());
+        int paramIndex = 0;
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
-            outParams.add(new ParamDeclNode(ident.IDENT().getText(), type));
+            outParams.add(new ParamDeclNode(ident.IDENT().getText(), type, paramIndex++));
         }
 
         return outParams;

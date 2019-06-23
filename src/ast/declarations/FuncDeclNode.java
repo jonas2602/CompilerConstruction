@@ -1,16 +1,50 @@
 package ast.declarations;
 
+import ast.AbstractSyntaxTree;
 import ast.BlockNode;
+import ast.TypeCheckException;
+import ast.expressions.FuncCallNode;
+import ast.expressions.ParameterNode;
+import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import llvm.CodeSnippet_FuncDef;
+import llvm.CodeSnippet_Plain;
+import llvm.CodeSnippet_Type;
+import writer.GeneratorSlave;
 
-public class FuncDeclNode extends ProcDeclNode {
-    private TypeNode m_ReturnType;
+import java.util.ArrayList;
+import java.util.List;
 
-    public FuncDeclNode(String InName, TypeNode InReturnType, BlockNode InBlock){
-        super(InName, InBlock);
+public class FuncDeclNode extends AbstractSyntaxTree {
+    protected String m_Name;
+    protected List<ParamDeclNode> m_Params = new ArrayList<>();
+    protected TypeNode m_ReturnType;
+    protected BlockNode m_Block;
 
+    protected boolean m_IsCreated = false;
+
+    public FuncDeclNode(String InName, TypeNode InReturnType, BlockNode InBlock) {
+        m_Name = InName;
         m_ReturnType = InReturnType;
+        m_Block = InBlock;
+
         m_ReturnType.SetParent(this);
+        InBlock.SetParent(this);
+    }
+
+    public void AddParameter(ParamDeclNode InParam) {
+        InParam.SetParent(this);
+        m_Params.add(InParam);
+    }
+
+    public String GetName() {
+        return m_Name;
+    }
+
+    @Override
+    public TypeNode GetType() {
+        return m_ReturnType;
     }
 
     // No need the Check Child types, because block is handled by parent class,
@@ -18,7 +52,59 @@ public class FuncDeclNode extends ProcDeclNode {
     // as variable
 
     @Override
-    public TypeNode GetType() {
-        return m_ReturnType;
+    public TypeNode CheckType() {
+        // Block will also Check the Parameters, because they are stored in the block as variables
+        m_Block.CheckType();
+        return GetType();
+    }
+
+    public void ValidateCall(FuncCallNode InCallNode) {
+        // Parameter count fits the definition?
+        if (InCallNode.GetParameterCount() != m_Params.size()) {
+            throw new TypeCheckException(InCallNode, "Function expected " + InCallNode.GetParameterCount() + " Arguments but received " + m_Params.size());
+        }
+
+        // Compare given parameters to expected types
+        for (int i = 0; i < m_Params.size(); i++) {
+            TypeNode CallParamType = InCallNode.GetParameter(i).GetType();
+            TypeNode FuncParamType = m_Params.get(i).GetType();
+            if (!FuncParamType.CompareType(CallParamType)) {
+                throw new TypeCheckException(this, "Function received unexpected type");
+            }
+        }
+    }
+
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        // Only build once
+        if (m_IsCreated) return null;
+        m_IsCreated = true;
+
+        // Create Function Header
+        CodeSnippet_Type funcTypeSnippet = (CodeSnippet_Type) m_ReturnType.CreateSnippet(slave, ctx);
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcTypeSnippet, true);
+
+        // Add Parameters
+        for (ParamDeclNode param : m_Params) {
+            CodeSnippet_Base paramSnippet = param.CreateSnippet(slave, funcDef);
+            funcDef.AddParameter(paramSnippet);
+        }
+        // Create Function Body
+        m_Block.CreateSnippet(slave, funcDef);
+
+        // Function should have return type?
+        if (m_ReturnType.CompareType(NamedTypeNode.VoidNode)) {
+            funcDef.AddStatement(new CodeSnippet_Plain("ret void"));
+        } else {
+            // TODO: Get Scope Index of variable or create variable with default value
+            VarDeclNode varDecl = m_Block.GetVariableDeclaration(m_Name);
+            varDecl.GetScopeIndex();
+            funcDef.AddStatement(slave.CreateReturnStmt(funcTypeSnippet, "0"));
+        }
+
+        // Remove Function from stack
+        slave.ExitScope();
+
+        return funcDef;
     }
 }

@@ -4,8 +4,10 @@ import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 
 public class VarDeclNode extends AbstractSyntaxTree {
-    String m_Name;
-    TypeNode m_Type;
+    protected String m_Name;
+    protected TypeNode m_Type;
+
+    protected int m_ScopeIndex = -1;
 
     public VarDeclNode(String InName, TypeNode InType) {
         this.m_Name = InName;
@@ -16,6 +18,16 @@ public class VarDeclNode extends AbstractSyntaxTree {
     public String GetName() {
         return m_Name;
     }
+    public int GetScopeIndex() { return m_ScopeIndex; }
+    public boolean HasScopeIndex() { return m_ScopeIndex != -1; }
+    // public int GetOrCreateScopeIndex() {
+    //     if(!HasScopeIndex()){
+    //
+    //     }
+    //
+    //     return m_ScopeIndex;
+    // }
+
 
     @Override
     public TypeNode CheckType() {

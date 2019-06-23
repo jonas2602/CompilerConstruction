@@ -1,6 +1,8 @@
 package ast;
 
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import writer.GeneratorSlave;
 
 public class AbstractSyntaxTree {
     private AbstractSyntaxTree m_Parent;
@@ -42,4 +44,9 @@ public class AbstractSyntaxTree {
     //  TryCheck will be called from parent and calls the actual implementation only if a local variable (bChecked)
     //  is false, to avoid duplicate checks.
     //  CheckType_Impl replaces the current function and gets inherited by all Nodes.
+
+
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        return null;
+    }
 }

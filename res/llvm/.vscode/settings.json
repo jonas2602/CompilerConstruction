@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "corecrt_wstdio.h": "c",
+        "corecrt.h": "c"
+    }
+}

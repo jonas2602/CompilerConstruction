@@ -3,6 +3,9 @@ package ast.types;
 import ast.EPrimitiveType;
 import ast.TypeCheckException;
 import ast.declarations.TypeDeclNode;
+import llvm.CodeSnippet_Base;
+import llvm.CodeSnippet_Type;
+import writer.GeneratorSlave;
 
 public class NamedTypeNode extends TypeNode {
     // TODO: Assign Primitives to root block? How to validate them?
@@ -12,6 +15,7 @@ public class NamedTypeNode extends TypeNode {
     public static final NamedTypeNode BoolNode = new NamedTypeNode(EPrimitiveType.BOOL);
     public static final NamedTypeNode CharNode = new NamedTypeNode(EPrimitiveType.CHAR);
     public static final NamedTypeNode StringNode = new NamedTypeNode(EPrimitiveType.STRING);
+    public static final NamedTypeNode VoidNode = new NamedTypeNode(EPrimitiveType.VOID);
 
 
     private String m_TypeName;
@@ -56,6 +60,29 @@ public class NamedTypeNode extends TypeNode {
         throw new TypeCheckException(this, "Type with name " + m_TypeName + " is not defined");
     }
 
+    public static boolean IsPrimitiveType(TypeNode InType, boolean IncludingVoid) {
+        if (InType.CompareType(IntNode)) return true;
+        if (InType.CompareType(RealNode)) return true;
+        if (InType.CompareType(BoolNode)) return true;
+        if (InType.CompareType(CharNode)) return true;
+        if (InType.CompareType(StringNode)) return true;
+        if (InType.CompareType(VoidNode) && IncludingVoid) return true;
+
+        return false;
+    }
+
+    // returns void if not primitive
+    public EPrimitiveType GetPrimitiveType() {
+        if (CompareType(IntNode)) return EPrimitiveType.INT;
+        if (CompareType(RealNode)) return EPrimitiveType.REAL;
+        if (CompareType(BoolNode)) return EPrimitiveType.BOOL;
+        if (CompareType(CharNode)) return EPrimitiveType.CHAR;
+        if (CompareType(StringNode)) return EPrimitiveType.STRING;
+
+        System.out.println(this + " is not a primitive type");
+        return EPrimitiveType.VOID;
+    }
+
     @Override
     public TypeNode GetType() {
         return this;
@@ -69,5 +96,11 @@ public class NamedTypeNode extends TypeNode {
     @Override
     public String toString() {
         return "Type(" + m_TypeName + ")";
+    }
+
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        // TODO: handle non primitive types
+        return new CodeSnippet_Type(CodeSnippet_Type.EType.FromAstType(GetPrimitiveType()));
     }
 }

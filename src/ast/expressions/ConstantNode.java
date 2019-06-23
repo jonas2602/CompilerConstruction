@@ -2,16 +2,23 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import llvm.CodeSnippet_Plain;
+import writer.GeneratorSlave;
 
 public class ConstantNode extends AbstractSyntaxTree {
-    private String m_Data;
-    private TypeNode m_Type;
+    protected String m_Data;
+    protected TypeNode m_Type;
 
     public ConstantNode(String InData, TypeNode InType) {
         this.m_Data = InData;
         this.m_Type = InType;
 
         m_Type.SetParent(this);
+    }
+
+    public String GetData() {
+        return m_Data;
     }
 
     @Override
@@ -22,5 +29,10 @@ public class ConstantNode extends AbstractSyntaxTree {
     @Override
     public TypeNode GetType() {
         return m_Type.GetType();
+    }
+
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        return new CodeSnippet_Plain(m_Data);
     }
 }

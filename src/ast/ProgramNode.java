@@ -1,10 +1,15 @@
 package ast;
 
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import llvm.CodeSnippet_FuncDef;
+import llvm.CodeSnippet_Type;
+import writer.GeneratorSlave;
 
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: inherit from FuncDeclNode
 public class ProgramNode extends AbstractSyntaxTree {
     private String m_Name;
     private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
@@ -30,5 +35,13 @@ public class ProgramNode extends AbstractSyntaxTree {
 
         m_Block.CheckType();
         return null;
+    }
+
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition("main", CodeSnippet_Type.SNIPPETTYPE_INT, true);
+        m_Block.CreateSnippet(slave, funcDef);
+        funcDef.AddStatement(slave.CreateReturnStmt(CodeSnippet_Type.EType.INT, "0"));
+        return funcDef;
     }
 }

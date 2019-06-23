@@ -152,25 +152,27 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitUnsignedInteger(PascalParser.UnsignedIntegerContext ctx) {
         // TODO: Create Constant Node of type Integer
-        return new ConstantNode(ctx.NUM_INT().getText(), new NamedTypeNode(EPrimitiveType.INT));
+        return new ConstantNode(ctx.NUM_INT().getText(), NamedTypeNode.IntNode);
     }
 
     @Override
     public AbstractSyntaxTree visitUnsignedReal(PascalParser.UnsignedRealContext ctx) {
         // TODO: Create Constant Node of type Real
-        return new ConstantNode(ctx.NUM_REAL().getText(), new NamedTypeNode(EPrimitiveType.REAL));
+        return new ConstantNode(ctx.NUM_REAL().getText(), NamedTypeNode.RealNode);
     }
 
     @Override
     public AbstractSyntaxTree visitConstantChr(PascalParser.ConstantChrContext ctx) {
         // TODO: Create Constant Node of type Char
         // TODO: Convert to char?
-        return new ConstantNode(ctx.unsignedInteger().getText(), new NamedTypeNode(EPrimitiveType.CHAR));
+        return new ConstantNode(ctx.unsignedInteger().getText(), NamedTypeNode.CharNode);
     }
 
     @Override
     public AbstractSyntaxTree visitString(PascalParser.StringContext ctx) {
         // TODO: Create Constant Node of type String
-        return new ConstantNode(ctx.STRING_LITERAL().getText(), new NamedTypeNode(EPrimitiveType.STRING));
+        String data = ctx.STRING_LITERAL().getText();
+        data = data.substring(1, data.length() - 1);
+        return new ConstantNode_String(data);
     }
 }

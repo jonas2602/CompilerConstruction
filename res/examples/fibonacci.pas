@@ -9,7 +9,7 @@ begin
 end;
 
 var
-    i:integer;
+    i: integer;
 
 begin
     for i := 1 to 16 do

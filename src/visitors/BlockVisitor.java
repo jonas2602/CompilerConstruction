@@ -3,6 +3,7 @@ package visitors;
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.declarations.*;
+import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -118,7 +119,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         // Create Function Node + Block
         String name = ctx.identifier().IDENT().getText();
         TypeNode returnType = new TypeVisitor().visit(ctx.resultType());
-        // Make shure VarDeclNode is created before return type gets added to the FuncDeclNode, so that the paren of ther return type gets overriden by the FuncDeclNode
+        // Make shure VarDeclNode is created before return type gets added to the FuncDeclNode, so that the parent of the return type gets overriden by the FuncDeclNode
         VarDeclNode funcTypeNode = new VarDeclNode(name, returnType);
         BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
         FuncDeclNode funcDecl = new FuncDeclNode(name, returnType, body);
@@ -146,7 +147,8 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         // Create Procedure Node + Block
         String name = ctx.identifier().IDENT().getText();
         BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
-        ProcDeclNode procDecl = new ProcDeclNode(name, body);
+        FuncDeclNode procDecl = new FuncDeclNode(name, NamedTypeNode.VoidNode, body);
+//        ProcDeclNode procDecl = new ProcDeclNode(name, body);
 
         // Add Parameters to both, Procedure and Block
         List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());
@@ -157,7 +159,8 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         }
 
         // Add declarations to the new block
-        m_BlockNode.AddProcedureDeclaration(procDecl);
+//        m_BlockNode.AddProcedureDeclaration(procDecl);
+        m_BlockNode.AddFunctionDeclaration(procDecl);
         return procDecl;
     }
 }

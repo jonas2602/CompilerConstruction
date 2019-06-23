@@ -2,6 +2,8 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import writer.GeneratorSlave;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,16 @@ public class CompStmtNode extends AbstractSyntaxTree {
     public TypeNode CheckType() {
         for (AbstractSyntaxTree stmt : m_Statements) {
             stmt.CheckType();
+        }
+
+        return null;
+    }
+
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        for(AbstractSyntaxTree node : m_Statements){
+            CodeSnippet_Base stmt = node.CreateSnippet(slave, ctx);
+            slave.GetScopeSnippet().AddStatement(stmt);
         }
 
         return null;

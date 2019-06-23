@@ -5,7 +5,8 @@ public enum EPrimitiveType {
     BOOL("boolean"),
     CHAR("char"),
     STRING("string"),
-    REAL("real");
+    REAL("real"),
+    VOID("void");
 
     private final String label;
 

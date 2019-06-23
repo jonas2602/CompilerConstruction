@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
+import ast.TypeCheckException;
 import ast.declarations.VarDeclNode;
 import ast.types.TypeNode;
 
@@ -21,8 +22,14 @@ public class VariableNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode GetType() {
+        // Try find declaration for variable in contained block
         if (m_Declaration == null) {
             m_Declaration = GetOwningBlock().GetVariableDeclaration(m_Name);
+        }
+
+        // still no declaration?
+        if(m_Declaration == null){
+            throw new TypeCheckException(this, "Can't find variable declaration for " + m_Name);
         }
 
         return m_Declaration.GetType();

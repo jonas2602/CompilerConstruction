@@ -1,6 +1,7 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
+import ast.expressions.FuncCallNode;
 import ast.expressions.VariableNode;
 import ast.statements.*;
 import gen.PascalBaseVisitor;
@@ -48,7 +49,8 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitProcedureStatement(PascalParser.ProcedureStatementContext ctx) {
         String procName = ctx.identifier().IDENT().getText();
-        ProcCallNode procCall = new ProcCallNode(procName);
+//        ProcCallNode procCall = new ProcCallNode(procName);
+        FuncCallNode procCall = new FuncCallNode(procName);
 
         if (ctx.parameterList() != null) {
             List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.parameterList());
@@ -89,9 +91,9 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
         // The last Statement is always an empty statements. Therefore if the amount of stmts is not
         // more than 2 (actually 1 valid) its not necessary to combine them in a compound statements
-        if (ctx.statement().size() <= 2) {
-            return visitStatement(ctx.statement(0));
-        }
+        // if (ctx.statement().size() <= 2) {
+        //     return visitStatement(ctx.statement(0));
+        // }
 
         for (int i = 0; i < ctx.statement().size() - 1; i++) {
             AbstractSyntaxTree stmtNode = visitStatement(ctx.statement(i));
