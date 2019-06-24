@@ -3,29 +3,33 @@ package llvm;
 import java.util.List;
 
 public class CodeSnippetHelper {
-    static String MakeSeperatedString(String InSeperator, List<String> InElements) {
-        String outString = "";
+    public static String MakeSeperatedString(String InSeperator, List<String> InElements) {
+        StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < InElements.size(); i++) {
-            if (i > 0) {
-                outString += InSeperator;
-            }
-            outString += InElements.get(i);
+        if(InElements.size() > 0) {
+            builder.append(InElements.get(0));
         }
 
-        return outString;
+        for (int i = 1; i < InElements.size(); i++) {
+            builder.append(InSeperator);
+            builder.append(InElements.get(i));
+        }
+
+        return builder.toString();
     }
 
-    static String MakeSeperatedSnippets(String InSeperator, List<CodeSnippet_Base> InElements) {
-        String outString = "";
+    public static String MakeSeperatedSnippets(String InSeperator, List<CodeSnippet_Base> InElements) {
+        StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < InElements.size(); i++) {
-            if (i > 0) {
-                outString += InSeperator;
-            }
-            outString += InElements.get(i).Write();
+        if(InElements.size() > 0) {
+            builder.append(InElements.get(0).Write());
         }
 
-        return outString;
+        for (int i = 1; i < InElements.size(); i++) {
+            builder.append(InSeperator);
+            builder.append(InElements.get(i).Write());
+        }
+
+        return builder.toString();
     }
 }
