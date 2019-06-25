@@ -1,6 +1,8 @@
 package ast.types;
 
 import ast.core.PascalType;
+import ast.core.PascalType_Char;
+import ast.core.PascalType_Float;
 import ast.core.PascalType_Int;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
@@ -8,9 +10,9 @@ import writer.GeneratorSlave;
 
 public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(new PascalType_Int());
-    // public static final NamedTypeNode RealNode = new NamedTypeNode(EPrimitiveType.REAL);
+    public static final PrimitiveTypeNode FloatNode = new PrimitiveTypeNode(new PascalType_Float());
+    public static final PrimitiveTypeNode CharNode = new PrimitiveTypeNode(new PascalType_Char());
     // public static final NamedTypeNode BoolNode = new NamedTypeNode(EPrimitiveType.BOOL);
-    // public static final NamedTypeNode CharNode = new NamedTypeNode(EPrimitiveType.CHAR);
     // public static final NamedTypeNode StringNode = new NamedTypeNode(EPrimitiveType.STRING);
     // public static final NamedTypeNode VoidNode = new NamedTypeNode(EPrimitiveType.VOID);
 
@@ -38,6 +40,11 @@ public class PrimitiveTypeNode extends TypeNode {
 
     public String GetTypeDefault() {
         return m_PrimitiveType.GetDefaultValue();
+    }
+
+    @Override
+    public TypeNode CheckType() {
+        return GetType();
     }
 
     @Override

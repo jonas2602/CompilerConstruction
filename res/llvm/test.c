@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
 
 int myval = 0;
 
@@ -13,6 +15,7 @@ char test(char a, char b);
 float addf(float f);
 int addi(int i);
 void none();
+char* makeString(char left, char right);
 
 int main()
 {
@@ -21,6 +24,7 @@ int main()
 
     person john;
     printf("%s ist %d Jahre alt. %d\n", john.name, john.age, testInt);
+    printf("%s", makeString('a', 'b'));
 }
 
 void none()
@@ -47,7 +51,7 @@ int addi(int i)
     return r;
 }
 
-int testCast(float i)
+char testCast(double i)
 {
     return i;
 }
@@ -67,4 +71,15 @@ int check(int i)
 void myprint(int s, float f)
 {
     printf("%c%f", s, f);
+}
+
+char* makeString(char left, char right)
+{
+    char* str = malloc(3 * sizeof(char));
+    str[0] = left;
+    str[1] = right;
+    str[2] = '\0';
+
+
+    return str;
 }

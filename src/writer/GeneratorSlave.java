@@ -58,6 +58,10 @@ public class GeneratorSlave {
         return new CodeSnippet_Plain(String.format("ret %s %s", InType.Write(), InData));
     }
 
+    public CodeSnippet_Plain CreateReturnStmt(String InType, String InData) {
+        return new CodeSnippet_Plain(String.format("ret %s %s", InType, InData));
+    }
+
     public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Base InReturnType, boolean bEnterScope) {
         CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(InName, InReturnType);
         def.AddStatement(new CodeSnippet_Plain("begin:"));
@@ -108,8 +112,8 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public int ExtendCharToInt(String Source) {
-        String exp = String.format("sext i8 %s to i32", Source);
+    public int ExtendToInt(String SourceType, String SourceData) {
+        String exp = String.format("sext %s %s to i32", SourceType, SourceData);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
@@ -134,8 +138,8 @@ public class GeneratorSlave {
     }
 
     public void StoreInt(String InValue, int InIndex) {
-        String exp = String.format("store i32 %s, i32* %d", InValue, InIndex);
-        GetScopeSnippet().AddStatementWithStorage(exp);
+        String exp = String.format("store i32 %s, i32* %%%d", InValue, InIndex);
+        GetScopeSnippet().AddStatement(exp);
     }
 
     public List<String> Serialize() {

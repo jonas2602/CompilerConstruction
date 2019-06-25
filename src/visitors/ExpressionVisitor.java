@@ -163,7 +163,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitUnsignedReal(PascalParser.UnsignedRealContext ctx) {
         // TODO: Create Constant Node of type Real
-        return new ConstantNode(ctx.NUM_REAL().getText(), NamedTypeNode.RealNode);
+        return new ConstantNode(ctx.NUM_REAL().getText(), PrimitiveTypeNode.FloatNode);
     }
 
     @Override
@@ -175,7 +175,6 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitString(PascalParser.StringContext ctx) {
-        // TODO: Create Constant Node of type String
         String data = ctx.STRING_LITERAL().getText();
         data = data.substring(1, data.length() - 1);
         return new ConstantNode_String(data);

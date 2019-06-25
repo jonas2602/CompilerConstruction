@@ -8,17 +8,17 @@ import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
 
-public class PascalType_Int extends PascalType {
-    public PascalType_Int() {
-        super("i32", 32, false, "%d", "0");
+public class PascalType_Float extends PascalType {
+    public PascalType_Float() {
+        super("float", 32, true, "%f", "0.0");
     }
 
-    public static class FuncDeclNode_addInt extends FuncDeclNode_Core {
-        public FuncDeclNode_addInt() {
-            super("operator+", PrimitiveTypeNode.IntNode);
+    public static class FuncDeclNode_addFloat extends FuncDeclNode_Core {
+        public FuncDeclNode_addFloat() {
+            super("operator+", PrimitiveTypeNode.FloatNode);
 
-            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.IntNode));
-            AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.IntNode));
+            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.FloatNode));
+            AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.FloatNode));
 
             m_bCustomCallLogic = true;
             m_bInline = true;
@@ -29,17 +29,17 @@ public class PascalType_Int extends PascalType {
             CodeSnippet_Base leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave, ctx);
             CodeSnippet_Base rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave, ctx);
 
-            int scopeIndex = slave.AddIntInt(leftParam.Write(), rightParam.Write());
+            int scopeIndex = slave.AddFloatFloat(leftParam.Write(), rightParam.Write());
             return new CodeSnippet_Plain("%" + scopeIndex);
         }
     }
 
-    public static class FuncDeclNode_addFloat extends FuncDeclNode_Core {
-        public FuncDeclNode_addFloat() {
+    public static class FuncDeclNode_addInt extends FuncDeclNode_Core {
+        public FuncDeclNode_addInt() {
             super("operator+", PrimitiveTypeNode.FloatNode);
 
-            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.IntNode));
-            AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.FloatNode));
+            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.FloatNode));
+            AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.IntNode));
 
             m_bCustomCallLogic = true;
             m_bInline = true;

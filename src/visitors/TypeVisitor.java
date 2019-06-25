@@ -120,7 +120,7 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
         if (ctx.CHAR() != null) return NamedTypeNode.CharNode;
         if (ctx.BOOLEAN() != null) return NamedTypeNode.BoolNode;
         if (ctx.INTEGER() != null) return PrimitiveTypeNode.IntNode;
-        if (ctx.REAL() != null) return NamedTypeNode.RealNode;
+        if (ctx.REAL() != null) return PrimitiveTypeNode.FloatNode;
         if (ctx.STRING() != null) return NamedTypeNode.StringNode;
 
         return new NamedTypeNode(ctx.identifier().IDENT().getText());

@@ -1,5 +1,6 @@
 package ast;
 
+import ast.core.PascalType_Int;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
@@ -41,7 +42,8 @@ public class ProgramNode extends AbstractSyntaxTree {
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition("main", CodeSnippet_Type.SNIPPETTYPE_INT, true);
         m_Block.CreateSnippet(slave, funcDef);
-        funcDef.AddStatement(slave.CreateReturnStmt(CodeSnippet_Type.EType.INT, "0"));
+        PascalType_Int returnType = new PascalType_Int();
+        funcDef.AddStatement(slave.CreateReturnStmt(returnType.GetShortName(), returnType.GetDefaultValue()));
         return funcDef;
     }
 }

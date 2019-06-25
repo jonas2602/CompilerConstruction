@@ -1,7 +1,10 @@
 import ast.BlockNode;
 import ast.ProgramNode;
+import ast.core.PascalType_Float;
 import ast.core.PascalType_Int;
 import ast.core.FuncDeclNode_writeln;
+import ast.declarations.TypeDeclNode;
+import ast.types.PrimitiveTypeNode;
 import gen.PascalLexer;
 import gen.PascalParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -21,7 +24,14 @@ public class App {
         BlockNode stdBlock = new BlockNode();
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
         stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addReal());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addFloat());
+        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addFloat());
+
+        stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));
+
+        // TODO: Add primitive types to std block
+        // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
         // Tokenize input file
         PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/test.pas"));

@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
+import ast.expressions.ParameterNode;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
@@ -29,6 +30,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             // if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
             if (!(CallParamType instanceof PrimitiveTypeNode)) {
                 // throw new TypeCheckException(this, "writeln only supports primitive types");
+                System.out.println("writeln only supports primitive types");
                 return false;
             }
         }
@@ -62,21 +64,42 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             //     placeholder += ((ConstantNode) element).GetData();
             // }
 
+            TypeNode typeNode = element.GetType();
+            CodeSnippet_Base typeSnippet = typeNode.CreateSnippet(slave, ctx);
+            CodeSnippet_Base dataSnippet = element.CreateSnippet(slave, ctx);
+
             // Create Parameter for printf call
-            CodeSnippet_Parameter param = callNode.CreateParameterSnippet(slave, ctx, element);
+            // CodeSnippet_Parameter param = callNode.CreateParameterSnippet(slave, ctx, element);
+            PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
+            if (primType.GetTypeIsDezimal()) {
+                // convert all decimals to double
+                if (primType.GetTypeSize() != 64) {
+
+                    typeSnippet = new CodeSnippet_Plain("double");
+                    dataSnippet = new CodeSnippet_Plain("%" + slave.ExtendFloatToDouble(dataSnippet.Write()));
+                }
+            } else {
+                // convert to a minumum of int32
+                if (primType.GetTypeSize() < 32) {
+                    typeSnippet = new CodeSnippet_Plain(PrimitiveTypeNode.IntNode.GetTypeShortName());
+                    dataSnippet = new CodeSnippet_Plain("%" + slave.ExtendToInt(primType.GetTypeShortName(), dataSnippet.Write()));
+                }
+            }
 
             // convert:
             // decimals -> double
             // else -> integer
             // keep placeholder from original type
 
-            filler.add(param);
+            filler.add(new CodeSnippet_Parameter(typeSnippet, dataSnippet));
 
             // Add placeholder element for parameter to string
-            PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
+            // PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
             // CodeSnippet_Type.EType llvmType = param.GetTypeSnippet().GetType();
             placeholderString += primType.GetTypePlaceholder();
         }
+        // TODO: Add newline (must be added as hex (\0A instead of \n, counts as a single character))
+        // placeholderString += "\0A";
 
         //
         CodeSnippet_Constant constant = slave.CreateStringConstant(placeholderString);

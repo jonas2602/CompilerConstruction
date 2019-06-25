@@ -1,11 +1,11 @@
 package ast.core;
 
 public class PascalType {
-    private String m_ShortName;
-    private int m_Size;
-    private boolean m_bDezimal;
-    private String m_Placeholder;
-    private String m_DefaultValue;
+    private final String m_ShortName;
+    private final int m_Size;
+    private final boolean m_bDezimal;
+    private final String m_Placeholder;
+    private final String m_DefaultValue;
 
     public PascalType(String InShortName, int InSize, boolean InDezimal, String InPlaceholder, String InDefaultValue) {
         m_ShortName = InShortName;
@@ -15,23 +15,23 @@ public class PascalType {
         m_DefaultValue = InDefaultValue;
     }
 
-    public String GetShortName() {
+    public final String GetShortName() {
         return m_ShortName;
     }
 
-    public int GetSize() {
+    public final int GetSize() {
         return m_Size;
     }
 
-    public boolean GetIsDezimal() {
+    public final boolean GetIsDezimal() {
         return m_bDezimal;
     }
 
-    public String GetPlaceholder() {
+    public final String GetPlaceholder() {
         return m_Placeholder;
     }
 
-    public String GetDefaultValue() {
+    public final String GetDefaultValue() {
         return m_DefaultValue;
     }
 }
