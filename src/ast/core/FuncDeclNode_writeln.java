@@ -4,7 +4,6 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
-import ast.expressions.ParameterNode;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 import llvm.*;
@@ -16,20 +15,23 @@ import java.util.List;
 public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     public FuncDeclNode_writeln() {
         super("writeln", NamedTypeNode.VoidNode);
-        m_CustomCallLogic = true;
+        m_bCustomCallLogic = true;
     }
 
     // Allows any amount of parameters, as long as they are primitive/can get serialized
 
     @Override
-    public void ValidateCall(FuncCallNode InCallNode) {
+    public boolean ValidateCall(FuncCallNode InCallNode) {
         // Compare given parameters to primitive types
         for (AbstractSyntaxTree param : InCallNode.GetParameterList()) {
             TypeNode CallParamType = param.GetType();
             if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
-                throw new TypeCheckException(this, "writeln only supports primitive types");
+                // throw new TypeCheckException(this, "writeln only supports primitive types");
+                return false;
             }
         }
+
+        return true;
     }
 
     @Override
@@ -53,13 +55,13 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         String placeholder = "";
         List<CodeSnippet_Base> filler = new ArrayList<>();
 
-        for (ParameterNode element : callNode.GetParameterList()) {
+        for (AbstractSyntaxTree element : callNode.GetParameterList()) {
             // if (element instanceof ConstantNode) {
             //     placeholder += ((ConstantNode) element).GetData();
             // }
 
             // Create Parameter for printf call
-            CodeSnippet_Parameter param = (CodeSnippet_Parameter) element.CreateSnippet(slave, ctx);
+            CodeSnippet_Parameter param = callNode.CreateParameterSnippet(slave, ctx, element);
             filler.add(param);
 
             // Add placeholder element for parameter to string

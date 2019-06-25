@@ -4,7 +4,6 @@ import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.TypeCheckException;
 import ast.expressions.FuncCallNode;
-import ast.expressions.ParameterNode;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
@@ -23,6 +22,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     protected BlockNode m_Block;
 
     protected boolean m_IsCreated = false;
+    protected boolean m_bInline = false;
 
     public FuncDeclNode(String InName, TypeNode InReturnType, BlockNode InBlock) {
         m_Name = InName;
@@ -42,6 +42,10 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return m_Name;
     }
 
+    public boolean IsInline() {
+        return m_bInline;
+    }
+
     @Override
     public TypeNode GetType() {
         return m_ReturnType;
@@ -58,10 +62,11 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return GetType();
     }
 
-    public void ValidateCall(FuncCallNode InCallNode) {
+    public boolean ValidateCall(FuncCallNode InCallNode) {
         // Parameter count fits the definition?
         if (InCallNode.GetParameterCount() != m_Params.size()) {
-            throw new TypeCheckException(InCallNode, "Function expected " + InCallNode.GetParameterCount() + " Arguments but received " + m_Params.size());
+            // throw new TypeCheckException(InCallNode, "Function expected " + InCallNode.GetParameterCount() + " Arguments but received " + m_Params.size());
+            return false;
         }
 
         // Compare given parameters to expected types
@@ -69,9 +74,34 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             TypeNode CallParamType = InCallNode.GetParameter(i).GetType();
             TypeNode FuncParamType = m_Params.get(i).GetType();
             if (!FuncParamType.CompareType(CallParamType)) {
-                throw new TypeCheckException(this, "Function received unexpected type");
+                return false;
             }
         }
+
+        return true;
+    }
+
+    public boolean CompareSignature(FuncDeclNode InOther) {
+        // equal parameter counts?
+        if (InOther.m_Params.size() != m_Params.size()) {
+            return false;
+        }
+
+        // Compare parameter types
+        for (int i = 0; i < m_Params.size(); i++) {
+            TypeNode otherParamType = InOther.m_Params.get(i).GetType();
+            TypeNode funcParamType = m_Params.get(i).GetType();
+            if (!funcParamType.CompareType(otherParamType)) {
+                return false;
+            }
+        }
+
+        // Compare return types
+        if (!m_ReturnType.CompareType(InOther.m_ReturnType)) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -106,5 +136,10 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         slave.ExitScope();
 
         return funcDef;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

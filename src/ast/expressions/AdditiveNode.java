@@ -4,6 +4,8 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import writer.GeneratorSlave;
 
 public class AdditiveNode extends AbstractSyntaxTree {
     public enum EAdditiveOperator {
@@ -75,5 +77,14 @@ public class AdditiveNode extends AbstractSyntaxTree {
         }
 
         return m_CachedType;
+    }
+
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        // switch (m_Operator){
+        // case PLUS: slave.AddIntInt()
+        // }
+
+        return null;
     }
 }

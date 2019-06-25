@@ -5,15 +5,8 @@ import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
 
 public class ParamDeclNode extends VarDeclNode {
-    private int m_ParamIndex;
-
-    public ParamDeclNode(String InName, TypeNode InType, int InIndex) {
+    public ParamDeclNode(String InName, TypeNode InType) {
         super(InName, InType);
-        m_ParamIndex = InIndex;
-    }
-
-    int GetIndex() {
-        return m_ParamIndex;
     }
 
     @Override

@@ -5,7 +5,7 @@ import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class BlockNode extends AbstractSyntaxTree {
 
@@ -13,11 +13,9 @@ public class BlockNode extends AbstractSyntaxTree {
     private HashMap<String, ConstDeclNode> m_ConstDeclMap = new HashMap<>();
     private HashMap<String, TypeDeclNode> m_TypeDeclMap = new HashMap<>();
     private HashMap<String, VarDeclNode> m_VarDeclMap = new HashMap<>();
-    private HashMap<String, FuncDeclNode> m_FuncDeclMap = new HashMap<>();
+    private HashMap<String, List<FuncDeclNode>> m_FuncDeclMap = new HashMap<>();
 
     private AbstractSyntaxTree m_CompoundStatement;
-
-    private int m_ParameterCount = 0;
 
     public BlockNode() {
 
@@ -57,7 +55,6 @@ public class BlockNode extends AbstractSyntaxTree {
 
         // Don't set parent, because function/procedure should be the parent;
         m_VarDeclMap.put(Parameter.GetName(), Parameter);
-        m_ParameterCount += 1;
     }
 
     public void AddVariableDeclaration(VarDeclNode Variable) {
@@ -84,7 +81,12 @@ public class BlockNode extends AbstractSyntaxTree {
         }
 
         Function.SetParent(this);
-        m_FuncDeclMap.put(Function.GetName(), Function);
+        List<FuncDeclNode> overloads = m_FuncDeclMap.get(Function.GetName());
+        if (overloads == null) {
+            overloads = new ArrayList<>();
+            m_FuncDeclMap.put(Function.GetName(), overloads);
+        }
+        overloads.add(Function);
     }
 
     public void SetCompoundStatement(AbstractSyntaxTree InCompoundStatement) {
@@ -122,23 +124,14 @@ public class BlockNode extends AbstractSyntaxTree {
     }
 
     // TODO: How to check for functions that are not defined by the user? e.g. writeln(), chr() or Length()
-    public FuncDeclNode GetFunctionDeclaration(String FunctionName) {
-        FuncDeclNode OutDecl = m_FuncDeclMap.get(FunctionName);
+    public List<FuncDeclNode> GetFunctionDeclaration(String FunctionName) {
+        List<FuncDeclNode> OutDecl = m_FuncDeclMap.get(FunctionName);
         if (OutDecl == null && GetOwningBlock() != null) {
             OutDecl = GetOwningBlock().GetFunctionDeclaration(FunctionName);
         }
 
         return OutDecl;
     }
-
-//    public ProcDeclNode GetProcedureDeclaration(String ProcedureName) {
-//        ProcDeclNode OutDecl = m_FuncDeclMap.get(ProcedureName);
-//        if (OutDecl == null && GetOwningBlock() != null) {
-//            OutDecl = GetOwningBlock().GetProcedureDeclaration(ProcedureName);
-//        }
-//
-//        return OutDecl;
-//    }
 
     @Override
     public TypeNode CheckType() {
@@ -160,9 +153,22 @@ public class BlockNode extends AbstractSyntaxTree {
             varDecl.CheckType();
         }
 
-        for (FuncDeclNode funcDecl : m_FuncDeclMap.values()) {
-            funcDecl.CheckType();
+        for (List<FuncDeclNode> funcOverloads : m_FuncDeclMap.values()) {
+            // Check types of overloaded function
+            for (FuncDeclNode funcDecl : funcOverloads) {
+                funcDecl.CheckType();
+            }
+
+            // Check for duplicate signatures
+            for (int i = 0; i < funcOverloads.size(); i++) {
+                for (int j = i + 1; j < funcOverloads.size(); j++) {
+                    if (funcOverloads.get(i).CompareSignature(funcOverloads.get(j))) {
+                        throw new TypeCheckException(this, "Functions with the same signature found");
+                    }
+                }
+            }
         }
+
 
         // statement last because it could use everything above
         if (m_CompoundStatement != null) {

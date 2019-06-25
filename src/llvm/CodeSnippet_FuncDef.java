@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeInterface {
     private List<CodeSnippet_Base> m_Statements = new ArrayList<>();
+    private int m_StorageCounter = 0;
 
     public CodeSnippet_FuncDef(String InName, CodeSnippet_Type InReturnType) {
         super(InName, InReturnType);
@@ -13,6 +14,13 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
     @Override
     public void AddStatement(CodeSnippet_Base InStmt) {
         m_Statements.add(InStmt);
+    }
+
+    @Override
+    public int AddStatementWithStorage(String InStmt) {
+        String finalStmt = String.format("%%%d = %s", m_StorageCounter, InStmt);
+        m_Statements.add(new CodeSnippet_Plain(finalStmt));
+        return m_StorageCounter++;
     }
 
     @Override

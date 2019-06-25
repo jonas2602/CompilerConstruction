@@ -59,6 +59,7 @@ public class GeneratorSlave {
 
     public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Type InReturnType, boolean bEnterScope) {
         CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(InName, InReturnType);
+        def.AddStatement(new CodeSnippet_Plain("begin:"));
         m_FunctionDefinitions.add(def);
         if (bEnterScope) {
             EnterScope(def);
@@ -84,6 +85,16 @@ public class GeneratorSlave {
         m_FunctionDeclarations.add(decl);
 
         return decl;
+    }
+
+    public int CastFloatToInt(String Source) {
+        String exp = String.format("sitofp i32 %s to float", Source);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int AddIntInt(String InLeft, String InRight){
+        String exp = String.format("add i32 %s, %s", InLeft, InRight);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
     public List<String> Serialize() {

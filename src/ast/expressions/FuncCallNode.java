@@ -7,6 +7,7 @@ import ast.declarations.FuncDeclNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncCall;
+import llvm.CodeSnippet_Parameter;
 import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class FuncCallNode extends AbstractSyntaxTree {
     private String m_FuncName;
-    private List<ParameterNode> m_Params = new ArrayList<>();
+    private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
 
     private FuncDeclNode m_FuncDecl;
 
@@ -25,7 +26,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
 
     public void AddParameter(AbstractSyntaxTree InParam) {
         InParam.SetParent(this);
-        m_Params.add((ParameterNode) InParam);
+        m_Params.add(InParam);
     }
 
 
@@ -33,19 +34,19 @@ public class FuncCallNode extends AbstractSyntaxTree {
         return m_Params.size();
     }
 
-    public List<ParameterNode> GetParameterList() {
+    public List<AbstractSyntaxTree> GetParameterList() {
         return m_Params;
     }
 
-    public ParameterNode GetParameter(int Index) {
+    public AbstractSyntaxTree GetParameter(int Index) {
         return m_Params.get(Index);
     }
 
     @Override
     public TypeNode CheckType() {
         // Function with Name exists?
-        m_FuncDecl = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
-        if (m_FuncDecl == null) {
+        List<FuncDeclNode> funcOverloads = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
+        if (funcOverloads.size() < 1) {
             throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not defined");
         }
 
@@ -54,25 +55,35 @@ public class FuncCallNode extends AbstractSyntaxTree {
             m_Params.get(i).CheckType();
         }
 
-        // Given parameters fit function signature?
-        m_FuncDecl.ValidateCall(this);
-
-        return m_FuncDecl.GetType();
-    }
-
-    @Override
-    public TypeNode GetType() {
+        // Given parameters fit any function signature?
+        for (FuncDeclNode funcDecl : funcOverloads) {
+            if (funcDecl.ValidateCall(this)) {
+                m_FuncDecl = funcDecl;
+                break;
+            }
+        }
         if (m_FuncDecl == null) {
-            m_FuncDecl = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
+            throw new TypeCheckException(this, "Function received unexpected type");
         }
 
         return m_FuncDecl.GetType();
     }
 
     @Override
+    public TypeNode GetType() {
+        // if (m_FuncDecl == null) {
+        //     m_FuncDecl = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
+        // }
+
+        return m_FuncDecl.GetType();
+    }
+
+    @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        // build function if not already created
-        m_FuncDecl.CreateSnippet(slave, null);
+        // build function if not already created or inline
+        if (!m_FuncDecl.IsInline()) {
+            m_FuncDecl.CreateSnippet(slave, null);
+        }
 
         // Execute specialized function call
         if (m_FuncDecl instanceof FuncDeclNode_Core) {
@@ -85,13 +96,21 @@ public class FuncCallNode extends AbstractSyntaxTree {
             CodeSnippet_Type returnType = (CodeSnippet_Type) m_FuncDecl.GetType().CreateSnippet(slave, ctx);
             CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, returnType);
 
-            for (ParameterNode param : m_Params) {
-                call.AddParameter(param.CreateSnippet(slave, call));
+            for (AbstractSyntaxTree param : m_Params) {
+                call.AddParameter(CreateParameterSnippet(slave,call, param));
             }
 
             return call;
         }
 
         return null;
+    }
+
+    public CodeSnippet_Parameter CreateParameterSnippet(GeneratorSlave slave, CodeSnippet_Base ctx, AbstractSyntaxTree InParam){
+        TypeNode typeNode = InParam.GetType();
+        CodeSnippet_Base typeSnippet = typeNode.CreateSnippet(slave, ctx);
+        CodeSnippet_Base dataSnippet = InParam.CreateSnippet(slave, ctx);
+
+        return new CodeSnippet_Parameter(typeSnippet, dataSnippet);
     }
 }

@@ -48,6 +48,10 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         AdditiveNode.EAdditiveOperator operator = AdditiveNode.EAdditiveOperator.PLUS;
         if (ctx.additiveoperator().PLUS() != null) {
             operator = AdditiveNode.EAdditiveOperator.PLUS;
+            FuncCallNode funcCall = new FuncCallNode("operator+");
+            funcCall.AddParameter(left);
+            funcCall.AddParameter(right);
+            return funcCall;
         } else if (ctx.additiveoperator().MINUS() != null) {
             operator = AdditiveNode.EAdditiveOperator.MINUS;
         } else if (ctx.additiveoperator().OR() != null) {

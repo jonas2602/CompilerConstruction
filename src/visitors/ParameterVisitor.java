@@ -2,7 +2,6 @@ package visitors;
 
 import ast.AbstractSyntaxTree;
 import ast.declarations.ParamDeclNode;
-import ast.expressions.ParameterNode;
 import ast.types.TypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -33,9 +32,8 @@ public class ParameterVisitor extends PascalBaseVisitor<List<AbstractSyntaxTree>
         List<AbstractSyntaxTree> outParams = new ArrayList<>();
 
         TypeNode type = new TypeVisitor().visit(ctx.typeIdentifier());
-        int paramIndex = 0;
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
-            outParams.add(new ParamDeclNode(ident.IDENT().getText(), type, paramIndex++));
+            outParams.add(new ParamDeclNode(ident.IDENT().getText(), type));
         }
 
         return outParams;
@@ -47,7 +45,7 @@ public class ParameterVisitor extends PascalBaseVisitor<List<AbstractSyntaxTree>
 
         for (PascalParser.ActualParameterContext param : ctx.actualParameter()) {
             AbstractSyntaxTree exp = new ExpressionVisitor().visit(param.expression());
-            outParams.add(new ParameterNode(exp));
+            outParams.add(exp);
         }
 
         return outParams;
