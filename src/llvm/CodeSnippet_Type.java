@@ -9,9 +9,9 @@ public class CodeSnippet_Type extends CodeSnippet_Base {
     public enum EType {
         VOID("void", "", ""),
         BOOL("i1", "%d", "1"),
-        CHAR("i8", "%d", "0"),
+        CHAR("i8", "%c", "0"),
         INT("i32", "%d", "0"),
-        LONG("i64", "%d", "0"),
+        LONG("i64", "%ld", "0"),
         FLOAT("float", "%f", "0"),
         DOUBLE("double", "%f", "0"),
         STRING("i8*", "%s", "");

@@ -18,15 +18,18 @@ public class VarDeclNode extends AbstractSyntaxTree {
     public String GetName() {
         return m_Name;
     }
-    public int GetScopeIndex() { return m_ScopeIndex; }
-    public boolean HasScopeIndex() { return m_ScopeIndex != -1; }
-    // public int GetOrCreateScopeIndex() {
-    //     if(!HasScopeIndex()){
-    //
-    //     }
-    //
-    //     return m_ScopeIndex;
-    // }
+
+    public int GetScopeIndex() {
+        return m_ScopeIndex;
+    }
+
+    public void SetScopeIndex(int InScopeIndex) {
+        m_ScopeIndex = InScopeIndex;
+    }
+
+    public boolean HasScopeIndex() {
+        return m_ScopeIndex != -1;
+    }
 
 
     @Override

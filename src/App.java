@@ -1,6 +1,6 @@
 import ast.BlockNode;
 import ast.ProgramNode;
-import ast.core.Type_Int;
+import ast.core.PascalType_Int;
 import ast.core.FuncDeclNode_writeln;
 import gen.PascalLexer;
 import gen.PascalParser;
@@ -20,8 +20,8 @@ public class App {
         // create block with predefined functions of pascal
         BlockNode stdBlock = new BlockNode();
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
-        stdBlock.AddFunctionDeclaration(new Type_Int.FuncDeclNode_addInt());
-        stdBlock.AddFunctionDeclaration(new Type_Int.FuncDeclNode_addReal());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addReal());
 
         // Tokenize input file
         PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/test.pas"));

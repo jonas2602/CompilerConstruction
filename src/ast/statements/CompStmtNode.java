@@ -33,7 +33,7 @@ public class CompStmtNode extends AbstractSyntaxTree {
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         for(AbstractSyntaxTree node : m_Statements){
             CodeSnippet_Base stmt = node.CreateSnippet(slave, ctx);
-            slave.GetScopeSnippet().AddStatement(stmt);
+            // slave.GetScopeSnippet().AddStatement(stmt);
         }
 
         return null;

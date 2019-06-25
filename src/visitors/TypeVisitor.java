@@ -119,7 +119,7 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
     public TypeNode visitTypeIdentifier(PascalParser.TypeIdentifierContext ctx) {
         if (ctx.CHAR() != null) return NamedTypeNode.CharNode;
         if (ctx.BOOLEAN() != null) return NamedTypeNode.BoolNode;
-        if (ctx.INTEGER() != null) return NamedTypeNode.IntNode;
+        if (ctx.INTEGER() != null) return PrimitiveTypeNode.IntNode;
         if (ctx.REAL() != null) return NamedTypeNode.RealNode;
         if (ctx.STRING() != null) return NamedTypeNode.StringNode;
 

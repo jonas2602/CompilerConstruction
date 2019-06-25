@@ -3,6 +3,7 @@ package visitors;
 import ast.*;
 import ast.expressions.*;
 import ast.types.NamedTypeNode;
+import ast.types.PrimitiveTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -156,7 +157,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitUnsignedInteger(PascalParser.UnsignedIntegerContext ctx) {
         // TODO: Create Constant Node of type Integer
-        return new ConstantNode(ctx.NUM_INT().getText(), NamedTypeNode.IntNode);
+        return new ConstantNode(ctx.NUM_INT().getText(), PrimitiveTypeNode.IntNode);
     }
 
     @Override

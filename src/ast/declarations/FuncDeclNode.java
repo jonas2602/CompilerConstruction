@@ -5,6 +5,7 @@ import ast.BlockNode;
 import ast.TypeCheckException;
 import ast.expressions.FuncCallNode;
 import ast.types.NamedTypeNode;
+import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
@@ -44,6 +45,10 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
     public boolean IsInline() {
         return m_bInline;
+    }
+
+    public boolean IsVoid() {
+        return m_ReturnType.CompareType(NamedTypeNode.VoidNode);
     }
 
     @Override
@@ -111,13 +116,14 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         m_IsCreated = true;
 
         // Create Function Header
-        CodeSnippet_Type funcTypeSnippet = (CodeSnippet_Type) m_ReturnType.CreateSnippet(slave, ctx);
+        CodeSnippet_Base funcTypeSnippet = m_ReturnType.CreateSnippet(slave, ctx);
         CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcTypeSnippet, true);
 
         // Add Parameters
         for (ParamDeclNode param : m_Params) {
             CodeSnippet_Base paramSnippet = param.CreateSnippet(slave, funcDef);
-            funcDef.AddParameter(paramSnippet);
+            int ScopeIndex = funcDef.AddParameter(paramSnippet);
+            param.SetScopeIndex(ScopeIndex);
         }
         // Create Function Body
         m_Block.CreateSnippet(slave, funcDef);
@@ -126,10 +132,10 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         if (m_ReturnType.CompareType(NamedTypeNode.VoidNode)) {
             funcDef.AddStatement(new CodeSnippet_Plain("ret void"));
         } else {
-            // TODO: Get Scope Index of variable or create variable with default value
+            // TODO: Non Primitive Types
             VarDeclNode varDecl = m_Block.GetVariableDeclaration(m_Name);
-            varDecl.GetScopeIndex();
-            funcDef.AddStatement(slave.CreateReturnStmt(funcTypeSnippet, "0"));
+            String OutValue = varDecl.HasScopeIndex() ? "%" + varDecl.GetScopeIndex() : ((PrimitiveTypeNode) varDecl.GetType()).GetTypeDefault();
+            funcDef.AddStatement(slave.CreateReturnStmt(funcTypeSnippet, OutValue));
         }
 
         // Remove Function from stack

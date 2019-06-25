@@ -5,23 +5,23 @@ import java.util.List;
 
 public class CodeSnippet_FuncCall extends CodeSnippet_Base {
     private String m_FunctionName;
-    private CodeSnippet_Type m_ReturnType;
+    private CodeSnippet_Base m_ReturnType;
     private CodeSnippet_Base m_TypeExtension;
     private List<CodeSnippet_Base> m_Parameters;
 
-    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Type InReturnType) {
+    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType) {
         this(InFunctionName, InReturnType, new ArrayList<>());
     }
 
-    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Type InReturnType, List<CodeSnippet_Base> InParams) {
+    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType, List<CodeSnippet_Base> InParams) {
         this(InFunctionName, InReturnType, InParams, null);
     }
 
-    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Type InReturnType, CodeSnippet_Base InTypeExtension) {
+    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType, CodeSnippet_Base InTypeExtension) {
         this(InFunctionName, InReturnType, new ArrayList<>(), InTypeExtension);
     }
 
-    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Type InReturnType, List<CodeSnippet_Base> InParams, CodeSnippet_Base InTypeExtension) {
+    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType, List<CodeSnippet_Base> InParams, CodeSnippet_Base InTypeExtension) {
         m_FunctionName = InFunctionName;
         m_ReturnType = InReturnType;
         m_Parameters = InParams;

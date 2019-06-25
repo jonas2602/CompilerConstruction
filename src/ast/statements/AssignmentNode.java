@@ -2,7 +2,12 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.declarations.VarDeclNode;
+import ast.expressions.ConstantNode;
+import ast.expressions.VariableNode;
 import ast.types.TypeNode;
+import llvm.CodeSnippet_Base;
+import writer.GeneratorSlave;
 
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;
@@ -31,4 +36,23 @@ public class AssignmentNode extends AbstractSyntaxTree {
         return null;
     }
 
+    @Override
+    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        CodeSnippet_Base exp = m_Expression.CreateSnippet(slave, ctx);
+
+        // TODO: Arrays, Records, ...?
+        VarDeclNode varDecl = ((VariableNode) m_Variable).GetDeclaration();
+
+        // Is expression a constant?
+        if (m_Expression instanceof ConstantNode) {
+            int LocalIndex = slave.AllocateInt();
+            slave.StoreInt(exp.Write(), LocalIndex);
+            varDecl.SetScopeIndex(LocalIndex);
+        } else {
+            // assign local index to variable
+            varDecl.SetScopeIndex(Integer.parseInt(exp.Write().substring(1)));
+        }
+
+        return exp;
+    }
 }

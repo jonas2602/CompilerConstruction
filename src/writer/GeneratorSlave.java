@@ -45,6 +45,7 @@ public class GeneratorSlave {
     public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
         InFiller.add(0, InSourceParam);
         CodeSnippet_FuncCall call = new CodeSnippet_FuncCall("printf", new CodeSnippet_Type(CodeSnippet_Type.EType.INT), InFiller, new CodeSnippet_Plain("(i8*, ...)"));
+        GetScopeSnippet().AddStatement(call);
 
         return call;
     }
@@ -53,11 +54,11 @@ public class GeneratorSlave {
         return new CodeSnippet_Plain(String.format("ret %s %s", InType.label(), InData));
     }
 
-    public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Type InType, String InData) {
+    public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Base InType, String InData) {
         return new CodeSnippet_Plain(String.format("ret %s %s", InType.Write(), InData));
     }
 
-    public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Type InReturnType, boolean bEnterScope) {
+    public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Base InReturnType, boolean bEnterScope) {
         CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(InName, InReturnType);
         def.AddStatement(new CodeSnippet_Plain("begin:"));
         m_FunctionDefinitions.add(def);
@@ -88,13 +89,53 @@ public class GeneratorSlave {
     }
 
     public int CastFloatToInt(String Source) {
+        String exp = String.format("fptosi float %s to i32", Source);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int CastIntToFloat(String Source) {
         String exp = String.format("sitofp i32 %s to float", Source);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public int AddIntInt(String InLeft, String InRight){
+    public int ExtendFloatToDouble(String Source) {
+        String exp = String.format("fpext float %s to double", Source);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int TruncateIntToChar(String Source) {
+        String exp = String.format("trunc i32 %s to i8", Source);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int ExtendCharToInt(String Source) {
+        String exp = String.format("sext i8 %s to i32", Source);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int AddIntInt(String InLeft, String InRight) {
         String exp = String.format("add i32 %s, %s", InLeft, InRight);
         return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int AddFloatInt(String InLeft, String InRight) {
+        int cast = CastIntToFloat(InRight);
+        return AddFloatFloat(InLeft, "%" + cast);
+    }
+
+    public int AddFloatFloat(String InLeft, String InRight) {
+        String exp = String.format("fadd float %s, %s", InLeft, InRight);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int AllocateInt() {
+        String exp = String.format("alloca i32"); // TODO: alignment
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public void StoreInt(String InValue, int InIndex) {
+        String exp = String.format("store i32 %s, i32* %d", InValue, InIndex);
+        GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
     public List<String> Serialize() {
@@ -114,6 +155,7 @@ public class GeneratorSlave {
 
         for (CodeSnippet_FuncDef def : m_FunctionDefinitions) {
             OutLines.addAll(def.WriteLines());
+            OutLines.add("");
         }
 
         return OutLines;

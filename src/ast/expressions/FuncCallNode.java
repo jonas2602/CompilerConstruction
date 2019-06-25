@@ -5,10 +5,7 @@ import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.declarations.FuncDeclNode;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_FuncCall;
-import llvm.CodeSnippet_Parameter;
-import llvm.CodeSnippet_Type;
+import llvm.*;
 import writer.GeneratorSlave;
 
 import java.util.ArrayList;
@@ -93,20 +90,28 @@ public class FuncCallNode extends AbstractSyntaxTree {
             }
         } else {
             // TODO: default creation
-            CodeSnippet_Type returnType = (CodeSnippet_Type) m_FuncDecl.GetType().CreateSnippet(slave, ctx);
+            CodeSnippet_Base returnType = m_FuncDecl.GetType().CreateSnippet(slave, ctx);
             CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, returnType);
 
             for (AbstractSyntaxTree param : m_Params) {
-                call.AddParameter(CreateParameterSnippet(slave,call, param));
+                call.AddParameter(CreateParameterSnippet(slave, call, param));
             }
 
-            return call;
+            if (m_FuncDecl.IsVoid()) {
+                slave.GetScopeSnippet().AddStatement(call);
+                return null;
+            } else {
+                int LocalIndex = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
+                return new CodeSnippet_Plain("%" + LocalIndex);
+            }
+
+
         }
 
         return null;
     }
 
-    public CodeSnippet_Parameter CreateParameterSnippet(GeneratorSlave slave, CodeSnippet_Base ctx, AbstractSyntaxTree InParam){
+    public CodeSnippet_Parameter CreateParameterSnippet(GeneratorSlave slave, CodeSnippet_Base ctx, AbstractSyntaxTree InParam) {
         TypeNode typeNode = InParam.GetType();
         CodeSnippet_Base typeSnippet = typeNode.CreateSnippet(slave, ctx);
         CodeSnippet_Base dataSnippet = InParam.CreateSnippet(slave, ctx);

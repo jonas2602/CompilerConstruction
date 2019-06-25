@@ -5,6 +5,7 @@ import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
 import ast.types.NamedTypeNode;
+import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.*;
 import writer.GeneratorSlave;
@@ -25,7 +26,8 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         // Compare given parameters to primitive types
         for (AbstractSyntaxTree param : InCallNode.GetParameterList()) {
             TypeNode CallParamType = param.GetType();
-            if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
+            // if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
+            if (!(CallParamType instanceof PrimitiveTypeNode)) {
                 // throw new TypeCheckException(this, "writeln only supports primitive types");
                 return false;
             }
@@ -52,7 +54,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         // TODO: only one element with a single character? -> use "putchar"
         // TODO: add constants directly to the placeholder string, instead of adding a parameter
 
-        String placeholder = "";
+        String placeholderString = "";
         List<CodeSnippet_Base> filler = new ArrayList<>();
 
         for (AbstractSyntaxTree element : callNode.GetParameterList()) {
@@ -62,15 +64,22 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
 
             // Create Parameter for printf call
             CodeSnippet_Parameter param = callNode.CreateParameterSnippet(slave, ctx, element);
+
+            // convert:
+            // decimals -> double
+            // else -> integer
+            // keep placeholder from original type
+
             filler.add(param);
 
             // Add placeholder element for parameter to string
-            CodeSnippet_Type.EType llvmType = param.GetTypeSnippet().GetType();
-            placeholder += llvmType.placeholder();
+            PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
+            // CodeSnippet_Type.EType llvmType = param.GetTypeSnippet().GetType();
+            placeholderString += primType.GetTypePlaceholder();
         }
 
         //
-        CodeSnippet_Constant constant = slave.CreateStringConstant(placeholder);
+        CodeSnippet_Constant constant = slave.CreateStringConstant(placeholderString);
         CodeSnippet_Base placeholderParam = slave.CreateStringParameter(constant);
         CodeSnippet_FuncCall call = slave.CreatePrintfCall(placeholderParam, filler);
 

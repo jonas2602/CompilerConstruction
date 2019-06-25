@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CodeSnippet_Parameter extends CodeSnippet_Base {
-    private CodeSnippet_Type m_Type;
+    private CodeSnippet_Base m_Type;
     private CodeSnippet_Base m_Data;
 
     public CodeSnippet_Parameter(CodeSnippet_Base InType, CodeSnippet_Base InData) {
-        m_Type = (CodeSnippet_Type) InType;
+        m_Type = InType;
         m_Data = InData;
     }
 
@@ -17,7 +17,7 @@ public class CodeSnippet_Parameter extends CodeSnippet_Base {
         m_Data = InData;
     }
 
-    public CodeSnippet_Type GetTypeSnippet() {
+    public CodeSnippet_Base GetTypeSnippet() {
         return m_Type;
     }
 

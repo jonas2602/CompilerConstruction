@@ -9,30 +9,18 @@ typedef struct
     int age;
 } person;
 
-int test(int a, int b);
+char test(char a, char b);
 float addf(float f);
 int addi(int i);
 void none();
 
 int main()
 {
-    person john;
-
-    printf("test = %d", test(1, 2));
-    myval = addf(1.0);
-    myval = addf(1.0);
-    myval = addf(1.0);
-    myval = addf(1.0);
-    myval = addf(1.0);
-    myval = addf(1.0);
-    myval = addf(1.0);
-
     none();
+    int testInt = 42;
 
-    john.name = "John";
-    john.age = 27;
-
-    printf("%s ist %d Jahre alt.\n", john.name, john.age);
+    person john;
+    printf("%s ist %d Jahre alt. %d\n", john.name, john.age, testInt);
 }
 
 void none()
@@ -40,15 +28,16 @@ void none()
     myval = 5;
 }
 
-int test(int a, int b)
+char test(char a, char b)
 {
-    printf("%d", a + b);
+    printf("abc %f", (float)a);
     return a + b;
 }
 
 float addf(float f)
 {
     float r = f + myval;
+    printf("%f", r);
     return r;
 }
 
@@ -58,7 +47,7 @@ int addi(int i)
     return r;
 }
 
-float testCast(int i)
+int testCast(float i)
 {
     return i;
 }
@@ -73,4 +62,9 @@ int check(int i)
     {
         return i / 2 + 1;
     }
+}
+
+void myprint(int s, float f)
+{
+    printf("%c%f", s, f);
 }

@@ -5,15 +5,18 @@ import java.util.ArrayList;
 
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeInterface {
     private List<CodeSnippet_Base> m_Statements = new ArrayList<>();
-    private int m_StorageCounter = 0;
 
-    public CodeSnippet_FuncDef(String InName, CodeSnippet_Type InReturnType) {
+    public CodeSnippet_FuncDef(String InName, CodeSnippet_Base InReturnType) {
         super(InName, InReturnType);
     }
 
     @Override
     public void AddStatement(CodeSnippet_Base InStmt) {
         m_Statements.add(InStmt);
+    }
+
+    public void AddStatement(String InStmt) {
+        m_Statements.add(new CodeSnippet_Plain(InStmt));
     }
 
     @Override
@@ -24,9 +27,8 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
     }
 
     @Override
-    public void AddParameter(CodeSnippet_Base InParam) {
-        super.AddParameter(InParam);
-        // TODO: increment scope internal variable index
+    public int AddParameter(CodeSnippet_Base InParam) {
+        return super.AddParameter(InParam);
     }
 
     @Override
