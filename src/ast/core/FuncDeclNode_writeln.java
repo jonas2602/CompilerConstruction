@@ -69,7 +69,6 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             CodeSnippet_Base dataSnippet = element.CreateSnippet(slave, ctx);
 
             // Create Parameter for printf call
-            // CodeSnippet_Parameter param = callNode.CreateParameterSnippet(slave, ctx, element);
             PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
             if (primType.GetTypeIsDezimal()) {
                 // convert all decimals to double
@@ -78,24 +77,11 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
                     typeSnippet = new CodeSnippet_Plain("double");
                     dataSnippet = new CodeSnippet_Plain("%" + slave.ExtendFloatToDouble(dataSnippet.Write()));
                 }
-            } else {
-                // convert to a minumum of int32
-                if (primType.GetTypeSize() < 32) {
-                    typeSnippet = new CodeSnippet_Plain(PrimitiveTypeNode.IntNode.GetTypeShortName());
-                    dataSnippet = new CodeSnippet_Plain("%" + slave.ExtendToInt(primType.GetTypeShortName(), dataSnippet.Write()));
-                }
             }
-
-            // convert:
-            // decimals -> double
-            // else -> integer
-            // keep placeholder from original type
 
             filler.add(new CodeSnippet_Parameter(typeSnippet, dataSnippet));
 
             // Add placeholder element for parameter to string
-            // PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
-            // CodeSnippet_Type.EType llvmType = param.GetTypeSnippet().GetType();
             placeholderString += primType.GetTypePlaceholder();
         }
         // TODO: Add newline (must be added as hex (\0A instead of \n, counts as a single character))

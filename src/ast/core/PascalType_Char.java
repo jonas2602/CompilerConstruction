@@ -26,11 +26,7 @@ public class PascalType_Char extends PascalType {
 
         @Override
         public CodeSnippet_Base CreateFunctionCall(GeneratorSlave slave, CodeSnippet_Base ctx, FuncCallNode callNode) {
-            CodeSnippet_Base leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave, ctx);
-            CodeSnippet_Base rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave, ctx);
-
-            int scopeIndex = slave.AddFloatInt(rightParam.Write(), leftParam.Write());
-            return new CodeSnippet_Plain("%" + scopeIndex);
+            return null;
         }
     }
 }

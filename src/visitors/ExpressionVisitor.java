@@ -183,6 +183,11 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitString(PascalParser.StringContext ctx) {
         String data = ctx.STRING_LITERAL().getText();
         data = data.substring(1, data.length() - 1);
+
+        if(data.length() == 1){
+            int numeric = (int)data.charAt(0);
+            return new ConstantNode(Integer.toString(numeric), PrimitiveTypeNode.CharNode);
+        }
         return new ConstantNode_String(data);
     }
 }
