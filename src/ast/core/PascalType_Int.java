@@ -2,7 +2,6 @@ package ast.core;
 
 import ast.declarations.ParamDeclNode;
 import ast.expressions.FuncCallNode;
-import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
@@ -15,7 +14,7 @@ public class PascalType_Int extends PascalType {
     }
 
     public interface IntFunctionCalls {
-        public CodeSnippet_Base createFunctionCall(GeneratorSlave slave, CodeSnippet_Base leftParam, CodeSnippet_Base rightParam);
+        public int createFunctionCall(GeneratorSlave slave, CodeSnippet_Base lParam, CodeSnippet_Base rParam);
     }
 
     public static abstract class FuncDeclNode_IntParam extends FuncDeclNode_Core {
@@ -39,102 +38,81 @@ public class PascalType_Int extends PascalType {
             CodeSnippet_Base leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave, ctx);
             CodeSnippet_Base rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave, ctx);
 
-            return operation.createFunctionCall(slave, leftParam, rightParam);
+            int scopeIndex =  operation.createFunctionCall(slave, leftParam, rightParam);
+            return new CodeSnippet_Plain("%" + scopeIndex);
         }
     }
 
     public static class FuncDeclNode_addInt extends FuncDeclNode_IntParam {
         public FuncDeclNode_addInt() {
-            super("operator+", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, leftParam, rightParam) -> {
-                int scopeIndex = slave.AddIntInt(leftParam.Write(), rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
-            });
+            super("operator+", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> slave.AddIntInt(lParam.Write(), rParam.Write()));
         }
     }
 
     public static class FuncDeclNode_addFloat extends FuncDeclNode_IntParam {
         public FuncDeclNode_addFloat() {
-            super("operator+", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, leftParam, rightParam) -> {
-                int scopeIndex = slave.AddFloatInt(rightParam.Write(), leftParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
-            });
+            super("operator+", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, lParam, rParam) -> slave.AddFloatInt(lParam.Write(), rParam.Write()));
         }
     }
 
     public static class FuncDeclNode_subInt extends FuncDeclNode_IntParam {
         public FuncDeclNode_subInt() {
-            super("operator-", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, leftParam, rightParam) -> {
-                int scopeIndex = slave.SubIntInt(leftParam.Write(), rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
-            });
+            super("operator-", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> slave.SubIntInt(lParam.Write(), rParam.Write()));
         }
     }
 
     public static class FuncDeclNode_subFloat extends FuncDeclNode_IntParam {
         public FuncDeclNode_subFloat() {
-            super("operator-", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, leftParam, rightParam) -> {
-                int cast = slave.CastIntToFloat(leftParam.Write());
-                int scopeIndex = slave.SubFloatFloat("%" + cast, rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
+            super("operator-", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, lParam, rParam) -> {
+                int cast = slave.CastIntToFloat(lParam.Write());
+                return slave.SubFloatFloat("%" + cast, rParam.Write());
             });
         }
     }
 
     public static class FuncDeclNode_mulInt extends FuncDeclNode_IntParam {
         public FuncDeclNode_mulInt() {
-            super("operator*", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, leftParam, rightParam) -> {
-                int scopeIndex = slave.MulIntInt(leftParam.Write(), rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
-            });
+            super("operator*", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> slave.MulIntInt(lParam.Write(), rParam.Write()));
         }
     }
 
     public static class FuncDeclNode_mulFloat extends FuncDeclNode_IntParam {
         public FuncDeclNode_mulFloat() {
-            super("operator*", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, leftParam, rightParam) -> {
-                int cast = slave.CastIntToFloat(leftParam.Write());
-                int scopeIndex = slave.MulFloatFloat("%" + cast, rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
+            super("operator*", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, lParam, rParam) -> {
+                int cast = slave.CastIntToFloat(rParam.Write());
+                return slave.MulFloatFloat(lParam.Write(),"%" + cast);
             });
         }
     }
 
     public static class FuncDeclNode_divInt extends FuncDeclNode_IntParam {
         public FuncDeclNode_divInt() {
-            super("operator/", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.IntNode, (slave, leftParam, rightParam) -> {
-                int castLeft = slave.CastIntToFloat(leftParam.Write());
-                int castRight = slave.CastIntToFloat(rightParam.Write());
-                int scopeIndex = slave.DivFloatFloat("%" + castLeft, "%" + castRight);
-                return new CodeSnippet_Plain("%" + scopeIndex);
+            super("operator/", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                int castLeft = slave.CastIntToFloat(lParam.Write());
+                int castRight = slave.CastIntToFloat(rParam.Write());
+                return slave.DivFloatFloat("%" + castLeft, "%" + castRight);
             });
         }
     }
 
     public static class FuncDeclNode_divFloat extends FuncDeclNode_IntParam {
         public FuncDeclNode_divFloat() {
-            super("operator/", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, leftParam, rightParam) -> {
-                int cast = slave.CastIntToFloat(leftParam.Write());
-                int scopeIndex = slave.DivFloatFloat("%" + cast, rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
+            super("operator/", PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, (slave, lParam, rParam) -> {
+                int cast = slave.CastIntToFloat(lParam.Write());
+                return slave.DivFloatFloat("%" + cast, rParam.Write());
             });
         }
     }
 
     public static class FuncDeclNode_divTrucInt extends FuncDeclNode_IntParam {
         public FuncDeclNode_divTrucInt() {
-            super("operatordiv", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, leftParam, rightParam) -> {
-                int scopeIndex = slave.DivIntInt(leftParam.Write(), rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
-            });
+            super("operatordiv", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> slave.DivIntInt(lParam.Write(), rParam.Write()));
         }
     }
 
     public static class FuncDeclNode_modInt extends FuncDeclNode_IntParam {
         public FuncDeclNode_modInt() {
-            super("operatormod", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, leftParam, rightParam) -> {
-                int scopeIndex = slave.ModIntInt(leftParam.Write(), rightParam.Write());
-                return new CodeSnippet_Plain("%" + scopeIndex);
-            });
+            super("operatormod", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> slave.ModIntInt(lParam.Write(), rParam.Write()));
         }
     }
 }
