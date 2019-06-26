@@ -51,11 +51,11 @@ public class GeneratorSlave {
     }
 
     public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Type.EType InType, String InData) {
-        return new CodeSnippet_Plain(String.format("ret %s %s", InType.label(), InData));
+        return CreateReturnStmt(InType.label(), InData);
     }
 
     public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Base InType, String InData) {
-        return new CodeSnippet_Plain(String.format("ret %s %s", InType.Write(), InData));
+        return CreateReturnStmt(InType.Write(), InData);
     }
 
     public CodeSnippet_Plain CreateReturnStmt(String InType, String InData) {
@@ -118,8 +118,7 @@ public class GeneratorSlave {
     }
 
     public int AddIntInt(String InLeft, String InRight) {
-        String exp = String.format("add i32 %s, %s", InLeft, InRight);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+        return ThreeOperantsIntInstruction("add", InLeft, InRight);
     }
 
     public int AddFloatInt(String InLeft, String InRight) {
@@ -128,17 +127,47 @@ public class GeneratorSlave {
     }
 
     public int AddFloatFloat(String InLeft, String InRight) {
-        String exp = String.format("fadd float %s, %s", InLeft, InRight);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+        return ThreeOperantsFloatInstruction("fadd", InLeft, InRight);
     }
 
     public int SubIntInt(String InLeft, String InRight) {
-        String exp = String.format("sub i32 %s, %s", InLeft, InRight);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+        return ThreeOperantsIntInstruction("sub", InLeft, InRight);
     }
 
     public int SubFloatFloat(String InLeft, String InRight) {
-        String exp = String.format("fsub float %s, %s", InLeft, InRight);
+        return ThreeOperantsFloatInstruction("fsub", InLeft, InRight);
+    }
+
+    public int MulIntInt(String InLeft, String InRight) {
+        return ThreeOperantsIntInstruction("mul", InLeft, InRight);
+    }
+
+    public int MulFloatFloat(String InLeft, String InRight) {
+        return ThreeOperantsFloatInstruction("fmul", InLeft, InRight);
+    }
+
+    public int DivIntInt(String InLeft, String InRight) {
+        return ThreeOperantsIntInstruction("sdiv", InLeft, InRight);
+    }
+
+    public int ModIntInt(String InLeft, String InRight) {
+        return ThreeOperantsIntInstruction("srem", InLeft, InRight);
+    }
+
+    public int DivFloatFloat(String InLeft, String InRight) {
+        return ThreeOperantsFloatInstruction("fdiv", InLeft, InRight);
+    }
+
+    public int ThreeOperantsIntInstruction(String inst, String InLeft, String InRight) {
+        return ThreeOperantsInstruction("i32", inst, InLeft, InRight);
+    }
+
+    public int ThreeOperantsFloatInstruction(String inst, String InLeft, String InRight) {
+        return ThreeOperantsInstruction("float", inst, InLeft, InRight);
+    }
+
+    public int ThreeOperantsInstruction(String type, String inst, String InLeft, String InRight) {
+        String exp = String.format("%s %s %s, %s", inst, type, InLeft, InRight);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 

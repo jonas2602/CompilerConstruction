@@ -67,21 +67,23 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             return left;
         }
 
+        FuncCallNode funcCall = null;
         AbstractSyntaxTree right = visitTerm(ctx.term());
-        MultiplicativeNode.EMultiplicativeOperator operator = MultiplicativeNode.EMultiplicativeOperator.STAR;
         if (ctx.multiplicativeoperator().STAR() != null) {
-            operator = MultiplicativeNode.EMultiplicativeOperator.STAR;
+            funcCall = new FuncCallNode("operator*");
         } else if (ctx.multiplicativeoperator().SLASH() != null) {
-            operator = MultiplicativeNode.EMultiplicativeOperator.SLASH;
+            funcCall = new FuncCallNode("operator/");
         } else if (ctx.multiplicativeoperator().DIV() != null) {
-            operator = MultiplicativeNode.EMultiplicativeOperator.DIV;
+            funcCall = new FuncCallNode("operatordiv");
         } else if (ctx.multiplicativeoperator().MOD() != null) {
-            operator = MultiplicativeNode.EMultiplicativeOperator.MOD;
+            funcCall = new FuncCallNode("operatormod");
         } else if (ctx.multiplicativeoperator().AND() != null) {
-            operator = MultiplicativeNode.EMultiplicativeOperator.AND;
+            funcCall = new FuncCallNode("operator&&");
         }
 
-        return new MultiplicativeNode(left, right, operator);
+        funcCall.AddParameter(left);
+        funcCall.AddParameter(right);
+        return funcCall;
     }
 
     @Override
