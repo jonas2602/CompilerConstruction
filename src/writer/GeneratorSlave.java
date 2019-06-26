@@ -45,7 +45,7 @@ public class GeneratorSlave {
     public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
         InFiller.add(0, InSourceParam);
         CodeSnippet_FuncCall call = new CodeSnippet_FuncCall("printf", new CodeSnippet_Type(CodeSnippet_Type.EType.INT), InFiller, new CodeSnippet_Plain("(i8*, ...)"));
-        GetScopeSnippet().AddStatement(call);
+        GetScopeSnippet().AddStatementWithStorage(call);
 
         return call;
     }
@@ -129,6 +129,16 @@ public class GeneratorSlave {
 
     public int AddFloatFloat(String InLeft, String InRight) {
         String exp = String.format("fadd float %s, %s", InLeft, InRight);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int SubIntInt(String InLeft, String InRight) {
+        String exp = String.format("sub i32 %s, %s", InLeft, InRight);
+        return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public int SubFloatFloat(String InLeft, String InRight) {
+        String exp = String.format("fsub float %s, %s", InLeft, InRight);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 

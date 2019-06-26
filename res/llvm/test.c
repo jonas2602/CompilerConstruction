@@ -19,12 +19,16 @@ char* makeString(char left, char right);
 
 int main()
 {
-    none();
-    int testInt = 42;
+    char test[12];
+    test[0] = 'a';
 
-    person john;
-    printf("%s ist %d Jahre alt. %d\n", john.name, john.age, testInt);
-    printf("%s", makeString('a', 'b'));
+
+    // none();
+    // int testInt = 42;
+
+    // person john;
+    // printf("%s ist %d Jahre alt. %d\n", john.name, john.age, testInt);
+    // printf("%s", makeString('a', 'b'));
 }
 
 void none()
@@ -40,14 +44,14 @@ char test(char a, char b)
 
 float addf(float f)
 {
-    float r = f + myval;
+    float r = 1.2 - myval;
     printf("%f", r);
     return r;
 }
 
 int addi(int i)
 {
-    int r = i + myval;
+    int r = i - myval;
     return r;
 }
 

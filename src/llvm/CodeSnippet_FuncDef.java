@@ -15,8 +15,16 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         m_Statements.add(InStmt);
     }
 
+    @Override
     public void AddStatement(String InStmt) {
         m_Statements.add(new CodeSnippet_Plain(InStmt));
+    }
+
+    @Override
+    public int AddStatementWithStorage(CodeSnippet_Base InStmt) {
+        String finalStmt = String.format("%%%d = %s", m_StorageCounter, InStmt.Write());
+        m_Statements.add(new CodeSnippet_Plain(finalStmt));
+        return m_StorageCounter++;
     }
 
     @Override

@@ -117,7 +117,7 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitTypeIdentifier(PascalParser.TypeIdentifierContext ctx) {
-        if (ctx.CHAR() != null) return NamedTypeNode.CharNode;
+        if (ctx.CHAR() != null) return PrimitiveTypeNode.CharNode;
         if (ctx.BOOLEAN() != null) return NamedTypeNode.BoolNode;
         if (ctx.INTEGER() != null) return PrimitiveTypeNode.IntNode;
         if (ctx.REAL() != null) return PrimitiveTypeNode.FloatNode;

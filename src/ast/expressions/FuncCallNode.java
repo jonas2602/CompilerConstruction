@@ -43,7 +43,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
     public TypeNode CheckType() {
         // Function with Name exists?
         List<FuncDeclNode> funcOverloads = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
-        if (funcOverloads.size() < 1) {
+        if (funcOverloads == null || funcOverloads.size() < 1) {
             throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not defined");
         }
 
@@ -60,7 +60,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
             }
         }
         if (m_FuncDecl == null) {
-            throw new TypeCheckException(this, "Function received unexpected type");
+            throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not overloaded for given types");
         }
 
         return m_FuncDecl.GetType();

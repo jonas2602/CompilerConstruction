@@ -3,107 +3,159 @@ source_filename = "test.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-@myval = dso_local local_unnamed_addr global i32 0, align 4
-@.str = private unnamed_addr constant [25 x i8] c"%s ist %d Jahre alt. %d\0A\00", align 1
-@.str.1 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
-@.str.2 = private unnamed_addr constant [7 x i8] c"abc %f\00", align 1
-@.str.3 = private unnamed_addr constant [3 x i8] c"%f\00", align 1
-@.str.4 = private unnamed_addr constant [5 x i8] c"%c%f\00", align 1
+@myval = dso_local global i32 0, align 4
+@.str = private unnamed_addr constant [7 x i8] c"abc %f\00", align 1
+@.str.1 = private unnamed_addr constant [3 x i8] c"%f\00", align 1
+@.str.2 = private unnamed_addr constant [5 x i8] c"%c%f\00", align 1
 
-; Function Attrs: nounwind uwtable
-define dso_local i32 @main() local_unnamed_addr #0 {
-  tail call void @none()
-  %1 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str, i64 0, i64 0), i8* undef, i32 undef, i32 42)
-  %2 = tail call i8* @makeString(i8 signext 97, i8 signext 98)
-  %3 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), i8* %2)
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i32 @main() #0 {
+  %1 = alloca [12 x i8], align 1
+  %2 = getelementptr inbounds [12 x i8], [12 x i8]* %1, i64 0, i64 0
+  store i8 97, i8* %2, align 1
   ret i32 0
 }
 
-; Function Attrs: nounwind
-declare dso_local i32 @printf(i8* nocapture readonly, ...) local_unnamed_addr #1
-
-; Function Attrs: nounwind uwtable
-define dso_local noalias i8* @makeString(i8 signext, i8 signext) local_unnamed_addr #0 {
-  %3 = tail call noalias i8* @malloc(i64 3) #5
-  store i8 %0, i8* %3, align 1, !tbaa !2
-  %4 = getelementptr inbounds i8, i8* %3, i64 1
-  store i8 %1, i8* %4, align 1, !tbaa !2
-  %5 = getelementptr inbounds i8, i8* %3, i64 2
-  store i8 0, i8* %5, align 1, !tbaa !2
-  ret i8* %3
-}
-
-; Function Attrs: norecurse nounwind uwtable
-define dso_local void @none() local_unnamed_addr #2 {
-  store i32 5, i32* @myval, align 4, !tbaa !5
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @none() #0 {
+  store i32 5, i32* @myval, align 4
   ret void
 }
 
-; Function Attrs: nounwind uwtable
-define dso_local signext i8 @test(i8 signext, i8 signext) local_unnamed_addr #0 {
-  %3 = sitofp i8 %0 to float
-  %4 = fpext float %3 to double
-  %5 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.2, i64 0, i64 0), double %4)
-  %6 = add i8 %1, %0
-  ret i8 %6
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local signext i8 @test(i8 signext, i8 signext) #0 {
+  %3 = alloca i8, align 1
+  %4 = alloca i8, align 1
+  store i8 %0, i8* %3, align 1
+  store i8 %1, i8* %4, align 1
+  %5 = load i8, i8* %3, align 1
+  %6 = sitofp i8 %5 to float
+  %7 = fpext float %6 to double
+  %8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i32 0, i32 0), double %7)
+  %9 = load i8, i8* %3, align 1
+  %10 = sext i8 %9 to i32
+  %11 = load i8, i8* %4, align 1
+  %12 = sext i8 %11 to i32
+  %13 = add nsw i32 %10, %12
+  %14 = trunc i32 %13 to i8
+  ret i8 %14
 }
 
-; Function Attrs: nounwind uwtable
-define dso_local float @addf(float) local_unnamed_addr #0 {
-  %2 = load i32, i32* @myval, align 4, !tbaa !5
-  %3 = sitofp i32 %2 to float
-  %4 = fadd float %3, %0
-  %5 = fpext float %4 to double
-  %6 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.3, i64 0, i64 0), double %5)
-  ret float %4
+declare dso_local i32 @printf(i8*, ...) #1
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local float @addf(float) #0 {
+  %2 = alloca float, align 4
+  %3 = alloca float, align 4
+  store float %0, float* %2, align 4
+  %4 = load i32, i32* @myval, align 4
+  %5 = sitofp i32 %4 to double
+  %6 = fsub double 1.200000e+00, %5
+  %7 = fptrunc double %6 to float
+  store float %7, float* %3, align 4
+  %8 = load float, float* %3, align 4
+  %9 = fpext float %8 to double
+  %10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i32 0, i32 0), double %9)
+  %11 = load float, float* %3, align 4
+  ret float %11
 }
 
-; Function Attrs: norecurse nounwind readonly uwtable
-define dso_local i32 @addi(i32) local_unnamed_addr #3 {
-  %2 = load i32, i32* @myval, align 4, !tbaa !5
-  %3 = add nsw i32 %2, %0
-  ret i32 %3
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i32 @addi(i32) #0 {
+  %2 = alloca i32, align 4
+  %3 = alloca i32, align 4
+  store i32 %0, i32* %2, align 4
+  %4 = load i32, i32* %2, align 4
+  %5 = load i32, i32* @myval, align 4
+  %6 = sub nsw i32 %4, %5
+  store i32 %6, i32* %3, align 4
+  %7 = load i32, i32* %3, align 4
+  ret i32 %7
 }
 
-; Function Attrs: norecurse nounwind readnone uwtable
-define dso_local signext i8 @testCast(double) local_unnamed_addr #4 {
-  %2 = fptosi double %0 to i8
-  ret i8 %2
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local signext i8 @testCast(double) #0 {
+  %2 = alloca double, align 8
+  store double %0, double* %2, align 8
+  %3 = load double, double* %2, align 8
+  %4 = fptosi double %3 to i8
+  ret i8 %4
 }
 
-; Function Attrs: norecurse nounwind readnone uwtable
-define dso_local i32 @check(i32) local_unnamed_addr #4 {
-  %2 = icmp slt i32 %0, 1
-  %3 = sdiv i32 %0, 2
-  %4 = zext i1 %2 to i32
-  %5 = add nsw i32 %3, %4
-  ret i32 %5
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i32 @check(i32) #0 {
+  %2 = alloca i32, align 4
+  %3 = alloca i32, align 4
+  store i32 %0, i32* %3, align 4
+  %4 = load i32, i32* %3, align 4
+  %5 = icmp sgt i32 %4, 0
+  br i1 %5, label %6, label %9
+
+; <label>:6:                                      ; preds = %1
+  %7 = load i32, i32* %3, align 4
+  %8 = sdiv i32 %7, 2
+  store i32 %8, i32* %2, align 4
+  br label %13
+
+; <label>:9:                                      ; preds = %1
+  %10 = load i32, i32* %3, align 4
+  %11 = sdiv i32 %10, 2
+  %12 = add nsw i32 %11, 1
+  store i32 %12, i32* %2, align 4
+  br label %13
+
+; <label>:13:                                     ; preds = %9, %6
+  %14 = load i32, i32* %2, align 4
+  ret i32 %14
 }
 
-; Function Attrs: nounwind uwtable
-define dso_local void @myprint(i32, float) local_unnamed_addr #0 {
-  %3 = fpext float %1 to double
-  %4 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.4, i64 0, i64 0), i32 %0, double %3)
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @myprint(i32, float) #0 {
+  %3 = alloca i32, align 4
+  %4 = alloca float, align 4
+  store i32 %0, i32* %3, align 4
+  store float %1, float* %4, align 4
+  %5 = load i32, i32* %3, align 4
+  %6 = load float, float* %4, align 4
+  %7 = fpext float %6 to double
+  %8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.2, i32 0, i32 0), i32 %5, double %7)
   ret void
 }
 
-; Function Attrs: nounwind
-declare dso_local noalias i8* @malloc(i64) local_unnamed_addr #1
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i8* @makeString(i8 signext, i8 signext) #0 {
+  %3 = alloca i8, align 1
+  %4 = alloca i8, align 1
+  %5 = alloca i8*, align 8
+  store i8 %0, i8* %3, align 1
+  store i8 %1, i8* %4, align 1
+  %6 = call noalias i8* @malloc(i64 3) #3
+  store i8* %6, i8** %5, align 8
+  %7 = load i8, i8* %3, align 1
+  %8 = load i8*, i8** %5, align 8
+  %9 = getelementptr inbounds i8, i8* %8, i64 0
+  store i8 %7, i8* %9, align 1
+  %10 = load i8, i8* %4, align 1
+  %11 = load i8*, i8** %5, align 8
+  %12 = getelementptr inbounds i8, i8* %11, i64 1
+  store i8 %10, i8* %12, align 1
+  %13 = load i8*, i8** %5, align 8
+  %14 = getelementptr inbounds i8, i8* %13, i64 2
+  store i8 0, i8* %14, align 1
+  %15 = load i8*, i8** %5, align 8
+  ret i8* %15
+}
 
-attributes #0 = { nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { norecurse nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #3 = { norecurse nounwind readonly uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #4 = { norecurse nounwind readnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #5 = { nounwind }
+; Function Attrs: nounwind
+declare dso_local noalias i8* @malloc(i64) #2
+
+attributes #0 = { noinline nounwind optnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind }
 
 !llvm.module.flags = !{!0}
 !llvm.ident = !{!1}
 
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{!"clang version 7.0.0-3~ubuntu0.18.04.1 (tags/RELEASE_700/final)"}
-!2 = !{!3, !3, i64 0}
-!3 = !{!"omnipotent char", !4, i64 0}
-!4 = !{!"Simple C/C++ TBAA"}
-!5 = !{!6, !6, i64 0}
-!6 = !{!"int", !3, i64 0}

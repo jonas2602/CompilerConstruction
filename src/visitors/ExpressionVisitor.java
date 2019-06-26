@@ -44,22 +44,20 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         if (ctx.additiveoperator() == null) {
             return left;
         }
-
         AbstractSyntaxTree right = visitSimpleExpression(ctx.simpleExpression());
-        AdditiveNode.EAdditiveOperator operator = AdditiveNode.EAdditiveOperator.PLUS;
+
+        FuncCallNode funcCall = null;
         if (ctx.additiveoperator().PLUS() != null) {
-            operator = AdditiveNode.EAdditiveOperator.PLUS;
-            FuncCallNode funcCall = new FuncCallNode("operator+");
-            funcCall.AddParameter(left);
-            funcCall.AddParameter(right);
-            return funcCall;
+            funcCall = new FuncCallNode("operator+");
         } else if (ctx.additiveoperator().MINUS() != null) {
-            operator = AdditiveNode.EAdditiveOperator.MINUS;
+            funcCall = new FuncCallNode("operator-");
         } else if (ctx.additiveoperator().OR() != null) {
-            operator = AdditiveNode.EAdditiveOperator.OR;
+            funcCall = new FuncCallNode("operator||");
         }
 
-        return new AdditiveNode(left, right, operator);
+        funcCall.AddParameter(left);
+        funcCall.AddParameter(right);
+        return funcCall;
     }
 
     @Override
@@ -163,6 +161,12 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitUnsignedReal(PascalParser.UnsignedRealContext ctx) {
         // TODO: Create Constant Node of type Real
+        double value = Double.parseDouble(ctx.NUM_REAL().getText());
+        long bits = Double.doubleToLongBits(value);
+        if ((bits & 0xFFFFFFFFl) != 0) {
+            System.out.println("'" + value + "' should be interpreted as double because binary representation exeedes single precision float");
+        }
+
         return new ConstantNode(ctx.NUM_REAL().getText(), PrimitiveTypeNode.FloatNode);
     }
 
@@ -170,7 +174,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitConstantChr(PascalParser.ConstantChrContext ctx) {
         // TODO: Create Constant Node of type Char
         // TODO: Convert to char?
-        return new ConstantNode(ctx.unsignedInteger().getText(), NamedTypeNode.CharNode);
+        return new ConstantNode(ctx.unsignedInteger().getText(), PrimitiveTypeNode.CharNode);
     }
 
     @Override

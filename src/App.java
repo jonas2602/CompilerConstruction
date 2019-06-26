@@ -25,10 +25,16 @@ public class App {
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
         stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addInt());
         stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addFloat());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_subInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_subFloat());
         stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addInt());
         stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addFloat());
+        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_subInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_subFloat());
 
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));
+        stdBlock.AddTypeDeclaration(new TypeDeclNode("real", PrimitiveTypeNode.FloatNode));
+        stdBlock.AddTypeDeclaration(new TypeDeclNode("char", PrimitiveTypeNode.CharNode));
 
         // TODO: Add primitive types to std block
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type

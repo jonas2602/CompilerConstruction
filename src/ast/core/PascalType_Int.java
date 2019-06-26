@@ -54,5 +54,48 @@ public class PascalType_Int extends PascalType {
             return new CodeSnippet_Plain("%" + scopeIndex);
         }
     }
+
+    public static class FuncDeclNode_subInt extends FuncDeclNode_Core {
+        public FuncDeclNode_subInt() {
+            super("operator-", PrimitiveTypeNode.IntNode);
+
+            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.IntNode));
+            AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.IntNode));
+
+            m_bCustomCallLogic = true;
+            m_bInline = true;
+        }
+
+        @Override
+        public CodeSnippet_Base CreateFunctionCall(GeneratorSlave slave, CodeSnippet_Base ctx, FuncCallNode callNode) {
+            CodeSnippet_Base leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave, ctx);
+            CodeSnippet_Base rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave, ctx);
+
+            int scopeIndex = slave.SubIntInt(leftParam.Write(), rightParam.Write());
+            return new CodeSnippet_Plain("%" + scopeIndex);
+        }
+    }
+
+    public static class FuncDeclNode_subFloat extends FuncDeclNode_Core {
+        public FuncDeclNode_subFloat() {
+            super("operator-", PrimitiveTypeNode.FloatNode);
+
+            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.IntNode));
+            AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.FloatNode));
+
+            m_bCustomCallLogic = true;
+            m_bInline = true;
+        }
+
+        @Override
+        public CodeSnippet_Base CreateFunctionCall(GeneratorSlave slave, CodeSnippet_Base ctx, FuncCallNode callNode) {
+            CodeSnippet_Base leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave, ctx);
+            CodeSnippet_Base rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave, ctx);
+
+            int cast = slave.CastIntToFloat(leftParam.Write());
+            int scopeIndex = slave.SubFloatFloat("%" + cast, rightParam.Write());
+            return new CodeSnippet_Plain("%" + scopeIndex);
+        }
+    }
 }
 
