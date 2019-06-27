@@ -32,6 +32,10 @@ public class CodeSnippet_FuncCall extends CodeSnippet_Base {
         m_Parameters.add(InParam);
     }
 
+    public void AddParameter(String InParam) {
+        m_Parameters.add(new CodeSnippet_Plain(InParam));
+    }
+
     // TODO: Constructor that initializes from FunctionDecl snippet
 
     @Override

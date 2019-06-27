@@ -117,13 +117,14 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
         // Create Function Header
         CodeSnippet_Base funcTypeSnippet = m_ReturnType.CreateSnippet(slave, ctx);
-        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcTypeSnippet, true);
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcTypeSnippet, m_Params.size(), true);
 
         // Add Parameters
         for (ParamDeclNode param : m_Params) {
-            CodeSnippet_Base paramSnippet = param.CreateSnippet(slave, funcDef);
-            int ScopeIndex = funcDef.AddParameter(paramSnippet);
-            param.SetScopeIndex(ScopeIndex);
+            param.CreateSnippet(slave);
+            // CodeSnippet_Base paramSnippet = param.CreateSnippet(slave, funcDef);
+            // int ScopeIndex = funcDef.AddParameter(paramSnippet);
+            // param.SetScopeIndex(ScopeIndex);
         }
         // Create Function Body
         m_Block.CreateSnippet(slave, funcDef);

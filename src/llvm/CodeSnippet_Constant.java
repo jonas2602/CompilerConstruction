@@ -5,10 +5,10 @@ import java.util.List;
 
 public class CodeSnippet_Constant extends CodeSnippet_Base {
     private String m_Name;
-    private CodeSnippet_Type m_Type;
+    private CodeSnippet_Base m_Type;
     private CodeSnippet_Plain m_Data;
 
-    public CodeSnippet_Constant(String InName, CodeSnippet_Type InType, CodeSnippet_Plain InData) {
+    public CodeSnippet_Constant(String InName, CodeSnippet_Base InType, CodeSnippet_Plain InData) {
         m_Name = InName;
         m_Type = InType;
         m_Data = InData;
@@ -18,7 +18,7 @@ public class CodeSnippet_Constant extends CodeSnippet_Base {
         return m_Name;
     }
 
-    public CodeSnippet_Type GetType() {
+    public CodeSnippet_Base GetType() {
         return m_Type;
     }
 

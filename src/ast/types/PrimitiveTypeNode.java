@@ -1,24 +1,21 @@
 package ast.types;
 
-import ast.core.PascalType;
-import ast.core.PascalType_Char;
-import ast.core.PascalType_Float;
-import ast.core.PascalType_Int;
+import ast.core.*;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
+import writer.TypeContainer;
+import writer.TypeWrapper;
+import writer.TypeWrapper_Primitive;
 
 public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(new PascalType_Int());
     public static final PrimitiveTypeNode FloatNode = new PrimitiveTypeNode(new PascalType_Float());
     public static final PrimitiveTypeNode CharNode = new PrimitiveTypeNode(new PascalType_Char());
-    // public static final NamedTypeNode BoolNode = new NamedTypeNode(EPrimitiveType.BOOL);
-    // public static final NamedTypeNode StringNode = new NamedTypeNode(EPrimitiveType.STRING);
-    // public static final NamedTypeNode VoidNode = new NamedTypeNode(EPrimitiveType.VOID);
 
-    private PascalType m_PrimitiveType;
+    private PascalType_Primitive m_PrimitiveType;
 
-    public PrimitiveTypeNode(PascalType InType) {
+    public PrimitiveTypeNode(PascalType_Primitive InType) {
         m_PrimitiveType = InType;
     }
 
@@ -27,7 +24,7 @@ public class PrimitiveTypeNode extends TypeNode {
     }
 
     public String GetTypeShortName() {
-        return m_PrimitiveType.GetShortName();
+        return m_PrimitiveType.GetTypeName();
     }
 
     public int GetTypeSize() {
@@ -62,7 +59,7 @@ public class PrimitiveTypeNode extends TypeNode {
             return false;
         }
 
-        PascalType OtherType = ((PrimitiveTypeNode) OtherTypeNode).m_PrimitiveType;
+        PascalType_Primitive OtherType = ((PrimitiveTypeNode) OtherTypeNode).m_PrimitiveType;
         if (OtherType.getClass() != m_PrimitiveType.getClass()) {
             return false;
         }
@@ -72,6 +69,16 @@ public class PrimitiveTypeNode extends TypeNode {
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        return new CodeSnippet_Plain(m_PrimitiveType.GetShortName());
+        return new CodeSnippet_Plain(m_PrimitiveType.GetTypeName());
+    }
+
+    @Override
+    public TypeWrapper GetWrappedType() {
+        return new TypeWrapper_Primitive(m_PrimitiveType);
+    }
+
+    @Override
+    public TypeContainer GetDefaultValue() {
+        return new TypeContainer(GetWrappedType(), m_PrimitiveType.GetDefaultValue());
     }
 }

@@ -1,5 +1,6 @@
 package ast.core;
 
+import ast.EPrimitiveType;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
@@ -7,9 +8,9 @@ import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
 
-public class PascalType_Char extends PascalType {
+public class PascalType_Char extends PascalType_Primitive {
     public PascalType_Char() {
-        super("i8", 8, false, "%c", "0");
+        super(EPrimitiveType.CHAR, 8, false, "%c", "0");
     }
 
 
@@ -24,10 +25,6 @@ public class PascalType_Char extends PascalType {
             m_bInline = true;
         }
 
-        @Override
-        public CodeSnippet_Base CreateFunctionCall(GeneratorSlave slave, CodeSnippet_Base ctx, FuncCallNode callNode) {
-            return null;
-        }
     }
 }
 

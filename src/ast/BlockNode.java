@@ -180,6 +180,10 @@ public class BlockNode extends AbstractSyntaxTree {
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        for (VarDeclNode var : m_VarDeclMap.values()) {
+            var.CreateSnippet(slave);
+        }
+
         m_CompoundStatement.CreateSnippet(slave, ctx);
         return null;
     }

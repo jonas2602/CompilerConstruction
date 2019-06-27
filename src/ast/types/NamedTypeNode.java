@@ -11,7 +11,7 @@ public class NamedTypeNode extends TypeNode {
     // TODO: Assign Primitives to root block? How to validate them?
     // TODO: Is it a good idea that the same type objects are used multiple times in the tree?
     public static final NamedTypeNode IntNode = new NamedTypeNode(EPrimitiveType.INT);
-    public static final NamedTypeNode RealNode = new NamedTypeNode(EPrimitiveType.REAL);
+    public static final NamedTypeNode RealNode = new NamedTypeNode(EPrimitiveType.FLOAT);
     public static final NamedTypeNode BoolNode = new NamedTypeNode(EPrimitiveType.BOOL);
     public static final NamedTypeNode CharNode = new NamedTypeNode(EPrimitiveType.CHAR);
     public static final NamedTypeNode StringNode = new NamedTypeNode(EPrimitiveType.STRING);
@@ -74,7 +74,7 @@ public class NamedTypeNode extends TypeNode {
     // returns void if not primitive
     public EPrimitiveType GetPrimitiveType() {
         if (CompareType(IntNode)) return EPrimitiveType.INT;
-        if (CompareType(RealNode)) return EPrimitiveType.REAL;
+        if (CompareType(RealNode)) return EPrimitiveType.FLOAT;
         if (CompareType(BoolNode)) return EPrimitiveType.BOOL;
         if (CompareType(CharNode)) return EPrimitiveType.CHAR;
         if (CompareType(StringNode)) return EPrimitiveType.STRING;

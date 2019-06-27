@@ -8,6 +8,7 @@ import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 public class VariableNode extends AbstractSyntaxTree {
     private String m_Name;
@@ -54,5 +55,10 @@ public class VariableNode extends AbstractSyntaxTree {
             PrimitiveTypeNode varType = (PrimitiveTypeNode) m_Declaration.GetType();
             return new CodeSnippet_Plain(varType.GetTypeDefault());
         }
+    }
+
+    @Override
+    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+        return m_Declaration.CreateSnippet(slave);
     }
 }

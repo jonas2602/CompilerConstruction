@@ -12,10 +12,10 @@ public class GeneratorSlave {
     private List<CodeSnippet_FuncDef> m_FunctionDefinitions = new ArrayList<>();
     private List<CodeSnippet_FuncDecl> m_FunctionDeclarations = new ArrayList<>();
 
-    private List<ScopeInterface> m_ScopeStack = new ArrayList<>();
-    private ScopeInterface m_ActiveScope;
+    private List<CodeSnippet_FuncDef> m_ScopeStack = new ArrayList<>();
+    private CodeSnippet_FuncDef m_ActiveScope;
 
-    public ScopeInterface GetScopeSnippet() {
+    public CodeSnippet_FuncDef GetScopeSnippet() {
         return m_ActiveScope;
     }
 
@@ -29,6 +29,32 @@ public class GeneratorSlave {
         m_Constants.add(snippet);
 
         return snippet;
+    }
+
+    public TypeContainer CreateStringConstantNew(String InContent) {
+        // Convert \n, \t, ... to hex code
+        String outString = "";
+        for (int c : InContent.chars().toArray()) {
+            if (Character.isLetterOrDigit(c) || c == '%') {
+                outString += (char) c;
+            } else {
+                String hexValue = Integer.toHexString(c);
+                if (hexValue.length() < 2) {
+                    hexValue = "0" + hexValue;
+                }
+                outString += "\\" + hexValue.toUpperCase();
+            }
+        }
+
+        TypeWrapper stringWrapper = TypeManager.STRING(InContent.length() + 1);
+        String constName = String.format("@.str.%d", m_ConstantCounter++);
+        CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.GetTypeName());
+        CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", outString));
+
+        CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
+        m_Constants.add(snippet);
+
+        return new TypeContainer(this, new TypeWrapper_Pointer(stringWrapper), constName);
     }
 
     public CodeSnippet_Plain CreateStringReference(CodeSnippet_Constant InStringSource) {
@@ -62,8 +88,8 @@ public class GeneratorSlave {
         return new CodeSnippet_Plain(String.format("ret %s %s", InType, InData));
     }
 
-    public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Base InReturnType, boolean bEnterScope) {
-        CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(InName, InReturnType);
+    public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Base InReturnType, int InParameterCount, boolean bEnterScope) {
+        CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(InName, InReturnType, InParameterCount);
         def.AddStatement(new CodeSnippet_Plain("begin:"));
         m_FunctionDefinitions.add(def);
         if (bEnterScope) {
@@ -73,7 +99,12 @@ public class GeneratorSlave {
         return def;
     }
 
-    public void EnterScope(ScopeInterface InScopeObject) {
+    public TypeContainer CreateFunctionParameter(TypeWrapper InType) {
+        int scopeIndex = GetScopeSnippet().AddParameter(InType.GetTypeName());
+        return new TypeContainer(this, InType, "%" + scopeIndex);
+    }
+
+    public void EnterScope(CodeSnippet_FuncDef InScopeObject) {
         m_ScopeStack.add(InScopeObject);
         m_ActiveScope = InScopeObject;
     }
@@ -105,6 +136,12 @@ public class GeneratorSlave {
     public int ExtendFloatToDouble(String Source) {
         String exp = String.format("fpext float %s to double", Source);
         return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    public TypeContainer ExtendFloatToDouble(TypeContainer InSource) {
+        String exp = String.format("fpext float %s to double", InSource.GetValueAccessor());
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        return new TypeContainer(this, TypeWrapper_Primitive.DOUBLE, "%" + scopeIndex);
     }
 
     public int TruncateIntToChar(String Source) {
@@ -169,6 +206,44 @@ public class GeneratorSlave {
     public int ThreeOperantsInstruction(String type, String inst, String InLeft, String InRight) {
         String exp = String.format("%s %s %s, %s", inst, type, InLeft, InRight);
         return GetScopeSnippet().AddStatementWithStorage(exp);
+    }
+
+    // Returns a pointer to the requested memory with size of the given type
+    public TypeContainer AllocateMemory(TypeWrapper InType) {
+        String exp = String.format("alloca %s", InType.GetTypeName()); // TODO: alignment
+        int ScopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        TypeWrapper MemoryPointer = new TypeWrapper_Pointer(InType);
+        return new TypeContainer(this, MemoryPointer, "%" + ScopeIndex);
+    }
+
+    public void StoreInVariable(TypeContainer InVarAccess, TypeContainer InValue) {
+        String varParam = InVarAccess.CreateParameterString();
+        String valueParam = InValue.CreateParameterString();
+        String exp = String.format("store %s, %s", valueParam, varParam); // TODO: alignment
+        GetScopeSnippet().AddStatement(exp);
+    }
+
+    public TypeContainer LoadFromVariable(TypeContainer InVariable) {
+        TypeWrapper pointedType = InVariable.GetRootType().GetChild();
+        String resultTypeName = pointedType.GetTypeName();
+        String varParam = InVariable.CreateParameterString();
+        String exp = String.format("load %s, %s", resultTypeName, varParam); // TODO: alignment
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        return new TypeContainer(this, pointedType, "%" + scopeIndex);
+    }
+
+    public TypeContainer CreateArrayElementPtr(TypeContainer InArray, TypeContainer InIndex) {
+        return CreateArrayElementPtr(InArray, InIndex.GetValueAccessor());
+    }
+
+    public TypeContainer CreateArrayElementPtr(TypeContainer InArray, String InIndex) {
+        String arrTypeName = InArray.GetRootType().GetChild().GetTypeName();
+        String arrParam = InArray.CreateParameterString();
+        String exp = String.format("getelementptr inbounds %s, %s, i64 0, i64 %s", arrTypeName, arrParam, InIndex); // TODO: alignment
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
+
+        return new TypeContainer(this, new TypeWrapper_Pointer(elementType), "%" + scopeIndex);
     }
 
     public int AllocateInt() {

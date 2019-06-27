@@ -10,6 +10,7 @@ import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.*;
 import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     }
 
     @Override
-    public CodeSnippet_Base CreateFunctionCall(GeneratorSlave slave, CodeSnippet_Base ctx, FuncCallNode callNode) {
+    public TypeContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         // TODO: only one element with a single character? -> use "putchar"
         // TODO: add constants directly to the placeholder string, instead of adding a parameter
 
@@ -64,34 +65,36 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             //     placeholder += ((ConstantNode) element).GetData();
             // }
 
-            TypeNode typeNode = element.GetType();
-            CodeSnippet_Base typeSnippet = typeNode.CreateSnippet(slave, ctx);
-            CodeSnippet_Base dataSnippet = element.CreateSnippet(slave, ctx);
+            TypeContainer elementContainer = element.CreateSnippet(slave);
+
+            // load value if requested from a variable
+            if (!(element instanceof ConstantNode)) {
+                elementContainer = slave.LoadFromVariable(elementContainer);
+            }
 
             // Create Parameter for printf call
             PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
             if (primType.GetTypeIsDezimal()) {
                 // convert all decimals to double
                 if (primType.GetTypeSize() != 64) {
-
-                    typeSnippet = new CodeSnippet_Plain("double");
-                    dataSnippet = new CodeSnippet_Plain("%" + slave.ExtendFloatToDouble(dataSnippet.Write()));
+                    elementContainer = slave.ExtendFloatToDouble(elementContainer);
                 }
             }
 
-            filler.add(new CodeSnippet_Parameter(typeSnippet, dataSnippet));
+            filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
 
             // Add placeholder element for parameter to string
             placeholderString += primType.GetTypePlaceholder();
         }
         // TODO: Add newline (must be added as hex (\0A instead of \n, counts as a single character))
-        // placeholderString += "\0A";
+        placeholderString += "\n";
 
         //
-        CodeSnippet_Constant constant = slave.CreateStringConstant(placeholderString);
-        CodeSnippet_Base placeholderParam = slave.CreateStringParameter(constant);
-        CodeSnippet_FuncCall call = slave.CreatePrintfCall(placeholderParam, filler);
+        TypeContainer constant = slave.CreateStringConstantNew(placeholderString);
+        TypeContainer placeholderRef = slave.CreateArrayElementPtr(constant, "0");
+        CodeSnippet_Base placeholderParam = new CodeSnippet_Plain(placeholderRef.CreateParameterString());
+        slave.CreatePrintfCall(placeholderParam, filler);
 
-        return call;
+        return null;
     }
 }

@@ -14,6 +14,8 @@ import visitors.ProgramVisitor;
 import writer.CodeGenerator;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class App {
 
@@ -24,26 +26,26 @@ public class App {
         BlockNode stdBlock = new BlockNode();
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
 
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_subInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_subFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_mulInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_mulFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divFloat());
-
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_subInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_subFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_mulInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_mulFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_divFloat());
-        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_divInt());
-
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divTrucInt());
-        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_modInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_addFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_subInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_subFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_mulInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_mulFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divFloat());
+//
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_addFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_subInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_subFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_mulInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_mulFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_divFloat());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Float.FuncDeclNode_divInt());
+//
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divTrucInt());
+//        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_modInt());
 
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));
         stdBlock.AddTypeDeclaration(new TypeDeclNode("real", PrimitiveTypeNode.FloatNode));

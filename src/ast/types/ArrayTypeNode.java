@@ -2,6 +2,9 @@ package ast.types;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import writer.TypeManager;
+import writer.TypeWrapper;
+import writer.TypeWrapper_Array;
 
 public class ArrayTypeNode extends TypeNode {
     private AbstractSyntaxTree m_ElementCounter;
@@ -20,7 +23,7 @@ public class ArrayTypeNode extends TypeNode {
         m_ElementType.CheckType();
 
         TypeNode counterType = m_ElementCounter.CheckType();
-        if(!(counterType instanceof RangeTypeNode)){
+        if (!(counterType instanceof RangeTypeNode)) {
             throw new TypeCheckException(this, "Element Count of an array must be defined by a range");
         }
 
@@ -35,5 +38,15 @@ public class ArrayTypeNode extends TypeNode {
     @Override
     public TypeNode GetTypeDetails() {
         return m_ElementType;
+    }
+
+    @Override
+    public TypeWrapper GetWrappedType() {
+        if (!(m_ElementCounter instanceof RangeTypeNode)) {
+            System.out.println("Array only supports ranged definitions right now");
+        }
+
+        int arrSize = ((RangeTypeNode) m_ElementCounter).GetRangeSize();
+        return new TypeWrapper_Array(m_ElementType.GetWrappedType(), arrSize);
     }
 }

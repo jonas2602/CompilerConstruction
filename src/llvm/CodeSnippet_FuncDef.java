@@ -5,9 +5,12 @@ import java.util.ArrayList;
 
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeInterface {
     private List<CodeSnippet_Base> m_Statements = new ArrayList<>();
+    private int m_VariableCounter;
 
-    public CodeSnippet_FuncDef(String InName, CodeSnippet_Base InReturnType) {
+    public CodeSnippet_FuncDef(String InName, CodeSnippet_Base InReturnType, int InVarIndexOffset) {
         super(InName, InReturnType);
+
+        m_VariableCounter = InVarIndexOffset;
     }
 
     @Override
@@ -22,21 +25,16 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
 
     @Override
     public int AddStatementWithStorage(CodeSnippet_Base InStmt) {
-        String finalStmt = String.format("%%%d = %s", m_StorageCounter, InStmt.Write());
+        String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
         m_Statements.add(new CodeSnippet_Plain(finalStmt));
-        return m_StorageCounter++;
+        return m_VariableCounter++;
     }
 
     @Override
     public int AddStatementWithStorage(String InStmt) {
-        String finalStmt = String.format("%%%d = %s", m_StorageCounter, InStmt);
+        String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt);
         m_Statements.add(new CodeSnippet_Plain(finalStmt));
-        return m_StorageCounter++;
-    }
-
-    @Override
-    public int AddParameter(CodeSnippet_Base InParam) {
-        return super.AddParameter(InParam);
+        return m_VariableCounter++;
     }
 
     @Override

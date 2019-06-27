@@ -29,7 +29,7 @@ public class CodeSnippet_Type extends CodeSnippet_Base {
         public static EType FromAstType(EPrimitiveType InType) {
             switch (InType){
                 case INT: return EType.INT;
-                case REAL: return EType.FLOAT;
+                case FLOAT: return EType.FLOAT;
                 case CHAR: return EType.CHAR;
                 case BOOL: return EType.BOOL;
                 case STRING: return EType.STRING;

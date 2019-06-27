@@ -3,6 +3,7 @@ package ast;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 public class AbstractSyntaxTree {
     private AbstractSyntaxTree m_Parent;
@@ -47,6 +48,9 @@ public class AbstractSyntaxTree {
 
 
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+        return null;
+    }
+    public TypeContainer CreateSnippet(GeneratorSlave slave) {
         return null;
     }
 }

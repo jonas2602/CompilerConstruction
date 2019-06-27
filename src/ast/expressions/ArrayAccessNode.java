@@ -4,7 +4,10 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.types.ArrayTypeNode;
 import ast.types.NamedTypeNode;
+import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
+import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -30,7 +33,7 @@ public class ArrayAccessNode extends AbstractSyntaxTree {
             throw new TypeCheckException(this, "Indexed access is only possible on arrays");
         }
 
-        NamedTypeNode IntTypeNode = NamedTypeNode.IntNode;
+        PrimitiveTypeNode IntTypeNode = PrimitiveTypeNode.IntNode;
         for (AbstractSyntaxTree index : m_IndexExpressions) {
             // Is IndexNode of primitive type INT?
             TypeNode IndexType = index.CheckType();
@@ -46,5 +49,12 @@ public class ArrayAccessNode extends AbstractSyntaxTree {
     public TypeNode GetType() {
         return m_Child.GetType().GetTypeDetails();
         // TODO: if multiple indices, type is set of arraytype
+    }
+
+    @Override
+    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+        TypeContainer varAccess = m_Child.CreateSnippet(slave);
+        TypeContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
+        return slave.CreateArrayElementPtr(varAccess, indexContainer);
     }
 }

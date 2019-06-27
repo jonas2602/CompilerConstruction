@@ -2,6 +2,7 @@ package ast.types;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.expressions.ConstantNode;
 
 import java.lang.reflect.Type;
 
@@ -60,5 +61,16 @@ public class RangeTypeNode extends TypeNode {
     @Override
     public String toString() {
         return "Range(" + m_Min.GetType() + ")";
+    }
+
+    public int GetRangeSize() {
+        if (!(m_Min instanceof ConstantNode) || !(m_Max instanceof ConstantNode)) {
+            System.out.println("Range only supports int consts right now!");
+            return 0;
+        }
+        int minValue = Integer.parseInt(((ConstantNode) m_Min).GetData());
+        int maxValue = Integer.parseInt(((ConstantNode) m_Max).GetData());
+
+        return (maxValue - minValue) + 1;
     }
 }

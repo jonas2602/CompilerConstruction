@@ -1,50 +1,54 @@
-@.str.0 = constant [3 x i8] c"%f\00"
-@.str.1 = constant [3 x i8] c"%f\00"
-@.str.2 = constant [3 x i8] c"%f\00"
-@.str.3 = constant [3 x i8] c"%d\00"
-@.str.4 = constant [3 x i8] c"%f\00"
-@.str.5 = constant [3 x i8] c"%d\00"
-@.str.6 = constant [3 x i8] c"%d\00"
-@.str.7 = constant [3 x i8] c"%f\00"
-@.str.8 = constant [3 x i8] c"%f\00"
-@.str.9 = constant [3 x i8] c"%d\00"
+@.str.0 = constant [14 x i8] c"%c%c%c%c%c%f\0A\00"
+@.str.1 = constant [4 x i8] c"%d\0A\00"
 
 declare i32 @printf(i8*, ...)
 
 define i32 @main() {
 	begin:
-	%0 = fsub float 2.5, 1.5
-	%1 = fpext float %0 to double
-	%2 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.0, i64 0, i64 0), double %1)
-	%3 = sitofp i32 1 to float
-	%4 = fsub float 2.5, %3
-	%5 = fpext float %4 to double
-	%6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), double %5)
-	%7 = sitofp i32 2 to float
-	%8 = fsub float %7, 1.5
-	%9 = fpext float %8 to double
-	%10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.2, i64 0, i64 0), double %9)
-	%11 = sub i32 2, 1
-	%12 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.3, i64 0, i64 0), i32 %11)
-	%13 = sitofp i32 2 to float
-	%14 = fmul float 2.5, %13
-	%15 = fpext float %14 to double
-	%16 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.4, i64 0, i64 0), double %15)
-	%17 = mul i32 2, 2
-	%18 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.5, i64 0, i64 0), i32 %17)
-	%19 = sdiv i32 2, 2
-	%20 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.6, i64 0, i64 0), i32 %19)
-	%21 = sitofp i32 2 to float
-	%22 = fdiv float %21, 2.0
-	%23 = fpext float %22 to double
-	%24 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.7, i64 0, i64 0), double %23)
-	%25 = sitofp i32 2 to float
-	%26 = sitofp i32 2 to float
-	%27 = fdiv float %25, %26
-	%28 = fpext float %27 to double
-	%29 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.8, i64 0, i64 0), double %28)
-	%30 = srem i32 4, 2
-	%31 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i64 0, i64 0), i32 %30)
+	%0 = alloca [3 x i8]
+	%1 = alloca i8
+	store i8 0, i8* %1
+	%2 = alloca i32
+	store i32 0, i32* %2
+	%3 = alloca float
+	store float 0.0, float* %3
+	store i8 120, i8* %1
+	%4 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 0
+	store i8 97, i8* %4
+	%5 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 1
+	store i8 98, i8* %5
+	%6 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 2
+	store i8 99, i8* %6
+	%7 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 0
+	%8 = load i8, i8* %7
+	store i8 %8, i8* %1
+	%9 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 2
+	%10 = load i8, i8* %1
+	store i8 %10, i8* %9
+	%11 = load i8, i8* %1
+	%12 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 0
+	%13 = load i8, i8* %12
+	%14 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 1
+	%15 = load i8, i8* %14
+	%16 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 2
+	%17 = load i8, i8* %16
+	%18 = fpext float 1.0 to double
+	%19 = getelementptr inbounds [14 x i8], [14 x i8]* @.str.0, i64 0, i64 0
+	%20 = call i32 (i8*, ...) @printf(i8* %19, i8 %11, i8 32, i8 %13, i8 %15, i8 %17, double %18)
+	%21 = load i32, i32* %2
+	%22 = call i32 @fact(i32 %21)
+	ret i32 0
+}
+
+define i32 @fact(i32) {
+	begin:
+	%1 = alloca i32
+	store i32 %0, i32* %1
+	%2 = alloca i32
+	store i32 0, i32* %2
+	%3 = load i32, i32* %1
+	%4 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i64 0, i64 0
+	%5 = call i32 (i8*, ...) @printf(i8* %4, i32 %3)
 	ret i32 0
 }
 

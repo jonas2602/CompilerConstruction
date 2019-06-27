@@ -1,8 +1,11 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
+import ast.core.PascalType;
+import writer.TypeContainer;
+import writer.TypeWrapper;
 
-public class TypeNode extends AbstractSyntaxTree {
+public abstract class TypeNode extends AbstractSyntaxTree {
     public boolean CompareType(TypeNode OtherTypeNode) {
         return false;
     }
@@ -12,5 +15,15 @@ public class TypeNode extends AbstractSyntaxTree {
         return GetType();
     }
 
-    public TypeNode GetCompareType() { return GetType(); }
+    public TypeNode GetCompareType() {
+        return GetType();
+    }
+
+    public TypeWrapper GetWrappedType() {
+        return null;
+    }
+
+    public TypeContainer GetDefaultValue() {
+        return null;
+    }
 }

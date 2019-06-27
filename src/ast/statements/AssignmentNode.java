@@ -8,6 +8,7 @@ import ast.expressions.VariableNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;
@@ -54,5 +55,20 @@ public class AssignmentNode extends AbstractSyntaxTree {
         }
 
         return exp;
+    }
+
+    @Override
+    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+        TypeContainer exp = m_Expression.CreateSnippet(slave);
+        TypeContainer varAccess = m_Variable.CreateSnippet(slave);
+
+        // if the expression on the right of the assignment is not a constant (variable access stuff)
+        // 'exp' will contain a pointer to the requested value that must be loaded before writing
+        if (!(m_Expression instanceof ConstantNode)) {
+            exp = slave.LoadFromVariable(exp);
+        }
+
+        slave.StoreInVariable(varAccess, exp);
+        return null;
     }
 }

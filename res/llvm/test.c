@@ -2,8 +2,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
-int myval = 0;
+int myval = 5;
 
 typedef struct
 {
@@ -11,24 +12,71 @@ typedef struct
     int age;
 } person;
 
+void arraytest();
 char test(char a, char b);
 float addf(float f);
 int addi(int i);
 void none();
-char* makeString(char left, char right);
+char *makeString(char left, char right);
+int mymod(int a, int b);
 
 int main()
 {
-    char test[12];
-    test[0] = 'a';
+    // char test[12];
+    // test[7] = 'a';
 
+    // int i = 132;
+    // int *j = &i;
+
+    // int k = *j;
 
     // none();
     // int testInt = 42;
 
     // person john;
-    // printf("%s ist %d Jahre alt. %d\n", john.name, john.age, testInt);
-    // printf("%s", makeString('a', 'b'));
+    // john.age = *j;
+    // printf("%s ist %d Jahre alt. %c %d\n", john.name, john.age, test[7], myval);
+    char *mystr = "abcde\\\n\\";
+    arraytest();
+}
+
+void arraytest()
+{
+    char first = 'x';
+    char mystring[5] = {'a', 'b', 'c', 'd', 'e'};
+    mystring[3] = first;
+
+    int mylist[3] = {2, 4, 6};
+    mylist[1] = 1000;
+
+    int val = mylist[1];
+
+    char *out[12][12];
+    char *other = out[6][8];
+
+    printf("%c", mystring[1]);
+}
+
+void pointertest()
+{
+    int i = 132;
+    int *j = &i;
+    int k = *j;
+    int l = i;
+    int **m = &j;
+    k++;
+}
+
+void structtest()
+{
+    person john;
+    john.age = 12;
+    john.name = "john";
+}
+
+int mymod(int a, int b)
+{
+    return a % b;
 }
 
 void none()
@@ -77,13 +125,12 @@ void myprint(int s, float f)
     printf("%c%f", s, f);
 }
 
-char* makeString(char left, char right)
+char *makeString(char left, char right)
 {
-    char* str = malloc(3 * sizeof(char));
+    char *str = malloc(3 * sizeof(char));
     str[0] = left;
     str[1] = right;
     str[2] = '\0';
-
 
     return str;
 }

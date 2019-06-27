@@ -1,16 +1,23 @@
 program test;
 
+function fact(n: integer): integer;
 begin
-    writeln(2.5 - 1.5);
-    writeln(2.5 - 1);
-    writeln(2 - 1.5);
-    writeln(2 - 1);
+    writeln(n);
+end;
 
-    writeln(2.5 * 2);
-    writeln(2 * 2);
+var
+    cc: array[0..2] of char;
+    x: char;
+    y: integer;
+    z: real;
+begin
+    x := 'x';
+    cc[0] := 'a';
+    cc[1] := 'b';
+    cc[2] := 'c';
 
-    writeln(2 div 2);
-    writeln(2 / 2.0);
-    writeln(2 / 2);
-    writeln(4 mod 2);
+    x := cc[0];
+    cc[2] := x;
+    writeln(x, ' ', cc[0], cc[1], cc[2], 1.0);
+    fact(y);
 end.

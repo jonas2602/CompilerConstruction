@@ -8,7 +8,7 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base {
     protected List<CodeSnippet_Base> m_Params = new ArrayList<>();
     protected CodeSnippet_Base m_ReturnType;
 
-    protected int m_StorageCounter = 0;
+    protected int m_ParameterCounter = 0;
 
     public CodeSnippet_FuncDecl(String InName, CodeSnippet_Base InReturnType) {
         m_Name = InName;
@@ -17,7 +17,11 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base {
 
     public int AddParameter(CodeSnippet_Base InParam) {
         m_Params.add(InParam);
-        return m_StorageCounter++;
+        return m_ParameterCounter++;
+    }
+
+    public int AddParameter(String InParam) {
+        return AddParameter(new CodeSnippet_Plain(InParam));
     }
 
     @Override

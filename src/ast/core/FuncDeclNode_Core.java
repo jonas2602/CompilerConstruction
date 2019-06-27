@@ -6,6 +6,7 @@ import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 public class FuncDeclNode_Core extends FuncDeclNode {
     protected boolean m_bCustomCallLogic = false;
@@ -18,7 +19,7 @@ public class FuncDeclNode_Core extends FuncDeclNode {
         return m_bCustomCallLogic;
     }
 
-    public CodeSnippet_Base CreateFunctionCall(GeneratorSlave slave, CodeSnippet_Base ctx, FuncCallNode callNode) {
+    public TypeContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         return null;
     }
 }
