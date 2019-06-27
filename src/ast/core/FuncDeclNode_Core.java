@@ -8,7 +8,7 @@ import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
 import writer.TypeContainer;
 
-public class FuncDeclNode_Core extends FuncDeclNode {
+public abstract class FuncDeclNode_Core extends FuncDeclNode {
     protected boolean m_bCustomCallLogic = false;
 
     public FuncDeclNode_Core(String InName, TypeNode InReturnType) {

@@ -1,5 +1,6 @@
 package ast.core;
 
+import ast.AbstractSyntaxTree;
 import ast.EPrimitiveType;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
@@ -15,42 +16,9 @@ public class PascalType_Int extends PascalType_Primitive {
         super(EPrimitiveType.INT, 32, false, "%d", "0");
     }
 
-    public interface IntFunctionCalls {
-        public TypeContainer createFunctionCall(GeneratorSlave slave, TypeContainer lParam, TypeContainer rParam);
-    }
-
-    public static abstract class FuncDeclNode_IntParam extends FuncDeclNode_Core {
-
-        private IntFunctionCalls operation;
-
-        public FuncDeclNode_IntParam(String InName, TypeNode InReturnType, PrimitiveTypeNode rparam, IntFunctionCalls operation) {
-            super(InName, InReturnType);
-
-            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.IntNode));
-            AddParameter(new ParamDeclNode("right", rparam));
-
-            m_bCustomCallLogic = true;
-            m_bInline = true;
-
-            this.operation = operation;
-        }
-
-        @Override
-        public TypeContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            TypeContainer leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave);
-            TypeContainer rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave);
-
-            // load value if requested from a variable
-            if (callNode.GetParameterList().get(0) instanceof AccessInterface) {
-                leftParam = slave.LoadFromVariable(leftParam);
-            }
-
-            // load value if requested from a variable
-            if (callNode.GetParameterList().get(1) instanceof AccessInterface) {
-                rightParam = slave.LoadFromVariable(rightParam);
-            }
-
-            return operation.createFunctionCall(slave, leftParam, rightParam);
+    public static abstract class FuncDeclNode_IntParam extends PascalType_Operation {
+        public FuncDeclNode_IntParam(String InName, TypeNode InReturnType, PrimitiveTypeNode rparam, FunctionCall operation) {
+            super(InName, InReturnType, PrimitiveTypeNode.IntNode, rparam, operation);
         }
     }
 

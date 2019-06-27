@@ -5,7 +5,7 @@ import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
 import writer.TypeContainer;
 
-public class AbstractSyntaxTree {
+public abstract class AbstractSyntaxTree {
     private AbstractSyntaxTree m_Parent;
     private BlockNode m_OwningBlock;
 

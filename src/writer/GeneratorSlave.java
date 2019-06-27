@@ -34,23 +34,23 @@ public class GeneratorSlave {
 
     public TypeContainer CreateStringConstantNew(String InContent) {
         // Convert \n, \t, ... to hex code
-        String outString = "";
-        for (int c : InContent.chars().toArray()) {
+        StringBuilder builder  = new StringBuilder();
+        for (char c : InContent.toCharArray()) {
             if (Character.isLetterOrDigit(c) || c == '%') {
-                outString += (char) c;
+                builder.append(c);
             } else {
                 String hexValue = Integer.toHexString(c);
                 if (hexValue.length() < 2) {
                     hexValue = "0" + hexValue;
                 }
-                outString += "\\" + hexValue.toUpperCase();
+                builder.append("\\" + hexValue.toUpperCase());
             }
         }
 
         TypeWrapper stringWrapper = TypeManager.STRING(InContent.length() + 1);
         String constName = String.format("@.str.%d", m_ConstantCounter++);
         CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.GetTypeName());
-        CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", outString));
+        CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", builder.toString()));
 
         CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
         m_Constants.add(snippet);

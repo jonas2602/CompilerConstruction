@@ -1,5 +1,6 @@
 package ast.core;
 
+import ast.AbstractSyntaxTree;
 import ast.EPrimitiveType;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
@@ -13,42 +14,9 @@ public class PascalType_Float extends PascalType_Primitive {
         super(EPrimitiveType.FLOAT, 32, true, "%f", "0.0");
     }
 
-    public interface FloatFunctionCalls {
-        public TypeContainer createFunctionCall(GeneratorSlave slave, TypeContainer lParam, TypeContainer rParam);
-    }
-
-    public static abstract class FuncDeclNode_FloatParam extends FuncDeclNode_Core {
-
-        private FloatFunctionCalls operation;
-
-        public FuncDeclNode_FloatParam(String InName, PrimitiveTypeNode rparam, FloatFunctionCalls operation) {
-            super(InName, PrimitiveTypeNode.FloatNode);
-
-            AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.FloatNode));
-            AddParameter(new ParamDeclNode("right", rparam));
-
-            m_bCustomCallLogic = true;
-            m_bInline = true;
-
-            this.operation = operation;
-        }
-
-        @Override
-        public TypeContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            TypeContainer leftParam = callNode.GetParameterList().get(0).CreateSnippet(slave);
-            TypeContainer rightParam = callNode.GetParameterList().get(1).CreateSnippet(slave);
-
-            // load value if requested from a variable
-            if (callNode.GetParameterList().get(0) instanceof AccessInterface) {
-                leftParam = slave.LoadFromVariable(leftParam);
-            }
-
-            // load value if requested from a variable
-            if (callNode.GetParameterList().get(1) instanceof AccessInterface) {
-                rightParam = slave.LoadFromVariable(rightParam);
-            }
-
-            return operation.createFunctionCall(slave, leftParam, rightParam);
+    public static abstract class FuncDeclNode_FloatParam extends PascalType_Operation {
+        public FuncDeclNode_FloatParam(String InName, PrimitiveTypeNode rparam, FunctionCall operation) {
+            super(InName, PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
     }
 
