@@ -15,6 +15,12 @@ public class TypeContainer {
         m_ValueAccessor = InAccessor;
     }
 
+    public TypeContainer(TypeContainer InSourceContainer, String InAccessor) {
+        m_Slave = InSourceContainer.m_Slave;
+        m_RootType = InSourceContainer.m_RootType;
+        m_ValueAccessor = InAccessor;
+    }
+
     public TypeContainer(TypeWrapper InType, String InAccessor) {
         m_Slave = null;
         m_RootType = InType;

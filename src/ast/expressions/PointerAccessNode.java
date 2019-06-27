@@ -2,7 +2,7 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 
-public class PointerAccessNode extends AbstractSyntaxTree {
+public class PointerAccessNode extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
 
     public PointerAccessNode(AbstractSyntaxTree InChild) {

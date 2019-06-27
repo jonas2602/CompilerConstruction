@@ -2,6 +2,7 @@ package ast.core;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.expressions.AccessInterface;
 import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
 import ast.expressions.ParameterNode;
@@ -68,7 +69,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             TypeContainer elementContainer = element.CreateSnippet(slave);
 
             // load value if requested from a variable
-            if (!(element instanceof ConstantNode)) {
+            if (element instanceof AccessInterface) {
                 elementContainer = slave.LoadFromVariable(elementContainer);
             }
 

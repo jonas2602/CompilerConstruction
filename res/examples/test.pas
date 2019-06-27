@@ -2,7 +2,7 @@ program test;
 
 function fact(n: integer): integer;
 begin
-    writeln(n);
+    writeln(n + 1.0);
 end;
 
 var
@@ -18,6 +18,6 @@ begin
 
     x := cc[0];
     cc[2] := x;
-    writeln(x, ' ', cc[0], cc[1], cc[2], 1.0);
+    writeln(x, ' ', cc[0], cc[1], cc[2], ' ', 1.0);
     fact(y);
 end.

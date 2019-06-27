@@ -1,5 +1,5 @@
-@.str.0 = constant [14 x i8] c"%c%c%c%c%c%f\0A\00"
-@.str.1 = constant [4 x i8] c"%d\0A\00"
+@.str.0 = constant [16 x i8] c"%c%c%c%c%c%c%f\0A\00"
+@.str.1 = constant [4 x i8] c"%f\0A\00"
 
 declare i32 @printf(i8*, ...)
 
@@ -33,8 +33,8 @@ define i32 @main() {
 	%16 = getelementptr inbounds [3 x i8], [3 x i8]* %0, i64 0, i64 2
 	%17 = load i8, i8* %16
 	%18 = fpext float 1.0 to double
-	%19 = getelementptr inbounds [14 x i8], [14 x i8]* @.str.0, i64 0, i64 0
-	%20 = call i32 (i8*, ...) @printf(i8* %19, i8 %11, i8 32, i8 %13, i8 %15, i8 %17, double %18)
+	%19 = getelementptr inbounds [16 x i8], [16 x i8]* @.str.0, i64 0, i64 0
+	%20 = call i32 (i8*, ...) @printf(i8* %19, i8 %11, i8 32, i8 %13, i8 %15, i8 %17, i8 32, double %18)
 	%21 = load i32, i32* %2
 	%22 = call i32 @fact(i32 %21)
 	ret i32 0
@@ -47,8 +47,11 @@ define i32 @fact(i32) {
 	%2 = alloca i32
 	store i32 0, i32* %2
 	%3 = load i32, i32* %1
-	%4 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i64 0, i64 0
-	%5 = call i32 (i8*, ...) @printf(i8* %4, i32 %3)
+	%4 = sitofp i32 %3 to float
+	%5 = fadd float %4, 1.0
+	%6 = fpext float %5 to double
+	%7 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i64 0, i64 0
+	%8 = call i32 (i8*, ...) @printf(i8* %7, double %6)
 	ret i32 0
 }
 

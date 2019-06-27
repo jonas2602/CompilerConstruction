@@ -3,7 +3,7 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 
-public class FieldAccessNode extends AbstractSyntaxTree {
+public class FieldAccessNode extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
     private String m_FieldName;
 

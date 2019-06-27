@@ -134,7 +134,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
             for (AbstractSyntaxTree param : m_Params) {
                 TypeContainer paramContainer = param.CreateSnippet(slave);
                 // load value if requested from a variable
-                if (!(param instanceof ConstantNode)) {
+                if (param instanceof AccessInterface) {
                     paramContainer = slave.LoadFromVariable(paramContainer);
                 }
                 call.AddParameter(paramContainer.CreateParameterString());

@@ -12,7 +12,7 @@ import writer.TypeContainer;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ArrayAccessNode extends AbstractSyntaxTree {
+public class ArrayAccessNode extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
     private List<AbstractSyntaxTree> m_IndexExpressions = new ArrayList<>();
 

@@ -10,7 +10,7 @@ import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
 import writer.TypeContainer;
 
-public class VariableNode extends AbstractSyntaxTree {
+public class VariableNode extends AbstractSyntaxTree implements AccessInterface{
     private String m_Name;
     private VarDeclNode m_Declaration;
 

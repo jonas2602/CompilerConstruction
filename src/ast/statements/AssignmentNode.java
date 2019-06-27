@@ -3,6 +3,7 @@ package ast.statements;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.VarDeclNode;
+import ast.expressions.AccessInterface;
 import ast.expressions.ConstantNode;
 import ast.expressions.VariableNode;
 import ast.types.TypeNode;
@@ -37,25 +38,25 @@ public class AssignmentNode extends AbstractSyntaxTree {
         return null;
     }
 
-    @Override
-    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        CodeSnippet_Base exp = m_Expression.CreateSnippet(slave, ctx);
+    // @Override
+    // public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+    //     CodeSnippet_Base exp = m_Expression.CreateSnippet(slave, ctx);
 
-        // TODO: Arrays, Records, ...?
-        VarDeclNode varDecl = ((VariableNode) m_Variable).GetDeclaration();
+    //     // TODO: Arrays, Records, ...?
+    //     VarDeclNode varDecl = ((VariableNode) m_Variable).GetDeclaration();
 
-        // Is expression a constant?
-        if (m_Expression instanceof ConstantNode) {
-            int LocalIndex = slave.AllocateInt();
-            slave.StoreInt(exp.Write(), LocalIndex);
-            varDecl.SetScopeIndex(LocalIndex);
-        } else {
-            // assign local index to variable
-            varDecl.SetScopeIndex(Integer.parseInt(exp.Write().substring(1)));
-        }
+    //     // Is expression a constant?
+    //     if (m_Expression instanceof ConstantNode) {
+    //         int LocalIndex = slave.AllocateInt();
+    //         slave.StoreInt(exp.Write(), LocalIndex);
+    //         varDecl.SetScopeIndex(LocalIndex);
+    //     } else {
+    //         // assign local index to variable
+    //         varDecl.SetScopeIndex(Integer.parseInt(exp.Write().substring(1)));
+    //     }
 
-        return exp;
-    }
+    //     return exp;
+    // }
 
     @Override
     public TypeContainer CreateSnippet(GeneratorSlave slave) {
@@ -64,7 +65,7 @@ public class AssignmentNode extends AbstractSyntaxTree {
 
         // if the expression on the right of the assignment is not a constant (variable access stuff)
         // 'exp' will contain a pointer to the requested value that must be loaded before writing
-        if (!(m_Expression instanceof ConstantNode)) {
+        if (m_Expression instanceof AccessInterface) {
             exp = slave.LoadFromVariable(exp);
         }
 

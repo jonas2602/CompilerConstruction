@@ -2,6 +2,7 @@ package writer;
 
 import llvm.*;
 
+import javax.swing.text.html.InlineView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,9 +129,10 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public int CastIntToFloat(String Source) {
-        String exp = String.format("sitofp i32 %s to float", Source);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+    public TypeContainer CastIntToFloat(TypeContainer InSource) {
+        String exp = String.format("sitofp %s to float", InSource.CreateParameterString());
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        return new TypeContainer(TypeWrapper_Primitive.FLOAT, "%" + scopeIndex);
     }
 
     public int ExtendFloatToDouble(String Source) {
@@ -154,58 +156,46 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public int AddIntInt(String InLeft, String InRight) {
-        return ThreeOperantsIntInstruction("add", InLeft, InRight);
+    public TypeContainer AddIntInt(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("add", InLeft, InRight);
     }
 
-    public int AddFloatInt(String InLeft, String InRight) {
-        int cast = CastIntToFloat(InRight);
-        return AddFloatFloat(InLeft, "%" + cast);
+    public TypeContainer AddFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("fadd", InLeft, InRight);
     }
 
-    public int AddFloatFloat(String InLeft, String InRight) {
-        return ThreeOperantsFloatInstruction("fadd", InLeft, InRight);
+    public TypeContainer SubIntInt(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("sub", InLeft, InRight);
     }
 
-    public int SubIntInt(String InLeft, String InRight) {
-        return ThreeOperantsIntInstruction("sub", InLeft, InRight);
+    public TypeContainer SubFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("fsub", InLeft, InRight);
     }
 
-    public int SubFloatFloat(String InLeft, String InRight) {
-        return ThreeOperantsFloatInstruction("fsub", InLeft, InRight);
+    public TypeContainer MulIntInt(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("mul", InLeft, InRight);
     }
 
-    public int MulIntInt(String InLeft, String InRight) {
-        return ThreeOperantsIntInstruction("mul", InLeft, InRight);
+    public TypeContainer MulFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("fmul", InLeft, InRight);
     }
 
-    public int MulFloatFloat(String InLeft, String InRight) {
-        return ThreeOperantsFloatInstruction("fmul", InLeft, InRight);
+    public TypeContainer DivIntInt(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("sdiv", InLeft, InRight);
     }
 
-    public int DivIntInt(String InLeft, String InRight) {
-        return ThreeOperantsIntInstruction("sdiv", InLeft, InRight);
+    public TypeContainer ModIntInt(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("srem", InLeft, InRight);
     }
 
-    public int ModIntInt(String InLeft, String InRight) {
-        return ThreeOperantsIntInstruction("srem", InLeft, InRight);
+    public TypeContainer DivFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("fdiv", InLeft, InRight);
     }
 
-    public int DivFloatFloat(String InLeft, String InRight) {
-        return ThreeOperantsFloatInstruction("fdiv", InLeft, InRight);
-    }
-
-    public int ThreeOperantsIntInstruction(String inst, String InLeft, String InRight) {
-        return ThreeOperantsInstruction("i32", inst, InLeft, InRight);
-    }
-
-    public int ThreeOperantsFloatInstruction(String inst, String InLeft, String InRight) {
-        return ThreeOperantsInstruction("float", inst, InLeft, InRight);
-    }
-
-    public int ThreeOperantsInstruction(String type, String inst, String InLeft, String InRight) {
-        String exp = String.format("%s %s %s, %s", inst, type, InLeft, InRight);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+    public TypeContainer ThreeOperantsInstruction(String inst, TypeContainer InLeft, TypeContainer InRight) {
+        String exp = String.format("%s %s, %s", inst, InLeft.CreateParameterString(), InRight.GetValueAccessor());
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        return new TypeContainer(InLeft, "%" + scopeIndex);
     }
 
     // Returns a pointer to the requested memory with size of the given type
