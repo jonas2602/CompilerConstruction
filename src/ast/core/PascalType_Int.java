@@ -97,4 +97,40 @@ public class PascalType_Int extends PascalType_Primitive {
             super("operatormod", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, GeneratorSlave::ModIntInt);
         }
     }
+
+    public static class FuncDeclNode_eqInt extends FuncDeclNode_IntParam {
+        public FuncDeclNode_eqInt() {
+            super("operatoreq", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntEQ);
+        }
+    }
+
+    public static class FuncDeclNode_neInt extends FuncDeclNode_IntParam {
+        public FuncDeclNode_neInt() {
+            super("operatorne", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntNE);
+        }
+    }
+
+    public static class FuncDeclNode_ltInt extends FuncDeclNode_IntParam {
+        public FuncDeclNode_ltInt() {
+            super("operatorlt", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntLT);
+        }
+    }
+
+    public static class FuncDeclNode_leInt extends FuncDeclNode_IntParam {
+        public FuncDeclNode_leInt() {
+            super("operatorle", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntLE);
+        }
+    }
+
+    public static class FuncDeclNode_gtInt extends FuncDeclNode_IntParam {
+        public FuncDeclNode_gtInt() {
+            super("operatorgt", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntGT);
+        }
+    }
+
+    public static class FuncDeclNode_geInt extends FuncDeclNode_IntParam {
+        public FuncDeclNode_geInt() {
+            super("operatorge", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntGE);
+        }
+    }
 }

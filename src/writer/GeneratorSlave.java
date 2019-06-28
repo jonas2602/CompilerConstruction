@@ -193,13 +193,77 @@ public class GeneratorSlave {
     }
 
     public TypeContainer OrBoolBool(TypeContainer InLeft, TypeContainer InRight) {
-        return null;
+        return ThreeOperantsInstruction("or", InLeft, InRight);
+    }
+
+    public TypeContainer AndBoolBool(TypeContainer InLeft, TypeContainer InRight) {
+        return ThreeOperantsInstruction("and", InLeft, InRight);
     }
 
     public TypeContainer ThreeOperantsInstruction(String inst, TypeContainer InLeft, TypeContainer InRight) {
         String exp = String.format("%s %s, %s", inst, InLeft.CreateParameterString(), InRight.GetValueAccessor());
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(InLeft, "%" + scopeIndex);
+        return new TypeContainer(InLeft, scopeIndex);
+    }
+
+    public TypeContainer IntEQ(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("eq", InLeft, InRight);
+    }
+
+    public TypeContainer IntNE(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("ne", InLeft, InRight);
+    }
+
+    public TypeContainer IntLT(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("slt", InLeft, InRight);
+    }
+
+    public TypeContainer IntLE(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("sle", InLeft, InRight);
+    }
+
+    public TypeContainer IntGT(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("sgt", InLeft, InRight);
+    }
+
+    public TypeContainer IntGE(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("sge", InLeft, InRight);
+    }
+
+    public TypeContainer IntComparator(String cond, TypeContainer InLeft, TypeContainer InRight) {
+        String exp = String.format("icmp %s %s, %s", cond, InLeft.CreateParameterString(), InRight.GetValueAccessor());
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        return new TypeContainer(TypeWrapper_Primitive.BOOL, scopeIndex);
+    }
+
+    public TypeContainer FloatEQ(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("oeq", InLeft, InRight);
+    }
+
+    public TypeContainer FloatNE(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("one", InLeft, InRight);
+    }
+
+    public TypeContainer FloatLT(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("olt", InLeft, InRight);
+    }
+
+    public TypeContainer FloatLE(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("ole", InLeft, InRight);
+    }
+
+    public TypeContainer FloatGT(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("ogt", InLeft, InRight);
+    }
+
+    public TypeContainer FloatGE(TypeContainer InLeft, TypeContainer InRight) {
+        return IntComparator("oge", InLeft, InRight);
+    }
+
+    public TypeContainer FloatComparator(String cond, TypeContainer InLeft, TypeContainer InRight) {
+        String exp = String.format("fcmp %s %s, %s", cond, InLeft.CreateParameterString(), InRight.GetValueAccessor());
+        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        return new TypeContainer(TypeWrapper_Primitive.BOOL, scopeIndex);
     }
 
     // Returns a pointer to the requested memory with size of the given type

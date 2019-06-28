@@ -18,24 +18,27 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         }
 
         AbstractSyntaxTree right = visitExpression(ctx.expression());
-        RelationalNode.ERelationalOperator operator = RelationalNode.ERelationalOperator.EQUAL;
+        FuncCallNode funcCall = null;
+
         if (ctx.relationaloperator().EQUAL() != null) {
-            operator = RelationalNode.ERelationalOperator.EQUAL;
+            funcCall = new FuncCallNode("operatoreq");
         } else if (ctx.relationaloperator().NOT_EQUAL() != null) {
-            operator = RelationalNode.ERelationalOperator.NOTEQUAL;
+            funcCall = new FuncCallNode("operatorne");
         } else if (ctx.relationaloperator().LT() != null) {
-            operator = RelationalNode.ERelationalOperator.LESS;
+            funcCall = new FuncCallNode("operatorlt");
         } else if (ctx.relationaloperator().LE() != null) {
-            operator = RelationalNode.ERelationalOperator.LESSEQUAL;
+            funcCall = new FuncCallNode("operatorle");
         } else if (ctx.relationaloperator().GT() != null) {
-            operator = RelationalNode.ERelationalOperator.GREATER;
+            funcCall = new FuncCallNode("operatorgt");
         } else if (ctx.relationaloperator().GE() != null) {
-            operator = RelationalNode.ERelationalOperator.GREATEREQUAL;
+            funcCall = new FuncCallNode("operatorge");
         } else if (ctx.relationaloperator().IN() != null) {
-            operator = RelationalNode.ERelationalOperator.IN;
+            funcCall = new FuncCallNode("operatorin");
         }
 
-        return new RelationalNode(left, right, operator);
+        funcCall.AddParameter(left);
+        funcCall.AddParameter(right);
+        return funcCall;
     }
 
     @Override

@@ -1,5 +1,6 @@
 import ast.BlockNode;
 import ast.ProgramNode;
+import ast.core.PascalType_Bool;
 import ast.core.PascalType_Float;
 import ast.core.PascalType_Int;
 import ast.core.FuncDeclNode_writeln;
@@ -47,9 +48,20 @@ public class App {
         stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_divTrucInt());
         stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_modInt());
 
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_eqInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_neInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_ltInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_leInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_gtInt());
+        stdBlock.AddFunctionDeclaration(new PascalType_Int.FuncDeclNode_geInt());
+
+        stdBlock.AddFunctionDeclaration(new PascalType_Bool.FuncDeclNode_orBool());
+        stdBlock.AddFunctionDeclaration(new PascalType_Bool.FuncDeclNode_andBool());
+
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));
         stdBlock.AddTypeDeclaration(new TypeDeclNode("real", PrimitiveTypeNode.FloatNode));
         stdBlock.AddTypeDeclaration(new TypeDeclNode("char", PrimitiveTypeNode.CharNode));
+        stdBlock.AddTypeDeclaration(new TypeDeclNode("boolean", PrimitiveTypeNode.BoolNode));
 
         // TODO: Add primitive types to std block
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type

@@ -15,6 +15,7 @@ public class TypeManager {
             case LONG: return "i64";
             case FLOAT: return "float";
             case DOUBLE: return "double";
+            case BOOL: return "i1";
             default: return "void";
         }
     }

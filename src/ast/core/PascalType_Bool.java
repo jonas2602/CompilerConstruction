@@ -12,14 +12,20 @@ public class PascalType_Bool extends PascalType_Primitive {
     }
 
     public static abstract class FuncDeclNode_BoolParam extends PascalType_Operation {
-        public FuncDeclNode_BoolParam(String InName, TypeNode InReturnType, PrimitiveTypeNode rparam, FunctionCall operation) {
-            super(InName, InReturnType, PrimitiveTypeNode.BoolNode, rparam, operation);
+        public FuncDeclNode_BoolParam(String InName, FunctionCall operation) {
+            super(InName, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.BoolNode, operation);
         }
     }
 
-    public static class FuncDeclNode_orBool extends PascalType_Int.FuncDeclNode_IntParam {
+    public static class FuncDeclNode_orBool extends FuncDeclNode_BoolParam {
         public FuncDeclNode_orBool() {
-            super("operator||", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.BoolNode, GeneratorSlave::OrBoolBool);
+            super("operator||", GeneratorSlave::OrBoolBool);
+        }
+    }
+
+    public static class FuncDeclNode_andBool extends FuncDeclNode_BoolParam {
+        public FuncDeclNode_andBool() {
+            super("operator&&", GeneratorSlave::AndBoolBool);
         }
     }
 }

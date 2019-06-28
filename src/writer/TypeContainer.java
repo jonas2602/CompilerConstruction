@@ -21,10 +21,18 @@ public class TypeContainer {
         m_ValueAccessor = InAccessor;
     }
 
+    public TypeContainer(TypeContainer InSourceContainer, int scope) {
+        this(InSourceContainer, "%"+scope);
+    }
+
     public TypeContainer(TypeWrapper InType, String InAccessor) {
         m_Slave = null;
         m_RootType = InType;
         m_ValueAccessor = InAccessor;
+    }
+
+    public TypeContainer(TypeWrapper InType, int scope) {
+        this(InType, "%"+scope);
     }
 
     public TypeWrapper GetRootType() {

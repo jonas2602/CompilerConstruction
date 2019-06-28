@@ -1,25 +1,15 @@
 program test;
 
-function fact(n: integer): integer;
-begin
-    writeln(n + 1.0);
-end;
 
 var
-    cc: array[0..2] of char;
-    x: char;
+    x: integer;
     y: integer;
     z: real;
-    s: String[10]
-    s1: array[0..9] of char
+    b: boolean;
 begin
-    x := 'x';
-    cc[0] := 'a';
-    cc[1] := 'b';
-    cc[2] := 'c';
-
-    x := cc[0];
-    cc[2] := x;
-    writeln(x, ' ', cc[0], cc[1], cc[2], ' ', 1.0);
-    fact(y);
+    x := 5;
+    y := 5;
+    z := 5.0;
+    b := x = y;
+    b := b and TRUE;
 end.
