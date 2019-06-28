@@ -9,6 +9,7 @@ import llvm.*;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 import writer.TypeWrapper;
+import writer.VariableWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,8 +145,8 @@ public class FuncCallNode extends AbstractSyntaxTree {
                 slave.GetScopeSnippet().AddStatement(call);
                 return null;
             } else {
-                int LocalIndex = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
-                return new ParamContainer(returnType, "%" + LocalIndex);
+                VariableWrapper scopeVar = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
+                return new ParamContainer(returnType, scopeVar);
             }
 
 

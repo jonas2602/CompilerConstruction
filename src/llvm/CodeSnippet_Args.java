@@ -19,6 +19,11 @@ public class CodeSnippet_Args extends CodeSnippet_Base {
         }};
     }
 
+    public CodeSnippet_Args(String InFormat, Object... InParams) {
+        m_Format = InFormat;
+        m_Content = List.of(InParams);
+    }
+
     public CodeSnippet_Args(String InFormat, List<Object> InContent) {
         m_Format = InFormat;
         m_Content = InContent;

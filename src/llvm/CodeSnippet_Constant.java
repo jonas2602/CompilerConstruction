@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CodeSnippet_Constant extends CodeSnippet_Base {
-    private String m_Name;
+    private CodeSnippet_Base m_Name;
     private CodeSnippet_Base m_Type;
     private CodeSnippet_Plain m_Data;
 
-    public CodeSnippet_Constant(String InName, CodeSnippet_Base InType, CodeSnippet_Plain InData) {
+    public CodeSnippet_Constant(CodeSnippet_Base InName, CodeSnippet_Base InType, CodeSnippet_Plain InData) {
         m_Name = InName;
         m_Type = InType;
         m_Data = InData;
     }
 
-    public String GetName() {
+    public CodeSnippet_Base GetName() {
         return m_Name;
     }
 
@@ -31,6 +31,6 @@ public class CodeSnippet_Constant extends CodeSnippet_Base {
 
     @Override
     public String Write() {
-        return String.format("%s = constant %s %s", m_Name, m_Type.Write(), m_Data.Write());
+        return String.format("%s = constant %s %s", m_Name.Write(), m_Type.Write(), m_Data.Write());
     }
 }

@@ -1,5 +1,7 @@
 package llvm;
 
+import writer.VariableWrapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +17,12 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base {
         m_ReturnType = InReturnType;
     }
 
-    public int AddParameter(CodeSnippet_Base InParam) {
+    public VariableWrapper AddParameter(CodeSnippet_Base InParam) {
         m_Params.add(InParam);
-        return m_ParameterCounter++;
+        return VariableWrapper.SCOPEVAR(m_ParameterCounter++);
     }
 
-    public int AddParameter(String InParam) {
+    public VariableWrapper AddParameter(String InParam) {
         return AddParameter(new CodeSnippet_Plain(InParam));
     }
 

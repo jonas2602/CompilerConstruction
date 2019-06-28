@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneratorSlave {
-    private List<CodeSnippet_Constant> m_Constants = new ArrayList<>();
+    private List<CodeSnippet_Base> m_Constants = new ArrayList<>();
     private int m_ConstantCounter = 0;
 
     private List<CodeSnippet_FuncDef> m_FunctionDefinitions = new ArrayList<>();
@@ -19,17 +19,17 @@ public class GeneratorSlave {
         return m_ActiveScope;
     }
 
-    public CodeSnippet_Constant CreateStringConstant(String InContent) {
-        int size = InContent.length() + 1;
-        String constName = String.format("@.str.%d", m_ConstantCounter++);
-        CodeSnippet_Type constType = new CodeSnippet_TypeArray(CodeSnippet_Type.EType.CHAR, size);
-        CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", InContent));
-
-        CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
-        m_Constants.add(snippet);
-
-        return snippet;
-    }
+    // public CodeSnippet_Constant CreateStringConstant(String InContent) {
+    //     int size = InContent.length() + 1;
+    //     String constName = String.format("@.str.%d", m_ConstantCounter++);
+    //     CodeSnippet_Type constType = new CodeSnippet_TypeArray(CodeSnippet_Type.EType.CHAR, size);
+    //     CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", InContent));
+    //
+    //     CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
+    //     m_Constants.add(snippet);
+    //
+    //     return snippet;
+    // }
 
     public ParamContainer CreateStringConstantNew(String InContent) {
         // Convert \n, \t, ... to hex code
@@ -46,22 +46,20 @@ public class GeneratorSlave {
             }
         }
 
-        TypeWrapper stringWrapper = TypeManager.STRING(InContent.length() + 1);
-        String constName = String.format("@.str.%d", m_ConstantCounter++);
-        CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.CreateTypeName());
-        CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", builder.toString()));
+        TypeWrapper stringType = TypeManager.STRING(InContent.length() + 1);
+        VariableWrapper var = VariableWrapper.CONSTSTRING(m_ConstantCounter++);
+        // String constName = String.format("@.str.%d", m_ConstantCounter++);
+        // CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.CreateTypeName());
 
-        CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
+        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s c\"%s\\00\"", new ArrayList<>() {{
+            add(var);
+            add(stringType);
+            add(builder.toString());
+        }});
+
         m_Constants.add(snippet);
 
-        return new ParamContainer(new TypeWrapper_Pointer(stringWrapper), constName);
-    }
-
-    public CodeSnippet_Plain CreateStringReference(CodeSnippet_Constant InStringSource) {
-        String sourceSize = InStringSource.GetType().Write();
-        String sourceName = InStringSource.GetName();
-        String plainText = String.format("getelementptr inbounds (%s, %s* %s, i64 0, i64 0)", sourceSize, sourceSize, sourceName);
-        return new CodeSnippet_Plain(plainText);
+        return new ParamContainer(new TypeWrapper_Pointer(stringType), var);
     }
 
     public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
@@ -92,8 +90,8 @@ public class GeneratorSlave {
     }
 
     public ParamContainer CreateFunctionParameter(TypeWrapper InType) {
-        int scopeIndex = GetScopeSnippet().AddParameter(InType.CreateTypeName());
-        return new ParamContainer(InType, "%" + scopeIndex);
+        VariableWrapper scopeVariable = GetScopeSnippet().AddParameter(InType.CreateTypeName());
+        return new ParamContainer(InType, scopeVariable);
     }
 
     public void EnterScope(CodeSnippet_FuncDef InScopeObject) {
@@ -115,34 +113,30 @@ public class GeneratorSlave {
         return decl;
     }
 
-    public int CastFloatToInt(String Source) {
+    public VariableWrapper CastFloatToInt(String Source) {
         String exp = String.format("fptosi float %s to i32", Source);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
     public ParamContainer CastIntToFloat(ParamContainer InSource) {
-        String exp = String.format("sitofp %s to float", InSource.CreateParameterString());
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new ParamContainer(TypeWrapper_Primitive.FLOAT, "%" + scopeIndex);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("sitofp %s to float", InSource);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(TypeWrapper_Primitive.FLOAT, scopeVar);
     }
 
-    public int ExtendFloatToDouble(String Source) {
-        String exp = String.format("fpext float %s to double", Source);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
-    }
 
     public ParamContainer ExtendFloatToDouble(ParamContainer InSource) {
-        String exp = String.format("fpext float %s to double", InSource.GetValueAccessor());
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new ParamContainer(TypeWrapper_Primitive.DOUBLE, "%" + scopeIndex);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("fpext %s to double", InSource);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(TypeWrapper_Primitive.DOUBLE, scopeVar);
     }
 
-    public int TruncateIntToChar(String Source) {
+    public VariableWrapper TruncateIntToChar(String Source) {
         String exp = String.format("trunc i32 %s to i8", Source);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public int ExtendToInt(String SourceType, String SourceData) {
+    public VariableWrapper ExtendToInt(String SourceType, String SourceData) {
         String exp = String.format("sext %s %s to i32", SourceType, SourceData);
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
@@ -192,9 +186,9 @@ public class GeneratorSlave {
     }
 
     public ParamContainer ThreeOperantsInstruction(String inst, ParamContainer InLeft, ParamContainer InRight) {
-        String exp = String.format("%s %s, %s", inst, InLeft.CreateParameterString(), InRight.GetValueAccessor());
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new ParamContainer(InLeft, "%" + scopeIndex);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("%s %s, %s", inst, InLeft, InRight.GetValueAccessor());
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(InLeft, scopeVar);
     }
 
     public ParamContainer IntEQ(ParamContainer InLeft, ParamContainer InRight) {
@@ -222,9 +216,9 @@ public class GeneratorSlave {
     }
 
     public ParamContainer IntComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {
-        String exp = String.format("icmp %s %s, %s", cond, InLeft.CreateParameterString(), InRight.GetValueAccessor());
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new ParamContainer(TypeWrapper_Primitive.BOOL, "%" + scopeIndex);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("icmp %s %s, %s", cond, InLeft, InRight.GetValueAccessor());
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, scopeVar);
     }
 
     public ParamContainer FloatEQ(ParamContainer InLeft, ParamContainer InRight) {
@@ -252,17 +246,17 @@ public class GeneratorSlave {
     }
 
     public ParamContainer FloatComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {
-        String exp = String.format("fcmp %s %s, %s", cond, InLeft.CreateParameterString(), InRight.GetValueAccessor());
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new ParamContainer(TypeWrapper_Primitive.BOOL, "%" + scopeIndex);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("fcmp %s %s, %s", cond, InLeft, InRight.GetValueAccessor());
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, scopeVar);
     }
 
     // Returns a pointer to the requested memory with size of the given type
     public ParamContainer AllocateMemory(TypeWrapper InType) {
-        String exp = String.format("alloca %s", InType.CreateTypeName()); // TODO: alignment
-        int ScopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("alloca %s", InType); // TODO: alignment
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
         TypeWrapper MemoryPointer = new TypeWrapper_Pointer(InType);
-        return new ParamContainer(MemoryPointer, "%" + ScopeIndex);
+        return new ParamContainer(MemoryPointer, scopeVar);
     }
 
     public void StoreInVariable(ParamContainer InVarAccess, ParamContainer InValue) {
@@ -274,11 +268,9 @@ public class GeneratorSlave {
 
     public ParamContainer LoadFromVariable(ParamContainer InVariable) {
         TypeWrapper pointedType = InVariable.GetRootType().GetChild();
-        String resultTypeName = pointedType.CreateTypeName();
-        String varParam = InVariable.CreateParameterString();
-        String exp = String.format("load %s, %s", resultTypeName, varParam); // TODO: alignment
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new ParamContainer(pointedType, "%" + scopeIndex);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("load %s, %s", pointedType, InVariable); // TODO: alignment
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(pointedType, scopeVar);
     }
 
     public ParamContainer CreateArrayElementPtr(ParamContainer InArray, ParamContainer InIndex) {
@@ -286,13 +278,12 @@ public class GeneratorSlave {
     }
 
     public ParamContainer CreateArrayElementPtr(ParamContainer InArray, ValueWrapper InIndex) {
-        String arrTypeName = InArray.GetRootType().GetChild().CreateTypeName();
-        String arrParam = InArray.CreateParameterString();
-        String exp = String.format("getelementptr inbounds %s, %s, i64 0, i64 %s", arrTypeName, arrParam, InIndex); // TODO: alignment
-        int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
+        TypeWrapper arrType = InArray.GetRootType().GetChild();
+        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %s", arrType, InArray, InIndex); // TODO: alignment
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
         TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
 
-        return new ParamContainer(new TypeWrapper_Pointer(elementType), "%" + scopeIndex);
+        return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
     }
 
     public void CreateBranch(ParamContainer InCondition, ParamContainer InPositive, ParamContainer InNegative) {
@@ -318,7 +309,7 @@ public class GeneratorSlave {
     public List<String> Serialize() {
         List<String> OutLines = new ArrayList<>();
 
-        for (CodeSnippet_Constant constant : m_Constants) {
+        for (CodeSnippet_Base constant : m_Constants) {
             OutLines.addAll(constant.WriteLines());
         }
 

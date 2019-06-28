@@ -2,7 +2,7 @@ package writer;
 
 public class ParamContainer {
     public static ParamContainer LABELCONTAINER() {
-        return new ParamContainer(TypeWrapper_Other.LABEL, "");
+        return new ParamContainer(TypeWrapper_Other.LABEL, new ConstantWrapper(""));
     }
 
     public static ParamContainer FromTypeString(String InTypeString) {
@@ -23,9 +23,9 @@ public class ParamContainer {
     }
 
     // Copy constructors
-    public ParamContainer(ParamContainer InSourceContainer, String InConstant) {
-        this(InSourceContainer.m_RootType, new ConstantWrapper(InConstant));
-    }
+//    public ParamContainer(ParamContainer InSourceContainer, String InConstant) {
+//        this(InSourceContainer.m_RootType, new ConstantWrapper(InConstant));
+//    }
 
     public ParamContainer(ParamContainer InSourceContainer, ValueWrapper InValue) {
         m_RootType = InSourceContainer.m_RootType;
@@ -40,7 +40,10 @@ public class ParamContainer {
     public ValueWrapper GetValueAccessor() {
         return m_ValueAccessor;
     }
-    public void SetValueAccessor(ValueWrapper InWrapper) { m_ValueAccessor = InWrapper; }
+
+    public void SetValueAccessor(ValueWrapper InWrapper) {
+        m_ValueAccessor = InWrapper;
+    }
 
     public String CreateTypeString() {
         return m_RootType.CreateTypeName();

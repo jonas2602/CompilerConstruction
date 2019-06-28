@@ -27,29 +27,24 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
     }
 
     @Override
-    public int AddStatementWithStorage(CodeSnippet_Base InStmt) {
-        String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
-        m_Statements.add(new CodeSnippet_Plain(finalStmt));
-        return m_VariableCounter++;
+    public VariableWrapper AddStatementWithStorage(CodeSnippet_Base InStmt) {
+        VariableWrapper var = VariableWrapper.SCOPEVAR(m_VariableCounter++);
+        // String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
+        m_Statements.add(new CodeSnippet_Args("%s = %s", var, InStmt));
+        return var;
     }
 
     @Override
-    public int AddStatementWithStorage(String InStmt) {
-        String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt);
-        m_Statements.add(new CodeSnippet_Plain(finalStmt));
-        return m_VariableCounter++;
+    public VariableWrapper AddStatementWithStorage(String InStmt) {
+        return AddStatementWithStorage(new CodeSnippet_Plain(InStmt));
     }
 
     public VariableWrapper AddLabel() {
         m_Statements.add(new CodeSnippet_Plain(""));
 
-        VariableWrapper var = VariableWrapper.SCOPEVAR();
         String finalStmt = String.format("; <label>:%d:", m_VariableCounter);
         m_Statements.add(new CodeSnippet_Plain(finalStmt));
-        // m_Statements.add(new CodeSnippet_Args("; <label>:%s:", var));
-        // m_IndexElements.add(var);
-        var.AssignScopeIndex(m_VariableCounter++);
-        return var;
+        return VariableWrapper.SCOPEVAR(m_VariableCounter++);
     }
 
     @Override
