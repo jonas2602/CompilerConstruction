@@ -2,14 +2,10 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
-import ast.declarations.VarDeclNode;
 import ast.expressions.AccessInterface;
-import ast.expressions.ConstantNode;
-import ast.expressions.VariableNode;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;
@@ -59,9 +55,9 @@ public class AssignmentNode extends AbstractSyntaxTree {
     // }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
-        TypeContainer exp = m_Expression.CreateSnippet(slave);
-        TypeContainer varAccess = m_Variable.CreateSnippet(slave);
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        ParamContainer exp = m_Expression.CreateSnippet(slave);
+        ParamContainer varAccess = m_Variable.CreateSnippet(slave);
 
         // if the expression on the right of the assignment is not a constant (variable access stuff)
         // 'exp' will contain a pointer to the requested value that must be loaded before writing

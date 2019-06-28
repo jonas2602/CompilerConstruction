@@ -1,11 +1,14 @@
 package llvm;
 
+import writer.VariableWrapper;
+
 import java.util.List;
 import java.util.ArrayList;
 
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeInterface {
     private List<CodeSnippet_Base> m_Statements = new ArrayList<>();
     private int m_VariableCounter;
+    // private List<VariableWrapper> m_IndexElements = new ArrayList<>();
 
     public CodeSnippet_FuncDef(String InName, CodeSnippet_Base InReturnType, int InVarIndexOffset) {
         super(InName, InReturnType);
@@ -37,14 +40,24 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         return m_VariableCounter++;
     }
 
-    public int AddLabel() {
-        String labelStmt = String.format("; <label>:%d:", m_VariableCounter);
-        m_Statements.add(new CodeSnippet_Plain(labelStmt));
-        return m_VariableCounter++;
+    public VariableWrapper AddLabel() {
+        m_Statements.add(new CodeSnippet_Plain(""));
+
+        VariableWrapper var = VariableWrapper.SCOPEVAR();
+        String finalStmt = String.format("; <label>:%d:", m_VariableCounter);
+        m_Statements.add(new CodeSnippet_Plain(finalStmt));
+        // m_Statements.add(new CodeSnippet_Args("; <label>:%s:", var));
+        // m_IndexElements.add(var);
+        var.AssignScopeIndex(m_VariableCounter++);
+        return var;
     }
 
     @Override
     public List<String> WriteLines() {
+        // for (int i = 0; i < m_IndexElements.size(); i++) {
+        //     m_IndexElements.get(i).AssignScopeIndex(i);
+        // }
+
         List<String> lines = new ArrayList<>();
 
         lines.add(String.format("define %s @%s(%s)", m_ReturnType.Write(), m_Name, MakeParameterString()) + " {");

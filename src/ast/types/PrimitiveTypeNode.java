@@ -4,7 +4,7 @@ import ast.core.*;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 import writer.TypeWrapper;
 import writer.TypeWrapper_Primitive;
 
@@ -79,7 +79,7 @@ public class PrimitiveTypeNode extends TypeNode {
     }
 
     @Override
-    public TypeContainer GetDefaultValue() {
-        return new TypeContainer(GetWrappedType(), m_PrimitiveType.GetDefaultValue());
+    public ParamContainer GetDefaultValue() {
+        return new ParamContainer(GetWrappedType(), m_PrimitiveType.GetDefaultValue());
     }
 }

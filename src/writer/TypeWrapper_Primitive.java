@@ -16,7 +16,7 @@ public class TypeWrapper_Primitive extends TypeWrapper {
     }
 
     @Override
-    public String GetTypeName() {
+    public String CreateTypeName() {
         return m_BaseType.GetTypeName();
     }
 

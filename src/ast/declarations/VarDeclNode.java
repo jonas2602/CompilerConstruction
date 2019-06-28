@@ -2,9 +2,8 @@ package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 import writer.TypeWrapper;
 
 public class VarDeclNode extends AbstractSyntaxTree {
@@ -12,7 +11,7 @@ public class VarDeclNode extends AbstractSyntaxTree {
     protected TypeNode m_Type;
 
     protected int m_ScopeIndex = -1;
-    protected TypeContainer m_ScopeContainer = null;
+    protected ParamContainer m_ScopeContainer = null;
 
     public VarDeclNode(String InName, TypeNode InType) {
         this.m_Name = InName;
@@ -51,20 +50,20 @@ public class VarDeclNode extends AbstractSyntaxTree {
 //    @Override
 //    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
 //        TypeWrapper wrappedType = m_Type.GetWrappedType();
-//        TypeContainer outContainer = slave.AllocateMemory(wrappedType);
+//        ParamContainer outContainer = slave.AllocateMemory(wrappedType);
 //
 //        return null;
 //    }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_ScopeContainer == null) {
             // Allocate memory for the variable
             TypeWrapper wrappedType = m_Type.GetWrappedType();
             m_ScopeContainer = slave.AllocateMemory(wrappedType);
 
             // store default value
-            TypeContainer defaultValue = m_Type.GetDefaultValue();
+            ParamContainer defaultValue = m_Type.GetDefaultValue();
             if (defaultValue != null) {
                 slave.StoreInVariable(m_ScopeContainer, defaultValue);
             }

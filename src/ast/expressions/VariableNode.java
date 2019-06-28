@@ -8,7 +8,7 @@ import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 
 public class VariableNode extends AbstractSyntaxTree implements AccessInterface{
     private String m_Name;
@@ -58,7 +58,7 @@ public class VariableNode extends AbstractSyntaxTree implements AccessInterface{
     }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
         return m_Declaration.CreateSnippet(slave);
     }
 }

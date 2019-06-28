@@ -8,8 +8,8 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     }
 
     @Override
-    public String GetTypeName() {
-        return m_PointedType.GetTypeName() + "*";
+    public String CreateTypeName() {
+        return m_PointedType.CreateTypeName() + "*";
     }
 
     @Override

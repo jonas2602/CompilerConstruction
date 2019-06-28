@@ -2,7 +2,6 @@ package writer;
 
 import llvm.*;
 
-import javax.swing.text.html.InlineView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class GeneratorSlave {
         return snippet;
     }
 
-    public TypeContainer CreateStringConstantNew(String InContent) {
+    public ParamContainer CreateStringConstantNew(String InContent) {
         // Convert \n, \t, ... to hex code
         StringBuilder builder = new StringBuilder();
         for (char c : InContent.toCharArray()) {
@@ -49,13 +48,13 @@ public class GeneratorSlave {
 
         TypeWrapper stringWrapper = TypeManager.STRING(InContent.length() + 1);
         String constName = String.format("@.str.%d", m_ConstantCounter++);
-        CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.GetTypeName());
+        CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.CreateTypeName());
         CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", builder.toString()));
 
         CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
         m_Constants.add(snippet);
 
-        return new TypeContainer(this, new TypeWrapper_Pointer(stringWrapper), constName);
+        return new ParamContainer(new TypeWrapper_Pointer(stringWrapper), constName);
     }
 
     public CodeSnippet_Plain CreateStringReference(CodeSnippet_Constant InStringSource) {
@@ -65,20 +64,12 @@ public class GeneratorSlave {
         return new CodeSnippet_Plain(plainText);
     }
 
-    public CodeSnippet_Parameter CreateStringParameter(CodeSnippet_Constant InStringSource) {
-        return new CodeSnippet_Parameter(CodeSnippet_Type.EType.STRING, CreateStringReference(InStringSource));
-    }
-
     public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
         InFiller.add(0, InSourceParam);
         CodeSnippet_FuncCall call = new CodeSnippet_FuncCall("printf", new CodeSnippet_Type(CodeSnippet_Type.EType.INT), InFiller, new CodeSnippet_Plain("(i8*, ...)"));
         GetScopeSnippet().AddStatementWithStorage(call);
 
         return call;
-    }
-
-    public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Type.EType InType, String InData) {
-        return CreateReturnStmt(InType.label(), InData);
     }
 
     public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Base InType, String InData) {
@@ -100,9 +91,9 @@ public class GeneratorSlave {
         return def;
     }
 
-    public TypeContainer CreateFunctionParameter(TypeWrapper InType) {
-        int scopeIndex = GetScopeSnippet().AddParameter(InType.GetTypeName());
-        return new TypeContainer(this, InType, "%" + scopeIndex);
+    public ParamContainer CreateFunctionParameter(TypeWrapper InType) {
+        int scopeIndex = GetScopeSnippet().AddParameter(InType.CreateTypeName());
+        return new ParamContainer(InType, "%" + scopeIndex);
     }
 
     public void EnterScope(CodeSnippet_FuncDef InScopeObject) {
@@ -129,10 +120,10 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public TypeContainer CastIntToFloat(TypeContainer InSource) {
+    public ParamContainer CastIntToFloat(ParamContainer InSource) {
         String exp = String.format("sitofp %s to float", InSource.CreateParameterString());
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(TypeWrapper_Primitive.FLOAT, "%" + scopeIndex);
+        return new ParamContainer(TypeWrapper_Primitive.FLOAT, "%" + scopeIndex);
     }
 
     public int ExtendFloatToDouble(String Source) {
@@ -140,10 +131,10 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public TypeContainer ExtendFloatToDouble(TypeContainer InSource) {
+    public ParamContainer ExtendFloatToDouble(ParamContainer InSource) {
         String exp = String.format("fpext float %s to double", InSource.GetValueAccessor());
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(this, TypeWrapper_Primitive.DOUBLE, "%" + scopeIndex);
+        return new ParamContainer(TypeWrapper_Primitive.DOUBLE, "%" + scopeIndex);
     }
 
     public int TruncateIntToChar(String Source) {
@@ -156,163 +147,173 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
-    public TypeContainer AddIntInt(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer AddIntInt(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("add", InLeft, InRight);
     }
 
-    public TypeContainer AddFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer AddFloatFloat(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("fadd", InLeft, InRight);
     }
 
-    public TypeContainer SubIntInt(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer SubIntInt(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("sub", InLeft, InRight);
     }
 
-    public TypeContainer SubFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer SubFloatFloat(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("fsub", InLeft, InRight);
     }
 
-    public TypeContainer MulIntInt(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer MulIntInt(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("mul", InLeft, InRight);
     }
 
-    public TypeContainer MulFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer MulFloatFloat(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("fmul", InLeft, InRight);
     }
 
-    public TypeContainer DivIntInt(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer DivIntInt(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("sdiv", InLeft, InRight);
     }
 
-    public TypeContainer ModIntInt(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer ModIntInt(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("srem", InLeft, InRight);
     }
 
-    public TypeContainer DivFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer DivFloatFloat(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("fdiv", InLeft, InRight);
     }
 
-    public TypeContainer OrBoolBool(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer OrBoolBool(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("or", InLeft, InRight);
     }
 
-    public TypeContainer AndBoolBool(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer AndBoolBool(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("and", InLeft, InRight);
     }
 
-    public TypeContainer ThreeOperantsInstruction(String inst, TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer ThreeOperantsInstruction(String inst, ParamContainer InLeft, ParamContainer InRight) {
         String exp = String.format("%s %s, %s", inst, InLeft.CreateParameterString(), InRight.GetValueAccessor());
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(InLeft, scopeIndex);
+        return new ParamContainer(InLeft, "%" + scopeIndex);
     }
 
-    public TypeContainer IntEQ(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntEQ(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("eq", InLeft, InRight);
     }
 
-    public TypeContainer IntNE(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntNE(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("ne", InLeft, InRight);
     }
 
-    public TypeContainer IntLT(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntLT(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("slt", InLeft, InRight);
     }
 
-    public TypeContainer IntLE(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntLE(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("sle", InLeft, InRight);
     }
 
-    public TypeContainer IntGT(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntGT(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("sgt", InLeft, InRight);
     }
 
-    public TypeContainer IntGE(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntGE(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("sge", InLeft, InRight);
     }
 
-    public TypeContainer IntComparator(String cond, TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer IntComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {
         String exp = String.format("icmp %s %s, %s", cond, InLeft.CreateParameterString(), InRight.GetValueAccessor());
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(TypeWrapper_Primitive.BOOL, scopeIndex);
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, "%" + scopeIndex);
     }
 
-    public TypeContainer FloatEQ(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatEQ(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("oeq", InLeft, InRight);
     }
 
-    public TypeContainer FloatNE(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatNE(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("one", InLeft, InRight);
     }
 
-    public TypeContainer FloatLT(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatLT(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("olt", InLeft, InRight);
     }
 
-    public TypeContainer FloatLE(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatLE(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("ole", InLeft, InRight);
     }
 
-    public TypeContainer FloatGT(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatGT(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("ogt", InLeft, InRight);
     }
 
-    public TypeContainer FloatGE(TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatGE(ParamContainer InLeft, ParamContainer InRight) {
         return IntComparator("oge", InLeft, InRight);
     }
 
-    public TypeContainer FloatComparator(String cond, TypeContainer InLeft, TypeContainer InRight) {
+    public ParamContainer FloatComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {
         String exp = String.format("fcmp %s %s, %s", cond, InLeft.CreateParameterString(), InRight.GetValueAccessor());
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(TypeWrapper_Primitive.BOOL, scopeIndex);
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, "%" + scopeIndex);
     }
 
     // Returns a pointer to the requested memory with size of the given type
-    public TypeContainer AllocateMemory(TypeWrapper InType) {
-        String exp = String.format("alloca %s", InType.GetTypeName()); // TODO: alignment
+    public ParamContainer AllocateMemory(TypeWrapper InType) {
+        String exp = String.format("alloca %s", InType.CreateTypeName()); // TODO: alignment
         int ScopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
         TypeWrapper MemoryPointer = new TypeWrapper_Pointer(InType);
-        return new TypeContainer(this, MemoryPointer, "%" + ScopeIndex);
+        return new ParamContainer(MemoryPointer, "%" + ScopeIndex);
     }
 
-    public void StoreInVariable(TypeContainer InVarAccess, TypeContainer InValue) {
+    public void StoreInVariable(ParamContainer InVarAccess, ParamContainer InValue) {
         String varParam = InVarAccess.CreateParameterString();
         String valueParam = InValue.CreateParameterString();
         String exp = String.format("store %s, %s", valueParam, varParam); // TODO: alignment
         GetScopeSnippet().AddStatement(exp);
     }
 
-    public TypeContainer LoadFromVariable(TypeContainer InVariable) {
+    public ParamContainer LoadFromVariable(ParamContainer InVariable) {
         TypeWrapper pointedType = InVariable.GetRootType().GetChild();
-        String resultTypeName = pointedType.GetTypeName();
+        String resultTypeName = pointedType.CreateTypeName();
         String varParam = InVariable.CreateParameterString();
         String exp = String.format("load %s, %s", resultTypeName, varParam); // TODO: alignment
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
-        return new TypeContainer(this, pointedType, "%" + scopeIndex);
+        return new ParamContainer(pointedType, "%" + scopeIndex);
     }
 
-    public TypeContainer CreateArrayElementPtr(TypeContainer InArray, TypeContainer InIndex) {
+    public ParamContainer CreateArrayElementPtr(ParamContainer InArray, ParamContainer InIndex) {
         return CreateArrayElementPtr(InArray, InIndex.GetValueAccessor());
     }
 
-    public TypeContainer CreateArrayElementPtr(TypeContainer InArray, String InIndex) {
-        String arrTypeName = InArray.GetRootType().GetChild().GetTypeName();
+    public ParamContainer CreateArrayElementPtr(ParamContainer InArray, ValueWrapper InIndex) {
+        String arrTypeName = InArray.GetRootType().GetChild().CreateTypeName();
         String arrParam = InArray.CreateParameterString();
         String exp = String.format("getelementptr inbounds %s, %s, i64 0, i64 %s", arrTypeName, arrParam, InIndex); // TODO: alignment
         int scopeIndex = GetScopeSnippet().AddStatementWithStorage(exp);
         TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
 
-        return new TypeContainer(this, new TypeWrapper_Pointer(elementType), "%" + scopeIndex);
+        return new ParamContainer(new TypeWrapper_Pointer(elementType), "%" + scopeIndex);
     }
 
-    public int AllocateInt() {
-        String exp = String.format("alloca i32"); // TODO: alignment
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+    public void CreateBranch(ParamContainer InCondition, ParamContainer InPositive, ParamContainer InNegative) {
+        CodeSnippet_Args snippet = new CodeSnippet_Args("br %s, %s, %s", new ArrayList<>() {{
+            add(InCondition);
+            add(InPositive);
+            add(InNegative);
+        }});
+
+        GetScopeSnippet().AddStatement(snippet);
     }
 
-    public void StoreInt(String InValue, int InIndex) {
-        String exp = String.format("store i32 %s, i32* %%%d", InValue, InIndex);
-        GetScopeSnippet().AddStatement(exp);
+    public void CreateJump(ParamContainer InLabel) {
+        CodeSnippet_Args snippet = new CodeSnippet_Args("br %s", InLabel);
+        GetScopeSnippet().AddStatement(snippet);
     }
+
+    public ValueWrapper CreateLabel() {
+        return GetScopeSnippet().AddLabel();
+    }
+
 
     public List<String> Serialize() {
         List<String> OutLines = new ArrayList<>();

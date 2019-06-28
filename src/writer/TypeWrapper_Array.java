@@ -10,8 +10,8 @@ public class TypeWrapper_Array extends TypeWrapper {
     }
 
     @Override
-    public String GetTypeName() {
-        return TypeManager.MakeArrayType(m_BaseType.GetTypeName(), m_Size);
+    public String CreateTypeName() {
+        return TypeManager.MakeArrayType(m_BaseType.CreateTypeName(), m_Size);
     }
 
     @Override

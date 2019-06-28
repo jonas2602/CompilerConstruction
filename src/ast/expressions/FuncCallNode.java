@@ -7,7 +7,7 @@ import ast.declarations.FuncDeclNode;
 import ast.types.TypeNode;
 import llvm.*;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 import writer.TypeWrapper;
 
 import java.util.ArrayList;
@@ -114,7 +114,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
 //    }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // build function if not already created or inline
         if (!m_FuncDecl.IsInline()) {
             m_FuncDecl.CreateSnippet(slave, null);
@@ -129,10 +129,10 @@ public class FuncCallNode extends AbstractSyntaxTree {
         } else {
             // TODO: default creation
             TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
-            CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, new CodeSnippet_Plain(returnType.GetTypeName()));
+            CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, new CodeSnippet_Plain(returnType.CreateTypeName()));
 
             for (AbstractSyntaxTree param : m_Params) {
-                TypeContainer paramContainer = param.CreateSnippet(slave);
+                ParamContainer paramContainer = param.CreateSnippet(slave);
                 // load value if requested from a variable
                 if (param instanceof AccessInterface) {
                     paramContainer = slave.LoadFromVariable(paramContainer);
@@ -145,7 +145,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
                 return null;
             } else {
                 int LocalIndex = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
-                return new TypeContainer(slave, returnType, "%" + LocalIndex);
+                return new ParamContainer(returnType, "%" + LocalIndex);
             }
 
 

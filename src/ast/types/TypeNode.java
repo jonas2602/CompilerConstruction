@@ -1,8 +1,7 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
-import ast.core.PascalType;
-import writer.TypeContainer;
+import writer.ParamContainer;
 import writer.TypeWrapper;
 
 public abstract class TypeNode extends AbstractSyntaxTree {
@@ -23,7 +22,7 @@ public abstract class TypeNode extends AbstractSyntaxTree {
         return null;
     }
 
-    public TypeContainer GetDefaultValue() {
+    public ParamContainer GetDefaultValue() {
         return null;
     }
 }

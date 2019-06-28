@@ -1,17 +1,15 @@
 package ast.core;
 
 import ast.AbstractSyntaxTree;
-import ast.TypeCheckException;
 import ast.expressions.AccessInterface;
-import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
-import ast.expressions.ParameterNode;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.*;
+import writer.ConstantWrapper;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     }
 
     @Override
-    public TypeContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+    public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         // TODO: only one element with a single character? -> use "putchar"
         // TODO: add constants directly to the placeholder string, instead of adding a parameter
 
@@ -66,7 +64,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             //     placeholder += ((ConstantNode) element).GetData();
             // }
 
-            TypeContainer elementContainer = element.CreateSnippet(slave);
+            ParamContainer elementContainer = element.CreateSnippet(slave);
 
             // load value if requested from a variable
             if (element instanceof AccessInterface) {
@@ -91,8 +89,8 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         placeholderString += "\n";
 
         //
-        TypeContainer constant = slave.CreateStringConstantNew(placeholderString);
-        TypeContainer placeholderRef = slave.CreateArrayElementPtr(constant, "0");
+        ParamContainer constant = slave.CreateStringConstantNew(placeholderString);
+        ParamContainer placeholderRef = slave.CreateArrayElementPtr(constant, new ConstantWrapper("0"));
         CodeSnippet_Base placeholderParam = new CodeSnippet_Plain(placeholderRef.CreateParameterString());
         slave.CreatePrintfCall(placeholderParam, filler);
 

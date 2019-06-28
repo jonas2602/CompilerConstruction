@@ -1,14 +1,11 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
-import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
-import writer.TypeWrapper;
-import writer.TypeWrapper_Primitive;
+import writer.ParamContainer;
 
 public class ConstantNode extends AbstractSyntaxTree {
     protected String m_Data;
@@ -41,7 +38,7 @@ public class ConstantNode extends AbstractSyntaxTree {
     }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
-        return new TypeContainer(slave, m_Type.GetWrappedType(), m_Data);
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        return new ParamContainer(m_Type.GetWrappedType(), m_Data);
     }
 }

@@ -19,7 +19,7 @@ int addi(int i);
 void none();
 char *makeString(char left, char right);
 int mymod(int a, int b);
-void branches(int i);
+int branches(int i);
 
 int main()
 {
@@ -39,7 +39,6 @@ int main()
     // printf("%s ist %d Jahre alt. %c %d\n", john.name, john.age, test[7], myval);
     // char *mystr = "abcde\\\n\\";
     // arraytest();
-    branches(-0);
 
     printf("%s", makeString('a', 'b'));
     printf("%i", true);
@@ -142,12 +141,40 @@ char *makeString(char left, char right)
     return str;
 }
 
-void branches(int i)
+int branches(int i)
 {
-    if (i)
+    if (i > 0)
     {
-        i += 10;
+        if (i > 10)
+        {
+            i = 999;
+        }
+        else
+        {
+            i = 1;
+        }
+
+        i++;
+    }
+    else
+    {
+        if (i == 0)
+        {
+            i = 0;
+        }
+        else
+        {
+            i = -1;
+        }
     }
 
-    printf("%d", i);
+    return i;
+}
+
+void loops(int length)
+{
+    int j = 0;
+    for(int i = 0; i < length; i++){
+        j--;
+    }
 }

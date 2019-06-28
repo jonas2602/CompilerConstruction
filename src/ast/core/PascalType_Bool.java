@@ -2,9 +2,7 @@ package ast.core;
 
 import ast.EPrimitiveType;
 import ast.types.PrimitiveTypeNode;
-import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
 
 public class PascalType_Bool extends PascalType_Primitive {
     public PascalType_Bool() {

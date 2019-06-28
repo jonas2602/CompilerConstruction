@@ -7,7 +7,7 @@ import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 
 public abstract class PascalType_Operation extends FuncDeclNode_Core {
 
@@ -26,11 +26,11 @@ public abstract class PascalType_Operation extends FuncDeclNode_Core {
     }
 
     @Override
-    public TypeContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+    public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
         AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
-        TypeContainer leftParam = lParam.CreateSnippet(slave);
-        TypeContainer rightParam = rParam.CreateSnippet(slave);
+        ParamContainer leftParam = lParam.CreateSnippet(slave);
+        ParamContainer rightParam = rParam.CreateSnippet(slave);
 
         // load value if requested from a variable
         if (lParam instanceof AccessInterface) {
@@ -47,5 +47,5 @@ public abstract class PascalType_Operation extends FuncDeclNode_Core {
 }
 
 interface FunctionCall {
-    public TypeContainer createFunctionCall(GeneratorSlave slave, TypeContainer lParam, TypeContainer rParam);
+    public ParamContainer createFunctionCall(GeneratorSlave slave, ParamContainer lParam, ParamContainer rParam);
 }

@@ -1,13 +1,9 @@
 package ast.core;
 
-import ast.AbstractSyntaxTree;
 import ast.EPrimitiveType;
-import ast.declarations.ParamDeclNode;
-import ast.expressions.AccessInterface;
-import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 
 public class PascalType_Float extends PascalType_Primitive {
     public PascalType_Float() {
@@ -29,7 +25,7 @@ public class PascalType_Float extends PascalType_Primitive {
     public static class FuncDeclNode_addInt extends FuncDeclNode_FloatParam {
         public FuncDeclNode_addInt() {
             super("operator+", PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
-                TypeContainer cast = slave.CastIntToFloat(rParam);
+                ParamContainer cast = slave.CastIntToFloat(rParam);
                 return slave.AddFloatFloat(lParam, cast);
             });
         }
@@ -38,7 +34,7 @@ public class PascalType_Float extends PascalType_Primitive {
     public static class FuncDeclNode_subInt extends FuncDeclNode_FloatParam {
         public FuncDeclNode_subInt() {
             super("operator-", PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
-                TypeContainer cast = slave.CastIntToFloat(rParam);
+                ParamContainer cast = slave.CastIntToFloat(rParam);
                 return slave.SubFloatFloat(lParam, cast);
             });
         }
@@ -53,7 +49,7 @@ public class PascalType_Float extends PascalType_Primitive {
     public static class FuncDeclNode_mulInt extends FuncDeclNode_FloatParam {
         public FuncDeclNode_mulInt() {
             super("operator*", PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
-                TypeContainer cast = slave.CastIntToFloat(rParam);
+                ParamContainer cast = slave.CastIntToFloat(rParam);
                 return slave.MulFloatFloat(lParam, cast);
             });
         }
@@ -74,7 +70,7 @@ public class PascalType_Float extends PascalType_Primitive {
     public static class FuncDeclNode_divInt extends FuncDeclNode_FloatParam {
         public FuncDeclNode_divInt() {
             super("operator/", PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
-                TypeContainer cast = slave.CastIntToFloat(rParam);
+                ParamContainer cast = slave.CastIntToFloat(rParam);
                 return slave.DivFloatFloat(lParam, cast);
             });
         }

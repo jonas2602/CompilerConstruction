@@ -3,7 +3,7 @@ package ast.declarations;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 import writer.TypeWrapper;
 
 public class ParamDeclNode extends VarDeclNode {
@@ -17,11 +17,11 @@ public class ParamDeclNode extends VarDeclNode {
     }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_ScopeContainer == null) {
             // Add parameter to function header
             TypeWrapper paramType = m_Type.GetWrappedType();
-            TypeContainer paramContainer = slave.CreateFunctionParameter(paramType);
+            ParamContainer paramContainer = slave.CreateFunctionParameter(paramType);
 
             // Create local variable
             TypeWrapper wrappedType = m_Type.GetWrappedType();

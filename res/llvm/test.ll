@@ -15,35 +15,13 @@ target triple = "x86_64-pc-linux-gnu"
 @.str.4 = private unnamed_addr constant [7 x i8] c"abc %f\00", align 1
 @.str.5 = private unnamed_addr constant [3 x i8] c"%f\00", align 1
 @.str.6 = private unnamed_addr constant [5 x i8] c"%c%f\00", align 1
-@.str.7 = private unnamed_addr constant [3 x i8] c"%d\00", align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i32 @main() #0 {
-  call void @branches(i32 0)
   %1 = call i8* @makeString(i8 signext 97, i8 signext 98)
   %2 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), i8* %1)
   %3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i32 0, i32 0), i32 1)
   ret i32 0
-}
-
-; Function Attrs: noinline nounwind optnone uwtable
-define dso_local void @branches(i32) #0 {
-  %2 = alloca i32, align 4
-  store i32 %0, i32* %2, align 4
-  %3 = load i32, i32* %2, align 4
-  %4 = icmp ne i32 %3, 0
-  br i1 %4, label %5, label %8
-
-; <label>:5:                                      ; preds = %1
-  %6 = load i32, i32* %2, align 4
-  %7 = add nsw i32 %6, 10
-  store i32 %7, i32* %2, align 4
-  br label %8
-
-; <label>:8:                                      ; preds = %5, %1
-  %9 = load i32, i32* %2, align 4
-  %10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.7, i32 0, i32 0), i32 %9)
-  ret void
 }
 
 declare dso_local i32 @printf(i8*, ...) #1
@@ -251,6 +229,86 @@ define dso_local void @myprint(i32, float) #0 {
 
 ; Function Attrs: nounwind
 declare dso_local noalias i8* @malloc(i64) #3
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i32 @branches(i32) #0 {
+  %2 = alloca i32, align 4
+  store i32 %0, i32* %2, align 4
+  %3 = load i32, i32* %2, align 4
+  %4 = icmp sgt i32 %3, 0
+  br i1 %4, label %5, label %13
+
+; <label>:5:                                      ; preds = %1
+  %6 = load i32, i32* %2, align 4
+  %7 = icmp sgt i32 %6, 10
+  br i1 %7, label %8, label %9
+
+; <label>:8:                                      ; preds = %5
+  store i32 999, i32* %2, align 4
+  br label %10
+
+; <label>:9:                                      ; preds = %5
+  store i32 1, i32* %2, align 4
+  br label %10
+
+; <label>:10:                                     ; preds = %9, %8
+  %11 = load i32, i32* %2, align 4
+  %12 = add nsw i32 %11, 1
+  store i32 %12, i32* %2, align 4
+  br label %19
+
+; <label>:13:                                     ; preds = %1
+  %14 = load i32, i32* %2, align 4
+  %15 = icmp eq i32 %14, 0
+  br i1 %15, label %16, label %17
+
+; <label>:16:                                     ; preds = %13
+  store i32 0, i32* %2, align 4
+  br label %18
+
+; <label>:17:                                     ; preds = %13
+  store i32 -1, i32* %2, align 4
+  br label %18
+
+; <label>:18:                                     ; preds = %17, %16
+  br label %19
+
+; <label>:19:                                     ; preds = %18, %10
+  %20 = load i32, i32* %2, align 4
+  ret i32 %20
+}
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @loops(i32) #0 {
+  %2 = alloca i32, align 4
+  %3 = alloca i32, align 4
+  %4 = alloca i32, align 4
+  store i32 %0, i32* %2, align 4
+  store i32 0, i32* %3, align 4
+  store i32 0, i32* %4, align 4
+  br label %5
+
+; <label>:5:                                      ; preds = %12, %1
+  %6 = load i32, i32* %4, align 4
+  %7 = load i32, i32* %2, align 4
+  %8 = icmp slt i32 %6, %7
+  br i1 %8, label %9, label %15
+
+; <label>:9:                                      ; preds = %5
+  %10 = load i32, i32* %3, align 4
+  %11 = add nsw i32 %10, -1
+  store i32 %11, i32* %3, align 4
+  br label %12
+
+; <label>:12:                                     ; preds = %9
+  %13 = load i32, i32* %4, align 4
+  %14 = add nsw i32 %13, 1
+  store i32 %14, i32* %4, align 4
+  br label %5
+
+; <label>:15:                                     ; preds = %5
+  ret void
+}
 
 attributes #0 = { noinline nounwind optnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }

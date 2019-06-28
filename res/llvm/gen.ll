@@ -2,24 +2,24 @@
 
 define i32 @main() {
 	begin:
-	%0 = alloca i1
-	store i1 0, i1* %0
-	%1 = alloca i32
-	store i32 0, i32* %1
-	%2 = alloca i32
-	store i32 0, i32* %2
-	%3 = alloca float
-	store float 0.0, float* %3
-	store i32 5, i32* %1
-	store i32 5, i32* %2
-	store float 5.0, float* %3
-	%4 = load i32, i32* %1
-	%5 = load i32, i32* %2
-	%6 = icmp eq i32 %4, %5
-	store i1 %6, i1* %0
-	%7 = load i1, i1* %0
-	%8 = and i1 %7, 1
-	store i1 %8, i1* %0
+	br i1 1, label %0, label %4
+	
+	; <label>:0:
+	br i1 1, label %1, label %2
+	
+	; <label>:1:
+	br label %3
+	
+	; <label>:2:
+	br label %3
+	
+	; <label>:3:
+	br label %5
+	
+	; <label>:4:
+	br label %5
+	
+	; <label>:5:
 	ret i32 0
 }
 

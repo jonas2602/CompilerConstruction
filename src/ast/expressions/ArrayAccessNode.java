@@ -3,11 +3,10 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.types.ArrayTypeNode;
-import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.TypeContainer;
+import writer.ParamContainer;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -52,9 +51,9 @@ public class ArrayAccessNode extends AbstractSyntaxTree implements AccessInterfa
     }
 
     @Override
-    public TypeContainer CreateSnippet(GeneratorSlave slave) {
-        TypeContainer varAccess = m_Child.CreateSnippet(slave);
-        TypeContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        ParamContainer varAccess = m_Child.CreateSnippet(slave);
+        ParamContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
         return slave.CreateArrayElementPtr(varAccess, indexContainer);
     }
 }
