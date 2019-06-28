@@ -10,6 +10,8 @@ var
     x: char;
     y: integer;
     z: real;
+    s: String[10]
+    s1: array[0..9] of char
 begin
     x := 'x';
     cc[0] := 'a';

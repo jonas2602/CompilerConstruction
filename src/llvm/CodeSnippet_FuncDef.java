@@ -37,6 +37,12 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         return m_VariableCounter++;
     }
 
+    public int AddLabel() {
+        String labelStmt = String.format("; <label>:%d:", m_VariableCounter);
+        m_Statements.add(new CodeSnippet_Plain(labelStmt));
+        return m_VariableCounter++;
+    }
+
     @Override
     public List<String> WriteLines() {
         List<String> lines = new ArrayList<>();

@@ -3,6 +3,8 @@ package ast.statements;
 import ast.AbstractSyntaxTree;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
+import writer.GeneratorSlave;
+import writer.TypeContainer;
 
 public class BranchNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Condition;
@@ -28,6 +30,11 @@ public class BranchNode extends AbstractSyntaxTree {
         m_Then.CheckType();
         m_Else.CheckType();
 
+        return null;
+    }
+
+    @Override
+    public TypeContainer CreateSnippet(GeneratorSlave slave) {
         return null;
     }
 }

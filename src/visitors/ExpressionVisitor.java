@@ -184,10 +184,16 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         String data = ctx.STRING_LITERAL().getText();
         data = data.substring(1, data.length() - 1);
 
-        if(data.length() == 1){
-            int numeric = (int)data.charAt(0);
+        if (data.length() == 1) {
+            int numeric = (int) data.charAt(0);
             return new ConstantNode(Integer.toString(numeric), PrimitiveTypeNode.CharNode);
         }
         return new ConstantNode_String(data);
+    }
+
+    @Override
+    public AbstractSyntaxTree visitBool(PascalParser.BoolContext ctx) {
+        String data = ctx.TRUE() != null ? "1" : "0";
+        return new ConstantNode(data, PrimitiveTypeNode.BoolNode);
     }
 }

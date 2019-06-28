@@ -34,7 +34,7 @@ public class GeneratorSlave {
 
     public TypeContainer CreateStringConstantNew(String InContent) {
         // Convert \n, \t, ... to hex code
-        StringBuilder builder  = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         for (char c : InContent.toCharArray()) {
             if (Character.isLetterOrDigit(c) || c == '%') {
                 builder.append(c);
@@ -190,6 +190,10 @@ public class GeneratorSlave {
 
     public TypeContainer DivFloatFloat(TypeContainer InLeft, TypeContainer InRight) {
         return ThreeOperantsInstruction("fdiv", InLeft, InRight);
+    }
+
+    public TypeContainer OrBoolBool(TypeContainer InLeft, TypeContainer InRight) {
+        return null;
     }
 
     public TypeContainer ThreeOperantsInstruction(String inst, TypeContainer InLeft, TypeContainer InRight) {

@@ -19,6 +19,7 @@ int addi(int i);
 void none();
 char *makeString(char left, char right);
 int mymod(int a, int b);
+void branches(int i);
 
 int main()
 {
@@ -36,8 +37,12 @@ int main()
     // person john;
     // john.age = *j;
     // printf("%s ist %d Jahre alt. %c %d\n", john.name, john.age, test[7], myval);
-    char *mystr = "abcde\\\n\\";
-    arraytest();
+    // char *mystr = "abcde\\\n\\";
+    // arraytest();
+    branches(-0);
+
+    printf("%s", makeString('a', 'b'));
+    printf("%i", true);
 }
 
 void arraytest()
@@ -110,14 +115,16 @@ char testCast(double i)
 
 int check(int i)
 {
-    if (i > 0)
-    {
-        return i / 2;
-    }
-    else
-    {
-        return i / 2 + 1;
-    }
+    bool myval = i || i + 3;
+    // if (i && i + 1)
+    // {
+    //     return i;
+    // }
+    // else
+    // {
+    //     return 1;
+    // }
+    return 1;
 }
 
 void myprint(int s, float f)
@@ -127,10 +134,20 @@ void myprint(int s, float f)
 
 char *makeString(char left, char right)
 {
-    char *str = malloc(3 * sizeof(char));
+    char *str = (char *)malloc(3 * sizeof(char));
     str[0] = left;
     str[1] = right;
     str[2] = '\0';
 
     return str;
+}
+
+void branches(int i)
+{
+    if (i)
+    {
+        i += 10;
+    }
+
+    printf("%d", i);
 }
