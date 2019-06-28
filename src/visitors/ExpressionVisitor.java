@@ -1,6 +1,7 @@
 package visitors;
 
 import ast.*;
+import ast.core.operators.Operator;
 import ast.expressions.*;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
@@ -18,24 +19,25 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         }
 
         AbstractSyntaxTree right = visitExpression(ctx.expression());
-        FuncCallNode funcCall = null;
 
+        Operator operator = null;
         if (ctx.relationaloperator().EQUAL() != null) {
-            funcCall = new FuncCallNode("operatoreq");
+            operator = Operator.EQ;
         } else if (ctx.relationaloperator().NOT_EQUAL() != null) {
-            funcCall = new FuncCallNode("operatorne");
+            operator = Operator.NE;
         } else if (ctx.relationaloperator().LT() != null) {
-            funcCall = new FuncCallNode("operatorlt");
+            operator = Operator.LT;
         } else if (ctx.relationaloperator().LE() != null) {
-            funcCall = new FuncCallNode("operatorle");
+            operator = Operator.LE;
         } else if (ctx.relationaloperator().GT() != null) {
-            funcCall = new FuncCallNode("operatorgt");
+            operator = Operator.GT;
         } else if (ctx.relationaloperator().GE() != null) {
-            funcCall = new FuncCallNode("operatorge");
+            operator = Operator.GE;
         } else if (ctx.relationaloperator().IN() != null) {
-            funcCall = new FuncCallNode("operatorin");
+            operator = Operator.IN;
         }
 
+        FuncCallNode funcCall = new FuncCallNode(operator.GetOperatorFunctionName());
         funcCall.AddParameter(left);
         funcCall.AddParameter(right);
         return funcCall;
@@ -49,15 +51,16 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         }
         AbstractSyntaxTree right = visitSimpleExpression(ctx.simpleExpression());
 
-        FuncCallNode funcCall = null;
+        Operator operator = null;
         if (ctx.additiveoperator().PLUS() != null) {
-            funcCall = new FuncCallNode("operator+");
+            operator = Operator.ADD;
         } else if (ctx.additiveoperator().MINUS() != null) {
-            funcCall = new FuncCallNode("operator-");
+            operator = Operator.SUB;
         } else if (ctx.additiveoperator().OR() != null) {
-            funcCall = new FuncCallNode("operator||");
+            operator = Operator.OR;
         }
 
+        FuncCallNode funcCall = new FuncCallNode(operator.GetOperatorFunctionName());
         funcCall.AddParameter(left);
         funcCall.AddParameter(right);
         return funcCall;
@@ -70,20 +73,22 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             return left;
         }
 
-        FuncCallNode funcCall = null;
         AbstractSyntaxTree right = visitTerm(ctx.term());
+
+        Operator operator = null;
         if (ctx.multiplicativeoperator().STAR() != null) {
-            funcCall = new FuncCallNode("operator*");
+            operator = Operator.MUL;
         } else if (ctx.multiplicativeoperator().SLASH() != null) {
-            funcCall = new FuncCallNode("operator/");
+            operator = Operator.DIV;
         } else if (ctx.multiplicativeoperator().DIV() != null) {
-            funcCall = new FuncCallNode("operatordiv");
+            operator = Operator.INTDIV;
         } else if (ctx.multiplicativeoperator().MOD() != null) {
-            funcCall = new FuncCallNode("operatormod");
+            operator = Operator.MOD;
         } else if (ctx.multiplicativeoperator().AND() != null) {
-            funcCall = new FuncCallNode("operator&&");
+            operator = Operator.AND;
         }
 
+        FuncCallNode funcCall = new FuncCallNode(operator.GetOperatorFunctionName());
         funcCall.AddParameter(left);
         funcCall.AddParameter(right);
         return funcCall;

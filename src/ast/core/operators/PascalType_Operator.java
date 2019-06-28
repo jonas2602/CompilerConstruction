@@ -1,6 +1,7 @@
-package ast.core;
+package ast.core.operators;
 
 import ast.AbstractSyntaxTree;
+import ast.core.FuncDeclNode_Core;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
@@ -9,12 +10,12 @@ import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 
-public abstract class PascalType_Operation extends FuncDeclNode_Core {
+public abstract class PascalType_Operator extends FuncDeclNode_Core {
 
     private FunctionCall operation;
 
-    public PascalType_Operation(String InName, TypeNode InReturnType, PrimitiveTypeNode lparam, PrimitiveTypeNode rparam, FunctionCall operation) {
-        super(InName, InReturnType);
+    public PascalType_Operator(Operator operator, TypeNode InReturnType, PrimitiveTypeNode lparam, PrimitiveTypeNode rparam, FunctionCall operation) {
+        super(operator.GetOperatorFunctionName(), InReturnType);
 
         AddParameter(new ParamDeclNode("left", lparam));
         AddParameter(new ParamDeclNode("right", rparam));
@@ -44,8 +45,4 @@ public abstract class PascalType_Operation extends FuncDeclNode_Core {
 
         return operation.createFunctionCall(slave, leftParam, rightParam);
     }
-}
-
-interface FunctionCall {
-    public ParamContainer createFunctionCall(GeneratorSlave slave, ParamContainer lParam, ParamContainer rParam);
 }
