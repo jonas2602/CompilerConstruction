@@ -265,27 +265,27 @@ public class GeneratorSlave {
     }
 
     public ParamContainer FloatEQ(ParamContainer InLeft, ParamContainer InRight) {
-        return IntComparator("oeq", InLeft, InRight);
+        return FloatComparator("oeq", InLeft, InRight);
     }
 
     public ParamContainer FloatNE(ParamContainer InLeft, ParamContainer InRight) {
-        return IntComparator("one", InLeft, InRight);
+        return FloatComparator("one", InLeft, InRight);
     }
 
     public ParamContainer FloatLT(ParamContainer InLeft, ParamContainer InRight) {
-        return IntComparator("olt", InLeft, InRight);
+        return FloatComparator("olt", InLeft, InRight);
     }
 
     public ParamContainer FloatLE(ParamContainer InLeft, ParamContainer InRight) {
-        return IntComparator("ole", InLeft, InRight);
+        return FloatComparator("ole", InLeft, InRight);
     }
 
     public ParamContainer FloatGT(ParamContainer InLeft, ParamContainer InRight) {
-        return IntComparator("ogt", InLeft, InRight);
+        return FloatComparator("ogt", InLeft, InRight);
     }
 
     public ParamContainer FloatGE(ParamContainer InLeft, ParamContainer InRight) {
-        return IntComparator("oge", InLeft, InRight);
+        return FloatComparator("oge", InLeft, InRight);
     }
 
     public ParamContainer FloatComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {

@@ -3,6 +3,7 @@ package ast.core.operators;
 import ast.BlockNode;
 import ast.core.StdBuilder;
 import ast.types.PrimitiveTypeNode;
+import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 
@@ -25,6 +26,21 @@ public class FloatOperators implements StdBuilder {
         std.AddFunctionDeclaration(new MulInt());
         std.AddFunctionDeclaration(new DivFloat());
         std.AddFunctionDeclaration(new DivInt());
+
+        //comp operators
+        std.AddFunctionDeclaration(new EQFloat());
+        std.AddFunctionDeclaration(new NEFloat());
+        std.AddFunctionDeclaration(new LTFloat());
+        std.AddFunctionDeclaration(new LEFloat());
+        std.AddFunctionDeclaration(new GTFloat());
+        std.AddFunctionDeclaration(new GEFloat());
+
+        std.AddFunctionDeclaration(new EQInt());
+        std.AddFunctionDeclaration(new NEInt());
+        std.AddFunctionDeclaration(new LTInt());
+        std.AddFunctionDeclaration(new LEInt());
+        std.AddFunctionDeclaration(new GTInt());
+        std.AddFunctionDeclaration(new GEInt());
     }
 
     public static class NegateFloat extends PascalType_Prefix {
@@ -48,6 +64,10 @@ public class FloatOperators implements StdBuilder {
     public static abstract class FloatOperator extends PascalType_Operator {
         public FloatOperator(Operator operator, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
             super(operator, PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, rparam, operation);
+        }
+
+        public FloatOperator(Operator operator, TypeNode InReturnType, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
+            super(operator, InReturnType, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
     }
 
@@ -107,6 +127,96 @@ public class FloatOperators implements StdBuilder {
             super(Operator.DIV, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
                 ParamContainer cast = slave.CastIntToFloat(rParam);
                 return slave.DivFloatFloat(lParam, cast);
+            });
+        }
+    }
+
+    public static class EQFloat extends FloatOperator {
+        public EQFloat() {
+            super(Operator.EQ, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.FloatNode, GeneratorSlave::FloatEQ);
+        }
+    }
+
+    public static class NEFloat extends FloatOperator {
+        public NEFloat() {
+            super(Operator.NE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.FloatNode, GeneratorSlave::FloatNE);
+        }
+    }
+
+    public static class LTFloat extends FloatOperator {
+        public LTFloat() {
+            super(Operator.LT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.FloatNode, GeneratorSlave::FloatLT);
+        }
+    }
+
+    public static class LEFloat extends FloatOperator {
+        public LEFloat() {
+            super(Operator.LE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.FloatNode, GeneratorSlave::FloatLE);
+        }
+    }
+
+    public static class GTFloat extends FloatOperator {
+        public GTFloat() {
+            super(Operator.GT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.FloatNode, GeneratorSlave::FloatGT);
+        }
+    }
+
+    public static class GEFloat extends FloatOperator {
+        public GEFloat() {
+            super(Operator.GE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.FloatNode, GeneratorSlave::FloatGE);
+        }
+    }
+
+    public static class EQInt extends FloatOperator {
+        public EQInt() {
+            super(Operator.EQ, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                ParamContainer cast = slave.CastIntToFloat(rParam);
+                return slave.FloatEQ(lParam, cast);
+            });
+        }
+    }
+
+    public static class NEInt extends FloatOperator {
+        public NEInt() {
+            super(Operator.NE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                ParamContainer cast = slave.CastIntToFloat(rParam);
+                return slave.FloatNE(lParam, cast);
+            });
+        }
+    }
+
+    public static class LTInt extends FloatOperator {
+        public LTInt() {
+            super(Operator.LT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                ParamContainer cast = slave.CastIntToFloat(rParam);
+                return slave.FloatLT(lParam, cast);
+            });
+        }
+    }
+
+    public static class LEInt extends FloatOperator {
+        public LEInt() {
+            super(Operator.LE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                ParamContainer cast = slave.CastIntToFloat(rParam);
+                return slave.FloatLE(lParam, cast);
+            });
+        }
+    }
+
+    public static class GTInt extends FloatOperator {
+        public GTInt() {
+            super(Operator.GT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                ParamContainer cast = slave.CastIntToFloat(rParam);
+                return slave.FloatGT(lParam, cast);
+            });
+        }
+    }
+
+    public static class GEInt extends FloatOperator {
+        public GEInt() {
+            super(Operator.GE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, (slave, lParam, rParam) -> {
+                ParamContainer cast = slave.CastIntToFloat(rParam);
+                return slave.FloatGE(lParam, cast);
             });
         }
     }

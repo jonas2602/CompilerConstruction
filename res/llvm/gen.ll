@@ -21,6 +21,11 @@ define i32 @main() {
 	store float %10, float* %2
 	%11 = xor i1 1, 1
 	store i1 %11, i1* %0
+	%12 = load i32, i32* %1
+	%13 = load float, float* %2
+	%14 = sitofp i32 %12 to float
+	%15 = fcmp oge float %14, %13
+	store i1 %15, i1* %0
 	ret i32 0
 }
 

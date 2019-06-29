@@ -119,7 +119,6 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else if (ctx.set() != null) {
             return visitSet(ctx.set());
         } else if (ctx.factor() != null) {
-            // TODO: Negate factor
             AbstractSyntaxTree factor =  visitFactor(ctx.factor());
             FuncCallNode funcCall = new FuncCallNode(Operator.NEG.GetOperatorFunctionName());
             funcCall.AddParameter(factor);
