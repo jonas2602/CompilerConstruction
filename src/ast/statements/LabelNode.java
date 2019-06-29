@@ -39,7 +39,10 @@ public class LabelNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        //create jumplabel
+        // create jump to label
+        slave.CreateJump(m_LabelContainer);
+
+        // Create new block starting with the label
         ValueWrapper labelValue = slave.CreateLabel();
         m_LabelContainer.SetValueAccessor(labelValue);
 

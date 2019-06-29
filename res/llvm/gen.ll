@@ -15,10 +15,10 @@ define void @test(i32) {
 	begin:
 	%1 = alloca i32
 	store i32 %0, i32* %1
-	br label %4
 	%2 = load i32, i32* %1
 	%3 = add i32 %2, 1
 	store i32 %3, i32* %1
+	br label %4
 	
 	; <label>:4:
 	%5 = load i32, i32* %1
@@ -27,6 +27,7 @@ define void @test(i32) {
 	%7 = load i32, i32* %1
 	%8 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i64 0, i64 0
 	%9 = call i32 (i8*, ...) @printf(i8* %8, i32 %7)
+	br label %4
 	ret void
 }
 
