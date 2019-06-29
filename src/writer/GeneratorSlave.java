@@ -141,6 +141,49 @@ public class GeneratorSlave {
         return GetScopeSnippet().AddStatementWithStorage(exp);
     }
 
+    public ParamContainer NegateBool(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("xor %s, 1", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
+    public ParamContainer IncInt(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("add %s, 1", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
+    public ParamContainer DecInt(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("sub %s, 1", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
+    public ParamContainer IncFloat(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("fadd %s, 1.0", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
+    public ParamContainer DecFloat(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("fsub %s, 1.0", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
+
+    public ParamContainer NegateInt(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("mul %s, -1", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
+    public ParamContainer NegateFloat(ParamContainer param) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("fmul %s, -1.0", param);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(param, scopeVar);
+    }
+
     public ParamContainer AddIntInt(ParamContainer InLeft, ParamContainer InRight) {
         return ThreeOperantsInstruction("add", InLeft, InRight);
     }

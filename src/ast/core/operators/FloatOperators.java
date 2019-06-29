@@ -10,6 +10,13 @@ public class FloatOperators implements StdBuilder {
 
     @Override
     public void buildStd(BlockNode std) {
+        //prefix operators
+        std.AddFunctionDeclaration(new NegateFloat());
+
+        //post operators
+        std.AddFunctionDeclaration(new IncFloat());
+        std.AddFunctionDeclaration(new DecFloat());
+
         std.AddFunctionDeclaration(new AddFloat());
         std.AddFunctionDeclaration(new AddInt());
         std.AddFunctionDeclaration(new SubFloat());
@@ -20,8 +27,26 @@ public class FloatOperators implements StdBuilder {
         std.AddFunctionDeclaration(new DivInt());
     }
 
+    public static class NegateFloat extends PascalType_Prefix {
+        public NegateFloat() {
+            super(Operator.NEG, PrimitiveTypeNode.FloatNode, GeneratorSlave::NegateFloat);
+        }
+    }
+
+    public static class IncFloat extends PascalType_Prefix {
+        public IncFloat() {
+            super(Operator.INC, PrimitiveTypeNode.FloatNode, GeneratorSlave::IncFloat);
+        }
+    }
+
+    public static class DecFloat extends PascalType_Prefix {
+        public DecFloat() {
+            super(Operator.DEC, PrimitiveTypeNode.FloatNode, GeneratorSlave::DecFloat);
+        }
+    }
+
     public static abstract class FloatOperator extends PascalType_Operator {
-        public FloatOperator(Operator operator, PrimitiveTypeNode rparam, FunctionCall operation) {
+        public FloatOperator(Operator operator, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
             super(operator, PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
     }

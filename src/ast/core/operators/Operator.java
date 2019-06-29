@@ -9,6 +9,8 @@ public enum Operator {
     MOD("operator%"),
     INTDIV("operatorint/"),
 
+    NEG("operator!"),
+
     AND("operator&&"),
     OR("operator||"),
 
@@ -21,8 +23,8 @@ public enum Operator {
     GT("operator>"),
     GE("operator>="),
 
-    INCR("operator++"),
-    DECR("operator--");
+    INC("operator++"),
+    DEC("operator--");
 
     private String m_OperatorFunctionName;
     Operator(String operatorFunctionName) {

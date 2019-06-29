@@ -98,7 +98,9 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitSignedFactor(PascalParser.SignedFactorContext ctx) {
         AbstractSyntaxTree factor = visitFactor(ctx.factor());
         if (ctx.MINUS() != null) {
-            // TODO: negate factor
+            FuncCallNode funcCall = new FuncCallNode(Operator.NEG.GetOperatorFunctionName());
+            funcCall.AddParameter(factor);
+            return funcCall;
         }
 
         return factor;
@@ -118,7 +120,10 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             return visitSet(ctx.set());
         } else if (ctx.factor() != null) {
             // TODO: Negate factor
-            return visitFactor(ctx.factor());
+            AbstractSyntaxTree factor =  visitFactor(ctx.factor());
+            FuncCallNode funcCall = new FuncCallNode(Operator.NEG.GetOperatorFunctionName());
+            funcCall.AddParameter(factor);
+            return funcCall;
         } else {
             return visitBool(ctx.bool());
         }

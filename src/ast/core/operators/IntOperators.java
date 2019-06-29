@@ -10,6 +10,13 @@ import writer.ParamContainer;
 public class IntOperators implements StdBuilder {
 
     public void buildStd(BlockNode std) {
+        //prefix operators
+        std.AddFunctionDeclaration(new NegateInt());
+
+        //postfix operators
+        std.AddFunctionDeclaration(new IncInt());
+        std.AddFunctionDeclaration(new DecInt());
+
         //'normal' int operators
         std.AddFunctionDeclaration(new AddInt());
         std.AddFunctionDeclaration(new AddFloat());
@@ -33,9 +40,26 @@ public class IntOperators implements StdBuilder {
         std.AddFunctionDeclaration(new GEInt());
     }
 
+    public static class NegateInt extends PascalType_Prefix {
+        public NegateInt() {
+            super(Operator.NEG, PrimitiveTypeNode.IntNode, GeneratorSlave::NegateInt);
+        }
+    }
+
+    public static class IncInt extends PascalType_Prefix {
+        public IncInt() {
+            super(Operator.INC, PrimitiveTypeNode.IntNode, GeneratorSlave::IncInt);
+        }
+    }
+
+    public static class DecInt extends PascalType_Prefix {
+        public DecInt() {
+            super(Operator.DEC, PrimitiveTypeNode.IntNode, GeneratorSlave::DecInt);
+        }
+    }
 
     public static abstract class IntOperator extends PascalType_Operator {
-        public IntOperator(Operator operator, TypeNode InReturnType, PrimitiveTypeNode rparam, FunctionCall operation) {
+        public IntOperator(Operator operator, TypeNode InReturnType, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
             super(operator, InReturnType, PrimitiveTypeNode.IntNode, rparam, operation);
         }
     }

@@ -31,7 +31,7 @@ public class ForNode extends AbstractSyntaxTree {
         m_CompCall.AddParameter(InVariable);
         m_CompCall.AddParameter(InFinalValue);
 
-        Operator stepOperator = bIncrement ? Operator.INCR : Operator.DECR;
+        Operator stepOperator = bIncrement ? Operator.INC : Operator.DEC;
         m_StepCall = new FuncCallNode(stepOperator);
         m_StepCall.AddParameter(InVariable);
 
