@@ -14,10 +14,13 @@ import java.util.List;
 public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitStatement(PascalParser.StatementContext ctx) {
-        if(ctx.label() != null) {
+        if (ctx.label() != null) {
             CompStmtNode compStmt = new CompStmtNode();
             compStmt.AddStatement(new LabelNode(ctx.label().getText()));
-            compStmt.AddStatement(visitUnlabelledStatement(ctx.unlabelledStatement()));
+            AbstractSyntaxTree unlabelled = visitUnlabelledStatement(ctx.unlabelledStatement());
+            if (unlabelled != null) {
+                compStmt.AddStatement(unlabelled);
+            }
             return compStmt;
         }
         return visitUnlabelledStatement(ctx.unlabelledStatement());

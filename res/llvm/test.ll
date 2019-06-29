@@ -171,6 +171,14 @@ define dso_local void @loops(i32) #0 {
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i32 @main() #0 {
+  %1 = alloca i32, align 4
+  store i32 0, i32* %1, align 4
+  br label %2
+
+; <label>:2:                                      ; preds = %0
+  %3 = load i32, i32* %1, align 4
+  %4 = add nsw i32 %3, 1
+  store i32 %4, i32* %1, align 4
   call void @pointertest()
   ret i32 0
 }

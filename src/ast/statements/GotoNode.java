@@ -9,7 +9,7 @@ import writer.ParamContainer;
 
 public class GotoNode extends AbstractSyntaxTree {
     private String m_LabelName;
-    private LabelDeclNode m_Label;
+    private LabelDeclNode m_LabelDecl;
 
     public GotoNode(String InLabelName) {
         this.m_LabelName = InLabelName;
@@ -17,8 +17,8 @@ public class GotoNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
-        m_Label = GetOwningBlock().GetLabelDeclaration(m_LabelName);
-        if (m_Label == null) {
+        m_LabelDecl = GetOwningBlock().GetLabelDeclaration(m_LabelName);
+        if (m_LabelDecl == null) {
             throw new TypeCheckException(this, "Label called " + m_LabelName + " is not declared");
         }
 
@@ -27,12 +27,7 @@ public class GotoNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        LabelNode n = m_Label.GetLabelNode();
-        if(n == null) {
-            throw new TypeCheckException(this, "Label called " + m_LabelName + " is not defined");
-        }
-
-        slave.CreateJump(n.GetLabel(slave));
+        slave.CreateJump(m_LabelDecl.CreateSnippet(slave));
 
         return null;
     }

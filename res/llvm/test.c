@@ -12,7 +12,6 @@ typedef struct
     int age;
 } person;
 
-
 void arraytest()
 {
     char first = 'x';
@@ -33,7 +32,7 @@ void arraytest()
 void pointertest()
 {
     int mylist[5] = {0, 1, 2, 3, 4};
-    int* ptr = &mylist[1];
+    int *ptr = &mylist[1];
     *ptr = 10;
 
     // printf("%d %d %d %d %d, %d", mylist[0], mylist[1], mylist[2], mylist[3], mylist[4], *ptr);
@@ -100,5 +99,12 @@ void loops(int length)
 
 int main()
 {
+    int i = 0;
+    goto Endlos;
+
+    i++;
+
+Endlos:
+    i++;
     pointertest();
 }

@@ -2,6 +2,8 @@ package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.statements.LabelNode;
+import writer.GeneratorSlave;
+import writer.ParamContainer;
 
 public class LabelDeclNode extends AbstractSyntaxTree {
     private String m_Name;
@@ -13,7 +15,7 @@ public class LabelDeclNode extends AbstractSyntaxTree {
         m_LabelNode = null;
     }
 
-    public String GetName(){
+    public String GetName() {
         return m_Name;
     }
 
@@ -23,5 +25,10 @@ public class LabelDeclNode extends AbstractSyntaxTree {
 
     public LabelNode GetLabelNode() {
         return m_LabelNode;
+    }
+
+    @Override
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        return m_LabelNode.GetLabelParam();
     }
 }

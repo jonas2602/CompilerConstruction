@@ -11,11 +11,11 @@ import writer.VariableWrapper;
 
 public class LabelNode extends AbstractSyntaxTree {
     private String m_LabelName;
-    private ParamContainer m_Label;
-    private VariableWrapper m_RawLabel;
+    private ParamContainer m_LabelContainer;
 
     public LabelNode(String InLabelName) {
-        this.m_LabelName = InLabelName;
+        m_LabelName = InLabelName;
+        m_LabelContainer = ParamContainer.LABELCONTAINER();
     }
 
     @Override
@@ -30,26 +30,18 @@ public class LabelNode extends AbstractSyntaxTree {
         }
 
         labelDecl.SetLabelNode(this);
-
         return null;
     }
 
-    public ParamContainer GetLabel(GeneratorSlave slave) {
-        //forward declaration
-        if(m_Label == null) {
-            m_Label = ParamContainer.LABELCONTAINER();
-            m_RawLabel = slave.CreateLabelPlaceholder();
-            m_Label.SetValueAccessor(m_RawLabel);
-        }
-
-        return m_Label;
+    public ParamContainer GetLabelParam() {
+        return m_LabelContainer;
     }
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         //create jumplabel
-        ParamContainer label = GetLabel(slave);
-        slave.PlaceLabel(m_RawLabel);
+        ValueWrapper labelValue = slave.CreateLabel();
+        m_LabelContainer.SetValueAccessor(labelValue);
 
         return null;
     }
