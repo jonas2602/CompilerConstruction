@@ -339,9 +339,17 @@ public class GeneratorSlave {
         GetScopeSnippet().AddStatement(snippet);
     }
 
-    public void CreateJump(ParamContainer InLabel) {
+    public void CreateJump(ParamContainer InLabel, boolean InEndsBlock) {
         CodeSnippet_Args snippet = new CodeSnippet_Args("br %s", InLabel);
-        GetScopeSnippet().AddStatement(snippet);
+        if (InEndsBlock) {
+            GetScopeSnippet().AddStatement(snippet);
+        } else {
+            GetScopeSnippet().AddStatementIncrementCounter(snippet);
+        }
+    }
+
+    public void CreateJump(ParamContainer InLabel) {
+        CreateJump(InLabel, true);
     }
 
     public ValueWrapper CreateLabel() {

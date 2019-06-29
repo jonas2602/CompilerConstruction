@@ -27,7 +27,7 @@ public class GotoNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        slave.CreateJump(m_LabelDecl.CreateSnippet(slave));
+        slave.CreateJump(m_LabelDecl.CreateSnippet(slave), false);
 
         return null;
     }

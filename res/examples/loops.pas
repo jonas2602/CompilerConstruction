@@ -31,5 +31,9 @@ begin
 end;
 
 begin
+    forloop(12);
+    writeln(' ');
+    whileloop(12);
+    writeln(' ');
     repeatloop(12);
 end.

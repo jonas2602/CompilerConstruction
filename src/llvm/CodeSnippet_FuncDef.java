@@ -39,6 +39,11 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         return AddStatementWithStorage(new CodeSnippet_Plain(InStmt));
     }
 
+    public void AddStatementIncrementCounter(CodeSnippet_Base InStmt) {
+        AddStatement(InStmt);
+        m_VariableCounter++;
+    }
+
     public VariableWrapper AddLabel() {
         m_Statements.add(new CodeSnippet_Plain(""));
 

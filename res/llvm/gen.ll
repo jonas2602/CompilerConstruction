@@ -1,5 +1,6 @@
 @.str.0 = constant [4 x i8] c"%d\0A\00"
 @.str.1 = constant [4 x i8] c"%d\0A\00"
+@.str.2 = constant [4 x i8] c"%d\0A\00"
 
 declare i32 @printf(i8*, ...)
 
@@ -18,16 +19,15 @@ define void @test(i32) {
 	%2 = load i32, i32* %1
 	%3 = add i32 %2, 1
 	store i32 %3, i32* %1
-	br label %4
+	%4 = load i32, i32* %1
+	%5 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i64 0, i64 0
+	%6 = call i32 (i8*, ...) @printf(i8* %5, i32 %4)
+	br label %7
 	
-	; <label>:4:
-	%5 = load i32, i32* %1
-	%6 = add i32 %5, 2
-	store i32 %6, i32* %1
-	%7 = load i32, i32* %1
-	%8 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i64 0, i64 0
-	%9 = call i32 (i8*, ...) @printf(i8* %8, i32 %7)
-	br label %4
+	; <label>:7:
+	%8 = load i32, i32* %1
+	%9 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.2, i64 0, i64 0
+	%10 = call i32 (i8*, ...) @printf(i8* %9, i32 %8)
 	ret void
 }
 
