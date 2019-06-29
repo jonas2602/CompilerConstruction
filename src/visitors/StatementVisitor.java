@@ -7,13 +7,19 @@ import ast.statements.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitStatement(PascalParser.StatementContext ctx) {
-        // TODO: labeled statements
+        if(ctx.label() != null) {
+            CompStmtNode compStmt = new CompStmtNode();
+            compStmt.AddStatement(new LabelNode(ctx.label().getText()));
+            compStmt.AddStatement(visitUnlabelledStatement(ctx.unlabelledStatement()));
+            return compStmt;
+        }
         return visitUnlabelledStatement(ctx.unlabelledStatement());
     }
 

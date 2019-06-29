@@ -1,5 +1,6 @@
 package writer;
 
+import com.sun.jdi.Value;
 import llvm.*;
 
 import java.util.ArrayList;
@@ -346,6 +347,14 @@ public class GeneratorSlave {
 
     public ValueWrapper CreateLabel() {
         return GetScopeSnippet().AddLabel();
+    }
+
+    public VariableWrapper CreateLabelPlaceholder() {
+        return GetScopeSnippet().CreateLabel();
+    }
+
+    public VariableWrapper PlaceLabel(VariableWrapper label) {
+        return GetScopeSnippet().AddLabel(label);
     }
 
 

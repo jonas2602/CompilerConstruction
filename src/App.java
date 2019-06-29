@@ -34,6 +34,10 @@ public class App {
         PascalParser parser = new PascalParser(tokens);
         ParseTree tree = parser.program();
 
+        if(parser.getNumberOfSyntaxErrors() != 0) {
+            System.exit(0);
+        }
+
         // convert parse tree to abstract syntax tree
         ProgramVisitor vis = new ProgramVisitor();
         ProgramNode prog = vis.visit(tree);

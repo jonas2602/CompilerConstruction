@@ -47,6 +47,18 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         return VariableWrapper.SCOPEVAR(m_VariableCounter++);
     }
 
+    //TODO: rework this
+    public VariableWrapper CreateLabel() {
+        return VariableWrapper.SCOPEVAR(m_VariableCounter++);
+    }
+
+    public VariableWrapper AddLabel(VariableWrapper label) {
+        m_Statements.add(new CodeSnippet_Plain(""));
+        String finalStmt = String.format("; <label>:%d:", label.GetScopeIndex());
+        m_Statements.add(new CodeSnippet_Plain(finalStmt));
+        return label;
+    }
+
     @Override
     public List<String> WriteLines() {
         // for (int i = 0; i < m_IndexElements.size(); i++) {
