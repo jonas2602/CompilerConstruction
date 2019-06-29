@@ -3,6 +3,7 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
+import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.types.TypeNode;
 import llvm.*;
@@ -22,6 +23,10 @@ public class FuncCallNode extends AbstractSyntaxTree {
 
     public FuncCallNode(String InFuncName) {
         this.m_FuncName = InFuncName;
+    }
+
+    public FuncCallNode(Operator InOperator) {
+        this.m_FuncName = InOperator.GetOperatorFunctionName();
     }
 
     public void AddParameter(AbstractSyntaxTree InParam) {

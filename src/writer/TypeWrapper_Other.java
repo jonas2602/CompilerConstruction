@@ -2,6 +2,7 @@ package writer;
 
 public class TypeWrapper_Other extends TypeWrapper {
     public static TypeWrapper_Other LABEL = new TypeWrapper_Other("label");
+    public static TypeWrapper_Other VOID = new TypeWrapper_Other("void");
 
     private String m_TypeName;
 

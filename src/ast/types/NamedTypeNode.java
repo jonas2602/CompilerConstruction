@@ -6,6 +6,8 @@ import ast.declarations.TypeDeclNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
+import writer.TypeWrapper;
+import writer.TypeWrapper_Other;
 
 public class NamedTypeNode extends TypeNode {
     // TODO: Assign Primitives to root block? How to validate them?
@@ -102,5 +104,11 @@ public class NamedTypeNode extends TypeNode {
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         // TODO: handle non primitive types
         return new CodeSnippet_Type(CodeSnippet_Type.EType.FromAstType(GetPrimitiveType()));
+    }
+
+    @Override
+    public TypeWrapper GetWrappedType() {
+        // TODO: Handle complex types
+        return TypeWrapper_Other.VOID;
     }
 }

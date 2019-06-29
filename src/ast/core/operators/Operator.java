@@ -19,7 +19,10 @@ public enum Operator {
     LT("operator<"),
     LE("operator<="),
     GT("operator>"),
-    GE("operator>=");
+    GE("operator>="),
+
+    INCR("operator++"),
+    DECR("operator--");
 
     private String m_OperatorFunctionName;
     Operator(String operatorFunctionName) {
