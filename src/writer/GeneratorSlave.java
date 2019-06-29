@@ -70,12 +70,13 @@ public class GeneratorSlave {
         return call;
     }
 
-    public CodeSnippet_Plain CreateReturnStmt(CodeSnippet_Base InType, String InData) {
-        return CreateReturnStmt(InType.Write(), InData);
-    }
-
     public CodeSnippet_Plain CreateReturnStmt(String InType, String InData) {
         return new CodeSnippet_Plain(String.format("ret %s %s", InType, InData));
+    }
+
+    public void CreateReturnStmt(ParamContainer InParam) {
+        CodeSnippet_Base stmt = new CodeSnippet_Args("ret %s", InParam);
+        GetScopeSnippet().AddStatement(stmt);
     }
 
     public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Base InReturnType, int InParameterCount, boolean bEnterScope) {

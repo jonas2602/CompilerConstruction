@@ -12,6 +12,7 @@ import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Plain;
 import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
+import writer.ParamContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,8 +136,11 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         } else {
             // TODO: Non Primitive Types
             VarDeclNode varDecl = m_Block.GetVariableDeclaration(m_Name);
-            String OutValue = varDecl.HasScopeIndex() ? "%" + varDecl.GetScopeIndex() : ((PrimitiveTypeNode) varDecl.GetType()).GetTypeDefault();
-            funcDef.AddStatement(slave.CreateReturnStmt(funcTypeSnippet, OutValue));
+            ParamContainer outParam = varDecl.CreateSnippet(slave);
+            outParam = slave.LoadFromVariable(outParam);
+            slave.CreateReturnStmt(outParam);
+            // String OutValue = varDecl.HasScopeIndex() ? "%" + varDecl.GetScopeIndex() : ((PrimitiveTypeNode) varDecl.GetType()).GetTypeDefault();
+            // funcDef.AddStatement(slave.CreateReturnStmt(funcTypeSnippet, OutValue));
         }
 
         // Remove Function from stack
