@@ -29,4 +29,12 @@ public class VariableWrapper extends ValueWrapper {
     public String CreateDataString() {
         return String.format(m_Format, m_ScopeIndex);
     }
+
+    public String GetRawFormat() {
+        return m_Format;
+    }
+
+    public int GetScopeIndex() {
+        return m_ScopeIndex;
+    }
 }
