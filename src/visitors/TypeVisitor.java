@@ -111,8 +111,8 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitPointerType(PascalParser.PointerTypeContext ctx) {
-        // TODO:
-        return null;
+        TypeNode innerType = visitTypeIdentifier(ctx.typeIdentifier());
+        return new PointerTypeNode(innerType);
     }
 
     @Override

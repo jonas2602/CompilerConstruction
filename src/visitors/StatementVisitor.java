@@ -1,8 +1,8 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
+import ast.expressions.AccessNode_Variable;
 import ast.expressions.FuncCallNode;
-import ast.expressions.VariableNode;
 import ast.statements.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -172,7 +172,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitForStatement(PascalParser.ForStatementContext ctx) {
-        VariableNode variable = new VariableNode(ctx.identifier().IDENT().getText());
+        AccessNode_Variable variable = new AccessNode_Variable(ctx.identifier().IDENT().getText());
         AbstractSyntaxTree initialValue = new ExpressionVisitor().visit(ctx.initialValue().expression());
         AbstractSyntaxTree finalValue = new ExpressionVisitor().visit(ctx.finalValue().expression());
         boolean bIncrement = ctx.TO() != null;

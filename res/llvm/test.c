@@ -12,37 +12,6 @@ typedef struct
     int age;
 } person;
 
-void arraytest();
-char test(char a, char b);
-float addf(float f);
-int addi(int i);
-void none();
-char *makeString(char left, char right);
-int mymod(int a, int b);
-int branches(int i);
-
-int main()
-{
-    // char test[12];
-    // test[7] = 'a';
-
-    // int i = 132;
-    // int *j = &i;
-
-    // int k = *j;
-
-    // none();
-    // int testInt = 42;
-
-    // person john;
-    // john.age = *j;
-    // printf("%s ist %d Jahre alt. %c %d\n", john.name, john.age, test[7], myval);
-    // char *mystr = "abcde\\\n\\";
-    // arraytest();
-
-    printf("%s", makeString('a', 'b'));
-    printf("%i", true);
-}
 
 void arraytest()
 {
@@ -63,12 +32,11 @@ void arraytest()
 
 void pointertest()
 {
-    int i = 132;
-    int *j = &i;
-    int k = *j;
-    int l = i;
-    int **m = &j;
-    k++;
+    int mylist[5] = {0, 1, 2, 3, 4};
+    int* ptr = &mylist[1];
+    *ptr = 10;
+
+    // printf("%d %d %d %d %d, %d", mylist[0], mylist[1], mylist[2], mylist[3], mylist[4], *ptr);
 }
 
 void structtest()
@@ -78,67 +46,17 @@ void structtest()
     john.name = "john";
 }
 
-int mymod(int a, int b)
-{
-    return a % b;
-}
-
-void none()
-{
-    myval = 5;
-}
-
-char test(char a, char b)
-{
-    printf("abc %f", (float)a);
-    return a + b;
-}
-
-float addf(float f)
-{
-    float r = 1.2 - myval;
-    printf("%f", r);
-    return r;
-}
-
-int addi(int i)
-{
-    int r = i - myval;
-    return r;
-}
-
 char testCast(double i)
 {
     return i;
 }
 
-int check(int i)
+void stringtest()
 {
-    bool myval = i || i + 3;
-    // if (i && i + 1)
-    // {
-    //     return i;
-    // }
-    // else
-    // {
-    //     return 1;
-    // }
-    return 1;
-}
-
-void myprint(int s, float f)
-{
-    printf("%c%f", s, f);
-}
-
-char *makeString(char left, char right)
-{
-    char *str = (char *)malloc(3 * sizeof(char));
-    str[0] = left;
-    str[1] = right;
-    str[2] = '\0';
-
-    return str;
+    char mychar = 'x';
+    char mychararr[5] = {'a', 'b', 'c', 'd', 'e'};
+    char *mystr = "abcde";
+    printf("%s", mystr);
 }
 
 int branches(int i)
@@ -174,11 +92,13 @@ int branches(int i)
 void loops(int length)
 {
     int j = 0;
-    // for(int i = 0; i < length; ++i){
-    //     j--;
-    // }
-
-    while (j < 10){
+    while (j < 10)
+    {
         j++;
     }
+}
+
+int main()
+{
+    pointertest();
 }

@@ -25,7 +25,7 @@ public class ProgramVisitor extends PascalBaseVisitor<ProgramNode> {
         if (ctx.identifierList() != null) {
             for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
                 // TODO: How to handle Program Parameters?
-                // prog.AddParameter(new VariableNode(ident.IDENT().getText()));
+                // prog.AddParameter(new AccessNode_Variable(ident.IDENT().getText()));
             }
         }
 

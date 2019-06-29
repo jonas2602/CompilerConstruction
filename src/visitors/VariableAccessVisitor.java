@@ -1,10 +1,7 @@
 package visitors;
 
 import ast.*;
-import ast.expressions.ArrayAccessNode;
-import ast.expressions.FieldAccessNode;
-import ast.expressions.PointerAccessNode;
-import ast.expressions.VariableNode;
+import ast.expressions.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -13,10 +10,14 @@ public class VariableAccessVisitor extends PascalBaseVisitor<AbstractSyntaxTree>
 
     @Override
     public AbstractSyntaxTree visitVariable(PascalParser.VariableContext ctx) {
-        m_Root = new VariableNode(ctx.identifier().IDENT().getText());
+        m_Root = new AccessNode_Variable(ctx.identifier().IDENT().getText());
 
         for (PascalParser.VariableAccessContext child : ctx.variableAccess()) {
             m_Root = visit(child);
+        }
+
+        if (ctx.AT() != null) {
+            m_Root = new AccessNode_Address(m_Root);
         }
 
         return m_Root;
@@ -35,7 +36,7 @@ public class VariableAccessVisitor extends PascalBaseVisitor<AbstractSyntaxTree>
 
     @Override
     public AbstractSyntaxTree visitIndexedVariable(PascalParser.IndexedVariableContext ctx) {
-        ArrayAccessNode accessNode = new ArrayAccessNode(m_Root);
+        AccessNode_Array accessNode = new AccessNode_Array(m_Root);
         for (PascalParser.ExpressionContext exp : ctx.expression()) {
             accessNode.AddIndexExpression(new ExpressionVisitor().visit(exp));
         }
@@ -45,11 +46,11 @@ public class VariableAccessVisitor extends PascalBaseVisitor<AbstractSyntaxTree>
 
     @Override
     public AbstractSyntaxTree visitFieldDesignator(PascalParser.FieldDesignatorContext ctx) {
-        return new FieldAccessNode(m_Root, ctx.identifier().IDENT().getText());
+        return new AccessNode_Field(m_Root, ctx.identifier().IDENT().getText());
     }
 
     @Override
     public AbstractSyntaxTree visitPointerVariable(PascalParser.PointerVariableContext ctx) {
-        return new PointerAccessNode(m_Root);
+        return new AccessNode_Pointer(m_Root);
     }
 }

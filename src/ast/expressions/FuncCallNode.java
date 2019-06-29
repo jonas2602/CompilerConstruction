@@ -140,9 +140,10 @@ public class FuncCallNode extends AbstractSyntaxTree {
             for (AbstractSyntaxTree param : m_Params) {
                 ParamContainer paramContainer = param.CreateSnippet(slave);
                 // load value if requested from a variable
-                if (param instanceof AccessInterface) {
-                    paramContainer = slave.LoadFromVariable(paramContainer);
-                }
+                paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
+                // if (param instanceof AccessInterface) {
+                //     paramContainer = slave.LoadFromVariable(paramContainer);
+                // }
                 call.AddParameter(paramContainer.CreateParameterString());
             }
 

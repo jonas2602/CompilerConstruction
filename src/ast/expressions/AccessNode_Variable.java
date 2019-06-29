@@ -10,11 +10,11 @@ import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 
-public class VariableNode extends AbstractSyntaxTree implements AccessInterface{
+public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInterface {
     private String m_Name;
     private VarDeclNode m_Declaration;
 
-    public VariableNode(String InName) {
+    public AccessNode_Variable(String InName) {
         this.m_Name = InName;
     }
 
@@ -60,5 +60,10 @@ public class VariableNode extends AbstractSyntaxTree implements AccessInterface{
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         return m_Declaration.CreateSnippet(slave);
+    }
+
+    @Override
+    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
+        return InSlave.LoadFromVariable(InPointer);
     }
 }

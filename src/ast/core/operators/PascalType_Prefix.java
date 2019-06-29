@@ -31,9 +31,10 @@ public abstract class PascalType_Prefix extends FuncDeclNode_Core {
         ParamContainer paramContainer = param.CreateSnippet(slave);
 
         // load value if requested from a variable
-        if (param instanceof AccessInterface) {
-            paramContainer = slave.LoadFromVariable(paramContainer);
-        }
+        paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
+        // if (param instanceof AccessInterface) {
+        //     paramContainer = slave.LoadFromVariable(paramContainer);
+        // }
 
         return operation.createFunctionCall(slave, paramContainer);
     }

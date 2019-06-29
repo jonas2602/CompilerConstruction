@@ -67,9 +67,10 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             ParamContainer elementContainer = element.CreateSnippet(slave);
 
             // load value if requested from a variable
-            if (element instanceof AccessInterface) {
-                elementContainer = slave.LoadFromVariable(elementContainer);
-            }
+            elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
+            // if (element instanceof AccessInterface) {
+            //     elementContainer = slave.LoadFromVariable(elementContainer);
+            // }
 
             // Create Parameter for printf call
             PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();

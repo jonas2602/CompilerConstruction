@@ -11,11 +11,11 @@ import writer.ParamContainer;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ArrayAccessNode extends AbstractSyntaxTree implements AccessInterface {
+public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
     private List<AbstractSyntaxTree> m_IndexExpressions = new ArrayList<>();
 
-    public ArrayAccessNode(AbstractSyntaxTree InChild) {
+    public AccessNode_Array(AbstractSyntaxTree InChild) {
         this.m_Child = InChild;
         m_Child.SetParent(this);
     }
@@ -55,5 +55,10 @@ public class ArrayAccessNode extends AbstractSyntaxTree implements AccessInterfa
         ParamContainer varAccess = m_Child.CreateSnippet(slave);
         ParamContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
         return slave.CreateArrayElementPtr(varAccess, indexContainer);
+    }
+
+    @Override
+    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
+        return InSlave.LoadFromVariable(InPointer);
     }
 }

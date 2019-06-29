@@ -39,7 +39,7 @@ public class AssignmentNode extends AbstractSyntaxTree {
     //     CodeSnippet_Base exp = m_Expression.CreateSnippet(slave, ctx);
 
     //     // TODO: Arrays, Records, ...?
-    //     VarDeclNode varDecl = ((VariableNode) m_Variable).GetDeclaration();
+    //     VarDeclNode varDecl = ((AccessNode_Variable) m_Variable).GetDeclaration();
 
     //     // Is expression a constant?
     //     if (m_Expression instanceof ConstantNode) {
@@ -61,9 +61,10 @@ public class AssignmentNode extends AbstractSyntaxTree {
 
         // if the expression on the right of the assignment is not a constant (variable access stuff)
         // 'exp' will contain a pointer to the requested value that must be loaded before writing
-        if (m_Expression instanceof AccessInterface) {
-            exp = slave.LoadFromVariable(exp);
-        }
+        exp = AccessInterface.TryLoadValue(slave, m_Expression, exp);
+        // if (m_Expression instanceof AccessInterface) {
+        //     exp = slave.LoadFromVariable(exp);
+        // }
 
         slave.StoreInVariable(varAccess, exp);
         return null;

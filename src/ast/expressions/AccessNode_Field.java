@@ -2,12 +2,14 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
+import writer.GeneratorSlave;
+import writer.ParamContainer;
 
-public class FieldAccessNode extends AbstractSyntaxTree implements AccessInterface {
+public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
     private String m_FieldName;
 
-    public FieldAccessNode(AbstractSyntaxTree InChild, String InFieldName) {
+    public AccessNode_Field(AbstractSyntaxTree InChild, String InFieldName) {
         this.m_Child = InChild;
         this.m_FieldName = InFieldName;
 
@@ -23,5 +25,10 @@ public class FieldAccessNode extends AbstractSyntaxTree implements AccessInterfa
         // has property with fieldname?
         // return property type
         return null;
+    }
+
+    @Override
+    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
+        return InPointer;
     }
 }
