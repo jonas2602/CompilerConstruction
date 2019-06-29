@@ -174,7 +174,11 @@ int branches(int i)
 void loops(int length)
 {
     int j = 0;
-    for(int i = 0; i < length; i++){
-        j--;
+    // for(int i = 0; i < length; ++i){
+    //     j--;
+    // }
+
+    while (j < 10){
+        j++;
     }
 }

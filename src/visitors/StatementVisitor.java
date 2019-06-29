@@ -157,7 +157,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitWhileStatement(PascalParser.WhileStatementContext ctx) {
         AbstractSyntaxTree condition = new ExpressionVisitor().visit(ctx.expression());
-        AbstractSyntaxTree body = visitExpression(ctx.expression());
+        AbstractSyntaxTree body = visit(ctx.statement());
 
         return new WhileNode(condition, body);
     }
@@ -165,7 +165,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitRepeatStatement(PascalParser.RepeatStatementContext ctx) {
         AbstractSyntaxTree condition = new ExpressionVisitor().visit(ctx.expression());
-        AbstractSyntaxTree body = visitExpression(ctx.expression());
+        AbstractSyntaxTree body = visit(ctx.statements());
 
         return new RepeatNode(condition, body);
     }

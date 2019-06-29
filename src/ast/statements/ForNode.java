@@ -11,7 +11,7 @@ import writer.ParamContainer;
 import writer.ValueWrapper;
 
 public class ForNode extends AbstractSyntaxTree {
-    // AbstractSyntaxTree m_Variable;
+    AbstractSyntaxTree m_Variable;
     // AbstractSyntaxTree m_InitialValue;
     // AbstractSyntaxTree m_FinalValue;
     // boolean m_Increment;
@@ -22,6 +22,7 @@ public class ForNode extends AbstractSyntaxTree {
     AbstractSyntaxTree m_Body;
 
     public ForNode(AbstractSyntaxTree InVariable, AbstractSyntaxTree InInitialValue, AbstractSyntaxTree InFinalValue, boolean bIncrement, AbstractSyntaxTree InBody) {
+        this.m_Variable = InVariable;
         this.m_Body = InBody;
 
         m_InitAssign = new AssignmentNode(InVariable, InInitialValue);
@@ -47,7 +48,8 @@ public class ForNode extends AbstractSyntaxTree {
         m_InitAssign.CheckType();
         m_CompCall.CheckType();
 
-        // Supported Types are automatically validated by checking if the variable type has the used step operator overloaded
+        // Supported Types are automatically validated by checking
+        // if the variable type has the used step operator overloaded
         m_StepCall.CheckType();
 
         m_Body.CheckType();
@@ -59,12 +61,12 @@ public class ForNode extends AbstractSyntaxTree {
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // initialize variable with start value
         m_InitAssign.CreateSnippet(slave);
-        ParamContainer initBranch = ParamContainer.LABELCONTAINER();
-        slave.CreateJump(initBranch);
+        ParamContainer compBranch = ParamContainer.LABELCONTAINER();
+        slave.CreateJump(compBranch);
 
         // Create Comparator Block
         ValueWrapper compLabel = slave.CreateLabel();
-        initBranch.SetValueAccessor(compLabel);
+        compBranch.SetValueAccessor(compLabel);
         ParamContainer compCond = m_CompCall.CreateSnippet(slave);
         ParamContainer bodyBranch = ParamContainer.LABELCONTAINER();
         ParamContainer exitBranch = ParamContainer.LABELCONTAINER();
@@ -80,8 +82,10 @@ public class ForNode extends AbstractSyntaxTree {
         // Create Increment/Decrement Block
         ValueWrapper stepLabel = slave.CreateLabel();
         stepBranch.SetValueAccessor(stepLabel);
-        m_StepCall.CreateSnippet(slave);
-        slave.CreateJump(initBranch);
+        ParamContainer variable = m_Variable.CreateSnippet(slave);
+        ParamContainer newValue = m_StepCall.CreateSnippet(slave);
+        slave.StoreInVariable(variable, newValue);
+        slave.CreateJump(compBranch);
 
         // Create Exit Block
         ValueWrapper exitLabel = slave.CreateLabel();

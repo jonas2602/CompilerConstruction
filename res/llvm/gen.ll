@@ -1,4 +1,6 @@
+@.str.0 = constant [12 x i8] c"%d%c%f%c%d\0A\00"
 
+declare i32 @printf(i8*, ...)
 
 define i32 @main() {
 	begin:
@@ -26,6 +28,12 @@ define i32 @main() {
 	%14 = sitofp i32 %12 to float
 	%15 = fcmp oge float %14, %13
 	store i1 %15, i1* %0
+	%16 = load i32, i32* %1
+	%17 = load float, float* %2
+	%18 = fpext float %17 to double
+	%19 = load i1, i1* %0
+	%20 = getelementptr inbounds [12 x i8], [12 x i8]* @.str.0, i64 0, i64 0
+	%21 = call i32 (i8*, ...) @printf(i8* %20, i32 %16, i8 32, double %18, i8 32, i1 %19)
 	ret i32 0
 }
 

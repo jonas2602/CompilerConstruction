@@ -282,31 +282,22 @@ define dso_local i32 @branches(i32) #0 {
 define dso_local void @loops(i32) #0 {
   %2 = alloca i32, align 4
   %3 = alloca i32, align 4
-  %4 = alloca i32, align 4
   store i32 %0, i32* %2, align 4
   store i32 0, i32* %3, align 4
-  store i32 0, i32* %4, align 4
-  br label %5
+  br label %4
 
-; <label>:5:                                      ; preds = %12, %1
-  %6 = load i32, i32* %4, align 4
-  %7 = load i32, i32* %2, align 4
-  %8 = icmp slt i32 %6, %7
-  br i1 %8, label %9, label %15
+; <label>:4:                                      ; preds = %7, %1
+  %5 = load i32, i32* %3, align 4
+  %6 = icmp slt i32 %5, 10
+  br i1 %6, label %7, label %10
 
-; <label>:9:                                      ; preds = %5
-  %10 = load i32, i32* %3, align 4
-  %11 = add nsw i32 %10, -1
-  store i32 %11, i32* %3, align 4
-  br label %12
+; <label>:7:                                      ; preds = %4
+  %8 = load i32, i32* %3, align 4
+  %9 = add nsw i32 %8, 1
+  store i32 %9, i32* %3, align 4
+  br label %4
 
-; <label>:12:                                     ; preds = %9
-  %13 = load i32, i32* %4, align 4
-  %14 = add nsw i32 %13, 1
-  store i32 %14, i32* %4, align 4
-  br label %5
-
-; <label>:15:                                     ; preds = %5
+; <label>:10:                                     ; preds = %4
   ret void
 }
 
