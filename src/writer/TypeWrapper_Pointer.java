@@ -16,4 +16,24 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     public TypeWrapper GetChild() {
         return m_PointedType;
     }
+
+    @Override
+    public int GetTypeSize() {
+        return m_PointedType.GetTypeSize();
+    }
+
+    @Override
+    public boolean CompareType(TypeWrapper InOtherType) {
+        // Is Pointer?
+        if (!(InOtherType instanceof TypeWrapper_Pointer)) {
+            return false;
+        }
+
+        // Same pointed type?
+        if (!((TypeWrapper_Pointer) InOtherType).m_PointedType.CompareType(m_PointedType)) {
+            return false;
+        }
+
+        return true;
+    }
 }

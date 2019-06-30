@@ -6,6 +6,9 @@ public class TypeManager {
     public static TypeWrapper STRING(int InSize) {
         return new TypeWrapper_Array(TypeWrapper_Primitive.CHAR, InSize);
     }
+    public static TypeWrapper CHARPTR() {
+        return new TypeWrapper_Pointer(TypeWrapper_Primitive.CHAR);
+    }
 
 
     public static String GetTypeName(EPrimitiveType InType) {

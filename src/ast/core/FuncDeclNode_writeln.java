@@ -1,9 +1,11 @@
 package ast.core;
 
 import ast.AbstractSyntaxTree;
+import ast.TypeCheckException;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.NamedTypeNode;
+import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import llvm.*;
@@ -28,11 +30,12 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         for (AbstractSyntaxTree param : InCallNode.GetParameterList()) {
             TypeNode CallParamType = param.GetType();
             // if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
-            if (!(CallParamType instanceof PrimitiveTypeNode)) {
-                // throw new TypeCheckException(this, "writeln only supports primitive types");
-                System.out.println("writeln only supports primitive types");
-                return false;
+            if (!(CallParamType instanceof PrimitiveTypeNode || new PointerTypeNode(PrimitiveTypeNode.CharNode).CompareType(CallParamType))) {
+                throw new TypeCheckException(this, "writeln only supports primitive types or charptr(strings)");
             }
+
+            // TODO: check for tostring method
+            //  signature: ([type]) -> char*
         }
 
         return true;

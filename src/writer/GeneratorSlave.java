@@ -114,9 +114,31 @@ public class GeneratorSlave {
         return decl;
     }
 
-    public VariableWrapper CastFloatToInt(String Source) {
-        String exp = String.format("fptosi float %s to i32", Source);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+    public void CopyMemory(ParamContainer InSource, ParamContainer InTarget) {
+        // convert to char* if given as other types
+        if (!TypeManager.CHARPTR().CompareType(InSource.GetRootType())) {
+            InSource = BitCast(InSource, TypeManager.CHARPTR());
+        }
+        if (!TypeManager.CHARPTR().CompareType(InTarget.GetRootType())) {
+            InTarget = BitCast(InTarget, TypeManager.CHARPTR());
+        }
+
+        int blockSize = InSource.GetRootType().GetTypeSize();
+        CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", InSource, InTarget, blockSize);
+        GetScopeSnippet().AddStatement(stmt);
+    }
+
+    public ParamContainer BitCast(ParamContainer InSource, TypeWrapper InTargetType) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("bitcast %s to %s", InSource, InTargetType);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(InTargetType, scopeVar);
+    }
+
+
+    public ParamContainer CastFloatToInt(ParamContainer InSource) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("fptosi %s to i32", InSource);
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        return new ParamContainer(TypeWrapper_Primitive.INT, scopeVar);
     }
 
     public ParamContainer CastIntToFloat(ParamContainer InSource) {

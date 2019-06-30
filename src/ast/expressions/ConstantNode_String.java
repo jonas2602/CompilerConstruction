@@ -1,6 +1,9 @@
 package ast.expressions;
 
+import ast.types.ArrayTypeNode;
 import ast.types.NamedTypeNode;
+import ast.types.PointerTypeNode;
+import ast.types.PrimitiveTypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_Constant;
 import writer.ConstantWrapper;
@@ -9,7 +12,8 @@ import writer.ParamContainer;
 
 public class ConstantNode_String extends ConstantNode {
     public ConstantNode_String(String InData) {
-        super(InData, NamedTypeNode.StringNode);
+
+        super(InData, new ArrayTypeNode(InData.length(), PrimitiveTypeNode.CharNode));
     }
 
     // @Override

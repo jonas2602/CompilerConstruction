@@ -54,8 +54,11 @@ void stringtest()
 {
     char mychar = 'x';
     char mychararr[5] = {'a', 'b', 'c', 'd', 'e'};
-    char *mystr = "abcde";
-    printf("%s", mystr);
+    char* mystr = "abcde";
+    int myintarr[4] = {1, 2, 3, 4};
+
+    // char *mystr = "abcde";
+    printf("%s%s", mystr, mychararr);
 }
 
 int branches(int i)
@@ -99,12 +102,10 @@ void loops(int length)
 
 int main()
 {
-    int i = 0;
-    goto Endlos;
+//     int i = 0;
+// Endlos:
+//     i++;
+//     goto Endlos;
 
-    i++;
-
-Endlos:
-    i++;
-    pointertest();
+    stringtest();
 }

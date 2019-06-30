@@ -25,4 +25,24 @@ public class TypeWrapper_Primitive extends TypeWrapper {
         System.err.println("Reached bottom of TypeWrapper");
         return null;
     }
+
+    @Override
+    public int GetTypeSize() {
+        return m_BaseType.GetSize();
+    }
+
+    @Override
+    public boolean CompareType(TypeWrapper InOtherType) {
+        // Is Primitive?
+        if (!(InOtherType instanceof TypeWrapper_Primitive)) {
+            return false;
+        }
+
+        // same primitive?
+        if (((TypeWrapper_Primitive) InOtherType).m_BaseType.getClass() != m_BaseType.getClass()) {
+            return false;
+        }
+
+        return true;
+    }
 }

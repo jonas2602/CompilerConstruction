@@ -1803,9 +1803,7 @@ public class PascalParser extends Parser {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
-		public UnsignedNumberContext unsignedNumber() {
-			return getRuleContext(UnsignedNumberContext.class,0);
-		}
+		public TerminalNode NUM_INT() { return getToken(PascalParser.NUM_INT, 0); }
 		public StringtypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1837,10 +1835,9 @@ public class PascalParser extends Parser {
 				}
 				break;
 			case NUM_INT:
-			case NUM_REAL:
 				{
 				setState(354);
-				unsignedNumber();
+				match(NUM_INT);
 				}
 				break;
 			default:
@@ -5804,8 +5801,8 @@ public class PascalParser extends Parser {
 		"\5<\37\2\u015c\u0160\5@!\2\u015d\u0160\5N(\2\u015e\u0160\5P)\2\u015f\u015b"+
 		"\3\2\2\2\u015f\u015c\3\2\2\2\u015f\u015d\3\2\2\2\u015f\u015e\3\2\2\2\u0160"+
 		"9\3\2\2\2\u0161\u0162\7H\2\2\u0162\u0165\7;\2\2\u0163\u0166\5\6\4\2\u0164"+
-		"\u0166\5\30\r\2\u0165\u0163\3\2\2\2\u0165\u0164\3\2\2\2\u0166\u0167\3"+
-		"\2\2\2\u0167\u0168\7=\2\2\u0168;\3\2\2\2\u0169\u016a\7\4\2\2\u016a\u016b"+
+		"\u0166\7Q\2\2\u0165\u0163\3\2\2\2\u0165\u0164\3\2\2\2\u0166\u0167\3\2"+
+		"\2\2\u0167\u0168\7=\2\2\u0168;\3\2\2\2\u0169\u016a\7\4\2\2\u016a\u016b"+
 		"\7;\2\2\u016b\u016c\5> \2\u016c\u016d\7=\2\2\u016d\u016e\7\33\2\2\u016e"+
 		"\u016f\5,\27\2\u016f\u0178\3\2\2\2\u0170\u0171\7\4\2\2\u0171\u0172\7<"+
 		"\2\2\u0172\u0173\5> \2\u0173\u0174\7>\2\2\u0174\u0175\7\33\2\2\u0175\u0176"+

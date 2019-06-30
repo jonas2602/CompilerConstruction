@@ -13,7 +13,8 @@ target triple = "x86_64-pc-linux-gnu"
 @.str.1 = private unnamed_addr constant [5 x i8] c"john\00", align 1
 @stringtest.mychararr = private unnamed_addr constant [5 x i8] c"abcde", align 1
 @.str.2 = private unnamed_addr constant [6 x i8] c"abcde\00", align 1
-@.str.3 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@stringtest.myintarr = private unnamed_addr constant [4 x i32] [i32 1, i32 2, i32 3, i32 4], align 16
+@.str.3 = private unnamed_addr constant [5 x i8] c"%s%s\00", align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @arraytest() #0 {
@@ -89,12 +90,16 @@ define dso_local void @stringtest() #0 {
   %1 = alloca i8, align 1
   %2 = alloca [5 x i8], align 1
   %3 = alloca i8*, align 8
+  %4 = alloca [4 x i32], align 16
   store i8 120, i8* %1, align 1
-  %4 = bitcast [5 x i8]* %2 to i8*
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 1 %4, i8* align 1 getelementptr inbounds ([5 x i8], [5 x i8]* @stringtest.mychararr, i32 0, i32 0), i64 5, i1 false)
+  %5 = bitcast [5 x i8]* %2 to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 1 %5, i8* align 1 getelementptr inbounds ([5 x i8], [5 x i8]* @stringtest.mychararr, i32 0, i32 0), i64 5, i1 false)
   store i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.2, i32 0, i32 0), i8** %3, align 8
-  %5 = load i8*, i8** %3, align 8
-  %6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.3, i32 0, i32 0), i8* %5)
+  %6 = bitcast [4 x i32]* %4 to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 16 %6, i8* align 16 bitcast ([4 x i32]* @stringtest.myintarr to i8*), i64 16, i1 false)
+  %7 = load i8*, i8** %3, align 8
+  %8 = getelementptr inbounds [5 x i8], [5 x i8]* %2, i32 0, i32 0
+  %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.3, i32 0, i32 0), i8* %7, i8* %8)
   ret void
 }
 
@@ -171,15 +176,7 @@ define dso_local void @loops(i32) #0 {
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i32 @main() #0 {
-  %1 = alloca i32, align 4
-  store i32 0, i32* %1, align 4
-  br label %2
-
-; <label>:2:                                      ; preds = %0
-  %3 = load i32, i32* %1, align 4
-  %4 = add nsw i32 %3, 1
-  store i32 %4, i32* %1, align 4
-  call void @pointertest()
+  call void @stringtest()
   ret i32 0
 }
 

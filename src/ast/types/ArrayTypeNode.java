@@ -2,6 +2,7 @@ package ast.types;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.expressions.ConstantNode;
 import writer.TypeManager;
 import writer.TypeWrapper;
 import writer.TypeWrapper_Array;
@@ -12,6 +13,16 @@ public class ArrayTypeNode extends TypeNode {
 
     public ArrayTypeNode(AbstractSyntaxTree InElementCounter, TypeNode InElementType) {
         m_ElementCounter = InElementCounter;
+        m_ElementType = InElementType;
+
+        m_ElementCounter.SetParent(this);
+        m_ElementType.SetParent(this);
+    }
+
+    public ArrayTypeNode(int InSize, TypeNode InElementType) {
+        ConstantNode min = new ConstantNode("0", PrimitiveTypeNode.IntNode);
+        ConstantNode max = new ConstantNode(Integer.toString(InSize - 1), PrimitiveTypeNode.IntNode);
+        m_ElementCounter = new RangeTypeNode(min, max);
         m_ElementType = InElementType;
 
         m_ElementCounter.SetParent(this);
@@ -38,6 +49,26 @@ public class ArrayTypeNode extends TypeNode {
     @Override
     public TypeNode GetTypeDetails() {
         return m_ElementType;
+    }
+
+    @Override
+    public boolean CompareType(TypeNode OtherTypeNode) {
+        if (OtherTypeNode == null) {
+            return false;
+        }
+
+        if (!(OtherTypeNode instanceof ArrayTypeNode)) {
+            return false;
+        }
+
+        TypeNode OtherElementType = ((ArrayTypeNode) OtherTypeNode).m_ElementType;
+        if (!OtherElementType.CompareType(m_ElementType)) {
+            return false;
+        }
+
+        // TODO: Compare Size?
+
+        return true;
     }
 
     @Override

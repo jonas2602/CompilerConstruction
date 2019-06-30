@@ -1,6 +1,7 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
+import ast.expressions.ConstantNode;
 import ast.types.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -55,8 +56,12 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitStringtype(PascalParser.StringtypeContext ctx) {
-        // TODO:
-        return null;
+        if (ctx.identifier() != null) {
+            System.err.println("Stringtype only supports numbers right now");
+        }
+
+        int size = Integer.parseInt(ctx.NUM_INT().getText());
+        return new ArrayTypeNode(size, PrimitiveTypeNode.CharNode);
     }
 
     @Override

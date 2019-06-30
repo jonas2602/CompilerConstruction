@@ -163,7 +163,7 @@ unpackedStructuredType
    ;
 
 stringtype
-   : STRING LBRACK (identifier | unsignedNumber) RBRACK
+   : STRING LBRACK (identifier | NUM_INT) RBRACK
    ;
 
 arrayType
