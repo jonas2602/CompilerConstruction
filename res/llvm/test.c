@@ -52,13 +52,14 @@ char testCast(double i)
 
 void stringtest()
 {
-    char mychar = 'x';
-    char mychararr[5] = {'a', 'b', 'c', 'd', 'e'};
-    char* mystr = "abcde";
-    int myintarr[4] = {1, 2, 3, 4};
+    // char mychar = 'x';
+    // char mychararr[5] = {'a', 'b', 'c', 'd', 'e'};
+    // char* mystr = "abcde";
+    char mystrArray[5] = "test"; 
+    // int myintarr[4] = {1, 2, 3, 4};
 
     // char *mystr = "abcde";
-    printf("%s%s", mystr, mychararr);
+    printf("%s", mystrArray);
 }
 
 int branches(int i)

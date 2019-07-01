@@ -107,7 +107,7 @@ public class GeneratorSlave {
         }
     }
 
-    public CodeSnippet_FuncDecl CreateFunctionDeclaration(String InName, CodeSnippet_Type InReturnType) {
+    public CodeSnippet_FuncDecl CreateFunctionDeclaration(String InName, CodeSnippet_Base InReturnType) {
         CodeSnippet_FuncDecl decl = new CodeSnippet_FuncDecl(InName, InReturnType);
         m_FunctionDeclarations.add(decl);
 
@@ -115,6 +115,8 @@ public class GeneratorSlave {
     }
 
     public void CopyMemory(ParamContainer InSource, ParamContainer InTarget) {
+        int blockSize = Math.min(InSource.GetRootType().GetTypeByteSize(), InTarget.GetRootType().GetTypeByteSize());
+
         // convert to char* if given as other types
         if (!TypeManager.CHARPTR().CompareType(InSource.GetRootType())) {
             InSource = BitCast(InSource, TypeManager.CHARPTR());
@@ -123,8 +125,7 @@ public class GeneratorSlave {
             InTarget = BitCast(InTarget, TypeManager.CHARPTR());
         }
 
-        int blockSize = InSource.GetRootType().GetTypeSize();
-        CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", InSource, InTarget, blockSize);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", InTarget, InSource, blockSize);
         GetScopeSnippet().AddStatement(stmt);
     }
 

@@ -13,6 +13,7 @@ public abstract class StdLib {
         BlockNode stdBlock = new BlockNode();
         //functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_memcpy());
 
         //operators
         new BoolOperators().buildStd(stdBlock);

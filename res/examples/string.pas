@@ -1,10 +1,10 @@
 program strings;
 var
-    str: string[10];
-    chars: array[2..10] of char;
+    str: string[5];
+    {chars: array[2..10] of char;}
 begin
-    chars := 'hallo';
-  writeln (chars[0]);
+    str := 'test';
+    writeln (str[0]);
 end.
 
 {program Hello;

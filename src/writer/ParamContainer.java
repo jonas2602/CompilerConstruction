@@ -57,6 +57,18 @@ public class ParamContainer {
         return String.format("%s %s", m_RootType.CreateTypeName(), m_ValueAccessor);
     }
 
+    public boolean IsPrimitive() {
+        return m_RootType instanceof TypeWrapper_Primitive;
+    }
+
+    public boolean IsArray() {
+        return m_RootType instanceof TypeWrapper_Array;
+    }
+
+    public boolean IsPointer() {
+        return m_RootType instanceof TypeWrapper_Pointer;
+    }
+
     @Override
     public String toString() {
         return CreateParameterString();

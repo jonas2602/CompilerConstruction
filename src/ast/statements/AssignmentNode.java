@@ -2,10 +2,13 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.core.FuncDeclNode_Core;
+import ast.declarations.FuncDeclNode;
 import ast.expressions.AccessInterface;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
+import writer.TypeWrapper_Array;
 
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;
@@ -59,14 +62,22 @@ public class AssignmentNode extends AbstractSyntaxTree {
         ParamContainer exp = m_Expression.CreateSnippet(slave);
         ParamContainer varAccess = m_Variable.CreateSnippet(slave);
 
-        // if the expression on the right of the assignment is not a constant (variable access stuff)
-        // 'exp' will contain a pointer to the requested value that must be loaded before writing
-        exp = AccessInterface.TryLoadValue(slave, m_Expression, exp);
-        // if (m_Expression instanceof AccessInterface) {
-        //     exp = slave.LoadFromVariable(exp);
-        // }
+        if (varAccess.IsPointer() && varAccess.GetRootType().GetChild() instanceof TypeWrapper_Array) {
+//            exp = slave.CreateArrayElementPtr(exp, new ConstantWrapper("0"));
+            FuncDeclNode memcpy = GetOwningBlock().GetFunctionDeclaration("llvm.memcpy.p0i8.p0i8.i64").get(0);
+            memcpy.CreateSnippet(slave);
+            slave.CopyMemory(exp, varAccess);
+        } else {
+            // if the expression on the right of the assignment is not a constant (variable access stuff)
+            // 'exp' will contain a pointer to the requested value that must be loaded before writing
+            exp = AccessInterface.TryLoadValue(slave, m_Expression, exp);
+            // if (m_Expression instanceof AccessInterface) {
+            //     exp = slave.LoadFromVariable(exp);
+            // }
 
-        slave.StoreInVariable(varAccess, exp);
+            slave.StoreInVariable(varAccess, exp);
+        }
+
         return null;
     }
 }
