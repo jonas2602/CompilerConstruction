@@ -1,6 +1,7 @@
 package ast.declarations;
 
 import ast.types.TypeNode;
+import ast.types.VarTypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
@@ -29,6 +30,11 @@ public class ParamDeclNode extends VarDeclNode {
 
             // Write parameter value into local variable
             slave.StoreInVariable(m_ScopeContainer, paramContainer);
+        }
+
+        //dereference if passed by reference
+        if(GetRawType() instanceof VarTypeNode) {
+             return slave.LoadFromVariable(m_ScopeContainer);
         }
 
         return m_ScopeContainer;

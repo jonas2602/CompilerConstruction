@@ -3,6 +3,7 @@ package visitors;
 import ast.AbstractSyntaxTree;
 import ast.declarations.ParamDeclNode;
 import ast.types.TypeNode;
+import ast.types.VarTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -23,8 +24,17 @@ public class ParameterVisitor extends PascalBaseVisitor<List<AbstractSyntaxTree>
 
     @Override
     public List<AbstractSyntaxTree> visitFormalParameterSection(PascalParser.FormalParameterSectionContext ctx) {
-        return visitParameterGroup(ctx.parameterGroup());
-        // TODO: VAR, FUNCTION, PROCEDURE Keywords
+        List<AbstractSyntaxTree> params = visitParameterGroup(ctx.parameterGroup());
+        if(ctx.VAR() != null) {
+            TypeNode type = new VarTypeNode(params.get(0).GetType());
+            for(AbstractSyntaxTree param: params) {
+                ParamDeclNode p = (ParamDeclNode) param;
+                p.SetType(type);
+            }
+        }
+
+        //TODO: function / procedure pointer
+        return params;
     }
 
     @Override

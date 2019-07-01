@@ -5,7 +5,9 @@ import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
+import ast.declarations.ParamDeclNode;
 import ast.types.TypeNode;
+import ast.types.VarTypeNode;
 import llvm.*;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
@@ -137,10 +139,18 @@ public class FuncCallNode extends AbstractSyntaxTree {
             TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
             CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, new CodeSnippet_Plain(returnType.CreateTypeName()));
 
-            for (AbstractSyntaxTree param : m_Params) {
+            for(int i = 0; i < m_Params.size(); i++) {
+                AbstractSyntaxTree param = m_Params.get(i);
+                ParamDeclNode decl = m_FuncDecl.GetParameter(i);
+
                 ParamContainer paramContainer = param.CreateSnippet(slave);
                 // load value if requested from a variable
-                paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
+
+                // use reference for var types
+                if(!(decl.GetRawType() instanceof VarTypeNode)) {
+                    paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
+                }
+
                 // if (param instanceof AccessInterface) {
                 //     paramContainer = slave.LoadFromVariable(paramContainer);
                 // }

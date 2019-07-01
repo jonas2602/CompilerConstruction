@@ -9,7 +9,7 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode CharPointerNode = new PointerTypeNode(PrimitiveTypeNode.CharNode);
     public static final PointerTypeNode BoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.BoolNode);
 
-    private TypeNode m_BaseType;
+    protected TypeNode m_BaseType;
 
     public PointerTypeNode(TypeNode InBaseType) {
         m_BaseType = InBaseType;

@@ -47,6 +47,12 @@ public class VarDeclNode extends AbstractSyntaxTree {
         return m_Type.GetType();
     }
 
+    public void SetType(TypeNode type) {
+        m_Type = type;
+    }
+
+    public TypeNode GetRawType() { return m_Type;}
+
 //    @Override
 //    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
 //        TypeWrapper wrappedType = m_Type.GetWrappedType();
