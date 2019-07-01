@@ -3,10 +3,12 @@ package ast.declarations;
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.TypeCheckException;
+import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
+import ast.types.VarTypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Plain;
@@ -44,6 +46,14 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return m_Name;
     }
 
+    public List<ParamDeclNode> GetParameters() {
+        return m_Params;
+    }
+
+    public ParamDeclNode GetParameter(int index) {
+        return m_Params.get(index);
+    }
+
     public boolean IsInline() {
         return m_bInline;
     }
@@ -79,6 +89,11 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         for (int i = 0; i < m_Params.size(); i++) {
             TypeNode CallParamType = InCallNode.GetParameter(i).GetType();
             TypeNode FuncParamType = m_Params.get(i).GetType();
+
+            if (InCallNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).GetRawType() instanceof VarTypeNode) {
+                return false;
+            }
+
             if (!FuncParamType.CompareType(CallParamType)) {
                 return false;
             }

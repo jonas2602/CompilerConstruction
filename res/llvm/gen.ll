@@ -1,15 +1,31 @@
+@.str.0 = constant [4 x i8] c"%d\0A\00"
 
+declare i32 @printf(i8*, ...)
 
 define i32 @main() {
 	begin:
-	%0 = alloca [10 x i8]
-	%1 = alloca i32
-	store i32 0, i32* %1
-	%2 = alloca i8*
-	%3 = bitcast [10 x i8]* %0 to i8*
-	store i8* %3, i8** %2
-	%4 = add i32 5, 2
-	store i32 %4, i32* %1
+	%0 = alloca i32
+	store i32 0, i32* %0
+	%1 = mul i32 4, -1
+	store i32 %1, i32* %0
+	call void @test(i32* %0)
+	%2 = load i32, i32* %0
+	%3 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.0, i64 0, i64 0
+	%4 = call i32 (i8*, ...) @printf(i8* %3, i32 %2)
 	ret i32 0
+}
+
+define void @test(i32*) {
+	begin:
+	%1 = alloca i32*
+	store i32* %0, i32** %1
+	%2 = load i32*, i32** %1
+	%3 = load i32*, i32** %1
+	%4 = load i32*, i32** %1
+	%5 = load i32, i32* %4
+	%6 = add i32 %5, 1
+	%7 = load i32*, i32** %1
+	store i32 %6, i32* %7
+	ret void
 }
 
