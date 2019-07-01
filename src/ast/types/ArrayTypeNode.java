@@ -34,6 +34,10 @@ public class ArrayTypeNode extends TypeNode {
         m_ElementType.SetParent(this);
     }
 
+    public int GetSize() {
+        return ((RangeTypeNode) m_ElementCounter).GetRangeSize();
+    }
+
     @Override
     public TypeNode CheckType() {
         m_ElementType.CheckType();
@@ -82,7 +86,6 @@ public class ArrayTypeNode extends TypeNode {
             System.out.println("Array only supports ranged definitions right now");
         }
 
-        int arrSize = ((RangeTypeNode) m_ElementCounter).GetRangeSize();
-        return new TypeWrapper_Array(m_ElementType.GetWrappedType(), arrSize);
+        return new TypeWrapper_Array(m_ElementType.GetWrappedType(), GetSize());
     }
 }

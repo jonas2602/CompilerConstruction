@@ -16,7 +16,7 @@ public enum Operator {
 
     IN("operator#"),
 
-    EQ("operator="),
+    EQ("operator=="),
     NE("operator<>"),
     LT("operator<"),
     LE("operator<="),
@@ -26,7 +26,7 @@ public enum Operator {
     INC("operator++"),
     DEC("operator--"),
 
-    AGN("operator:");
+    AGN("operator:=");
 
     private String m_OperatorFunctionName;
     Operator(String operatorFunctionName) {

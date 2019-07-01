@@ -7,6 +7,7 @@ import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
+import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
@@ -17,6 +18,7 @@ import java.util.List;
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;
     private AbstractSyntaxTree m_Expression;
+    private FuncCallNode m_FuncCallNode;
 
     private FuncCallNode m_Function;
 
@@ -32,23 +34,32 @@ public class AssignmentNode extends AbstractSyntaxTree {
     @Override
     public TypeNode CheckType() {
         // Only Equal types are allowed, implicit conversion is not possible
-        // even primitive conversion int->real, real->int is not possible
+        // even primitive conversion int->real, real->int is not possible (yet)
         TypeNode varType = m_Variable.CheckType();
         TypeNode expType = m_Expression.CheckType();
-        if (!varType.CompareType(expType)) {
-            FuncCallNode funcCall = new FuncCallNode(Operator.AGN.GetOperatorFunctionName());
+        if (varType.CompareType(expType)) {
+            // Types are arrays?
+            if (varType instanceof ArrayTypeNode) {
+                int varSize = ((ArrayTypeNode) varType).GetSize();
+                int expSize = ((ArrayTypeNode) expType).GetSize();
+                if (varSize < expSize) {
+                    throw new TypeCheckException(this, "Arrays can only get copied if the target array is larger or has equal size to the source array");
+                }
+            }
 
-            funcCall.SetParent(GetParent());
-
-            funcCall.AddParameter(m_Variable);
-            funcCall.AddParameter(m_Expression);
-            funcCall.CheckType();
-
-            m_Function = funcCall;
+            return null;
         }
+
+        // "operator:=" is defined for the given parameters?
+        m_FuncCallNode = new FuncCallNode(Operator.AGN);
+        m_FuncCallNode.AddParameter(m_Variable);
+        m_FuncCallNode.AddParameter(m_Expression);
+        m_FuncCallNode.SetParent(this);
+        m_FuncCallNode.CheckType();
 
         // Assignment is defined to not return a type.
         // In contrast to java,... a = b = 2; is not possible
+        // throw new TypeCheckException(this, "Assignment of " + expType + " to " + varType + " is not allowed");
         return null;
     }
 
@@ -74,9 +85,8 @@ public class AssignmentNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        if(m_Function != null) {
-            m_Function.CreateSnippet(slave);
-            return null;
+        if(m_FuncCallNode != null){
+            return m_FuncCallNode.CreateSnippet(slave);
         }
 
         ParamContainer exp = m_Expression.CreateSnippet(slave);
