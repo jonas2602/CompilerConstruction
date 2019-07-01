@@ -25,6 +25,7 @@ public class ConstantNode_String extends ConstantNode {
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         ParamContainer strConst = slave.CreateStringConstantNew(m_Data);
-        return slave.CreateArrayElementPtr(strConst, new ConstantWrapper("0"));
+        return strConst;
+        // return slave.CreateArrayElementPtr(strConst, new ConstantWrapper("0"));
     }
 }

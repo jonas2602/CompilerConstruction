@@ -4,14 +4,12 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
-import ast.types.NamedTypeNode;
-import ast.types.PointerTypeNode;
-import ast.types.PrimitiveTypeNode;
-import ast.types.TypeNode;
+import ast.types.*;
 import llvm.*;
 import writer.ConstantWrapper;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
+import writer.ValueWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +28,8 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         for (AbstractSyntaxTree param : InCallNode.GetParameterList()) {
             TypeNode CallParamType = param.GetType();
             // if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
-            if (!(CallParamType instanceof PrimitiveTypeNode || new PointerTypeNode(PrimitiveTypeNode.CharNode).CompareType(CallParamType))) {
-                throw new TypeCheckException(this, "writeln only supports primitive types or charptr(strings)");
+            if (!(CallParamType instanceof PrimitiveTypeNode || PointerTypeNode.CharPointerNode.CompareType(CallParamType) || ArrayTypeNode.CharArrayNode.CompareType(CallParamType))) {
+                throw new TypeCheckException(this, "writeln only supports primitive types or charptr/chararray(strings)");
             }
 
             // TODO: check for tostring method
@@ -63,33 +61,41 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         List<CodeSnippet_Base> filler = new ArrayList<>();
 
         for (AbstractSyntaxTree element : callNode.GetParameterList()) {
-            // if (element instanceof ConstantNode) {
-            //     placeholder += ((ConstantNode) element).GetData();
-            // }
-
             ParamContainer elementContainer = element.CreateSnippet(slave);
 
-            // load value if requested from a variable
-            elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
-            // if (element instanceof AccessInterface) {
-            //     elementContainer = slave.LoadFromVariable(elementContainer);
-            // }
-
-            // Create Parameter for printf call
-            PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
-            if (primType.GetTypeIsDezimal()) {
-                // convert all decimals to double
-                if (primType.GetTypeSize() != 64) {
-                    elementContainer = slave.ExtendFloatToDouble(elementContainer);
+            // Handle primitive types
+            TypeNode elementType = element.GetType();
+            if (elementType instanceof PrimitiveTypeNode) {
+                elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
+                // Create Parameter for printf call
+                PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
+                if (primType.GetTypeIsDezimal()) {
+                    // convert all decimals to double
+                    if (primType.GetTypeSize() != 64) {
+                        elementContainer = slave.ExtendFloatToDouble(elementContainer);
+                    }
                 }
+
+                filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
+
+                // Add placeholder element for parameter to string
+                placeholderString += primType.GetTypePlaceholder();
             }
+            // handle string pointer type
+            else if (elementType instanceof PointerTypeNode) {
+                // Add Parameter
+                elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
+                filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
 
-            filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
-
-            // Add placeholder element for parameter to string
-            placeholderString += primType.GetTypePlaceholder();
+                // Add placeholder element for parameter to string
+                placeholderString += "%s";
+            } else {
+                elementContainer = slave.CreateArrayElementPtr(elementContainer, 0);
+                filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
+                placeholderString += "%s";
+            }
         }
-        // TODO: Add newline (must be added as hex (\0A instead of \n, counts as a single character))
+        // Add newline (must be added as hex (\0A instead of \n, counts as a single character))
         placeholderString += "\n";
 
         //

@@ -119,7 +119,7 @@ public class GeneratorSlave {
 
         // convert to char* if given as other types
         if (!TypeManager.CHARPTR().CompareType(InSource.GetRootType())) {
-            InSource = BitCast(InSource, TypeManager.CHARPTR());
+            InSource = CreateArrayElementPtr(InSource, 0);
         }
         if (!TypeManager.CHARPTR().CompareType(InTarget.GetRootType())) {
             InTarget = BitCast(InTarget, TypeManager.CHARPTR());
@@ -347,6 +347,15 @@ public class GeneratorSlave {
     public ParamContainer CreateArrayElementPtr(ParamContainer InArray, ValueWrapper InIndex) {
         TypeWrapper arrType = InArray.GetRootType().GetChild();
         CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %s", arrType, InArray, InIndex); // TODO: alignment
+        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
+
+        return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
+    }
+
+    public ParamContainer CreateArrayElementPtr(ParamContainer InArray, int InIndex) {
+        TypeWrapper arrType = InArray.GetRootType().GetChild();
+        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %d", arrType, InArray, InIndex); // TODO: alignment
         VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
         TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
 
