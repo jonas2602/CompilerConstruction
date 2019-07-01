@@ -2,6 +2,7 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.declarations.VarDeclNode;
 import ast.types.PointerTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -34,6 +35,11 @@ public class AccessNode_Pointer extends AbstractSyntaxTree implements AccessInte
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         ParamContainer varAccess = m_Child.CreateSnippet(slave);
         return slave.LoadFromVariable(varAccess);
+    }
+
+    @Override
+    public VarDeclNode GetVarDeclNode() {
+        return ((AccessInterface) m_Child).GetVarDeclNode();
     }
 
     @Override

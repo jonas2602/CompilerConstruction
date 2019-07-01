@@ -253,7 +253,7 @@ formalParameterSection
    ;
 
 parameterGroup
-   : identifierList COLON typeIdentifier
+   : identifierList COLON type
    ;
 
 identifierList

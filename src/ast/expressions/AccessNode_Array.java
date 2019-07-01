@@ -2,6 +2,7 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.declarations.VarDeclNode;
 import ast.types.ArrayTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
@@ -55,6 +56,11 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
         ParamContainer varAccess = m_Child.CreateSnippet(slave);
         ParamContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
         return slave.CreateArrayElementPtr(varAccess, indexContainer);
+    }
+
+    @Override
+    public VarDeclNode GetVarDeclNode() {
+        return ((AccessInterface) m_Child).GetVarDeclNode();
     }
 
     @Override

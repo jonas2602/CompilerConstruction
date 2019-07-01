@@ -63,6 +63,11 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
     }
 
     @Override
+    public VarDeclNode GetVarDeclNode() {
+        return m_Declaration;
+    }
+
+    @Override
     public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
         return InSlave.LoadFromVariable(InPointer);
     }

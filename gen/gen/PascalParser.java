@@ -2945,8 +2945,8 @@ public class PascalParser extends Parser {
 			return getRuleContext(IdentifierListContext.class,0);
 		}
 		public TerminalNode COLON() { return getToken(PascalParser.COLON, 0); }
-		public TypeIdentifierContext typeIdentifier() {
-			return getRuleContext(TypeIdentifierContext.class,0);
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
 		}
 		public ParameterGroupContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2970,7 +2970,7 @@ public class PascalParser extends Parser {
 			setState(497);
 			match(COLON);
 			setState(498);
-			typeIdentifier();
+			type();
 			}
 		}
 		catch (RecognitionException re) {
@@ -5845,7 +5845,7 @@ public class PascalParser extends Parser {
 		"\2\2\u01ed\u01f1\5b\62\2\u01ee\u01ef\7\36\2\2\u01ef\u01f1\5b\62\2\u01f0"+
 		"\u01e9\3\2\2\2\u01f0\u01ea\3\2\2\2\u01f0\u01ec\3\2\2\2\u01f0\u01ee\3\2"+
 		"\2\2\u01f1a\3\2\2\2\u01f2\u01f3\5d\63\2\u01f3\u01f4\7\62\2\2\u01f4\u01f5"+
-		"\5\64\33\2\u01f5c\3\2\2\2\u01f6\u01fb\5\6\4\2\u01f7\u01f8\7\60\2\2\u01f8"+
+		"\5,\27\2\u01f5c\3\2\2\2\u01f6\u01fb\5\6\4\2\u01f7\u01f8\7\60\2\2\u01f8"+
 		"\u01fa\5\6\4\2\u01f9\u01f7\3\2\2\2\u01fa\u01fd\3\2\2\2\u01fb\u01f9\3\2"+
 		"\2\2\u01fb\u01fc\3\2\2\2\u01fce\3\2\2\2\u01fd\u01fb\3\2\2\2\u01fe\u0203"+
 		"\5\26\f\2\u01ff\u0200\7\60\2\2\u0200\u0202\5\26\f\2\u0201\u01ff\3\2\2"+

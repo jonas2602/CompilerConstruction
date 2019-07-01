@@ -7,7 +7,6 @@ import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
 import ast.types.TypeNode;
-import ast.types.VarTypeNode;
 import llvm.*;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
@@ -146,14 +145,11 @@ public class FuncCallNode extends AbstractSyntaxTree {
                 ParamContainer paramContainer = param.CreateSnippet(slave);
                 // load value if requested from a variable
 
-                // use reference for var types
-                if(!(decl.GetRawType() instanceof VarTypeNode)) {
+                // use reference for "VAR" types, else value
+                if(decl.IsByValue()) {
                     paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
                 }
 
-                // if (param instanceof AccessInterface) {
-                //     paramContainer = slave.LoadFromVariable(paramContainer);
-                // }
                 call.AddParameter(paramContainer.CreateParameterString());
             }
 

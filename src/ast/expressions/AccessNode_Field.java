@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
+import ast.declarations.VarDeclNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
@@ -24,6 +25,11 @@ public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterf
         // child is Record?
         // has property with fieldname?
         // return property type
+        return null;
+    }
+
+    @Override
+    public VarDeclNode GetVarDeclNode() {
         return null;
     }
 

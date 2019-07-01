@@ -8,7 +8,6 @@ import ast.expressions.FuncCallNode;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
-import ast.types.VarTypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Plain;
@@ -90,7 +89,8 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             TypeNode CallParamType = InCallNode.GetParameter(i).GetType();
             TypeNode FuncParamType = m_Params.get(i).GetType();
 
-            if (InCallNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).GetRawType() instanceof VarTypeNode) {
+            // "VAR" parameters only accept variables, no constants
+            if (InCallNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).IsByReference()) {
                 return false;
             }
 

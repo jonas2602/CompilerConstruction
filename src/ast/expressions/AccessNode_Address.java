@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
+import ast.declarations.VarDeclNode;
 import ast.types.PointerTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -33,6 +34,11 @@ public class AccessNode_Address extends AbstractSyntaxTree implements AccessInte
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         return m_Child.CreateSnippet(slave);
+    }
+
+    @Override
+    public VarDeclNode GetVarDeclNode() {
+        return ((AccessInterface) m_Child).GetVarDeclNode();
     }
 
     @Override
