@@ -12,9 +12,9 @@ import writer.ParamContainer;
 
 public abstract class PascalType_Operator extends FuncDeclNode_Core {
 
-    private FunctionCallTwoParams operation;
+    protected FunctionCallTwoParams operation;
 
-    public PascalType_Operator(Operator operator, TypeNode InReturnType, PrimitiveTypeNode lparam, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
+    public PascalType_Operator(Operator operator, TypeNode InReturnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
         super(operator.GetOperatorFunctionName(), InReturnType);
 
         AddParameter(new ParamDeclNode("left", lparam));

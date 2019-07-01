@@ -1,15 +1,10 @@
 program test;
 
-procedure test(test2: integer);
-label 1;
-begin
-    goto 1;
-    test2 := test2 + 1;
-    writeln(test2);
-    1:
-    writeln(test2);
-end;
-begin
-    writeln(5);
-    test(6);
-end.
+    var
+        ptr: ^char;
+        arr: array[0 .. 9] of char;
+        i: integer;
+    begin
+        ptr := arr;
+        i := 5 + 2;
+    end.

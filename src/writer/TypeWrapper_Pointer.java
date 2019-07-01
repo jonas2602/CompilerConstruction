@@ -1,6 +1,12 @@
 package writer;
 
 public class TypeWrapper_Pointer extends TypeWrapper {
+    public static TypeWrapper_Pointer CHAR = new TypeWrapper_Pointer(TypeWrapper_Primitive.CHAR);
+    public static TypeWrapper_Pointer INT = new TypeWrapper_Pointer(TypeWrapper_Primitive.INT);
+    public static TypeWrapper_Pointer FLOAT = new TypeWrapper_Pointer(TypeWrapper_Primitive.FLOAT);
+    public static TypeWrapper_Pointer DOUBLE = new TypeWrapper_Pointer(TypeWrapper_Primitive.DOUBLE);
+    public static TypeWrapper_Pointer BOOL = new TypeWrapper_Pointer(TypeWrapper_Primitive.BOOL);
+
     private TypeWrapper m_PointedType;
 
     public TypeWrapper_Pointer(TypeWrapper InPointedType) {

@@ -1,6 +1,7 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
+import ast.core.operators.Operator;
 import ast.expressions.AccessNode_Variable;
 import ast.expressions.FuncCallNode;
 import ast.statements.*;

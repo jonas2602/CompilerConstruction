@@ -3,16 +3,22 @@ package ast.statements;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
+import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.AccessInterface;
+import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 import writer.TypeWrapper_Array;
 
+import java.util.List;
+
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;
     private AbstractSyntaxTree m_Expression;
+
+    private FuncCallNode m_Function;
 
     public AssignmentNode(AbstractSyntaxTree InVariable, AbstractSyntaxTree InExpression) {
         this.m_Variable = InVariable;
@@ -20,6 +26,7 @@ public class AssignmentNode extends AbstractSyntaxTree {
 
         m_Variable.SetParent(this);
         m_Expression.SetParent(this);
+        m_Function = null;
     }
 
     @Override
@@ -29,7 +36,15 @@ public class AssignmentNode extends AbstractSyntaxTree {
         TypeNode varType = m_Variable.CheckType();
         TypeNode expType = m_Expression.CheckType();
         if (!varType.CompareType(expType)) {
-            throw new TypeCheckException(this, "Assignment of " + expType + " to " + varType + " is not allowed");
+            FuncCallNode funcCall = new FuncCallNode(Operator.AGN.GetOperatorFunctionName());
+
+            funcCall.SetParent(GetParent());
+
+            funcCall.AddParameter(m_Variable);
+            funcCall.AddParameter(m_Expression);
+            funcCall.CheckType();
+
+            m_Function = funcCall;
         }
 
         // Assignment is defined to not return a type.
@@ -59,6 +74,11 @@ public class AssignmentNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        if(m_Function != null) {
+            m_Function.CreateSnippet(slave);
+            return null;
+        }
+
         ParamContainer exp = m_Expression.CreateSnippet(slave);
         ParamContainer varAccess = m_Variable.CreateSnippet(slave);
 

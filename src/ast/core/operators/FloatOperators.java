@@ -62,11 +62,11 @@ public class FloatOperators implements StdBuilder {
     }
 
     public static abstract class FloatOperator extends PascalType_Operator {
-        public FloatOperator(Operator operator, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
+        public FloatOperator(Operator operator, TypeNode rparam, FunctionCallTwoParams operation) {
             super(operator, PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
 
-        public FloatOperator(Operator operator, TypeNode InReturnType, PrimitiveTypeNode rparam, FunctionCallTwoParams operation) {
+        public FloatOperator(Operator operator, TypeNode InReturnType, TypeNode rparam, FunctionCallTwoParams operation) {
             super(operator, InReturnType, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
     }

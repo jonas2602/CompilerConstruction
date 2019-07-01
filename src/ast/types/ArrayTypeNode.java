@@ -8,6 +8,11 @@ import writer.TypeWrapper;
 import writer.TypeWrapper_Array;
 
 public class ArrayTypeNode extends TypeNode {
+    public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.IntNode);
+    public static final ArrayTypeNode FloatArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.FloatNode);
+    public static final ArrayTypeNode CharArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.CharNode);
+    public static final ArrayTypeNode BoolArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.BoolNode);
+
     private AbstractSyntaxTree m_ElementCounter;
     private TypeNode m_ElementType;
 
