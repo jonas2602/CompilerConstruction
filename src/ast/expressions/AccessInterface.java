@@ -18,6 +18,10 @@ public interface AccessInterface {
             return ((AccessInterface) InNode).LoadValue(InSlave, InPointer);
         }
 
+        if (InNode instanceof ConstantNode_String) {
+            return InSlave.LoadFromVariable(InPointer);
+        }
+
         return InPointer;
     }
 }

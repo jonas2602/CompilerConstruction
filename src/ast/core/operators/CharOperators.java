@@ -20,7 +20,7 @@ public class CharOperators implements StdBuilder {
     public static class AssignCharPointerArray extends PascalType_Assignment {
         public AssignCharPointerArray() {
             super(Operator.AGN, NamedTypeNode.VoidNode, PointerTypeNode.CharPointerNode, ArrayTypeNode.CharArrayNode, (slave, lParam, rParam) -> {
-                ParamContainer cast = slave.BitCast(rParam, TypeWrapper_Pointer.CHAR);
+                ParamContainer cast = slave.BitCast(rParam, TypeWrapper_Pointer.CHARPTR);
                 slave.StoreInVariable(lParam, cast);
                 return null;
             });

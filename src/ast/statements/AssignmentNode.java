@@ -42,8 +42,8 @@ public class AssignmentNode extends AbstractSyntaxTree {
             if (varType instanceof ArrayTypeNode) {
                 int varSize = ((ArrayTypeNode) varType).GetSize();
                 int expSize = ((ArrayTypeNode) expType).GetSize();
-                if (varSize < expSize) {
-                    throw new TypeCheckException(this, "Arrays can only get copied if the target array is larger or has equal size to the source array");
+                if (varSize != expSize) {
+                    throw new TypeCheckException(this, "Arrays can only be copied if the target array is the same size as the source array");
                 }
             }
 
@@ -93,7 +93,6 @@ public class AssignmentNode extends AbstractSyntaxTree {
         ParamContainer varAccess = m_Variable.CreateSnippet(slave);
 
         if (varAccess.IsPointer() && varAccess.GetRootType().GetChild() instanceof TypeWrapper_Array) {
-//            exp = slave.CreateArrayElementPtr(exp, new ConstantWrapper("0"));
             FuncDeclNode memcpy = GetOwningBlock().GetFunctionDeclaration("llvm.memcpy.p0i8.p0i8.i64").get(0);
             memcpy.CreateSnippet(slave);
             slave.CopyMemory(exp, varAccess);
@@ -101,9 +100,6 @@ public class AssignmentNode extends AbstractSyntaxTree {
             // if the expression on the right of the assignment is not a constant (variable access stuff)
             // 'exp' will contain a pointer to the requested value that must be loaded before writing
             exp = AccessInterface.TryLoadValue(slave, m_Expression, exp);
-            // if (m_Expression instanceof AccessInterface) {
-            //     exp = slave.LoadFromVariable(exp);
-            // }
 
             slave.StoreInVariable(varAccess, exp);
         }

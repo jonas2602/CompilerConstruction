@@ -5,6 +5,15 @@ public class ParamContainer {
         return new ParamContainer(TypeWrapper_Other.LABEL, new ConstantWrapper(""));
     }
 
+    public static ParamContainer VOIDCONTAINER() {
+        return new ParamContainer(TypeWrapper_Other.VOID, new ConstantWrapper(""));
+    }
+
+    public static ParamContainer BOOLCONTAINER(boolean InBool) {
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, new ConstantWrapper(InBool ? "true" : "false"));
+    }
+
+
     public static ParamContainer FromTypeString(String InTypeString) {
         return null; // TODO:
     }

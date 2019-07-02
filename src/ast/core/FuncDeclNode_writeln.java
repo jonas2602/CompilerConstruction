@@ -18,6 +18,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     public FuncDeclNode_writeln() {
         super("writeln", NamedTypeNode.VoidNode);
         m_bCustomCallLogic = true;
+        m_bInline = true;
     }
 
     // Allows any amount of parameters, as long as they are primitive/can get serialized
@@ -40,60 +41,38 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     }
 
     @Override
-    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        // Only build once
-        if (m_IsCreated) return null;
-        m_IsCreated = true;
-
-        CodeSnippet_FuncDecl decl = slave.CreateFunctionDeclaration("printf", CodeSnippet_Type.SNIPPETTYPE_INT);
-        decl.AddParameter(new CodeSnippet_Plain("i8*"));
-        decl.AddParameter(new CodeSnippet_Plain("..."));
-
-        return decl;
-    }
-
-    @Override
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         // TODO: only one element with a single character? -> use "putchar"
         // TODO: add constants directly to the placeholder string, instead of adding a parameter
 
         String placeholderString = "";
-        List<CodeSnippet_Base> filler = new ArrayList<>();
+        List<ParamContainer> content = new ArrayList<>();
 
         for (AbstractSyntaxTree element : callNode.GetParameterList()) {
             ParamContainer elementContainer = element.CreateSnippet(slave);
 
-            // Handle primitive types
             TypeNode elementType = element.GetType();
-            if (elementType instanceof PrimitiveTypeNode) {
+            if (elementType instanceof ArrayTypeNode) {
+                // handle string array type
+                elementContainer = slave.CreateArrayElementPtr(elementContainer, 0);
+            } else {
+                // handle primitive types + string pointer type
                 elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
-                // Create Parameter for printf call
-                PrimitiveTypeNode primType = (PrimitiveTypeNode) element.GetType();
-                if (primType.GetTypeIsDezimal()) {
-                    // convert all decimals to double
-                    if (primType.GetTypeSize() != 64) {
+
+                // some primitive types require additional conversion
+                if (elementType instanceof PrimitiveTypeNode) {
+                    if (((PrimitiveTypeNode) elementType).GetTypeIsDezimal() && ((PrimitiveTypeNode) elementType).GetTypeSize() != 64) {
+                        // convert all decimals to double
                         elementContainer = slave.ExtendFloatToDouble(elementContainer);
                     }
                 }
-
-                filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
-
-                // Add placeholder element for parameter to string
-                placeholderString += primType.GetTypePlaceholder();
             }
-            // handle string pointer type
-            else if (elementType instanceof PointerTypeNode) {
-                // Add Parameter
-                elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
-                filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
 
-                // Add placeholder element for parameter to string
-                placeholderString += "%s";
-            } else {
-                elementContainer = slave.CreateArrayElementPtr(elementContainer, 0);
-                filler.add(new CodeSnippet_Plain(elementContainer.CreateParameterString()));
-                placeholderString += "%s";
-            }
+            // Add parameter to function call
+            content.add(elementContainer);
+
+            // Add placeholder element for parameter to string
+            placeholderString += elementType.GetTypePlaceholder();
         }
         // Add newline (must be added as hex (\0A instead of \n, counts as a single character))
         placeholderString += "\n";
@@ -101,8 +80,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         //
         ParamContainer constant = slave.CreateStringConstantNew(placeholderString);
         ParamContainer placeholderRef = slave.CreateArrayElementPtr(constant, new ConstantWrapper("0"));
-        CodeSnippet_Base placeholderParam = new CodeSnippet_Plain(placeholderRef.CreateParameterString());
-        slave.CreatePrintfCall(placeholderParam, filler);
+        slave.CreateNativeCall(new NativeFunction_printf(placeholderRef, content));
 
         return null;
     }

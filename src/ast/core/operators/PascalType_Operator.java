@@ -33,17 +33,9 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
         ParamContainer leftParam = lParam.CreateSnippet(slave);
         ParamContainer rightParam = rParam.CreateSnippet(slave);
 
-        // load value if requested from a variable
+        // load values if requested from a variable
         leftParam = AccessInterface.TryLoadValue(slave, lParam, leftParam);
-        // if (lParam instanceof AccessInterface) {
-        //     leftParam = slave.LoadFromVariable(leftParam);
-        // }
-
-        // load value if requested from a variable
         rightParam = AccessInterface.TryLoadValue(slave, rParam, rightParam);
-        // if (rParam instanceof AccessInterface) {
-        //     rightParam = slave.LoadFromVariable(rightParam);
-        // }
 
         return operation.createFunctionCall(slave, leftParam, rightParam);
     }

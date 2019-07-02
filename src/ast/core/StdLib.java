@@ -1,10 +1,7 @@
 package ast.core;
 
 import ast.BlockNode;
-import ast.core.operators.BoolOperators;
-import ast.core.operators.CharOperators;
-import ast.core.operators.FloatOperators;
-import ast.core.operators.IntOperators;
+import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;
 
@@ -13,13 +10,13 @@ public abstract class StdLib {
         BlockNode stdBlock = new BlockNode();
         //functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_memcpy());
 
         //operators
         new BoolOperators().buildStd(stdBlock);
         new CharOperators().buildStd(stdBlock);
         new IntOperators().buildStd(stdBlock);
         new FloatOperators().buildStd(stdBlock);
+        new GenericOperators().buildStd(stdBlock);
 
         //types
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));

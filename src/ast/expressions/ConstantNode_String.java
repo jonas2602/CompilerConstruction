@@ -13,7 +13,7 @@ import writer.ParamContainer;
 public class ConstantNode_String extends ConstantNode {
     public ConstantNode_String(String InData) {
 
-        super(InData, new ArrayTypeNode(InData.length(), PrimitiveTypeNode.CharNode));
+        super(InData, new ArrayTypeNode(InData.length() + 1, PrimitiveTypeNode.CharNode));
     }
 
     // @Override

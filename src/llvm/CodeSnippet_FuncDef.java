@@ -5,7 +5,7 @@ import writer.VariableWrapper;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeInterface {
+public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
     private List<CodeSnippet_Base> m_Statements = new ArrayList<>();
     private int m_VariableCounter;
     // private List<VariableWrapper> m_IndexElements = new ArrayList<>();
@@ -16,17 +16,17 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         m_VariableCounter = InVarIndexOffset;
     }
 
-    @Override
+    // @Override
     public void AddStatement(CodeSnippet_Base InStmt) {
         m_Statements.add(InStmt);
     }
 
-    @Override
+    // @Override
     public void AddStatement(String InStmt) {
         m_Statements.add(new CodeSnippet_Plain(InStmt));
     }
 
-    @Override
+    // @Override
     public VariableWrapper AddStatementWithStorage(CodeSnippet_Base InStmt) {
         VariableWrapper var = VariableWrapper.SCOPEVAR(m_VariableCounter++);
         // String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
@@ -34,7 +34,7 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl implements ScopeIn
         return var;
     }
 
-    @Override
+    // @Override
     public VariableWrapper AddStatementWithStorage(String InStmt) {
         return AddStatementWithStorage(new CodeSnippet_Plain(InStmt));
     }

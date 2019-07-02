@@ -1,11 +1,12 @@
 package llvm;
 
+import writer.TypeWrapper;
 import writer.VariableWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodeSnippet_FuncDecl extends CodeSnippet_Base {
+public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInterface {
     protected String m_Name;
     protected List<CodeSnippet_Base> m_Params = new ArrayList<>();
     protected CodeSnippet_Base m_ReturnType;

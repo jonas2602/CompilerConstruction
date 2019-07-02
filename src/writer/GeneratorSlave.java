@@ -1,28 +1,44 @@
 package writer;
 
+import com.sun.source.tree.Scope;
 import llvm.*;
 
+import java.lang.annotation.Native;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class GeneratorSlave {
     private List<CodeSnippet_Base> m_Constants = new ArrayList<>();
     private int m_ConstantCounter = 0;
 
+    private HashSet<Class> m_NativeMap = new HashSet<>();
     private List<CodeSnippet_FuncDef> m_FunctionDefinitions = new ArrayList<>();
     private List<CodeSnippet_FuncDecl> m_FunctionDeclarations = new ArrayList<>();
 
-    private List<CodeSnippet_FuncDef> m_ScopeStack = new ArrayList<>();
-    private CodeSnippet_FuncDef m_ActiveScope;
+    private List<ScopeInterface> m_ScopeStack = new ArrayList<>();
+    private ScopeInterface m_ActiveScope;
 
-    public CodeSnippet_FuncDef GetScopeSnippet() {
+    public boolean IsDefinitionInScope() {
+        return m_ActiveScope instanceof CodeSnippet_FuncDef;
+    }
+
+    public ScopeInterface GetScopeSnippet() {
         return m_ActiveScope;
+    }
+
+    public CodeSnippet_FuncDef GetScopeSnippetAsDef() {
+        return (CodeSnippet_FuncDef) m_ActiveScope;
+    }
+
+    public CodeSnippet_FuncCall GetScopeSnippetAsCall() {
+        return (CodeSnippet_FuncCall) m_ActiveScope;
     }
 
     // public CodeSnippet_Constant CreateStringConstant(String InContent) {
     //     int size = InContent.length() + 1;
     //     String constName = String.format("@.str.%d", m_ConstantCounter++);
-    //     CodeSnippet_Type constType = new CodeSnippet_TypeArray(CodeSnippet_Type.EType.CHAR, size);
+    //     CodeSnippet_Type constType = new CodeSnippet_TypeArray(CodeSnippet_Type.EType.CHARPTR, size);
     //     CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", InContent));
     //
     //     CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
@@ -30,6 +46,15 @@ public class GeneratorSlave {
     //
     //     return snippet;
     // }
+
+    public ParamContainer CreateNativeCall(NativeFunction InNative) {
+        Class nativeClass = InNative.getClass();
+        if (!m_NativeMap.contains(nativeClass)) {
+            InNative.CreateFunctionDeclaration(this);
+        }
+
+        return InNative.CreateFunctionCall(this);
+    }
 
     public ParamContainer CreateStringConstantNew(String InContent) {
         // Convert \n, \t, ... to hex code
@@ -62,12 +87,40 @@ public class GeneratorSlave {
         return new ParamContainer(new TypeWrapper_Pointer(stringType), var);
     }
 
-    public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
-        InFiller.add(0, InSourceParam);
-        CodeSnippet_FuncCall call = new CodeSnippet_FuncCall("printf", new CodeSnippet_Type(CodeSnippet_Type.EType.INT), InFiller, new CodeSnippet_Plain("(i8*, ...)"));
-        GetScopeSnippet().AddStatementWithStorage(call);
+//    public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
+//        InFiller.add(0, InSourceParam);
+//        CodeSnippet_FuncCall call = new CodeSnippet_FuncCall("printf", new CodeSnippet_Type(CodeSnippet_Type.EType.INTPTR), InFiller, new CodeSnippet_Plain("(i8*, ...)"));
+//        GetScopeSnippetAsDef().AddStatementWithStorage(call);
+//
+//        return call;
+//    }
 
-        return call;
+    public ParamContainer CreateFunctionCall(String InFunctionName, TypeWrapper InReturnType, boolean bEnterScope) {
+        CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(InFunctionName, InReturnType);
+
+        // Add Call to current Function Scope
+        ParamContainer outContainer = null;
+        if (TypeWrapper_Other.VOID.CompareType(InReturnType)) {
+            GetScopeSnippetAsDef().AddStatement(call);
+            outContainer = ParamContainer.VOIDCONTAINER();
+        } else {
+            VariableWrapper ScopeIndex = GetScopeSnippetAsDef().AddStatementWithStorage(call);
+            outContainer = new ParamContainer(InReturnType, ScopeIndex);
+        }
+
+        if (bEnterScope) {
+            EnterScope(call);
+        }
+
+        return outContainer;
+    }
+
+    public void CreateFunctionCallParameter(ParamContainer InType) {
+        GetScopeSnippet().AddParameter(InType.CreateParameterString());
+    }
+
+    public void CreateFunctionCallExtension(TypeWrapper InType) {
+        GetScopeSnippetAsCall().AddTypeExtension(InType);
     }
 
     public CodeSnippet_Plain CreateReturnStmt(String InType, String InData) {
@@ -76,7 +129,7 @@ public class GeneratorSlave {
 
     public void CreateReturnStmt(ParamContainer InParam) {
         CodeSnippet_Base stmt = new CodeSnippet_Args("ret %s", InParam);
-        GetScopeSnippet().AddStatement(stmt);
+        GetScopeSnippetAsDef().AddStatement(stmt);
     }
 
     public CodeSnippet_FuncDef CreateFunctionDefinition(String InName, CodeSnippet_Base InReturnType, int InParameterCount, boolean bEnterScope) {
@@ -95,7 +148,7 @@ public class GeneratorSlave {
         return new ParamContainer(InType, scopeVariable);
     }
 
-    public void EnterScope(CodeSnippet_FuncDef InScopeObject) {
+    public void EnterScope(ScopeInterface InScopeObject) {
         m_ScopeStack.add(InScopeObject);
         m_ActiveScope = InScopeObject;
     }
@@ -107,9 +160,12 @@ public class GeneratorSlave {
         }
     }
 
-    public CodeSnippet_FuncDecl CreateFunctionDeclaration(String InName, CodeSnippet_Base InReturnType) {
+    public CodeSnippet_FuncDecl CreateFunctionDeclaration(String InName, CodeSnippet_Base InReturnType, boolean bEnterScope) {
         CodeSnippet_FuncDecl decl = new CodeSnippet_FuncDecl(InName, InReturnType);
         m_FunctionDeclarations.add(decl);
+        if (bEnterScope) {
+            EnterScope(decl);
+        }
 
         return decl;
     }
@@ -126,85 +182,85 @@ public class GeneratorSlave {
         }
 
         CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", InTarget, InSource, blockSize);
-        GetScopeSnippet().AddStatement(stmt);
+        GetScopeSnippetAsDef().AddStatement(stmt);
     }
 
     public ParamContainer BitCast(ParamContainer InSource, TypeWrapper InTargetType) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("bitcast %s to %s", InSource, InTargetType);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(InTargetType, scopeVar);
     }
 
 
     public ParamContainer CastFloatToInt(ParamContainer InSource) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("fptosi %s to i32", InSource);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(TypeWrapper_Primitive.INT, scopeVar);
     }
 
     public ParamContainer CastIntToFloat(ParamContainer InSource) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("sitofp %s to float", InSource);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(TypeWrapper_Primitive.FLOAT, scopeVar);
     }
 
 
     public ParamContainer ExtendFloatToDouble(ParamContainer InSource) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("fpext %s to double", InSource);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(TypeWrapper_Primitive.DOUBLE, scopeVar);
     }
 
     public VariableWrapper TruncateIntToChar(String Source) {
         String exp = String.format("trunc i32 %s to i8", Source);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+        return GetScopeSnippetAsDef().AddStatementWithStorage(exp);
     }
 
     public VariableWrapper ExtendToInt(String SourceType, String SourceData) {
         String exp = String.format("sext %s %s to i32", SourceType, SourceData);
-        return GetScopeSnippet().AddStatementWithStorage(exp);
+        return GetScopeSnippetAsDef().AddStatementWithStorage(exp);
     }
 
     public ParamContainer NegateBool(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("xor %s, 1", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
     public ParamContainer IncInt(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("add %s, 1", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
     public ParamContainer DecInt(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("sub %s, 1", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
     public ParamContainer IncFloat(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("fadd %s, 1.0", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
     public ParamContainer DecFloat(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("fsub %s, 1.0", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
 
     public ParamContainer NegateInt(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("mul %s, -1", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
     public ParamContainer NegateFloat(ParamContainer param) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("fmul %s, -1.0", param);
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
@@ -254,7 +310,7 @@ public class GeneratorSlave {
 
     public ParamContainer ThreeOperantsInstruction(String inst, ParamContainer InLeft, ParamContainer InRight) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("%s %s, %s", inst, InLeft, InRight.GetValueAccessor());
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(InLeft, scopeVar);
     }
 
@@ -284,7 +340,7 @@ public class GeneratorSlave {
 
     public ParamContainer IntComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("icmp %s %s, %s", cond, InLeft, InRight.GetValueAccessor());
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(TypeWrapper_Primitive.BOOL, scopeVar);
     }
 
@@ -314,14 +370,14 @@ public class GeneratorSlave {
 
     public ParamContainer FloatComparator(String cond, ParamContainer InLeft, ParamContainer InRight) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("fcmp %s %s, %s", cond, InLeft, InRight.GetValueAccessor());
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(TypeWrapper_Primitive.BOOL, scopeVar);
     }
 
     // Returns a pointer to the requested memory with size of the given type
     public ParamContainer AllocateMemory(TypeWrapper InType) {
         CodeSnippet_Args stmt = new CodeSnippet_Args("alloca %s", InType); // TODO: alignment
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         TypeWrapper MemoryPointer = new TypeWrapper_Pointer(InType);
         return new ParamContainer(MemoryPointer, scopeVar);
     }
@@ -330,13 +386,13 @@ public class GeneratorSlave {
         String varParam = InVarAccess.CreateParameterString();
         String valueParam = InValue.CreateParameterString();
         String exp = String.format("store %s, %s", valueParam, varParam); // TODO: alignment
-        GetScopeSnippet().AddStatement(exp);
+        GetScopeSnippetAsDef().AddStatement(exp);
     }
 
     public ParamContainer LoadFromVariable(ParamContainer InVariable) {
         TypeWrapper pointedType = InVariable.GetRootType().GetChild();
         CodeSnippet_Args stmt = new CodeSnippet_Args("load %s, %s", pointedType, InVariable); // TODO: alignment
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(pointedType, scopeVar);
     }
 
@@ -347,7 +403,7 @@ public class GeneratorSlave {
     public ParamContainer CreateArrayElementPtr(ParamContainer InArray, ValueWrapper InIndex) {
         TypeWrapper arrType = InArray.GetRootType().GetChild();
         CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %s", arrType, InArray, InIndex); // TODO: alignment
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
 
         return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
@@ -356,7 +412,7 @@ public class GeneratorSlave {
     public ParamContainer CreateArrayElementPtr(ParamContainer InArray, int InIndex) {
         TypeWrapper arrType = InArray.GetRootType().GetChild();
         CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %d", arrType, InArray, InIndex); // TODO: alignment
-        VariableWrapper scopeVar = GetScopeSnippet().AddStatementWithStorage(stmt);
+        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         TypeWrapper elementType = InArray.GetRootType().GetChild().GetChild();
 
         return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
@@ -369,15 +425,15 @@ public class GeneratorSlave {
             add(InNegative);
         }});
 
-        GetScopeSnippet().AddStatement(snippet);
+        GetScopeSnippetAsDef().AddStatement(snippet);
     }
 
     public void CreateJump(ParamContainer InLabel, boolean InEndsBlock) {
         CodeSnippet_Args snippet = new CodeSnippet_Args("br %s", InLabel);
         if (InEndsBlock) {
-            GetScopeSnippet().AddStatement(snippet);
+            GetScopeSnippetAsDef().AddStatement(snippet);
         } else {
-            GetScopeSnippet().AddStatementIncrementCounter(snippet);
+            GetScopeSnippetAsDef().AddStatementIncrementCounter(snippet);
         }
     }
 
@@ -386,7 +442,7 @@ public class GeneratorSlave {
     }
 
     public ValueWrapper CreateLabel() {
-        return GetScopeSnippet().AddLabel();
+        return GetScopeSnippetAsDef().AddLabel();
     }
 
     public List<String> Serialize() {

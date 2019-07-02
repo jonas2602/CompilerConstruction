@@ -5,6 +5,10 @@ import writer.ParamContainer;
 import writer.TypeWrapper;
 
 public abstract class TypeNode extends AbstractSyntaxTree {
+    public String GetTypePlaceholder() {
+        return "%s";
+    }
+
     public boolean CompareType(TypeNode OtherTypeNode) {
         return false;
     }

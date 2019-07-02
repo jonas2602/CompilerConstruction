@@ -128,42 +128,43 @@ public class FuncCallNode extends AbstractSyntaxTree {
         }
 
         // Execute specialized function call
-        if (m_FuncDecl instanceof FuncDeclNode_Core) {
-            FuncDeclNode_Core coreFunc = (FuncDeclNode_Core) m_FuncDecl;
-            if (coreFunc.HasCustomCallLogic()) {
-                return coreFunc.CreateFunctionCall(slave, this);
-            }
-        } else {
-            // TODO: default creation
-            TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
-            CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, new CodeSnippet_Plain(returnType.CreateTypeName()));
-
-            for(int i = 0; i < m_Params.size(); i++) {
-                AbstractSyntaxTree param = m_Params.get(i);
-                ParamDeclNode decl = m_FuncDecl.GetParameter(i);
-
-                ParamContainer paramContainer = param.CreateSnippet(slave);
-                // load value if requested from a variable
-
-                // use reference for "VAR" types, else value
-                if(decl.IsByValue()) {
-                    paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
-                }
-
-                call.AddParameter(paramContainer.CreateParameterString());
-            }
-
-            if (m_FuncDecl.IsVoid()) {
-                slave.GetScopeSnippet().AddStatement(call);
-                return null;
-            } else {
-                VariableWrapper scopeVar = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
-                return new ParamContainer(returnType, scopeVar);
-            }
-
-
+        if (m_FuncDecl instanceof FuncDeclNode_Core && ((FuncDeclNode_Core) m_FuncDecl).HasCustomCallLogic()) {
+            return ((FuncDeclNode_Core) m_FuncDecl).CreateFunctionCall(slave, this);
         }
 
-        return null;
+        // Create standard function call
+        TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
+        ParamContainer OutParam = slave.CreateFunctionCall(m_FuncName, returnType, true);
+        // CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, new CodeSnippet_Plain(returnType.CreateTypeName()));
+
+        // Add parameters to function call
+        for (int i = 0; i < m_Params.size(); i++) {
+            //
+            AbstractSyntaxTree param = m_Params.get(i);
+            ParamContainer paramContainer = param.CreateSnippet(slave);
+
+            // use reference for "VAR" types, else value
+            ParamDeclNode decl = m_FuncDecl.GetParameter(i);
+            if (decl.IsByValue()) {
+                // load value if requested from a variable
+                paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
+            }
+
+            slave.CreateFunctionCallParameter(paramContainer);
+        }
+
+        // Create Type Extension for function call
+        // TODO: only available in native functions?
+
+        // if (m_FuncDecl.IsVoid()) {
+        //     slave.GetScopeSnippet().AddStatement(call);
+        //     return null;
+        // } else {
+        //     VariableWrapper scopeVar = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
+        //     return new ParamContainer(returnType, scopeVar);
+        // }
+
+        slave.ExitScope();
+        return OutParam;
     }
 }

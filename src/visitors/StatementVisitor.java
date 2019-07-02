@@ -56,6 +56,17 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         return new AssignmentNode(variable, expression);
     }
 
+    // @Override
+    // public AbstractSyntaxTree visitAssignmentStatement(PascalParser.AssignmentStatementContext ctx) {
+    //     AbstractSyntaxTree variable = new VariableAccessVisitor().visit(ctx.variable());
+    //     AbstractSyntaxTree expression = new ExpressionVisitor().visit(ctx.expression());
+    //     //return new AssignmentNode(variable, expression);
+    //     FuncCallNode funcCall = new FuncCallNode(Operator.AGN.GetOperatorFunctionName());
+    //     funcCall.AddParameter(variable);
+    //     funcCall.AddParameter(expression);
+    //     return funcCall;
+    // }
+
     @Override
     public AbstractSyntaxTree visitProcedureStatement(PascalParser.ProcedureStatementContext ctx) {
         String procName = ctx.identifier().IDENT().getText();

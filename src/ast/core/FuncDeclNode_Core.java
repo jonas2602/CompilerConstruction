@@ -1,6 +1,7 @@
 package ast.core;
 
 import ast.BlockNode;
+import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
@@ -12,6 +13,10 @@ public abstract class FuncDeclNode_Core extends FuncDeclNode {
 
     public FuncDeclNode_Core(String InName, TypeNode InReturnType) {
         super(InName, InReturnType, new BlockNode());
+    }
+
+    public FuncDeclNode_Core(Operator InOperator, TypeNode InReturnType) {
+        this(InOperator.GetOperatorFunctionName(), InReturnType);
     }
 
     public boolean HasCustomCallLogic() {

@@ -179,9 +179,10 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         long bits = Double.doubleToLongBits(value);
         if ((bits & 0xFFFFFFFFl) != 0) {
             System.out.println("'" + value + "' should be interpreted as double because binary representation exeedes single precision float");
+            return new ConstantNode(Double.toString(value), PrimitiveTypeNode.DoubleNode);
         }
 
-        return new ConstantNode(ctx.NUM_REAL().getText(), PrimitiveTypeNode.FloatNode);
+        return new ConstantNode(Double.toString(value), PrimitiveTypeNode.FloatNode);
     }
 
     @Override

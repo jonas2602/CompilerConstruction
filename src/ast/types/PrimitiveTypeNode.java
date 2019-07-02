@@ -11,6 +11,7 @@ import writer.TypeWrapper_Primitive;
 public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(new PascalType_Int());
     public static final PrimitiveTypeNode FloatNode = new PrimitiveTypeNode(new PascalType_Float());
+    public static final PrimitiveTypeNode DoubleNode = new PrimitiveTypeNode(new PascalType_Double());
     public static final PrimitiveTypeNode CharNode = new PrimitiveTypeNode(new PascalType_Char());
     public static final PrimitiveTypeNode BoolNode = new PrimitiveTypeNode(new PascalType_Bool());
 
@@ -20,6 +21,7 @@ public class PrimitiveTypeNode extends TypeNode {
         m_PrimitiveType = InType;
     }
 
+    @Override
     public String GetTypePlaceholder() {
         return m_PrimitiveType.GetPlaceholder();
     }

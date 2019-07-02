@@ -1,6 +1,5 @@
 package ast.declarations;
 
-import ast.types.PointerTypeNode;
 import ast.types.TypeNode;
 import ast.types.VarTypeNode;
 import llvm.CodeSnippet_Base;
@@ -41,6 +40,12 @@ public class ParamDeclNode extends VarDeclNode {
             // Add parameter to function header
             TypeWrapper paramType = m_Type.GetWrappedType();
             ParamContainer paramContainer = slave.CreateFunctionParameter(paramType);
+
+            // Parameter is part of a Function Definition or Declaration?
+            if (!slave.IsDefinitionInScope()) {
+                // ... In Declarations no more work is required
+                return null;
+            }
 
             // Create local variable
             TypeWrapper wrappedType = m_Type.GetWrappedType();
