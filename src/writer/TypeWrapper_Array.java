@@ -4,9 +4,9 @@ public class TypeWrapper_Array extends TypeWrapper {
     private int m_Size;
     private TypeWrapper m_BaseType;
 
-    public TypeWrapper_Array(TypeWrapper InBaseType, int InSize) {
-        m_BaseType = InBaseType;
-        m_Size = InSize;
+    public TypeWrapper_Array(TypeWrapper baseType, int size) {
+        m_BaseType = baseType;
+        m_Size = size;
     }
 
     @Override
@@ -25,14 +25,14 @@ public class TypeWrapper_Array extends TypeWrapper {
     }
 
     @Override
-    public boolean CompareType(TypeWrapper InOtherType) {
+    public boolean CompareType(TypeWrapper otherType) {
         // Is Array?
-        if (!(InOtherType instanceof TypeWrapper_Array)) {
+        if (!(otherType instanceof TypeWrapper_Array)) {
             return false;
         }
 
         // same size?
-        TypeWrapper_Array otherArray = (TypeWrapper_Array) InOtherType;
+        TypeWrapper_Array otherArray = (TypeWrapper_Array) otherType;
         if (otherArray.m_Size != m_Size) {
             return false;
         }

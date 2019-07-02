@@ -9,7 +9,6 @@ import llvm.*;
 import writer.ConstantWrapper;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
-import writer.ValueWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,9 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     // Allows any amount of parameters, as long as they are primitive/can get serialized
 
     @Override
-    public boolean ValidateCall(FuncCallNode InCallNode) {
+    public boolean ValidateCall(FuncCallNode callNode) {
         // Compare given parameters to primitive types
-        for (AbstractSyntaxTree param : InCallNode.GetParameterList()) {
+        for (AbstractSyntaxTree param : callNode.GetParameterList()) {
             TypeNode CallParamType = param.GetType();
             // if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
             if (!(CallParamType instanceof PrimitiveTypeNode || PointerTypeNode.CharPointerNode.CompareType(CallParamType) || ArrayTypeNode.CharArrayNode.CompareType(CallParamType))) {
@@ -45,7 +44,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         // TODO: only one element with a single character? -> use "putchar"
         // TODO: add constants directly to the placeholder string, instead of adding a parameter
 
-        String placeholderString = "";
+        StringBuilder builder = new StringBuilder();
         List<ParamContainer> content = new ArrayList<>();
 
         for (AbstractSyntaxTree element : callNode.GetParameterList()) {
@@ -72,13 +71,13 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             content.add(elementContainer);
 
             // Add placeholder element for parameter to string
-            placeholderString += elementType.GetTypePlaceholder();
+            builder.append(elementType.GetTypePlaceholder());
         }
         // Add newline (must be added as hex (\0A instead of \n, counts as a single character))
-        placeholderString += "\n";
+        builder.append("\n");
 
         //
-        ParamContainer constant = slave.CreateStringConstantNew(placeholderString);
+        ParamContainer constant = slave.CreateStringConstantNew(builder.toString());
         ParamContainer placeholderRef = slave.CreateArrayElementPtr(constant, new ConstantWrapper("0"));
         slave.CreateNativeCall(new NativeFunction_printf(placeholderRef, content));
 

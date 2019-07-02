@@ -11,8 +11,8 @@ import writer.ParamContainer;
 public class AccessNode_Pointer extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
 
-    public AccessNode_Pointer(AbstractSyntaxTree InChild) {
-        this.m_Child = InChild;
+    public AccessNode_Pointer(AbstractSyntaxTree child) {
+        m_Child = child;
         m_Child.SetParent(this);
     }
 
@@ -43,7 +43,7 @@ public class AccessNode_Pointer extends AbstractSyntaxTree implements AccessInte
     }
 
     @Override
-    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
-        return InSlave.LoadFromVariable(InPointer);
+    public ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer) {
+        return slave.LoadFromVariable(pointer);
     }
 }

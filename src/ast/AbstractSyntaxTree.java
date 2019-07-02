@@ -29,8 +29,8 @@ public abstract class AbstractSyntaxTree {
         return m_Parent;
     }
 
-    public void SetParent(AbstractSyntaxTree InParent) {
-        m_Parent = InParent;
+    public void SetParent(AbstractSyntaxTree parent) {
+        m_Parent = parent;
     }
 
     public TypeNode GetType() {

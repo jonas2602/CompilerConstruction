@@ -37,7 +37,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             operator = Operator.IN;
         }
 
-        FuncCallNode funcCall = new FuncCallNode(operator.GetOperatorFunctionName());
+        FuncCallNode funcCall = new FuncCallNode(operator);
         funcCall.AddParameter(left);
         funcCall.AddParameter(right);
         return funcCall;
@@ -60,7 +60,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             operator = Operator.OR;
         }
 
-        FuncCallNode funcCall = new FuncCallNode(operator.GetOperatorFunctionName());
+        FuncCallNode funcCall = new FuncCallNode(operator);
         funcCall.AddParameter(left);
         funcCall.AddParameter(right);
         return funcCall;
@@ -88,7 +88,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             operator = Operator.AND;
         }
 
-        FuncCallNode funcCall = new FuncCallNode(operator.GetOperatorFunctionName());
+        FuncCallNode funcCall = new FuncCallNode(operator);
         funcCall.AddParameter(left);
         funcCall.AddParameter(right);
         return funcCall;
@@ -98,7 +98,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitSignedFactor(PascalParser.SignedFactorContext ctx) {
         AbstractSyntaxTree factor = visitFactor(ctx.factor());
         if (ctx.MINUS() != null) {
-            FuncCallNode funcCall = new FuncCallNode(Operator.NEG.GetOperatorFunctionName());
+            FuncCallNode funcCall = new FuncCallNode(Operator.NEG);
             funcCall.AddParameter(factor);
             return funcCall;
         }
@@ -120,7 +120,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             return visitSet(ctx.set());
         } else if (ctx.factor() != null) {
             AbstractSyntaxTree factor =  visitFactor(ctx.factor());
-            FuncCallNode funcCall = new FuncCallNode(Operator.NEG.GetOperatorFunctionName());
+            FuncCallNode funcCall = new FuncCallNode(Operator.NEG);
             funcCall.AddParameter(factor);
             return funcCall;
         } else {

@@ -66,8 +66,8 @@ public class FloatOperators implements StdBuilder {
             super(operator, PrimitiveTypeNode.FloatNode, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
 
-        public FloatOperator(Operator operator, TypeNode InReturnType, TypeNode rparam, FunctionCallTwoParams operation) {
-            super(operator, InReturnType, PrimitiveTypeNode.FloatNode, rparam, operation);
+        public FloatOperator(Operator operator, TypeNode returnType, TypeNode rparam, FunctionCallTwoParams operation) {
+            super(operator, returnType, PrimitiveTypeNode.FloatNode, rparam, operation);
         }
     }
 

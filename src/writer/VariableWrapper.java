@@ -12,17 +12,17 @@ public class VariableWrapper extends ValueWrapper {
     private String m_Format;
     private int m_ScopeIndex;
 
-    public VariableWrapper(String InFormat) {
-        m_Format = InFormat;
+    public VariableWrapper(String format) {
+        m_Format = format;
     }
 
-    public VariableWrapper(String InFormat, int InIndex) {
-        m_Format = InFormat;
-        m_ScopeIndex = InIndex;
+    public VariableWrapper(String format, int index) {
+        m_Format = format;
+        m_ScopeIndex = index;
     }
 
-    public void AssignScopeIndex(int InIndex) {
-        m_ScopeIndex = InIndex;
+    public void AssignScopeIndex(int index) {
+        m_ScopeIndex = index;
     }
 
     @Override

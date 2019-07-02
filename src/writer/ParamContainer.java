@@ -14,21 +14,20 @@ public class ParamContainer {
     }
 
 
-    public static ParamContainer FromTypeString(String InTypeString) {
+    public static ParamContainer FromTypeString(String typeString) {
         return null; // TODO:
     }
 
     private TypeWrapper m_RootType; // i8, i32, float, [3 x i8], [10 x [ 10 x i8]], ...
     private ValueWrapper m_ValueAccessor; // Constant or Local Variable(%X) or Global Variable(@X)
 
-    public ParamContainer(TypeWrapper InType, String InConstant) {
-        m_RootType = InType;
-        m_ValueAccessor = new ConstantWrapper(InConstant);
+    public ParamContainer(TypeWrapper type, String constant) {
+        this(type, new ConstantWrapper(constant));
     }
 
-    public ParamContainer(TypeWrapper InType, ValueWrapper InValue) {
-        m_RootType = InType;
-        m_ValueAccessor = InValue;
+    public ParamContainer(TypeWrapper type, ValueWrapper value) {
+        m_RootType = type;
+        m_ValueAccessor = value;
     }
 
     // Copy constructors
@@ -36,9 +35,9 @@ public class ParamContainer {
 //        this(InSourceContainer.m_RootType, new ConstantWrapper(InConstant));
 //    }
 
-    public ParamContainer(ParamContainer InSourceContainer, ValueWrapper InValue) {
-        m_RootType = InSourceContainer.m_RootType;
-        m_ValueAccessor = InValue;
+    public ParamContainer(ParamContainer sourceContainer, ValueWrapper value) {
+        m_RootType = sourceContainer.m_RootType;
+        m_ValueAccessor = value;
     }
 
 
@@ -50,8 +49,8 @@ public class ParamContainer {
         return m_ValueAccessor;
     }
 
-    public void SetValueAccessor(ValueWrapper InWrapper) {
-        m_ValueAccessor = InWrapper;
+    public void SetValueAccessor(ValueWrapper wrapper) {
+        m_ValueAccessor = wrapper;
     }
 
     public String CreateTypeString() {

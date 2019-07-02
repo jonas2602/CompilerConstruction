@@ -10,8 +10,8 @@ import writer.ParamContainer;
 public class AccessNode_Address extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
 
-    public AccessNode_Address(AbstractSyntaxTree InChild) {
-        this.m_Child = InChild;
+    public AccessNode_Address(AbstractSyntaxTree child) {
+        m_Child = child;
         m_Child.SetParent(this);
     }
 

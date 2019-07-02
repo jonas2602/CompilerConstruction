@@ -9,8 +9,8 @@ import writer.GeneratorSlave;
 public class ParameterNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Expression;
 
-    public ParameterNode(AbstractSyntaxTree InExpression) {
-        m_Expression = InExpression;
+    public ParameterNode(AbstractSyntaxTree expression) {
+        m_Expression = expression;
         m_Expression.SetParent(this);
     }
 

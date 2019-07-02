@@ -10,8 +10,8 @@ public class LabelDeclNode extends AbstractSyntaxTree {
 
     private LabelNode m_LabelNode;
 
-    public LabelDeclNode(String InName) {
-        m_Name = InName;
+    public LabelDeclNode(String name) {
+        m_Name = name;
         m_LabelNode = null;
     }
 

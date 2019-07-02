@@ -4,5 +4,5 @@ import writer.GeneratorSlave;
 import writer.ParamContainer;
 
 public interface FunctionCallTwoParams {
-    public ParamContainer createFunctionCall(GeneratorSlave slave, ParamContainer lParam, ParamContainer rParam);
+    public abstract ParamContainer createFunctionCall(GeneratorSlave slave, ParamContainer lParam, ParamContainer rParam);
 }

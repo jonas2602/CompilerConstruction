@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompStmtNode extends AbstractSyntaxTree {
-    private List<AbstractSyntaxTree> m_Statements = new ArrayList<>();
+    private List<AbstractSyntaxTree> m_Statements;
 
     public CompStmtNode() {
-
+        m_Statements = new ArrayList<>();
     }
 
     public void AddStatement(AbstractSyntaxTree stmt) {

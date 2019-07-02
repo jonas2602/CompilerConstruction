@@ -12,9 +12,9 @@ public class RepeatNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Condition;
     private AbstractSyntaxTree m_Body;
 
-    public RepeatNode(AbstractSyntaxTree InCondition, AbstractSyntaxTree InBody) {
-        this.m_Condition = InCondition;
-        this.m_Body = InBody;
+    public RepeatNode(AbstractSyntaxTree condition, AbstractSyntaxTree body) {
+        this.m_Condition = condition;
+        this.m_Body = body;
 
         m_Condition.SetParent(this);
         m_Body.SetParent(this);

@@ -5,7 +5,6 @@ import ast.core.FuncDeclNode_Core;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
-import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;

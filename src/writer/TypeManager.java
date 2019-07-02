@@ -11,8 +11,8 @@ public class TypeManager {
     }
 
 
-    public static String GetTypeName(EPrimitiveType InType) {
-        switch (InType) {
+    public static String GetTypeName(EPrimitiveType type) {
+        switch (type) {
             case CHAR: return "i8";
             case INT: return "i32";
             case LONG: return "i64";
@@ -23,12 +23,12 @@ public class TypeManager {
         }
     }
 
-    public static String MakeArrayType(EPrimitiveType InType, int InSize) {
-        return MakeArrayType(GetTypeName(InType), InSize);
+    public static String MakeArrayType(EPrimitiveType type, int size) {
+        return MakeArrayType(GetTypeName(type), size);
     }
 
-    public static String MakeArrayType(String InType, int InSize) {
-        return String.format("[%d x %s]", InSize, InType);
+    public static String MakeArrayType(String type, int size) {
+        return String.format("[%d x %s]", size, type);
     }
 
 }

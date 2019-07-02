@@ -9,61 +9,65 @@ import java.util.*;
 
 public class BlockNode extends AbstractSyntaxTree {
 
-    private HashMap<String, LabelDeclNode> m_LabelDeclMap = new HashMap<>();
-    private HashMap<String, ConstDeclNode> m_ConstDeclMap = new HashMap<>();
-    private HashMap<String, TypeDeclNode> m_TypeDeclMap = new HashMap<>();
-    private HashMap<String, VarDeclNode> m_VarDeclMap = new HashMap<>();
-    private HashMap<String, List<FuncDeclNode>> m_FuncDeclMap = new HashMap<>();
+    private HashMap<String, LabelDeclNode> m_LabelDeclMap;
+    private HashMap<String, ConstDeclNode> m_ConstDeclMap;
+    private HashMap<String, TypeDeclNode> m_TypeDeclMap;
+    private HashMap<String, VarDeclNode> m_VarDeclMap;
+    private HashMap<String, List<FuncDeclNode>> m_FuncDeclMap;
 
     private AbstractSyntaxTree m_CompoundStatement;
 
     public BlockNode() {
-
+        m_LabelDeclMap = new HashMap<>();
+        m_ConstDeclMap = new HashMap<>();
+        m_TypeDeclMap = new HashMap<>();
+        m_VarDeclMap = new HashMap<>();
+        m_FuncDeclMap = new HashMap<>();
     }
 
-    public void AddLabelDeclaration(LabelDeclNode Label) {
-        if (m_VarDeclMap.containsKey(Label.GetName())) {
-            throw new RuntimeException("Variable with Name " + Label.GetName() + " already defined in Scope");
+    public void AddLabelDeclaration(LabelDeclNode label) {
+        if (m_VarDeclMap.containsKey(label.GetName())) {
+            throw new RuntimeException("Variable with Name " + label.GetName() + " already defined in Scope");
         }
 
-        Label.SetParent(this);
-        m_LabelDeclMap.put(Label.GetName(), Label);
+        label.SetParent(this);
+        m_LabelDeclMap.put(label.GetName(), label);
     }
 
-    public void AddConstantDeclaration(ConstDeclNode Constant) {
-        if (m_VarDeclMap.containsKey(Constant.GetName())) {
-            throw new RuntimeException("Variable with Name " + Constant.GetName() + " already defined in Scope");
+    public void AddConstantDeclaration(ConstDeclNode constant) {
+        if (m_VarDeclMap.containsKey(constant.GetName())) {
+            throw new RuntimeException("Variable with Name " + constant.GetName() + " already defined in Scope");
         }
 
-        Constant.SetParent(this);
-        m_ConstDeclMap.put(Constant.GetName(), Constant);
+        constant.SetParent(this);
+        m_ConstDeclMap.put(constant.GetName(), constant);
     }
 
-    public void AddTypeDeclaration(TypeDeclNode Type) {
-        if (m_VarDeclMap.containsKey(Type.GetName())) {
-            throw new RuntimeException("Variable with Name " + Type.GetName() + " already defined in Scope");
+    public void AddTypeDeclaration(TypeDeclNode type) {
+        if (m_VarDeclMap.containsKey(type.GetName())) {
+            throw new RuntimeException("Variable with Name " + type.GetName() + " already defined in Scope");
         }
 
-        Type.SetParent(this);
-        m_TypeDeclMap.put(Type.GetName(), Type);
+        type.SetParent(this);
+        m_TypeDeclMap.put(type.GetName(), type);
     }
 
-    public void AddParameterDeclaration(VarDeclNode Parameter) {
-        if (m_VarDeclMap.containsKey(Parameter.GetName())) {
-            throw new RuntimeException("Variable with Name " + Parameter.GetName() + " already defined in Scope");
+    public void AddParameterDeclaration(VarDeclNode parameter) {
+        if (m_VarDeclMap.containsKey(parameter.GetName())) {
+            throw new RuntimeException("Variable with Name " + parameter.GetName() + " already defined in Scope");
         }
 
         // Don't set parent, because function/procedure should be the parent;
-        m_VarDeclMap.put(Parameter.GetName(), Parameter);
+        m_VarDeclMap.put(parameter.GetName(), parameter);
     }
 
-    public void AddVariableDeclaration(VarDeclNode Variable) {
-        if (m_VarDeclMap.containsKey(Variable.GetName())) {
-            throw new RuntimeException("Variable with Name " + Variable.GetName() + " already defined in Scope");
+    public void AddVariableDeclaration(VarDeclNode variable) {
+        if (m_VarDeclMap.containsKey(variable.GetName())) {
+            throw new RuntimeException("Variable with Name " + variable.GetName() + " already defined in Scope");
         }
 
-        Variable.SetParent(this);
-        m_VarDeclMap.put(Variable.GetName(), Variable);
+        variable.SetParent(this);
+        m_VarDeclMap.put(variable.GetName(), variable);
     }
 
 //    public void AddProcedureDeclaration(ProcDeclNode Procedure) {
@@ -75,48 +79,48 @@ public class BlockNode extends AbstractSyntaxTree {
 //        m_ProcDeclMap.put(Procedure.GetName(), Procedure);
 //    }
 
-    public void AddFunctionDeclaration(FuncDeclNode Function) {
-        if (m_VarDeclMap.containsKey(Function.GetName())) {
-            throw new RuntimeException("Variable with Name " + Function.GetName() + " already defined in Scope");
+    public void AddFunctionDeclaration(FuncDeclNode function) {
+        if (m_VarDeclMap.containsKey(function.GetName())) {
+            throw new RuntimeException("Variable with Name " + function.GetName() + " already defined in Scope");
         }
 
-        Function.SetParent(this);
-        List<FuncDeclNode> overloads = m_FuncDeclMap.get(Function.GetName());
+        function.SetParent(this);
+        List<FuncDeclNode> overloads = m_FuncDeclMap.get(function.GetName());
         if (overloads == null) {
             overloads = new ArrayList<>();
-            m_FuncDeclMap.put(Function.GetName(), overloads);
+            m_FuncDeclMap.put(function.GetName(), overloads);
         }
-        overloads.add(Function);
+        overloads.add(function);
     }
 
-    public void SetCompoundStatement(AbstractSyntaxTree InCompoundStatement) {
-        m_CompoundStatement = InCompoundStatement;
+    public void SetCompoundStatement(AbstractSyntaxTree compoundStatement) {
+        m_CompoundStatement = compoundStatement;
         // TODO: Validate if the compund Statement should be child of the function/procedure/program or of the block
         m_CompoundStatement.SetParent(this);
     }
 
-    public LabelDeclNode GetLabelDeclaration(String LabelName) {
-        LabelDeclNode OutDecl = m_LabelDeclMap.get(LabelName);
+    public LabelDeclNode GetLabelDeclaration(String labelName) {
+        LabelDeclNode OutDecl = m_LabelDeclMap.get(labelName);
         if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetLabelDeclaration(LabelName);
+            OutDecl = GetOwningBlock().GetLabelDeclaration(labelName);
         }
 
         return OutDecl;
     }
 
-    public TypeDeclNode GetTypeDeclaration(String TypeName) {
-        TypeDeclNode OutDecl = m_TypeDeclMap.get(TypeName);
+    public TypeDeclNode GetTypeDeclaration(String typeName) {
+        TypeDeclNode OutDecl = m_TypeDeclMap.get(typeName);
         if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetTypeDeclaration(TypeName);
+            OutDecl = GetOwningBlock().GetTypeDeclaration(typeName);
         }
 
         return OutDecl;
     }
 
-    public VarDeclNode GetVariableDeclaration(String VariableName) {
-        VarDeclNode OutDecl = m_VarDeclMap.get(VariableName);
+    public VarDeclNode GetVariableDeclaration(String variableName) {
+        VarDeclNode OutDecl = m_VarDeclMap.get(variableName);
         if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetVariableDeclaration(VariableName);
+            OutDecl = GetOwningBlock().GetVariableDeclaration(variableName);
         }
 
         // TODO: Check constants?
@@ -124,10 +128,10 @@ public class BlockNode extends AbstractSyntaxTree {
     }
 
     // TODO: How to check for functions that are not defined by the user? e.g. writeln(), chr() or Length()
-    public List<FuncDeclNode> GetFunctionDeclaration(String FunctionName) {
-        List<FuncDeclNode> OutDecl = m_FuncDeclMap.get(FunctionName);
+    public List<FuncDeclNode> GetFunctionDeclaration(String functionName) {
+        List<FuncDeclNode> OutDecl = m_FuncDeclMap.get(functionName);
         if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetFunctionDeclaration(FunctionName);
+            OutDecl = GetOwningBlock().GetFunctionDeclaration(functionName);
         }
 
         return OutDecl;
@@ -163,7 +167,7 @@ public class BlockNode extends AbstractSyntaxTree {
             for (int i = 0; i < funcOverloads.size(); i++) {
                 for (int j = i + 1; j < funcOverloads.size(); j++) {
                     if (funcOverloads.get(i).CompareSignature(funcOverloads.get(j))) {
-                        throw new TypeCheckException(this, "Functions with the same signature found");
+                        throw new TypeCheckException(this, "Functions with the same signature found "+(funcOverloads.get(i).GetName()));
                     }
                 }
             }

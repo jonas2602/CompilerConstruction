@@ -8,14 +8,21 @@ import java.util.List;
 public abstract class NativeFunction {
     private String m_Name;
     private TypeWrapper m_ReturnType;
-    private List<TypeWrapper> m_ParamTypes = new ArrayList<>();
+    private List<TypeWrapper> m_ParamTypes;
     private boolean m_bUseTypeExtension = false;
 
-    protected List<ParamContainer> m_CallParams = new ArrayList<>();
+    protected List<ParamContainer> m_CallParams;
 
-    protected NativeFunction(String InFuncName, TypeWrapper InReturnType) {
-        m_Name = InFuncName;
-        m_ReturnType = InReturnType;
+    protected NativeFunction() {
+        m_ParamTypes = new ArrayList<>();
+        m_CallParams = new ArrayList<>();
+    }
+
+    protected NativeFunction(String name, TypeWrapper returnType) {
+        this();
+
+        m_Name = name;
+        m_ReturnType = returnType;
     }
 
     protected void AddParamDecl(TypeWrapper InType) {

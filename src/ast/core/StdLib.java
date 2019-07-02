@@ -16,7 +16,7 @@ public abstract class StdLib {
         new CharOperators().buildStd(stdBlock);
         new IntOperators().buildStd(stdBlock);
         new FloatOperators().buildStd(stdBlock);
-        new GenericOperators().buildStd(stdBlock);
+        //new GenericOperators().buildStd(stdBlock);
 
         //types
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));

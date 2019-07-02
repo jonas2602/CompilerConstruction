@@ -6,12 +6,12 @@ import java.util.List;
 public class EnumTypeNode extends TypeNode {
     private List<String> m_Names;
 
-    public EnumTypeNode(List<String> InNames) {
-        m_Names = InNames;
+    public EnumTypeNode(List<String> names) {
+        m_Names = names;
     }
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
+    public boolean CompareType(TypeNode otherNodeType) {
 //        TypeNode otherCompareType = OtherTypeNode.GetCompareType();
 //
 //        // Is the given type a valid name node?

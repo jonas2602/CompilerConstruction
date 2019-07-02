@@ -22,9 +22,9 @@ public class AssignmentNode extends AbstractSyntaxTree {
 
     private FuncCallNode m_Function;
 
-    public AssignmentNode(AbstractSyntaxTree InVariable, AbstractSyntaxTree InExpression) {
-        this.m_Variable = InVariable;
-        this.m_Expression = InExpression;
+    public AssignmentNode(AbstractSyntaxTree variable, AbstractSyntaxTree expression) {
+        this.m_Variable = variable;
+        this.m_Expression = expression;
 
         m_Variable.SetParent(this);
         m_Expression.SetParent(this);

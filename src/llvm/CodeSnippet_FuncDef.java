@@ -6,41 +6,42 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
-    private List<CodeSnippet_Base> m_Statements = new ArrayList<>();
+    private List<CodeSnippet_Base> m_Statements;
     private int m_VariableCounter;
     // private List<VariableWrapper> m_IndexElements = new ArrayList<>();
 
-    public CodeSnippet_FuncDef(String InName, CodeSnippet_Base InReturnType, int InVarIndexOffset) {
-        super(InName, InReturnType);
+    public CodeSnippet_FuncDef(String name, CodeSnippet_Base returnType, int varIndexOffset) {
+        super(name, returnType);
 
-        m_VariableCounter = InVarIndexOffset;
+        m_VariableCounter = varIndexOffset;
+        m_Statements = new ArrayList<>();
     }
 
     // @Override
-    public void AddStatement(CodeSnippet_Base InStmt) {
-        m_Statements.add(InStmt);
+    public void AddStatement(CodeSnippet_Base stmt) {
+        m_Statements.add(stmt);
     }
 
     // @Override
-    public void AddStatement(String InStmt) {
-        m_Statements.add(new CodeSnippet_Plain(InStmt));
+    public void AddStatement(String stmt) {
+        m_Statements.add(new CodeSnippet_Plain(stmt));
     }
 
     // @Override
-    public VariableWrapper AddStatementWithStorage(CodeSnippet_Base InStmt) {
+    public VariableWrapper AddStatementWithStorage(CodeSnippet_Base stmt) {
         VariableWrapper var = VariableWrapper.SCOPEVAR(m_VariableCounter++);
         // String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
-        m_Statements.add(new CodeSnippet_Args("%s = %s", var, InStmt));
+        m_Statements.add(new CodeSnippet_Args("%s = %s", var, stmt));
         return var;
     }
 
     // @Override
-    public VariableWrapper AddStatementWithStorage(String InStmt) {
-        return AddStatementWithStorage(new CodeSnippet_Plain(InStmt));
+    public VariableWrapper AddStatementWithStorage(String stmt) {
+        return AddStatementWithStorage(new CodeSnippet_Plain(stmt));
     }
 
-    public void AddStatementIncrementCounter(CodeSnippet_Base InStmt) {
-        AddStatement(InStmt);
+    public void AddStatementIncrementCounter(CodeSnippet_Base stmt) {
+        AddStatement(stmt);
         m_VariableCounter++;
     }
 

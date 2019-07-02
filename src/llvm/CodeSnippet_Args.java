@@ -8,29 +8,27 @@ public class CodeSnippet_Args extends CodeSnippet_Base {
     private String m_Format;
     private List<Object> m_Content;
 
-    public CodeSnippet_Args(String InFormat) {
-        this(InFormat, new ArrayList<>());
+    public CodeSnippet_Args(String format) {
+        this(format, new ArrayList<>());
     }
 
-    public CodeSnippet_Args(String InFormat, Object InParam) {
-        m_Format = InFormat;
-        m_Content = new ArrayList<>() {{
-            add(InParam);
-        }};
+    public CodeSnippet_Args(String format, Object param) {
+        this(format, new ArrayList<>() {{
+            add(param);
+        }});
     }
 
-    public CodeSnippet_Args(String InFormat, Object... InParams) {
-        m_Format = InFormat;
-        m_Content = List.of(InParams);
+    public CodeSnippet_Args(String format, Object... params) {
+        this(format, List.of(params));
     }
 
-    public CodeSnippet_Args(String InFormat, List<Object> InContent) {
-        m_Format = InFormat;
-        m_Content = InContent;
+    public CodeSnippet_Args(String format, List<Object> params) {
+        m_Format = format;
+        m_Content = params;
     }
 
-    public void AddParameter(Object InParam) {
-        m_Content.add(InParam);
+    public void AddParameter(Object param) {
+        m_Content.add(param);
     }
 
     @Override

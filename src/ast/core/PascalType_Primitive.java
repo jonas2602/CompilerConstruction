@@ -10,12 +10,12 @@ public class PascalType_Primitive extends PascalType {
     private String m_Placeholder;
     private String m_DefaultValue;
 
-    public PascalType_Primitive(EPrimitiveType InType, int InSize, boolean InDezimal, String InPlaceholder, String InDefaultValue) {
-        m_Type = InType;
-        m_Size = InSize;
-        m_bDezimal = InDezimal;
-        m_Placeholder = InPlaceholder;
-        m_DefaultValue = InDefaultValue;
+    public PascalType_Primitive(EPrimitiveType type, int size, boolean dezimal, String placeholder, String defaultValue) {
+        m_Type = type;
+        m_Size = size;
+        m_bDezimal = dezimal;
+        m_Placeholder = placeholder;
+        m_DefaultValue = defaultValue;
     }
 
     @Override

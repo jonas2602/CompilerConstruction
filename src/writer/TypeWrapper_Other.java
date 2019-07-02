@@ -7,8 +7,8 @@ public class TypeWrapper_Other extends TypeWrapper {
 
     private String m_TypeName;
 
-    public TypeWrapper_Other(String InTypeName) {
-        m_TypeName = InTypeName;
+    public TypeWrapper_Other(String name) {
+        m_TypeName = name;
     }
 
     @Override
@@ -29,14 +29,14 @@ public class TypeWrapper_Other extends TypeWrapper {
     }
 
     @Override
-    public boolean CompareType(TypeWrapper InOtherType) {
+    public boolean CompareType(TypeWrapper otherType) {
         // Is Named Type?
-        if (!(InOtherType instanceof TypeWrapper_Other)) {
+        if (!(otherType instanceof TypeWrapper_Other)) {
             return false;
         }
 
         // same type name?
-        if (((TypeWrapper_Other) InOtherType).m_TypeName != m_TypeName) {
+        if (((TypeWrapper_Other) otherType).m_TypeName != m_TypeName) {
             return false;
         }
 

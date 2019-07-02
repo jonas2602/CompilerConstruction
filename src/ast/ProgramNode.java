@@ -13,11 +13,12 @@ import java.util.List;
 // TODO: inherit from FuncDeclNode
 public class ProgramNode extends AbstractSyntaxTree {
     private String m_Name;
-    private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
+    private List<AbstractSyntaxTree> m_Params;
     private BlockNode m_Block;
 
-    public ProgramNode(String InName) {
-        this.m_Name = InName;
+    public ProgramNode(String name) {
+        m_Name = name;
+        m_Params = new ArrayList<>();
     }
 
     public void AddParameter(AbstractSyntaxTree InParam) {

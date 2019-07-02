@@ -7,9 +7,9 @@ public class ConstDeclNode extends AbstractSyntaxTree {
     private String m_Name;
     private AbstractSyntaxTree m_Constant;
 
-    public ConstDeclNode(String InName, AbstractSyntaxTree InConstant){
-        this.m_Name = InName;
-        this.m_Constant = InConstant;
+    public ConstDeclNode(String name, AbstractSyntaxTree constant){
+        m_Name = name;
+        m_Constant = constant;
         m_Constant.SetParent(this);
     }
 

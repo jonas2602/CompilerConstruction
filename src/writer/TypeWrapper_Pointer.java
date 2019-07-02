@@ -9,8 +9,8 @@ public class TypeWrapper_Pointer extends TypeWrapper {
 
     private TypeWrapper m_PointedType;
 
-    public TypeWrapper_Pointer(TypeWrapper InPointedType) {
-        m_PointedType = InPointedType;
+    public TypeWrapper_Pointer(TypeWrapper pointedType) {
+        m_PointedType = pointedType;
     }
 
     @Override
@@ -29,14 +29,14 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     }
 
     @Override
-    public boolean CompareType(TypeWrapper InOtherType) {
+    public boolean CompareType(TypeWrapper otherType) {
         // Is Pointer?
-        if (!(InOtherType instanceof TypeWrapper_Pointer)) {
+        if (!(otherType instanceof TypeWrapper_Pointer)) {
             return false;
         }
 
         // Same pointed type?
-        if (!((TypeWrapper_Pointer) InOtherType).m_PointedType.CompareType(m_PointedType)) {
+        if (!((TypeWrapper_Pointer) otherType).m_PointedType.CompareType(m_PointedType)) {
             return false;
         }
 

@@ -7,14 +7,14 @@ public class CodeSnippet_Parameter extends CodeSnippet_Base {
     private CodeSnippet_Base m_Type;
     private CodeSnippet_Base m_Data;
 
-    public CodeSnippet_Parameter(CodeSnippet_Base InType, CodeSnippet_Base InData) {
-        m_Type = InType;
-        m_Data = InData;
+    public CodeSnippet_Parameter(CodeSnippet_Base type, CodeSnippet_Base data) {
+        m_Type = type;
+        m_Data = data;
     }
 
-    public CodeSnippet_Parameter(CodeSnippet_Type.EType InType, CodeSnippet_Base InData) {
-        m_Type = new CodeSnippet_Type(InType);
-        m_Data = InData;
+    public CodeSnippet_Parameter(CodeSnippet_Type.EType type, CodeSnippet_Base data) {
+        m_Type = new CodeSnippet_Type(type);
+        m_Data = data;
     }
 
     public CodeSnippet_Base GetTypeSnippet() {

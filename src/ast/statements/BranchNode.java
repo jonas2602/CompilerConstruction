@@ -11,10 +11,10 @@ public class BranchNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Then;
     private AbstractSyntaxTree m_Else;
 
-    public BranchNode(AbstractSyntaxTree InCondition, AbstractSyntaxTree InThen, AbstractSyntaxTree InElse) {
-        this.m_Condition = InCondition;
-        this.m_Then = InThen;
-        this.m_Else = InElse;
+    public BranchNode(AbstractSyntaxTree condition, AbstractSyntaxTree thenBlock, AbstractSyntaxTree elseBlock) {
+        this.m_Condition = condition;
+        this.m_Then = thenBlock;
+        this.m_Else = elseBlock;
 
         m_Condition.SetParent(this);
         m_Then.SetParent(this);

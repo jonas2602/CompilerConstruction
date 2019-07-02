@@ -11,30 +11,30 @@ import writer.ParamContainer;
 import writer.ValueWrapper;
 
 public class ForNode extends AbstractSyntaxTree {
-    AbstractSyntaxTree m_Variable;
+    private AbstractSyntaxTree m_Variable;
     // AbstractSyntaxTree m_InitialValue;
     // AbstractSyntaxTree m_FinalValue;
     // boolean m_Increment;
 
-    AssignmentNode m_InitAssign;
-    FuncCallNode m_CompCall;
-    FuncCallNode m_StepCall;
-    AbstractSyntaxTree m_Body;
+    private AssignmentNode m_InitAssign;
+    private FuncCallNode m_CompCall;
+    private FuncCallNode m_StepCall;
+    private AbstractSyntaxTree m_Body;
 
-    public ForNode(AbstractSyntaxTree InVariable, AbstractSyntaxTree InInitialValue, AbstractSyntaxTree InFinalValue, boolean bIncrement, AbstractSyntaxTree InBody) {
-        this.m_Variable = InVariable;
-        this.m_Body = InBody;
+    public ForNode(AbstractSyntaxTree variable, AbstractSyntaxTree initialValue, AbstractSyntaxTree finalValue, boolean bIncrement, AbstractSyntaxTree body) {
+        this.m_Variable = variable;
+        this.m_Body = body;
 
-        m_InitAssign = new AssignmentNode(InVariable, InInitialValue);
+        m_InitAssign = new AssignmentNode(variable, initialValue);
 
         Operator compOperator = bIncrement ? Operator.LE : Operator.GE;
         m_CompCall = new FuncCallNode(compOperator);
-        m_CompCall.AddParameter(InVariable);
-        m_CompCall.AddParameter(InFinalValue);
+        m_CompCall.AddParameter(variable);
+        m_CompCall.AddParameter(finalValue);
 
         Operator stepOperator = bIncrement ? Operator.INC : Operator.DEC;
         m_StepCall = new FuncCallNode(stepOperator);
-        m_StepCall.AddParameter(InVariable);
+        m_StepCall.AddParameter(variable);
 
 
         m_InitAssign.SetParent(this);

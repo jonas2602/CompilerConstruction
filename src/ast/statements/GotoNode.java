@@ -11,8 +11,8 @@ public class GotoNode extends AbstractSyntaxTree {
     private String m_LabelName;
     private LabelDeclNode m_LabelDecl;
 
-    public GotoNode(String InLabelName) {
-        this.m_LabelName = InLabelName;
+    public GotoNode(String labelName) {
+        this.m_LabelName = labelName;
     }
 
     @Override

@@ -24,17 +24,17 @@ public class NamedTypeNode extends TypeNode {
     // Self if primitive type, type of TypeDeclaration if custom type
     private TypeNode m_TypeDetails;
 
-    public NamedTypeNode(String InName) {
-        m_TypeName = InName;
+    public NamedTypeNode(String name) {
+        m_TypeName = name;
     }
 
-    public NamedTypeNode(EPrimitiveType InType) {
-        m_TypeName = InType.label();
+    public NamedTypeNode(EPrimitiveType type) {
+        m_TypeName = type.label();
     }
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
-        TypeNode otherCompareType = OtherTypeNode.GetCompareType();
+    public boolean CompareType(TypeNode otherTypeNode) {
+        TypeNode otherCompareType = otherTypeNode.GetCompareType();
 
         // Is the given type a valid name node?
         if (!(otherCompareType instanceof NamedTypeNode)) return false;
@@ -62,13 +62,13 @@ public class NamedTypeNode extends TypeNode {
         throw new TypeCheckException(this, "Type with name " + m_TypeName + " is not defined");
     }
 
-    public static boolean IsPrimitiveType(TypeNode InType, boolean IncludingVoid) {
-        if (InType.CompareType(IntNode)) return true;
-        if (InType.CompareType(RealNode)) return true;
-        if (InType.CompareType(BoolNode)) return true;
-        if (InType.CompareType(CharNode)) return true;
-        if (InType.CompareType(StringNode)) return true;
-        if (InType.CompareType(VoidNode) && IncludingVoid) return true;
+    public static boolean IsPrimitiveType(TypeNode type, boolean includingVoid) {
+        if (type.CompareType(IntNode)) return true;
+        if (type.CompareType(RealNode)) return true;
+        if (type.CompareType(BoolNode)) return true;
+        if (type.CompareType(CharNode)) return true;
+        if (type.CompareType(StringNode)) return true;
+        if (type.CompareType(VoidNode) && includingVoid) return true;
 
         return false;
     }

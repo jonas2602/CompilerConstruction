@@ -3,31 +3,31 @@ package llvm;
 import java.util.List;
 
 public class CodeSnippetHelper {
-    public static String MakeSeperatedString(String InSeperator, List<String> InElements) {
+    public static String MakeSeperatedString(String seperator, List<String> elements) {
         StringBuilder builder = new StringBuilder();
 
-        if(InElements.size() > 0) {
-            builder.append(InElements.get(0));
+        if(elements.size() > 0) {
+            builder.append(elements.get(0));
         }
 
-        for (int i = 1; i < InElements.size(); i++) {
-            builder.append(InSeperator);
-            builder.append(InElements.get(i));
+        for (int i = 1; i < elements.size(); i++) {
+            builder.append(seperator);
+            builder.append(elements.get(i));
         }
 
         return builder.toString();
     }
 
-    public static String MakeSeperatedSnippets(String InSeperator, List<CodeSnippet_Base> InElements) {
+    public static String MakeSeperatedSnippets(String seperator, List<CodeSnippet_Base> elements) {
         StringBuilder builder = new StringBuilder();
 
-        if(InElements.size() > 0) {
-            builder.append(InElements.get(0).Write());
+        if(elements.size() > 0) {
+            builder.append(elements.get(0).Write());
         }
 
-        for (int i = 1; i < InElements.size(); i++) {
-            builder.append(InSeperator);
-            builder.append(InElements.get(i).Write());
+        for (int i = 1; i < elements.size(); i++) {
+            builder.append(seperator);
+            builder.append(elements.get(i).Write());
         }
 
         return builder.toString();

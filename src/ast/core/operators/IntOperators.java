@@ -66,8 +66,8 @@ public class IntOperators implements StdBuilder {
     }
 
     public static abstract class IntOperator extends PascalType_Operator {
-        public IntOperator(Operator operator, TypeNode InReturnType, TypeNode rparam, FunctionCallTwoParams operation) {
-            super(operator, InReturnType, PrimitiveTypeNode.IntNode, rparam, operation);
+        public IntOperator(Operator operator, TypeNode returnType, TypeNode rparam, FunctionCallTwoParams operation) {
+            super(operator, returnType, PrimitiveTypeNode.IntNode, rparam, operation);
         }
     }
 

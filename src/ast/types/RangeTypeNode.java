@@ -10,18 +10,18 @@ public class RangeTypeNode extends TypeNode {
     private AbstractSyntaxTree m_Min;
     private AbstractSyntaxTree m_Max;
 
-    public RangeTypeNode(AbstractSyntaxTree InMin, AbstractSyntaxTree InMax) {
-        this.m_Min = InMin;
-        this.m_Max = InMax;
+    public RangeTypeNode(AbstractSyntaxTree min, AbstractSyntaxTree max) {
+        this.m_Min = min;
+        this.m_Max = max;
     }
 
     // TODO: How to check if value is in range?
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
+    public boolean CompareType(TypeNode otherTypeNode) {
         // comparison can always be done with the type of the stored minNode,
         // because the minNode has the actual range type
-        return GetCompareType().CompareType(OtherTypeNode);
+        return GetCompareType().CompareType(otherTypeNode);
     }
 
     @Override

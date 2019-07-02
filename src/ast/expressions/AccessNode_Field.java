@@ -10,9 +10,9 @@ public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterf
     private AbstractSyntaxTree m_Child;
     private String m_FieldName;
 
-    public AccessNode_Field(AbstractSyntaxTree InChild, String InFieldName) {
-        this.m_Child = InChild;
-        this.m_FieldName = InFieldName;
+    public AccessNode_Field(AbstractSyntaxTree child, String fieldName) {
+        m_Child = child;
+        m_FieldName = fieldName;
 
         m_Child.SetParent(this);
     }
@@ -34,7 +34,7 @@ public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterf
     }
 
     @Override
-    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
-        return InPointer;
+    public ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer) {
+        return pointer;
     }
 }

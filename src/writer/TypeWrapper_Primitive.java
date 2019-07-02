@@ -12,8 +12,8 @@ public class TypeWrapper_Primitive extends TypeWrapper {
 
     private PascalType_Primitive m_BaseType; // i8, i32, float, ...
 
-    public TypeWrapper_Primitive(PascalType_Primitive InType) {
-        m_BaseType = InType;
+    public TypeWrapper_Primitive(PascalType_Primitive type) {
+        m_BaseType = type;
     }
 
     @Override
@@ -33,14 +33,14 @@ public class TypeWrapper_Primitive extends TypeWrapper {
     }
 
     @Override
-    public boolean CompareType(TypeWrapper InOtherType) {
+    public boolean CompareType(TypeWrapper otherType) {
         // Is Primitive?
-        if (!(InOtherType instanceof TypeWrapper_Primitive)) {
+        if (!(otherType instanceof TypeWrapper_Primitive)) {
             return false;
         }
 
         // same primitive?
-        if (((TypeWrapper_Primitive) InOtherType).m_BaseType.getClass() != m_BaseType.getClass()) {
+        if (((TypeWrapper_Primitive) otherType).m_BaseType.getClass() != m_BaseType.getClass()) {
             return false;
         }
 

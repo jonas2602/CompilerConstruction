@@ -20,20 +20,22 @@ import java.util.List;
 
 public class FuncDeclNode extends AbstractSyntaxTree {
     protected String m_Name;
-    protected List<ParamDeclNode> m_Params = new ArrayList<>();
+    protected List<ParamDeclNode> m_Params;
     protected TypeNode m_ReturnType;
     protected BlockNode m_Block;
 
     protected boolean m_IsCreated = false;
     protected boolean m_bInline = false;
 
-    public FuncDeclNode(String InName, TypeNode InReturnType, BlockNode InBlock) {
-        m_Name = InName;
-        m_ReturnType = InReturnType;
-        m_Block = InBlock;
+    public FuncDeclNode(String name, TypeNode returnType, BlockNode block) {
+        m_Name = name;
+        m_ReturnType = returnType;
+        m_Block = block;
 
         m_ReturnType.SetParent(this);
-        InBlock.SetParent(this);
+        m_Block.SetParent(this);
+
+        m_Params = new ArrayList<>();
     }
 
     public void AddParameter(ParamDeclNode InParam) {
@@ -77,20 +79,20 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return GetType();
     }
 
-    public boolean ValidateCall(FuncCallNode InCallNode) {
+    public boolean ValidateCall(FuncCallNode callNode) {
         // Parameter count fits the definition?
-        if (InCallNode.GetParameterCount() != m_Params.size()) {
-            // throw new TypeCheckException(InCallNode, "Function expected " + InCallNode.GetParameterCount() + " Arguments but received " + m_Params.size());
+        if (callNode.GetParameterCount() != m_Params.size()) {
+            // throw new TypeCheckException(callNode, "Function expected " + callNode.GetParameterCount() + " Arguments but received " + m_Params.size());
             return false;
         }
 
         // Compare given parameters to expected types
         for (int i = 0; i < m_Params.size(); i++) {
-            TypeNode CallParamType = InCallNode.GetParameter(i).GetType();
+            TypeNode CallParamType = callNode.GetParameter(i).GetType();
             TypeNode FuncParamType = m_Params.get(i).GetType();
 
             // "VAR" parameters only accept variables, no constants
-            if (InCallNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).IsByReference()) {
+            if (callNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).IsByReference()) {
                 return false;
             }
 
@@ -102,15 +104,15 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return true;
     }
 
-    public boolean CompareSignature(FuncDeclNode InOther) {
+    public boolean CompareSignature(FuncDeclNode other) {
         // equal parameter counts?
-        if (InOther.m_Params.size() != m_Params.size()) {
+        if (other.m_Params.size() != m_Params.size()) {
             return false;
         }
 
         // Compare parameter types
         for (int i = 0; i < m_Params.size(); i++) {
-            TypeNode otherParamType = InOther.m_Params.get(i).GetType();
+            TypeNode otherParamType = other.m_Params.get(i).GetType();
             TypeNode funcParamType = m_Params.get(i).GetType();
             if (!funcParamType.CompareType(otherParamType)) {
                 return false;
@@ -118,7 +120,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         }
 
         // Compare return types
-        if (!m_ReturnType.CompareType(InOther.m_ReturnType)) {
+        if (!m_ReturnType.CompareType(other.m_ReturnType)) {
             return false;
         }
 

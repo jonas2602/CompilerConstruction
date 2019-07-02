@@ -9,8 +9,8 @@ public class VarTypeNode extends PointerTypeNode {
     public static final VarTypeNode CharVarNode = new VarTypeNode(PrimitiveTypeNode.CharNode);
     public static final VarTypeNode BoolVarNode = new VarTypeNode(PrimitiveTypeNode.BoolNode);
 
-    public VarTypeNode(TypeNode InBaseType) {
-        super(InBaseType);
+    public VarTypeNode(TypeNode baseType) {
+        super(baseType);
     }
 
     @Override
@@ -19,12 +19,12 @@ public class VarTypeNode extends PointerTypeNode {
     }
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
-        if (OtherTypeNode == null) {
+    public boolean CompareType(TypeNode otherTypeNode) {
+        if (otherTypeNode == null) {
             return false;
         }
 
-        if (!OtherTypeNode.CompareType(m_BaseType)) {
+        if (!otherTypeNode.CompareType(m_BaseType)) {
             return false;
         }
 

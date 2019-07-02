@@ -26,8 +26,8 @@ public class CodeSnippet_Type extends CodeSnippet_Base {
             this.defaultValue = defaultValue;
         }
 
-        public static EType FromAstType(EPrimitiveType InType) {
-            switch (InType){
+        public static EType FromAstType(EPrimitiveType type) {
+            switch (type){
                 case INT: return EType.INT;
                 case FLOAT: return EType.FLOAT;
                 case CHAR: return EType.CHAR;
@@ -56,8 +56,8 @@ public class CodeSnippet_Type extends CodeSnippet_Base {
 
     private EType m_Type;
 
-    public CodeSnippet_Type(EType InType) {
-        m_Type = InType;
+    public CodeSnippet_Type(EType type) {
+        m_Type = type;
     }
 
     public EType GetType() {

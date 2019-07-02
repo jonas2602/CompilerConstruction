@@ -14,8 +14,8 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
     private String m_Name;
     private VarDeclNode m_Declaration;
 
-    public AccessNode_Variable(String InName) {
-        this.m_Name = InName;
+    public AccessNode_Variable(String name) {
+        this.m_Name = name;
     }
 
     public VarDeclNode GetDeclaration() {
@@ -68,7 +68,7 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
     }
 
     @Override
-    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
-        return InSlave.LoadFromVariable(InPointer);
+    public ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer) {
+        return slave.LoadFromVariable(pointer);
     }
 }

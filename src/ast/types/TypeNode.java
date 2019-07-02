@@ -9,7 +9,7 @@ public abstract class TypeNode extends AbstractSyntaxTree {
         return "%s";
     }
 
-    public boolean CompareType(TypeNode OtherTypeNode) {
+    public boolean CompareType(TypeNode otherTypeNode) {
         return false;
     }
 

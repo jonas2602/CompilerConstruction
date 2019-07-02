@@ -3,8 +3,8 @@ package writer;
 public class ConstantWrapper extends ValueWrapper {
     private String m_Data;
 
-    public ConstantWrapper(String InData) {
-        m_Data = InData;
+    public ConstantWrapper(String data) {
+        m_Data = data;
     }
 
     @Override

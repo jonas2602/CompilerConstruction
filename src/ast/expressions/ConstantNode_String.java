@@ -11,9 +11,9 @@ import writer.GeneratorSlave;
 import writer.ParamContainer;
 
 public class ConstantNode_String extends ConstantNode {
-    public ConstantNode_String(String InData) {
+    public ConstantNode_String(String data) {
 
-        super(InData, new ArrayTypeNode(InData.length() + 1, PrimitiveTypeNode.CharNode));
+        super(data, new ArrayTypeNode(data.length() + 1, PrimitiveTypeNode.CharNode));
     }
 
     // @Override

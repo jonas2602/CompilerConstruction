@@ -9,19 +9,19 @@ import writer.ParamContainer;
 public interface AccessInterface {
     public abstract VarDeclNode GetVarDeclNode();
 
-    public abstract ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer);
+    public abstract ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer);
 
     // TODO: find more suitable solution!!
     //  Maybe add a second parameter to CreateSnippet that requests "by value" or "by reference"
-    public static ParamContainer TryLoadValue(GeneratorSlave InSlave, AbstractSyntaxTree InNode, ParamContainer InPointer) {
-        if (InNode instanceof AccessInterface) {
-            return ((AccessInterface) InNode).LoadValue(InSlave, InPointer);
+    public static ParamContainer TryLoadValue(GeneratorSlave slave, AbstractSyntaxTree node, ParamContainer pointer) {
+        if (node instanceof AccessInterface) {
+            return ((AccessInterface) node).LoadValue(slave, pointer);
         }
 
-        if (InNode instanceof ConstantNode_String) {
-            return InSlave.LoadFromVariable(InPointer);
+        if (node instanceof ConstantNode_String) {
+            return slave.LoadFromVariable(pointer);
         }
 
-        return InPointer;
+        return pointer;
     }
 }

@@ -9,8 +9,8 @@ import writer.TypeWrapper;
 
 public class ParamDeclNode extends VarDeclNode {
 
-    public ParamDeclNode(String InName, TypeNode InType) {
-        super(InName, InType);
+    public ParamDeclNode(String name, TypeNode type) {
+        super(name, type);
     }
 
     public void SetByReference() {

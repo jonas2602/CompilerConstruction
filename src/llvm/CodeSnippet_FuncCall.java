@@ -12,13 +12,13 @@ public class CodeSnippet_FuncCall extends CodeSnippet_Base implements ScopeInter
     private List<CodeSnippet_Base> m_TypeExtension;
     private List<CodeSnippet_Base> m_Parameters;
 
-    public CodeSnippet_FuncCall(String InFunctionName, TypeWrapper InReturnType) {
-        this(InFunctionName, new CodeSnippet_Plain(InReturnType.CreateTypeName()));
+    public CodeSnippet_FuncCall(String functionName, TypeWrapper returnType) {
+        this(functionName, new CodeSnippet_Plain(returnType.CreateTypeName()));
     }
 
-    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType) {
-        m_FunctionName = InFunctionName;
-        m_ReturnType = InReturnType;
+    public CodeSnippet_FuncCall(String functionName, CodeSnippet_Base returnType) {
+        m_FunctionName = functionName;
+        m_ReturnType = returnType;
         m_Parameters = new ArrayList<>();
         m_TypeExtension = new ArrayList<>();
     }
@@ -39,19 +39,19 @@ public class CodeSnippet_FuncCall extends CodeSnippet_Base implements ScopeInter
 //    }
 
     @Override
-    public VariableWrapper AddParameter(CodeSnippet_Base InParam) {
-        m_Parameters.add(InParam);
+    public VariableWrapper AddParameter(CodeSnippet_Base param) {
+        m_Parameters.add(param);
         return null;
     }
 
     @Override
-    public VariableWrapper AddParameter(String InParam) {
-        m_Parameters.add(new CodeSnippet_Plain(InParam));
+    public VariableWrapper AddParameter(String param) {
+        m_Parameters.add(new CodeSnippet_Plain(param));
         return null;
     }
 
-    public void AddTypeExtension(TypeWrapper InType) {
-        m_TypeExtension.add(new CodeSnippet_Plain(InType.CreateTypeName()));
+    public void AddTypeExtension(TypeWrapper type) {
+        m_TypeExtension.add(new CodeSnippet_Plain(type.CreateTypeName()));
     }
 
     // TODO: Constructor that initializes from FunctionDecl snippet

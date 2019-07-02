@@ -5,7 +5,6 @@ import ast.core.FuncDeclNode_Core;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
-import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
@@ -14,8 +13,8 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
 
     protected FunctionCallTwoParams operation;
 
-    public PascalType_Operator(Operator operator, TypeNode InReturnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
-        super(operator.GetOperatorFunctionName(), InReturnType);
+    public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
+        super(operator.GetOperatorFunctionName(), returnType);
 
         AddParameter(new ParamDeclNode("left", lparam));
         AddParameter(new ParamDeclNode("right", rparam));

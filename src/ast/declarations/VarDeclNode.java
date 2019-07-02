@@ -13,9 +13,9 @@ public class VarDeclNode extends AbstractSyntaxTree {
     protected int m_ScopeIndex = -1;
     protected ParamContainer m_ScopeContainer = null;
 
-    public VarDeclNode(String InName, TypeNode InType) {
-        this.m_Name = InName;
-        this.m_Type = InType;
+    public VarDeclNode(String name, TypeNode type) {
+        m_Name = name;
+        m_Type = type;
         m_Type.SetParent(this);
     }
 

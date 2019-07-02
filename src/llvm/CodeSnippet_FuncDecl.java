@@ -8,18 +8,19 @@ import java.util.List;
 
 public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInterface {
     protected String m_Name;
-    protected List<CodeSnippet_Base> m_Params = new ArrayList<>();
+    protected List<CodeSnippet_Base> m_Params;
     protected CodeSnippet_Base m_ReturnType;
 
     protected int m_ParameterCounter = 0;
 
-    public CodeSnippet_FuncDecl(String InName, CodeSnippet_Base InReturnType) {
-        m_Name = InName;
-        m_ReturnType = InReturnType;
+    public CodeSnippet_FuncDecl(String name, CodeSnippet_Base returnType) {
+        m_Name = name;
+        m_ReturnType = returnType;
+        m_Params = new ArrayList<>();
     }
 
-    public VariableWrapper AddParameter(CodeSnippet_Base InParam) {
-        m_Params.add(InParam);
+    public VariableWrapper AddParameter(CodeSnippet_Base param) {
+        m_Params.add(param);
         return VariableWrapper.SCOPEVAR(m_ParameterCounter++);
     }
 

@@ -13,8 +13,8 @@ public class LabelNode extends AbstractSyntaxTree {
     private String m_LabelName;
     private ParamContainer m_LabelContainer;
 
-    public LabelNode(String InLabelName) {
-        m_LabelName = InLabelName;
+    public LabelNode(String labelName) {
+        m_LabelName = labelName;
         m_LabelContainer = ParamContainer.LABELCONTAINER();
     }
 

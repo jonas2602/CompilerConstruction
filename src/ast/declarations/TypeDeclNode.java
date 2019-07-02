@@ -4,12 +4,12 @@ import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 
 public class TypeDeclNode extends AbstractSyntaxTree {
-    String m_Name;
-    TypeNode m_Type;
+    private String m_Name;
+    private TypeNode m_Type;
 
-    public TypeDeclNode(String InName, TypeNode InType) {
-        this.m_Name = InName;
-        this.m_Type = InType;
+    public TypeDeclNode(String name, TypeNode type) {
+        m_Name = name;
+        m_Type = type;
         m_Type.SetParent(this);
     }
 

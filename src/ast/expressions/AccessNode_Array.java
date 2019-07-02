@@ -14,11 +14,13 @@ import java.util.ArrayList;
 
 public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;
-    private List<AbstractSyntaxTree> m_IndexExpressions = new ArrayList<>();
+    private List<AbstractSyntaxTree> m_IndexExpressions;
 
-    public AccessNode_Array(AbstractSyntaxTree InChild) {
-        this.m_Child = InChild;
+    public AccessNode_Array(AbstractSyntaxTree child) {
+        m_Child = child;
         m_Child.SetParent(this);
+
+        m_IndexExpressions = new ArrayList<>();
     }
 
     public void AddIndexExpression(AbstractSyntaxTree exp) {
@@ -64,7 +66,7 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
     }
 
     @Override
-    public ParamContainer LoadValue(GeneratorSlave InSlave, ParamContainer InPointer) {
-        return InSlave.LoadFromVariable(InPointer);
+    public ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer) {
+        return slave.LoadFromVariable(pointer);
     }
 }

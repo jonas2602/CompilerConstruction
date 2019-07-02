@@ -11,9 +11,9 @@ public class ConstantNode extends AbstractSyntaxTree {
     protected String m_Data;
     protected TypeNode m_Type;
 
-    public ConstantNode(String InData, TypeNode InType) {
-        this.m_Data = InData;
-        this.m_Type = InType;
+    public ConstantNode(String data, TypeNode type) {
+        this.m_Data = data;
+        this.m_Type = type;
 
         m_Type.SetParent(this);
     }

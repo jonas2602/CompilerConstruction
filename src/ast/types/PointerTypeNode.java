@@ -11,8 +11,8 @@ public class PointerTypeNode extends TypeNode {
 
     protected TypeNode m_BaseType;
 
-    public PointerTypeNode(TypeNode InBaseType) {
-        m_BaseType = InBaseType;
+    public PointerTypeNode(TypeNode baseType) {
+        m_BaseType = baseType;
     }
 
     @Override
@@ -33,16 +33,16 @@ public class PointerTypeNode extends TypeNode {
     }
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
-        if (OtherTypeNode == null) {
+    public boolean CompareType(TypeNode otherTypeNode) {
+        if (otherTypeNode == null) {
             return false;
         }
 
-        if (!(OtherTypeNode instanceof PointerTypeNode)) {
+        if (!(otherTypeNode instanceof PointerTypeNode)) {
             return false;
         }
 
-        TypeNode OtherBaseType = ((PointerTypeNode) OtherTypeNode).m_BaseType;
+        TypeNode OtherBaseType = ((PointerTypeNode) otherTypeNode).m_BaseType;
         if (!OtherBaseType.CompareType(m_BaseType)) {
             return false;
         }

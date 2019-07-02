@@ -18,16 +18,17 @@ import java.util.List;
 
 public class FuncCallNode extends AbstractSyntaxTree {
     private String m_FuncName;
-    private List<AbstractSyntaxTree> m_Params = new ArrayList<>();
+    private List<AbstractSyntaxTree> m_Params;
 
     private FuncDeclNode m_FuncDecl;
 
-    public FuncCallNode(String InFuncName) {
-        this.m_FuncName = InFuncName;
+    public FuncCallNode(String name) {
+        m_FuncName = name;
+        m_Params = new ArrayList<>();
     }
 
-    public FuncCallNode(Operator InOperator) {
-        this.m_FuncName = InOperator.GetOperatorFunctionName();
+    public FuncCallNode(Operator operator) {
+        this(operator.GetOperatorFunctionName());
     }
 
     public void AddParameter(AbstractSyntaxTree InParam) {

@@ -8,10 +8,10 @@ public class CodeSnippet_Constant extends CodeSnippet_Base {
     private CodeSnippet_Base m_Type;
     private CodeSnippet_Plain m_Data;
 
-    public CodeSnippet_Constant(CodeSnippet_Base InName, CodeSnippet_Base InType, CodeSnippet_Plain InData) {
-        m_Name = InName;
-        m_Type = InType;
-        m_Data = InData;
+    public CodeSnippet_Constant(CodeSnippet_Base name, CodeSnippet_Base type, CodeSnippet_Plain data) {
+        m_Name = name;
+        m_Type = type;
+        m_Data = data;
     }
 
     public CodeSnippet_Base GetName() {

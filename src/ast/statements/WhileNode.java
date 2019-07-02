@@ -13,10 +13,10 @@ public class WhileNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Condition;
     private AbstractSyntaxTree m_Body;
 
-    public WhileNode(AbstractSyntaxTree InCondition, AbstractSyntaxTree InBody)
+    public WhileNode(AbstractSyntaxTree condition, AbstractSyntaxTree body)
     {
-        this.m_Condition = InCondition;
-        this.m_Body = InBody;
+        this.m_Condition = condition;
+        this.m_Body = body;
 
         m_Condition.SetParent(this);
         m_Body.SetParent(this);

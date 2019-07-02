@@ -17,8 +17,8 @@ public class PrimitiveTypeNode extends TypeNode {
 
     private PascalType_Primitive m_PrimitiveType;
 
-    public PrimitiveTypeNode(PascalType_Primitive InType) {
-        m_PrimitiveType = InType;
+    public PrimitiveTypeNode(PascalType_Primitive type) {
+        m_PrimitiveType = type;
     }
 
     @Override
@@ -53,16 +53,16 @@ public class PrimitiveTypeNode extends TypeNode {
     }
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
-        if (OtherTypeNode == null) {
+    public boolean CompareType(TypeNode otherTypeNode) {
+        if (otherTypeNode == null) {
             return false;
         }
 
-        if (!(OtherTypeNode instanceof PrimitiveTypeNode)) {
+        if (!(otherTypeNode instanceof PrimitiveTypeNode)) {
             return false;
         }
 
-        PascalType_Primitive OtherType = ((PrimitiveTypeNode) OtherTypeNode).m_PrimitiveType;
+        PascalType_Primitive OtherType = ((PrimitiveTypeNode) otherTypeNode).m_PrimitiveType;
         if (OtherType.getClass() != m_PrimitiveType.getClass()) {
             return false;
         }

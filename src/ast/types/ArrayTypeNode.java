@@ -16,19 +16,19 @@ public class ArrayTypeNode extends TypeNode {
     private AbstractSyntaxTree m_ElementCounter;
     private TypeNode m_ElementType;
 
-    public ArrayTypeNode(AbstractSyntaxTree InElementCounter, TypeNode InElementType) {
-        m_ElementCounter = InElementCounter;
-        m_ElementType = InElementType;
+    public ArrayTypeNode(AbstractSyntaxTree elementCounter, TypeNode elementType) {
+        m_ElementCounter = elementCounter;
+        m_ElementType = elementType;
 
         m_ElementCounter.SetParent(this);
         m_ElementType.SetParent(this);
     }
 
-    public ArrayTypeNode(int InSize, TypeNode InElementType) {
+    public ArrayTypeNode(int size, TypeNode elementType) {
         ConstantNode min = new ConstantNode("0", PrimitiveTypeNode.IntNode);
-        ConstantNode max = new ConstantNode(Integer.toString(InSize - 1), PrimitiveTypeNode.IntNode);
+        ConstantNode max = new ConstantNode(Integer.toString(size - 1), PrimitiveTypeNode.IntNode);
         m_ElementCounter = new RangeTypeNode(min, max);
-        m_ElementType = InElementType;
+        m_ElementType = elementType;
 
         m_ElementCounter.SetParent(this);
         m_ElementType.SetParent(this);
@@ -61,16 +61,16 @@ public class ArrayTypeNode extends TypeNode {
     }
 
     @Override
-    public boolean CompareType(TypeNode OtherTypeNode) {
-        if (OtherTypeNode == null) {
+    public boolean CompareType(TypeNode otherNodeType) {
+        if (otherNodeType == null) {
             return false;
         }
 
-        if (!(OtherTypeNode instanceof ArrayTypeNode)) {
+        if (!(otherNodeType instanceof ArrayTypeNode)) {
             return false;
         }
 
-        TypeNode OtherElementType = ((ArrayTypeNode) OtherTypeNode).m_ElementType;
+        TypeNode OtherElementType = ((ArrayTypeNode) otherNodeType).m_ElementType;
         if (!OtherElementType.CompareType(m_ElementType)) {
             return false;
         }

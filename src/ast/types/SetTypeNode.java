@@ -3,8 +3,8 @@ package ast.types;
 public class SetTypeNode extends TypeNode {
     private TypeNode m_ElementType;
 
-    public SetTypeNode(TypeNode InType) {
-        m_ElementType = InType;
+    public SetTypeNode(TypeNode type) {
+        m_ElementType = type;
     }
 
     @Override
