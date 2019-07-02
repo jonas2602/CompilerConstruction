@@ -54,12 +54,15 @@ void stringtest()
 {
     // char mychar = 'x';
     // char mychararr[5] = {'a', 'b', 'c', 'd', 'e'};
-    // char* mystr = "abcde";
-    char mystrArray[5] = "test"; 
+    char mystr[15] = "abcde";
+    char *otherstr = "xyz";
+    // char mystrArray[5] = "test";
+
+    strcat(mystr, otherstr);
     // int myintarr[4] = {1, 2, 3, 4};
 
     // char *mystr = "abcde";
-    printf("%s", mystrArray);
+    printf("%s %s %s", mystr, otherstr, "test123");
 }
 
 int branches(int i)
@@ -101,12 +104,57 @@ void loops(int length)
     }
 }
 
+char *strbuilder(char left, char right)
+{
+    char *str = (char *)malloc(sizeof(char) * 2);
+    str[0] = left;
+    str[1] = right;
+
+    return str;
+}
+
+
+double check(double x, int y, char *str)
+{
+    return x + y;
+}
+
+void cases(int i)
+{
+    switch (i)
+    {
+        case 0:
+        {
+            break;
+        }
+        case 2:
+        {
+            break;
+        }
+        case 4:
+        {
+            break;
+        }
+        case 10:
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
 int main()
 {
-//     int i = 0;
-// Endlos:
-//     i++;
-//     goto Endlos;
+    //     int i = 0;
+    // Endlos:
+    //     i++;
+    //     goto Endlos;
 
-    stringtest();
+    // stringtest();
+
+    // printf("%s", strbuilder('a', 'b'));
+    cases(5);
 }

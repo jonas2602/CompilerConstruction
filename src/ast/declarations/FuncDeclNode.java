@@ -11,7 +11,6 @@ import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Plain;
-import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 

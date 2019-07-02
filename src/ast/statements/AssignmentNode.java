@@ -9,8 +9,10 @@ import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
+import llvm.NativeFunction_memcpy;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
+import writer.TypeManager;
 import writer.TypeWrapper_Array;
 
 import java.util.List;
@@ -63,29 +65,9 @@ public class AssignmentNode extends AbstractSyntaxTree {
         return null;
     }
 
-    // @Override
-    // public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-    //     CodeSnippet_Base exp = m_Expression.CreateSnippet(slave, ctx);
-
-    //     // TODO: Arrays, Records, ...?
-    //     VarDeclNode varDecl = ((AccessNode_Variable) m_Variable).GetDeclaration();
-
-    //     // Is expression a constant?
-    //     if (m_Expression instanceof ConstantNode) {
-    //         int LocalIndex = slave.AllocateInt();
-    //         slave.StoreInt(exp.Write(), LocalIndex);
-    //         varDecl.SetScopeIndex(LocalIndex);
-    //     } else {
-    //         // assign local index to variable
-    //         varDecl.SetScopeIndex(Integer.parseInt(exp.Write().substring(1)));
-    //     }
-
-    //     return exp;
-    // }
-
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        if(m_FuncCallNode != null){
+        if (m_FuncCallNode != null) {
             return m_FuncCallNode.CreateSnippet(slave);
         }
 
@@ -93,8 +75,6 @@ public class AssignmentNode extends AbstractSyntaxTree {
         ParamContainer varAccess = m_Variable.CreateSnippet(slave);
 
         if (varAccess.IsPointer() && varAccess.GetRootType().GetChild() instanceof TypeWrapper_Array) {
-            FuncDeclNode memcpy = GetOwningBlock().GetFunctionDeclaration("llvm.memcpy.p0i8.p0i8.i64").get(0);
-            memcpy.CreateSnippet(slave);
             slave.CopyMemory(exp, varAccess);
         } else {
             // if the expression on the right of the assignment is not a constant (variable access stuff)

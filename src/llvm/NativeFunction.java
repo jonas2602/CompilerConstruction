@@ -37,6 +37,7 @@ public abstract class NativeFunction {
         for (TypeWrapper paramType : m_ParamTypes) {
             slave.CreateFunctionParameter(paramType);
         }
+
         slave.ExitScope();
     }
 
@@ -53,6 +54,7 @@ public abstract class NativeFunction {
             }
         }
 
+        slave.ExitScope();
         return outContainer;
     }
 }

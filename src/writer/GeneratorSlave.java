@@ -44,18 +44,6 @@ public class GeneratorSlave {
         return (CodeSnippet_FuncCall) m_ActiveScope;
     }
 
-    // public CodeSnippet_Constant CreateStringConstant(String InContent) {
-    //     int size = InContent.length() + 1;
-    //     String constName = String.format("@.str.%d", m_ConstantCounter++);
-    //     CodeSnippet_Type constType = new CodeSnippet_TypeArray(CodeSnippet_Type.EType.CHARPTR, size);
-    //     CodeSnippet_Plain constData = new CodeSnippet_Plain(String.format("c\"%s\\00\"", InContent));
-    //
-    //     CodeSnippet_Constant snippet = new CodeSnippet_Constant(constName, constType, constData);
-    //     m_Constants.add(snippet);
-    //
-    //     return snippet;
-    // }
-
     public ParamContainer CreateNativeCall(NativeFunction name) {
         Class nativeClass = name.getClass();
         if (!m_NativeMap.contains(nativeClass)) {
@@ -190,8 +178,10 @@ public class GeneratorSlave {
             target = BitCast(target, TypeManager.CHARPTR());
         }
 
-        CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
-        GetScopeSnippetAsDef().AddStatement(stmt);
+        CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize));
+
+        // CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
+        // GetScopeSnippetAsDef().AddStatement(stmt);
     }
 
     public ParamContainer BitCast(ParamContainer source, TypeWrapper targetType) {

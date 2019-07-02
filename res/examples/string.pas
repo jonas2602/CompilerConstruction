@@ -6,7 +6,7 @@ var
 begin
     str := 'test';
     charptr := 'test123';
-    writeln (str);
+    writeln (str, ' my random string ', charptr);
 end.
 
 {program Hello;
