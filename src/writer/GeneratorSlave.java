@@ -17,7 +17,7 @@ public class GeneratorSlave {
     private List<CodeSnippet_FuncDef> m_FunctionDefinitions;
     private List<CodeSnippet_FuncDecl> m_FunctionDeclarations;
 
-    private ArrayList<ScopeInterface> m_ScopeStack;
+    private ArrayDeque<ScopeInterface> m_ScopeStack;
     private ScopeInterface m_ActiveScope;
 
     public GeneratorSlave() {
@@ -25,7 +25,7 @@ public class GeneratorSlave {
         m_NativeMap = new HashSet<>();
         m_FunctionDefinitions = new ArrayList<>();
         m_FunctionDeclarations = new ArrayList<>();
-        m_ScopeStack = new ArrayList<>();
+        m_ScopeStack = new ArrayDeque<>();
     }
 
     public boolean IsDefinitionInScope() {
@@ -158,14 +158,14 @@ public class GeneratorSlave {
     }
 
     public void EnterScope(ScopeInterface InScopeObject) {
-        m_ScopeStack.add(InScopeObject);
+        m_ScopeStack.push(InScopeObject);
         m_ActiveScope = InScopeObject;
     }
 
     public void ExitScope() {
-        m_ScopeStack.remove(m_ActiveScope);
+        m_ScopeStack.pop();
         if (m_ScopeStack.size() > 0) {
-            m_ActiveScope = m_ScopeStack.get(m_ScopeStack.size() - 1);
+            m_ActiveScope = m_ScopeStack.peek();
         }
     }
 
