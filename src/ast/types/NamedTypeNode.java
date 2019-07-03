@@ -34,25 +34,23 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
-        TypeNode otherCompareType = otherTypeNode.GetCompareType();
+        if(otherTypeNode == null){
+            return false;
+        }
 
         // Is the given type a valid name node?
-        if (!(otherCompareType instanceof NamedTypeNode)) return false;
-        NamedTypeNode otherNameNode = (NamedTypeNode) otherCompareType;
+        if (!(otherTypeNode.GetCompareType() instanceof NamedTypeNode)) {
+            return false;
+        }
 
         // compare type names
+        NamedTypeNode otherNameNode = (NamedTypeNode) otherTypeNode.GetCompareType();
         return m_TypeName == otherNameNode.m_TypeName;
     }
 
     @Override
     public TypeNode CheckType() {
-        // Is primitive Type?
-        if (IntNode.CompareType(this) || RealNode.CompareType(this) || BoolNode.CompareType(this) || CharNode.CompareType(this) || StringNode.CompareType(this)) {
-            m_TypeDetails = this;
-            return GetType();
-        }
-
-        // is defined type
+        // Try get type definition from owning block
         TypeDeclNode typeDecl = GetOwningBlock().GetTypeDeclaration(m_TypeName);
         if (typeDecl != null) {
             m_TypeDetails = typeDecl.GetType();
@@ -62,37 +60,18 @@ public class NamedTypeNode extends TypeNode {
         throw new TypeCheckException(this, "Type with name " + m_TypeName + " is not defined");
     }
 
-    public static boolean IsPrimitiveType(TypeNode type, boolean includingVoid) {
-        if (type.CompareType(IntNode)) return true;
-        if (type.CompareType(RealNode)) return true;
-        if (type.CompareType(BoolNode)) return true;
-        if (type.CompareType(CharNode)) return true;
-        if (type.CompareType(StringNode)) return true;
-        if (type.CompareType(VoidNode) && includingVoid) return true;
-
-        return false;
-    }
-
-    // returns void if not primitive
-    public EPrimitiveType GetPrimitiveType() {
-        if (CompareType(IntNode)) return EPrimitiveType.INT;
-        if (CompareType(RealNode)) return EPrimitiveType.FLOAT;
-        if (CompareType(BoolNode)) return EPrimitiveType.BOOL;
-        if (CompareType(CharNode)) return EPrimitiveType.CHAR;
-        if (CompareType(StringNode)) return EPrimitiveType.STRING;
-
-        System.out.println(this + " is not a primitive type");
-        return EPrimitiveType.VOID;
+    @Override
+    public TypeNode GetTypeDetails() {
+        return m_TypeDetails;
     }
 
     @Override
     public TypeNode GetType() {
-        return this;
-    }
+        if (m_TypeDetails != null) {
+            return m_TypeDetails;
+        }
 
-    @Override
-    public TypeNode GetTypeDetails() {
-        return m_TypeDetails;
+        return this;
     }
 
     @Override
@@ -101,14 +80,13 @@ public class NamedTypeNode extends TypeNode {
     }
 
     @Override
-    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        // TODO: handle non primitive types
-        return new CodeSnippet_Type(CodeSnippet_Type.EType.FromAstType(GetPrimitiveType()));
-    }
-
-    @Override
     public TypeWrapper GetWrappedType() {
-        // TODO: Handle complex types
+        // Handle complex types
+        if (m_TypeDetails != null) {
+            return m_TypeDetails.GetWrappedType();
+        }
+
+        // TODO: are there other named types with special wrapped type?
         return TypeWrapper_Other.VOID;
     }
 }

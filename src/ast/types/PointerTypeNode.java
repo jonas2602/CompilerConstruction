@@ -23,11 +23,6 @@ public class PointerTypeNode extends TypeNode {
     }
 
     @Override
-    public TypeNode GetType() {
-        return this;
-    }
-
-    @Override
     public TypeNode GetTypeDetails() {
         return m_BaseType;
     }
@@ -38,11 +33,11 @@ public class PointerTypeNode extends TypeNode {
             return false;
         }
 
-        if (!(otherTypeNode instanceof PointerTypeNode)) {
+        if (!(otherTypeNode.GetCompareType() instanceof PointerTypeNode)) {
             return false;
         }
 
-        TypeNode OtherBaseType = ((PointerTypeNode) otherTypeNode).m_BaseType;
+        TypeNode OtherBaseType = ((PointerTypeNode) otherTypeNode.GetCompareType()).m_BaseType;
         if (!OtherBaseType.CompareType(m_BaseType)) {
             return false;
         }

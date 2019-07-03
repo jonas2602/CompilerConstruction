@@ -48,6 +48,7 @@ public class GeneratorSlave {
         Class nativeClass = name.getClass();
         if (!m_NativeMap.contains(nativeClass)) {
             name.CreateFunctionDeclaration(this);
+            m_NativeMap.add(nativeClass);
         }
 
         return name.CreateFunctionCall(this);
@@ -129,8 +130,8 @@ public class GeneratorSlave {
         GetScopeSnippetAsDef().AddStatement(stmt);
     }
 
-    public CodeSnippet_FuncDef CreateFunctionDefinition(String name, CodeSnippet_Base returnType, int paramCount, boolean bEnterScope) {
-        CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(name, returnType, paramCount);
+    public CodeSnippet_FuncDef CreateFunctionDefinition(String name, TypeWrapper returnType, int paramCount, boolean bEnterScope) {
+        CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(name, new CodeSnippet_Plain(returnType.CreateTypeName()), paramCount);
         def.AddStatement(new CodeSnippet_Plain("begin:"));
         m_FunctionDefinitions.add(def);
         if (bEnterScope) {

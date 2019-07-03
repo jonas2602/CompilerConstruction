@@ -148,7 +148,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         String name = ctx.identifier().IDENT().getText();
         BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
         FuncDeclNode procDecl = new FuncDeclNode(name, NamedTypeNode.VoidNode, body);
-//        ProcDeclNode procDecl = new ProcDeclNode(name, body);
+        // ProcDeclNode procDecl = new ProcDeclNode(name, body);
 
         // Add Parameters to both, Procedure and Block
         List<AbstractSyntaxTree> paramList = new ParameterVisitor().visit(ctx.formalParameterList());

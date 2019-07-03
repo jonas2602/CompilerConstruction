@@ -15,11 +15,6 @@ public class SetTypeNode extends TypeNode {
     }
 
     @Override
-    public TypeNode GetType() {
-        return this;
-    }
-
-    @Override
     public TypeNode GetTypeDetails() {
         return m_ElementType;
     }

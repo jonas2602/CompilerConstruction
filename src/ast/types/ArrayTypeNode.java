@@ -51,11 +51,6 @@ public class ArrayTypeNode extends TypeNode {
     }
 
     @Override
-    public TypeNode GetType() {
-        return this;
-    }
-
-    @Override
     public TypeNode GetTypeDetails() {
         return m_ElementType;
     }
@@ -66,12 +61,12 @@ public class ArrayTypeNode extends TypeNode {
             return false;
         }
 
-        if (!(otherNodeType instanceof ArrayTypeNode)) {
+        if (!(otherNodeType.GetCompareType() instanceof ArrayTypeNode)) {
             return false;
         }
 
-        TypeNode OtherElementType = ((ArrayTypeNode) otherNodeType).m_ElementType;
-        if (!OtherElementType.CompareType(m_ElementType)) {
+        TypeNode otherElementType = ((ArrayTypeNode) otherNodeType.GetCompareType()).m_ElementType;
+        if (!otherElementType.CompareType(m_ElementType)) {
             return false;
         }
 

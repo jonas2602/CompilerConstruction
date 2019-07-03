@@ -6,6 +6,8 @@ import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
+import writer.TypeWrapper;
+import writer.TypeWrapper_Primitive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class ProgramNode extends AbstractSyntaxTree {
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition("main", CodeSnippet_Type.SNIPPETTYPE_INT, 0, true);
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition("main", TypeWrapper_Primitive.INT, 0, true);
         m_Block.CreateSnippet(slave, funcDef);
         PascalType_Int returnType = new PascalType_Int();
         funcDef.AddStatement(slave.CreateReturnStmt(returnType.GetTypeName(), returnType.GetDefaultValue()));

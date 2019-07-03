@@ -134,11 +134,10 @@ public class FuncCallNode extends AbstractSyntaxTree {
         }
 
         // Create standard function call
-        TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
-        ParamContainer OutParam = slave.CreateFunctionCall(m_FuncName, returnType, true);
+        List<ParamContainer> funcParams = new ArrayList<>();
         // CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, new CodeSnippet_Plain(returnType.CreateTypeName()));
 
-        // Add parameters to function call
+        // create parameters for function call
         for (int i = 0; i < m_Params.size(); i++) {
             //
             AbstractSyntaxTree param = m_Params.get(i);
@@ -151,19 +150,18 @@ public class FuncCallNode extends AbstractSyntaxTree {
                 paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
             }
 
-            slave.CreateFunctionCallParameter(paramContainer);
+            funcParams.add(paramContainer);
+        }
+
+        // Create Function Call Snippet + Parameter
+        TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
+        ParamContainer OutParam = slave.CreateFunctionCall(m_FuncName, returnType, true);
+        for (ParamContainer param : funcParams) {
+            slave.CreateFunctionCallParameter(param);
         }
 
         // Create Type Extension for function call
         // TODO: only available in native functions?
-
-        // if (m_FuncDecl.IsVoid()) {
-        //     slave.GetScopeSnippet().AddStatement(call);
-        //     return null;
-        // } else {
-        //     VariableWrapper scopeVar = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
-        //     return new ParamContainer(returnType, scopeVar);
-        // }
 
         slave.ExitScope();
         return OutParam;

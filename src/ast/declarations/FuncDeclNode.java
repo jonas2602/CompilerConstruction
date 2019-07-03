@@ -13,6 +13,7 @@ import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
+import writer.TypeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,8 +134,8 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         m_IsCreated = true;
 
         // Create Function Header
-        CodeSnippet_Base funcTypeSnippet = m_ReturnType.CreateSnippet(slave, ctx);
-        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcTypeSnippet, m_Params.size(), true);
+        TypeWrapper funcType = m_ReturnType.GetWrappedType();
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcType, m_Params.size(), true);
 
         // Add Parameters
         for (ParamDeclNode param : m_Params) {

@@ -45,9 +45,4 @@ public class EnumTypeNode extends TypeNode {
 
         return this;
     }
-
-    @Override
-    public TypeNode GetType() {
-        return this;
-    }
 }

@@ -142,19 +142,24 @@ public class BlockNode extends AbstractSyntaxTree {
         // Labels first because they don't rely on other block elements
         for (LabelDeclNode labelDecl : m_LabelDeclMap.values()) {
             labelDecl.CheckType();
+            // TODO: Check for duplicate label names
         }
 
         // Types next because the following elements (vars, funcs, ...) could use the new types
         for (TypeDeclNode typeDecl : m_TypeDeclMap.values()) {
             typeDecl.CheckType();
+            // TODO: Check for duplicate type names
         }
 
         // Constants and Variables must be visited next because they are required for everything coming
         for (ConstDeclNode constDecl : m_ConstDeclMap.values()) {
             constDecl.CheckType();
+            // TODO: Check for duplicate const names
         }
+
         for (VarDeclNode varDecl : m_VarDeclMap.values()) {
             varDecl.CheckType();
+            // TODO: Check for duplicate variable names
         }
 
         for (List<FuncDeclNode> funcOverloads : m_FuncDeclMap.values()) {

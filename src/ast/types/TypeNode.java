@@ -13,6 +13,11 @@ public abstract class TypeNode extends AbstractSyntaxTree {
         return false;
     }
 
+    @Override
+    public TypeNode GetType() {
+        return this;
+    }
+
     // e.g. Type node is a named type and referes to a record type, the record definition would be returned
     public TypeNode GetTypeDetails() {
         return GetType();

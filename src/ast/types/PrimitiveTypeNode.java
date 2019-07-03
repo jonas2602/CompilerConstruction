@@ -48,21 +48,16 @@ public class PrimitiveTypeNode extends TypeNode {
     }
 
     @Override
-    public TypeNode GetType() {
-        return this;
-    }
-
-    @Override
     public boolean CompareType(TypeNode otherTypeNode) {
         if (otherTypeNode == null) {
             return false;
         }
 
-        if (!(otherTypeNode instanceof PrimitiveTypeNode)) {
+        if (!(otherTypeNode.GetCompareType() instanceof PrimitiveTypeNode)) {
             return false;
         }
 
-        PascalType_Primitive OtherType = ((PrimitiveTypeNode) otherTypeNode).m_PrimitiveType;
+        PascalType_Primitive OtherType = ((PrimitiveTypeNode) otherTypeNode.GetCompareType()).m_PrimitiveType;
         if (OtherType.getClass() != m_PrimitiveType.getClass()) {
             return false;
         }

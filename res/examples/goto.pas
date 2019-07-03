@@ -1,6 +1,6 @@
 program gototest;
 
-var:
+var
     test: integer;
 
 label
