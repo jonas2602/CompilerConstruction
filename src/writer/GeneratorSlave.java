@@ -74,11 +74,7 @@ public class GeneratorSlave {
         // String constName = String.format("@.str.%d", m_ConstantCounter++);
         // CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.CreateTypeName());
 
-        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s c\"%s\\00\"", new ArrayList<>() {{
-            add(var);
-            add(stringType);
-            add(builder.toString());
-        }});
+        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s c\"%s\\00\"", var, stringType, builder.toString());
 
         m_Constants.add(snippet);
 
@@ -419,13 +415,18 @@ public class GeneratorSlave {
     }
 
     public void CreateBranch(ParamContainer condition, ParamContainer positive, ParamContainer negative) {
-        CodeSnippet_Args snippet = new CodeSnippet_Args("br %s, %s, %s", new ArrayList<>() {{
-            add(condition);
-            add(positive);
-            add(negative);
-        }});
-
+        CodeSnippet_Args snippet = new CodeSnippet_Args("br %s, %s, %s", condition, positive, negative);
         GetScopeSnippetAsDef().AddStatement(snippet);
+    }
+
+    public CodeSnippet_Switch CreateSwitch(ParamContainer expression, ParamContainer defJump) {
+        CodeSnippet_Switch switchStmt = new CodeSnippet_Switch(new CodeSnippet_PlainObject(expression), new CodeSnippet_PlainObject(defJump));
+        GetScopeSnippetAsDef().AddStatement(switchStmt);
+        return switchStmt;
+    }
+
+    public void AddLabelSwitch(CodeSnippet_Switch stmt, ParamContainer num, ParamContainer jump) {
+        stmt.AddParameter(new CodeSnippet_Args("%s, %s ", num, jump));
     }
 
     public void CreateJump(ParamContainer label, boolean endsBlock) {

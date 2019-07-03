@@ -27,7 +27,7 @@ public class App {
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
         // Tokenize input file
-        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/string.pas"));
+        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/switch.pas"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // Build parse tree
