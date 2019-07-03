@@ -10,15 +10,21 @@ import writer.GeneratorSlave;
 import writer.ParamContainer;
 
 public class ConstantNode_String extends ConstantNode {
-    public ConstantNode_String(String data) {
+    private ParamContainer m_GlobalParam;
 
+    public ConstantNode_String(String data) {
         super(data, new ArrayTypeNode(data.length() + 1, PrimitiveTypeNode.CharNode));
+
+        m_GlobalParam = null;
     }
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        ParamContainer strConst = slave.CreateStringConstantNew(m_Data);
-        return strConst;
+        if (m_GlobalParam == null) {
+            m_GlobalParam = slave.CreateStringConstantNew(m_Data);
+        }
+
+        return m_GlobalParam;
         // return slave.CreateArrayElementPtr(strConst, new ConstantWrapper("0"));
     }
 }

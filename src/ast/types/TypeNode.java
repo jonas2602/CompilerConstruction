@@ -5,12 +5,26 @@ import writer.ParamContainer;
 import writer.TypeWrapper;
 
 public abstract class TypeNode extends AbstractSyntaxTree {
+    boolean m_bConstant;
+
+    public TypeNode() {
+        this(false);
+    }
+
+    public TypeNode(boolean bConstant) {
+        m_bConstant = bConstant;
+    }
+
     public String GetTypePlaceholder() {
         return "%s";
     }
 
     public boolean CompareType(TypeNode otherTypeNode) {
         return false;
+    }
+
+    public boolean IsConstant() {
+        return m_bConstant;
     }
 
     @Override

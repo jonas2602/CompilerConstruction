@@ -169,7 +169,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitUnsignedInteger(PascalParser.UnsignedIntegerContext ctx) {
         // TODO: Create Constant Node of type Integer
-        return new ConstantNode(ctx.NUM_INT().getText(), PrimitiveTypeNode.IntNode);
+        return new ConstantNode(ctx.NUM_INT().getText(), PrimitiveTypeNode.ConstIntNode);
     }
 
     @Override
@@ -179,17 +179,17 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         long bits = Double.doubleToLongBits(value);
         if ((bits & 0xFFFFFFFFl) != 0) {
             System.out.println("'" + value + "' should be interpreted as double because binary representation exeedes single precision float");
-            return new ConstantNode(Double.toString(value), PrimitiveTypeNode.DoubleNode);
+            return new ConstantNode(Double.toString(value), PrimitiveTypeNode.ConstDoubleNode);
         }
 
-        return new ConstantNode(Double.toString(value), PrimitiveTypeNode.FloatNode);
+        return new ConstantNode(Double.toString(value), PrimitiveTypeNode.ConstFloatNode);
     }
 
     @Override
     public AbstractSyntaxTree visitConstantChr(PascalParser.ConstantChrContext ctx) {
         // TODO: Create Constant Node of type Char
         // TODO: Convert to char?
-        return new ConstantNode(ctx.unsignedInteger().getText(), PrimitiveTypeNode.CharNode);
+        return new ConstantNode(ctx.unsignedInteger().getText(), PrimitiveTypeNode.ConstCharNode);
     }
 
     @Override
@@ -199,7 +199,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
         if (data.length() == 1) {
             int numeric = (int) data.charAt(0);
-            return new ConstantNode(Integer.toString(numeric), PrimitiveTypeNode.CharNode);
+            return new ConstantNode(Integer.toString(numeric), PrimitiveTypeNode.ConstCharNode);
         }
         return new ConstantNode_String(data);
     }
@@ -207,6 +207,6 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitBool(PascalParser.BoolContext ctx) {
         String data = ctx.TRUE() != null ? "1" : "0";
-        return new ConstantNode(data, PrimitiveTypeNode.BoolNode);
+        return new ConstantNode(data, PrimitiveTypeNode.ConstBoolNode);
     }
 }

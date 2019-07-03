@@ -8,68 +8,40 @@ import writer.TypeWrapper;
 
 public class VarDeclNode extends AbstractSyntaxTree {
     protected String m_Name;
-    protected TypeNode m_Type;
+    protected TypeNode m_TypeNode;
 
-    protected int m_ScopeIndex = -1;
     protected ParamContainer m_ScopeContainer = null;
 
     public VarDeclNode(String name, TypeNode type) {
         m_Name = name;
-        m_Type = type;
-        m_Type.SetParent(this);
+        m_TypeNode = type;
+        m_TypeNode.SetParent(this);
     }
 
     public String GetName() {
         return m_Name;
     }
 
-    public int GetScopeIndex() {
-        return m_ScopeIndex;
-    }
-
-    public void SetScopeIndex(int InScopeIndex) {
-        m_ScopeIndex = InScopeIndex;
-    }
-
-    public boolean HasScopeIndex() {
-        return m_ScopeIndex != -1;
-    }
-
-
     @Override
     public TypeNode CheckType() {
-        m_Type.CheckType();
+        m_TypeNode.CheckType();
         return null;
     }
 
     @Override
     public TypeNode GetType() {
-        return m_Type.GetType();
+        return m_TypeNode.GetType();
     }
-
-    public void SetType(TypeNode type) {
-        m_Type = type;
-    }
-
-    public TypeNode GetRawType() { return m_Type;}
-
-//    @Override
-//    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-//        TypeWrapper wrappedType = m_Type.GetWrappedType();
-//        ParamContainer outContainer = slave.AllocateMemory(wrappedType);
-//
-//        return null;
-//    }
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_ScopeContainer == null) {
             // Allocate memory for the variable
-            TypeWrapper wrappedType = m_Type.GetWrappedType();
+            TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
             m_ScopeContainer = slave.AllocateMemory(wrappedType);
 
             // store default value
-            ParamContainer defaultValue = m_Type.GetDefaultValue();
+            ParamContainer defaultValue = m_TypeNode.GetDefaultValue();
             if (defaultValue != null) {
                 slave.StoreInVariable(m_ScopeContainer, defaultValue);
             }

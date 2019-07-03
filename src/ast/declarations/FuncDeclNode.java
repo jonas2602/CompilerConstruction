@@ -91,6 +91,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             TypeNode CallParamType = callNode.GetParameter(i).GetType();
             TypeNode FuncParamType = m_Params.get(i).GetType();
 
+            // TODO: don't accept const variables if passed by reference
             // "VAR" parameters only accept variables, no constants
             if (callNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).IsByReference()) {
                 return false;

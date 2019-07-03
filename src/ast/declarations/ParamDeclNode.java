@@ -18,11 +18,11 @@ public class ParamDeclNode extends VarDeclNode {
         if (IsByReference()) return;
 
         // Wrap type with pointer
-        m_Type = new VarTypeNode(m_Type);
+        m_TypeNode = new VarTypeNode(m_TypeNode);
     }
 
     public boolean IsByReference() {
-        return m_Type instanceof VarTypeNode;
+        return m_TypeNode instanceof VarTypeNode;
     }
 
     public boolean IsByValue() {
@@ -31,14 +31,14 @@ public class ParamDeclNode extends VarDeclNode {
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        return m_Type.CreateSnippet(slave, ctx);
+        return m_TypeNode.CreateSnippet(slave, ctx);
     }
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_ScopeContainer == null) {
             // Add parameter to function header
-            TypeWrapper paramType = m_Type.GetWrappedType();
+            TypeWrapper paramType = m_TypeNode.GetWrappedType();
             ParamContainer paramContainer = slave.CreateFunctionParameter(paramType);
 
             // Parameter is part of a Function Definition or Declaration?
@@ -48,14 +48,14 @@ public class ParamDeclNode extends VarDeclNode {
             }
 
             // Create local variable
-            TypeWrapper wrappedType = m_Type.GetWrappedType();
+            TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
             m_ScopeContainer = slave.AllocateMemory(wrappedType);
 
             // Write parameter value into local variable
             slave.StoreInVariable(m_ScopeContainer, paramContainer);
 
-            // dereference if passed by reference
-            if (GetRawType() instanceof VarTypeNode) {
+            // dereference if passed by value
+            if (m_TypeNode instanceof VarTypeNode) {
                 // TODO: Validate that a single load works ins all situations
                 m_ScopeContainer = slave.LoadFromVariable(m_ScopeContainer);
             }

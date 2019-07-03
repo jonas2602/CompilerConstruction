@@ -9,9 +9,19 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode CharPointerNode = new PointerTypeNode(PrimitiveTypeNode.CharNode);
     public static final PointerTypeNode BoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.BoolNode);
 
+    public static final PointerTypeNode ConstIntPointerNode = new PointerTypeNode(PrimitiveTypeNode.IntNode, true);
+    public static final PointerTypeNode ConstFloatPointerNode = new PointerTypeNode(PrimitiveTypeNode.FloatNode, true);
+    public static final PointerTypeNode ConstCharPointerNode = new PointerTypeNode(PrimitiveTypeNode.CharNode, true);
+    public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.BoolNode, true);
+
     protected TypeNode m_BaseType;
 
     public PointerTypeNode(TypeNode baseType) {
+        this(baseType, false);
+    }
+
+    public PointerTypeNode(TypeNode baseType, boolean bConstant) {
+        super(bConstant);
         m_BaseType = baseType;
     }
 

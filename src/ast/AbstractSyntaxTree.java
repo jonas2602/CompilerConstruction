@@ -46,10 +46,14 @@ public abstract class AbstractSyntaxTree {
     //  is false, to avoid duplicate checks.
     //  CheckType_Impl replaces the current function and gets inherited by all Nodes.
 
+    public AbstractSyntaxTree Copy() {
+        return null;
+    }
 
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         return null;
     }
+
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         return null;
     }

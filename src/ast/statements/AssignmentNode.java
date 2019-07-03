@@ -4,8 +4,11 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.core.operators.Operator;
+import ast.declarations.ConstDeclNode;
 import ast.declarations.FuncDeclNode;
+import ast.declarations.VarDeclNode;
 import ast.expressions.AccessInterface;
+import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
@@ -22,22 +25,26 @@ public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Expression;
     private FuncCallNode m_FuncCallNode;
 
-    private FuncCallNode m_Function;
-
     public AssignmentNode(AbstractSyntaxTree variable, AbstractSyntaxTree expression) {
         this.m_Variable = variable;
         this.m_Expression = expression;
 
         m_Variable.SetParent(this);
         m_Expression.SetParent(this);
-        m_Function = null;
     }
 
     @Override
     public TypeNode CheckType() {
+        // TODO: integrate constant into type system
+        // make shure used variable isn't a constant
+        TypeNode varType = m_Variable.CheckType();
+        VarDeclNode varDecl = ((AccessInterface) m_Variable).GetVarDeclNode();
+        if (varDecl instanceof ConstDeclNode) {
+            throw new TypeCheckException(this, "Can't assign value to a const variable");
+        }
+
         // Only Equal types are allowed, implicit conversion is not possible
         // even primitive conversion int->real, real->int is not possible (yet)
-        TypeNode varType = m_Variable.CheckType();
         TypeNode expType = m_Expression.CheckType();
         if (varType.CompareType(expType)) {
             // Types are arrays?

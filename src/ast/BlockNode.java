@@ -15,6 +15,9 @@ public class BlockNode extends AbstractSyntaxTree {
     private HashMap<String, VarDeclNode> m_VarDeclMap;
     private HashMap<String, List<FuncDeclNode>> m_FuncDeclMap;
 
+    // TODO: add all names of consts, types, vars, ... to avoid collision
+    private HashSet<String> m_UsedNames;
+
     private AbstractSyntaxTree m_CompoundStatement;
 
     public BlockNode() {
@@ -70,15 +73,6 @@ public class BlockNode extends AbstractSyntaxTree {
         m_VarDeclMap.put(variable.GetName(), variable);
     }
 
-//    public void AddProcedureDeclaration(ProcDeclNode Procedure) {
-//        if (m_VarDeclMap.containsKey(Procedure.GetName())) {
-//            throw new RuntimeException("Variable with Name " + Procedure.GetName() + " already defined in Scope");
-//        }
-//
-//        Procedure.SetParent(this);
-//        m_ProcDeclMap.put(Procedure.GetName(), Procedure);
-//    }
-
     public void AddFunctionDeclaration(FuncDeclNode function) {
         if (m_VarDeclMap.containsKey(function.GetName())) {
             throw new RuntimeException("Variable with Name " + function.GetName() + " already defined in Scope");
@@ -103,6 +97,15 @@ public class BlockNode extends AbstractSyntaxTree {
         LabelDeclNode OutDecl = m_LabelDeclMap.get(labelName);
         if (OutDecl == null && GetOwningBlock() != null) {
             OutDecl = GetOwningBlock().GetLabelDeclaration(labelName);
+        }
+
+        return OutDecl;
+    }
+
+    public ConstDeclNode GetConstantDeclaration(String constName) {
+        ConstDeclNode OutDecl = m_ConstDeclMap.get(constName);
+        if (OutDecl == null && GetOwningBlock() != null) {
+            OutDecl = GetOwningBlock().GetConstantDeclaration(constName);
         }
 
         return OutDecl;

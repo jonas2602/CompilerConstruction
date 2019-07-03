@@ -9,13 +9,13 @@ import writer.ParamContainer;
 
 public class ConstantNode extends AbstractSyntaxTree {
     protected String m_Data;
-    protected TypeNode m_Type;
+    protected TypeNode m_TypeNode;
 
     public ConstantNode(String data, TypeNode type) {
         this.m_Data = data;
-        this.m_Type = type;
+        this.m_TypeNode = type;
 
-        m_Type.SetParent(this);
+        m_TypeNode.SetParent(this);
     }
 
     public String GetData() {
@@ -24,12 +24,12 @@ public class ConstantNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
-        return m_Type.CheckType();
+        return m_TypeNode.CheckType();
     }
 
     @Override
     public TypeNode GetType() {
-        return m_Type.GetType();
+        return m_TypeNode.GetType();
     }
 
     @Override
@@ -39,6 +39,6 @@ public class ConstantNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        return new ParamContainer(m_Type.GetWrappedType(), m_Data);
+        return new ParamContainer(m_TypeNode.GetWrappedType(), m_Data);
     }
 }

@@ -35,6 +35,10 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
         if (m_Declaration == null) {
             m_Declaration = GetOwningBlock().GetVariableDeclaration(m_Name);
         }
+        // TODO: Combine in Block to check constants, variables and enums with a single call
+        if (m_Declaration == null) {
+            m_Declaration = GetOwningBlock().GetConstantDeclaration(m_Name);
+        }
 
         // still no declaration?
         if (m_Declaration == null) {
@@ -42,19 +46,6 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
         }
 
         return m_Declaration.GetType();
-    }
-
-    @Override
-    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        // TODO: What if variable is not used, but assigned?
-        int scopeIndex = m_Declaration.GetScopeIndex();
-        if (scopeIndex >= 0) {
-            return new CodeSnippet_Plain("%" + scopeIndex);
-        } else {
-            // TODO: handle non primitive default values;
-            PrimitiveTypeNode varType = (PrimitiveTypeNode) m_Declaration.GetType();
-            return new CodeSnippet_Plain(varType.GetTypeDefault());
-        }
     }
 
     @Override

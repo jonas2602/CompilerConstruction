@@ -79,7 +79,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitConstantDefinition(PascalParser.ConstantDefinitionContext ctx) {
         String name = ctx.identifier().IDENT().getText();
-        AbstractSyntaxTree constant = new ConstantVisitor().visit(ctx.constant());
+        AbstractSyntaxTree constant = new ExpressionVisitor().visit(ctx.constant());
 
         ConstDeclNode constDecl = new ConstDeclNode(name, constant);
         m_BlockNode.AddConstantDeclaration(constDecl);

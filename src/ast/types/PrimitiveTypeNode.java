@@ -15,11 +15,24 @@ public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode CharNode = new PrimitiveTypeNode(new PascalType_Char());
     public static final PrimitiveTypeNode BoolNode = new PrimitiveTypeNode(new PascalType_Bool());
 
+    public static final PrimitiveTypeNode ConstIntNode = new PrimitiveTypeNode(new PascalType_Int(), true);
+    public static final PrimitiveTypeNode ConstFloatNode = new PrimitiveTypeNode(new PascalType_Float(), true);
+    public static final PrimitiveTypeNode ConstDoubleNode = new PrimitiveTypeNode(new PascalType_Double(), true);
+    public static final PrimitiveTypeNode ConstCharNode = new PrimitiveTypeNode(new PascalType_Char(), true);
+    public static final PrimitiveTypeNode ConstBoolNode = new PrimitiveTypeNode(new PascalType_Bool(), true);
+
+
     private PascalType_Primitive m_PrimitiveType;
 
     public PrimitiveTypeNode(PascalType_Primitive type) {
+        this(type, false);
+    }
+
+    public PrimitiveTypeNode(PascalType_Primitive type, boolean bConstant) {
+        super(bConstant);
         m_PrimitiveType = type;
     }
+
 
     @Override
     public String GetTypePlaceholder() {
