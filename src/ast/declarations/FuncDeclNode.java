@@ -3,6 +3,7 @@ package ast.declarations;
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.TypeCheckException;
+import ast.expressions.AccessInterface;
 import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
 import ast.types.NamedTypeNode;
@@ -91,10 +92,18 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             TypeNode CallParamType = callNode.GetParameter(i).GetType();
             TypeNode FuncParamType = m_Params.get(i).GetType();
 
-            // TODO: don't accept const variables if passed by reference
-            // "VAR" parameters only accept variables, no constants
-            if (callNode.GetParameter(i) instanceof ConstantNode && m_Params.get(i).IsByReference()) {
-                return false;
+            if (m_Params.get(i).IsByReference()) {
+                AbstractSyntaxTree param = callNode.GetParameter(i);
+
+                // "VAR" parameters only accept variables, no constants
+                if (param instanceof ConstantNode) {
+                    return false;
+                }
+
+                // don't accept const variables if passed by reference
+                if (((AccessInterface) param).GetVarDeclNode() instanceof ConstDeclNode) {
+                    return false;
+                }
             }
 
             if (!FuncParamType.CompareType(CallParamType)) {
