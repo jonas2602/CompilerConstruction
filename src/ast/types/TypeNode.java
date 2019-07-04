@@ -27,6 +27,10 @@ public abstract class TypeNode extends AbstractSyntaxTree {
         return m_bConstant;
     }
 
+    public void SetTypeName(String name) {
+
+    }
+
     @Override
     public TypeNode GetType() {
         return this;

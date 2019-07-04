@@ -3,9 +3,8 @@ source_filename = "test.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-%struct.person = type { i64, i8* }
+%struct.person = type { i32, i8* }
 %struct.group = type { %struct.person }
-%struct.world = type { %struct.group }
 
 @myval = dso_local global i32 5, align 4
 @arraytest.mystring = private unnamed_addr constant [5 x i8] c"abcde", align 1
@@ -71,11 +70,10 @@ define dso_local void @pointertest() #0 {
 define dso_local void @structtest() #0 {
   %1 = alloca %struct.person, align 8
   %2 = alloca %struct.group, align 8
-  %3 = alloca %struct.world, align 8
-  %4 = getelementptr inbounds %struct.group, %struct.group* %2, i32 0, i32 0
-  %5 = bitcast %struct.person* %4 to i8*
-  %6 = bitcast %struct.person* %1 to i8*
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %5, i8* align 8 %6, i64 16, i1 false)
+  %3 = getelementptr inbounds %struct.group, %struct.group* %2, i32 0, i32 0
+  %4 = bitcast %struct.person* %3 to i8*
+  %5 = bitcast %struct.person* %1 to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %4, i8* align 8 %5, i64 16, i1 false)
   ret void
 }
 

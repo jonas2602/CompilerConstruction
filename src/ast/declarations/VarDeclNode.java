@@ -57,6 +57,7 @@ public class VarDeclNode extends AbstractSyntaxTree {
                 m_ScopeContainer = slave.AllocateMemory(wrappedType);
 
                 // store default value
+                // TODO: how to initialize structured types (array, set, struct)
                 ParamContainer defaultValue = m_TypeNode.GetDefaultValue();
                 if (defaultValue != null) {
                     slave.StoreInVariable(m_ScopeContainer, defaultValue);

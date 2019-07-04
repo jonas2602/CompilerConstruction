@@ -187,7 +187,8 @@ public class GeneratorSlave {
 
         // convert to char* if given as other types
         if (!TypeManager.CHARPTR().CompareType(source.GetRootType())) {
-            source = CreateArrayElementPtr(source, 0);
+            // source = CreateArrayElementPtr(source, 0);
+            source = BitCast(source, TypeManager.CHARPTR());
         }
         if (!TypeManager.CHARPTR().CompareType(target.GetRootType())) {
             target = BitCast(target, TypeManager.CHARPTR());
@@ -424,20 +425,15 @@ public class GeneratorSlave {
 
     public ParamContainer CreateArrayElementPtr(ParamContainer array, ValueWrapper index) {
         TypeWrapper arrType = array.GetRootType().GetChild();
-        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %s", arrType, array, index); // TODO: alignment
+        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i32 0, i32 %s", arrType, array, index); // TODO: alignment
         VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        TypeWrapper elementType = array.GetRootType().GetChild().GetChild();
+        TypeWrapper elementType = arrType.GetChild(Integer.parseInt(index.CreateDataString()));
 
         return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
     }
 
     public ParamContainer CreateArrayElementPtr(ParamContainer array, int index) {
-        TypeWrapper arrType = array.GetRootType().GetChild();
-        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i64 0, i64 %d", arrType, array, index); // TODO: alignment
-        VariableWrapper scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        TypeWrapper elementType = array.GetRootType().GetChild().GetChild();
-
-        return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
+        return CreateArrayElementPtr(array, new ConstantWrapper(index));
     }
 
     public void CreateBranch(ParamContainer condition, ParamContainer positive, ParamContainer negative) {

@@ -8,8 +8,8 @@ int myval = 5;
 
 typedef struct
 {
-    long age;
-    char *name;
+    int age;
+    char* name;
 } person;
 
 typedef struct
@@ -56,7 +56,10 @@ void structtest()
 
     group grp;
     grp.ps = john;
-    world w;
+    // grp.ps.age = 23;
+    // world w;
+
+    // printf("%d", john.age);
 }
 
 char testCast(double i)

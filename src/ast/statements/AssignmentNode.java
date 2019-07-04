@@ -13,10 +13,7 @@ import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
 import llvm.NativeFunction_memcpy;
-import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeManager;
-import writer.TypeWrapper_Array;
+import writer.*;
 
 import java.util.List;
 
@@ -82,6 +79,8 @@ public class AssignmentNode extends AbstractSyntaxTree {
         ParamContainer varAccess = m_Variable.CreateSnippet(slave);
 
         if (varAccess.IsPointer() && varAccess.GetRootType().GetChild() instanceof TypeWrapper_Array) {
+            slave.CopyMemory(exp, varAccess);
+        } else if (varAccess.IsPointer() && varAccess.GetRootType().GetChild() instanceof TypeWrapper_Struct) {
             slave.CopyMemory(exp, varAccess);
         } else {
             // if the expression on the right of the assignment is not a constant (variable access stuff)

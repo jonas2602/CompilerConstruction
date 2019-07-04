@@ -22,7 +22,7 @@ public class TypeWrapper_Primitive extends TypeWrapper {
     }
 
     @Override
-    public TypeWrapper GetChild() {
+    public TypeWrapper GetChild(int index) {
         System.err.println("Reached bottom of TypeWrapper");
         return null;
     }

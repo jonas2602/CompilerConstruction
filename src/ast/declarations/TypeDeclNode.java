@@ -12,6 +12,7 @@ public class TypeDeclNode extends AbstractSyntaxTree {
     public TypeDeclNode(String name, TypeNode type) {
         m_Name = name;
         m_Type = type;
+        m_Type.SetTypeName(name);
         m_Type.SetParent(this);
     }
 

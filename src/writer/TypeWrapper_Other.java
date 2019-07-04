@@ -17,7 +17,7 @@ public class TypeWrapper_Other extends TypeWrapper {
     }
 
     @Override
-    public TypeWrapper GetChild() {
+    public TypeWrapper GetChild(int index) {
         System.err.println("Reached bottom of TypeWrapper");
         return null;
     }

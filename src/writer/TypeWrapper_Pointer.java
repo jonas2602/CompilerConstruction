@@ -1,5 +1,7 @@
 package writer;
 
+import ast.core.PascalType_Long;
+
 public class TypeWrapper_Pointer extends TypeWrapper {
     public static TypeWrapper_Pointer CHARPTR = new TypeWrapper_Pointer(TypeWrapper_Primitive.CHAR);
     public static TypeWrapper_Pointer INTPTR = new TypeWrapper_Pointer(TypeWrapper_Primitive.INT);
@@ -19,13 +21,14 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     }
 
     @Override
-    public TypeWrapper GetChild() {
+    public TypeWrapper GetChild(int index) {
         return m_PointedType;
     }
 
     @Override
     public int GetTypeSize() {
-        return m_PointedType.GetTypeSize();
+        // Pointer are always 64 bit integer
+        return 64;
     }
 
     @Override

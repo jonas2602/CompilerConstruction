@@ -15,7 +15,7 @@ public class TypeWrapper_Array extends TypeWrapper {
     }
 
     @Override
-    public TypeWrapper GetChild() {
+    public TypeWrapper GetChild(int index) {
         return m_BaseType;
     }
 

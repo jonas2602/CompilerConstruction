@@ -4,16 +4,29 @@ type
     person = record
         firstname, surname : ^char;
         age : integer;
-        p: ^person;
+        child: ^person;
     end;
     group = record
-        ps : person;
+        p : person;
     end;
 var
     str: mystr;
     str2: mystr;
+    p: person;
+    c: person;
+    gr: group;
 begin
     str := 'test';
     str2 := str;
-    writeln (str2);
+
+    { set by reference } 
+    p.child := @c;
+    c.age := 3;
+    writeln (p.child^.age);
+
+    { set by copy }
+    gr.p := p;
+    {p.age := 5;}       { won't affect copied version in gr }
+    gr.p.age := 10;
+    writeln (gr.p.age);
 end.

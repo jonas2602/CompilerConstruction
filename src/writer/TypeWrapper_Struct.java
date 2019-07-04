@@ -22,9 +22,8 @@ public class TypeWrapper_Struct extends TypeWrapper {
     }
 
     @Override
-    public TypeWrapper GetChild() {
-        System.err.println("Reached bottom of TypeWrapper");
-        return null;
+    public TypeWrapper GetChild(int index) {
+        return m_EntryTypes.get(index);
     }
 
     @Override

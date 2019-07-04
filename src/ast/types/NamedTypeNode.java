@@ -34,7 +34,8 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
-        if(otherTypeNode == null){
+        return m_TypeDetails.CompareType(otherTypeNode);
+        /*if(otherTypeNode == null){
             return false;
         }
 
@@ -45,7 +46,7 @@ public class NamedTypeNode extends TypeNode {
 
         // compare type names
         NamedTypeNode otherNameNode = (NamedTypeNode) otherTypeNode.GetCompareType();
-        return m_TypeName == otherNameNode.m_TypeName;
+        return m_TypeName == otherNameNode.m_TypeName;*/
     }
 
     @Override
@@ -62,7 +63,7 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_TypeDetails;
+        return m_TypeDetails.GetTypeDetails();
     }
 
     @Override

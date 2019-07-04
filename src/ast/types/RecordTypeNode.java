@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RecordTypeNode extends TypeNode {
+    private String m_RecordName;
     private List<TypeNode> m_EntryList;
     private Map<String, Integer> m_EntryNameMap;
 
@@ -32,11 +33,29 @@ public class RecordTypeNode extends TypeNode {
     }
 
     @Override
+    public void SetTypeName(String name) {
+        m_RecordName = name;
+    }
+
+    public int GetFieldIndex(String name) {
+        if (!m_EntryNameMap.containsKey(name)) {
+            return -1;
+        }
+
+        return m_EntryNameMap.get(name);
+    }
+
+    public TypeNode GetEntryType(int entryIndex) {
+        return m_EntryList.get(entryIndex);
+    }
+
+    @Override
     public TypeNode CheckType() {
         for (TypeNode entry : m_EntryList) {
             entry.CheckType();
 
             if (CompareType(entry)) {
+                // TODO: how about more complex loops? a -> b -> c -> a -> b -> c -> a, ...
                 throw new TypeCheckException(this, "Records nested in itself are not allowed. Use pointer to avoid memory overflow");
             }
         }
@@ -66,9 +85,7 @@ public class RecordTypeNode extends TypeNode {
     public TypeWrapper GetWrappedType() {
         if (m_WrapperCache == null) {
             System.out.println("Record type requested before construction finished");
-
-            String structName = ((TypeDeclNode) GetParent()).GetName();
-            m_WrapperCache = new TypeWrapper_Struct(structName);
+            m_WrapperCache = new TypeWrapper_Struct(m_RecordName);
 
             for (TypeNode entry : m_EntryList) {
                 m_WrapperCache.AddEntry(entry.GetWrappedType());
@@ -78,12 +95,11 @@ public class RecordTypeNode extends TypeNode {
         return m_WrapperCache;
     }
 
-    // only gets called by the owning type definition node
-    // => get struct name from parent
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        String structName = ((TypeDeclNode) GetParent()).GetName();
-        m_WrapperCache = new TypeWrapper_Struct(structName);
+        // gets called by the owning type definition node at least once
+        // => get struct name from parent
+        m_WrapperCache = new TypeWrapper_Struct(m_RecordName);
 
         List<TypeWrapper> entryTypes = new ArrayList<>();
         for (TypeNode entryType : m_EntryList) {
@@ -92,7 +108,7 @@ public class RecordTypeNode extends TypeNode {
             m_WrapperCache.AddEntry(wrapper);
         }
 
-        slave.CreateStruct(structName, entryTypes);
+        slave.CreateStruct(m_RecordName, entryTypes);
         return null;
     }
 }
