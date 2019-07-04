@@ -11,7 +11,9 @@ import java.util.List;
 
 public class GeneratorSlave {
     private List<CodeSnippet_Base> m_Constants;
-    private int m_ConstantCounter = 0;
+    private List<CodeSnippet_Base> m_GlobalVariables;
+    private int m_ConstantCounter;
+    private int m_GlobalsCounter;
 
     private HashSet<Class> m_NativeMap;
     private List<CodeSnippet_FuncDef> m_FunctionDefinitions;
@@ -22,9 +24,15 @@ public class GeneratorSlave {
 
     public GeneratorSlave() {
         m_Constants = new ArrayList<>();
+        m_GlobalVariables = new ArrayList<>();
+
+        m_ConstantCounter = 0;
+        m_GlobalsCounter = 0;
+
         m_NativeMap = new HashSet<>();
         m_FunctionDefinitions = new ArrayList<>();
         m_FunctionDeclarations = new ArrayList<>();
+
         m_ScopeStack = new ArrayDeque<>();
     }
 
@@ -378,6 +386,14 @@ public class GeneratorSlave {
         return new ParamContainer(MemoryPointer, scopeVar);
     }
 
+    public ParamContainer AllocateGlobalMemory(TypeWrapper type, ParamContainer defValue) {
+        VariableWrapper var = VariableWrapper.GLOBALVAR(m_GlobalsCounter++);
+        CodeSnippet_Args stmt = new CodeSnippet_Args("%s = dso_local global %s", var, defValue); // TODO: alignment
+        m_GlobalVariables.add(stmt);
+
+        return new ParamContainer(new TypeWrapper_Pointer(type), var);
+    }
+
     public void StoreInVariable(ParamContainer varAccess, ParamContainer value) {
         String varParam = varAccess.CreateParameterString();
         String valueParam = value.CreateParameterString();
@@ -447,25 +463,28 @@ public class GeneratorSlave {
     }
 
     public List<String> Serialize() {
-        List<String> OutLines = new ArrayList<>();
+        List<String> outLines = new ArrayList<>();
 
         for (CodeSnippet_Base constant : m_Constants) {
-            OutLines.addAll(constant.WriteLines());
+            outLines.addAll(constant.WriteLines());
         }
+        outLines.add("");
 
-        OutLines.add("");
+        for (CodeSnippet_Base global : m_GlobalVariables) {
+            outLines.addAll(global.WriteLines());
+        }
+        outLines.add("");
 
         for (CodeSnippet_FuncDecl decl : m_FunctionDeclarations) {
-            OutLines.addAll(decl.WriteLines());
+            outLines.addAll(decl.WriteLines());
         }
-
-        OutLines.add("");
+        outLines.add("");
 
         for (CodeSnippet_FuncDef def : m_FunctionDefinitions) {
-            OutLines.addAll(def.WriteLines());
-            OutLines.add("");
+            outLines.addAll(def.WriteLines());
+            outLines.add("");
         }
 
-        return OutLines;
+        return outLines;
     }
 }

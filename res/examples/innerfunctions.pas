@@ -1,4 +1,4 @@
-program test;
+program innerfunctions;
 
 var
    i: integer;
