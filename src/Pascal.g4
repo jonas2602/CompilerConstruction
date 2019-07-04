@@ -32,25 +32,20 @@ Adapted from pascal.g by  Hakki Dogusan, Piet Schoutteten and Marton Papp
 grammar Pascal;
 
 program
-   : programHeading (INTERFACE)? block DOT
+   : programHeading block DOT
    ;
 
 programHeading
-   : PROGRAM identifier (LPAREN identifierList RPAREN)? SEMI
-   | UNIT identifier SEMI
-   ;
+   : PROGRAM identifier (LPAREN identifierList RPAREN)? SEMI;
 
 identifier
    : IDENT
    ;
 
 block
-   : (labelDeclarationPart | constantDefinitionPart | typeDefinitionPart | variableDeclarationPart | procedureAndFunctionDeclarationPart | usesUnitsPart | IMPLEMENTATION)* compoundStatement
+   : (labelDeclarationPart | constantDefinitionPart | typeDefinitionPart | variableDeclarationPart | procedureAndFunctionDeclarationPart )* compoundStatement
    ;
 
-usesUnitsPart
-   : USES identifierList SEMI
-   ;
 
 labelDeclarationPart
    : LABEL label (COMMA label)* SEMI
@@ -68,9 +63,6 @@ constantDefinition
    : identifier EQUAL constant
    ;
 
-constantChr
-   : CHR LPAREN unsignedInteger RPAREN
-   ;
 
 constant
    : unsignedNumber
@@ -78,7 +70,6 @@ constant
    | identifier
    | sign identifier
    | string
-   | constantChr
    ;
 
 unsignedNumber
@@ -151,11 +142,6 @@ typeIdentifier
    ;
 
 structuredType
-   : PACKED unpackedStructuredType
-   | unpackedStructuredType
-   ;
-
-unpackedStructuredType
    : arrayType
    | recordType
    | setType
@@ -363,7 +349,6 @@ factor
 
 unsignedConstant
    : unsignedNumber
-   | constantChr
    | string
    | NIL
    ;
@@ -537,10 +522,6 @@ CHAR
    ;
 
 
-CHR
-   : C H R
-   ;
-
 
 CONST
    : C O N S T
@@ -634,11 +615,6 @@ OF
 
 OR
    : O R
-   ;
-
-
-PACKED
-   : P A C K E D
    ;
 
 
@@ -837,28 +813,8 @@ RCURLY
    ;
 
 
-UNIT
-   : U N I T
-   ;
-
-
-INTERFACE
-   : I N T E R F A C E
-   ;
-
-
-USES
-   : U S E S
-   ;
-
-
 STRING
    : S T R I N G
-   ;
-
-
-IMPLEMENTATION
-   : I M P L E M E N T A T I O N
    ;
 
 

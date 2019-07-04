@@ -147,8 +147,6 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitUnsignedConstant(PascalParser.UnsignedConstantContext ctx) {
         if (ctx.unsignedNumber() != null) {
             return visitUnsignedNumber(ctx.unsignedNumber());
-        } else if (ctx.constantChr() != null) {
-            return visitConstantChr(ctx.constantChr());
         } else if (ctx.string() != null) {
             return visitString(ctx.string());
         } else {
@@ -183,13 +181,6 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         }
 
         return new ConstantNode(Double.toString(value), PrimitiveTypeNode.ConstFloatNode);
-    }
-
-    @Override
-    public AbstractSyntaxTree visitConstantChr(PascalParser.ConstantChrContext ctx) {
-        // TODO: Create Constant Node of type Char
-        // TODO: Convert to char?
-        return new ConstantNode(ctx.unsignedInteger().getText(), PrimitiveTypeNode.ConstCharNode);
     }
 
     @Override

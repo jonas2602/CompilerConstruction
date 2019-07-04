@@ -76,12 +76,6 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitStructuredType(PascalParser.StructuredTypeContext ctx) {
-        // TODO: packed keyword
-        return visitUnpackedStructuredType(ctx.unpackedStructuredType());
-    }
-
-    @Override
-    public TypeNode visitUnpackedStructuredType(PascalParser.UnpackedStructuredTypeContext ctx) {
         if (ctx.arrayType() != null) {
             return visitArrayType(ctx.arrayType());
         } else if (ctx.recordType() != null) {
