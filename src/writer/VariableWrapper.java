@@ -5,6 +5,10 @@ public class VariableWrapper extends ValueWrapper {
         return new VariableWrapper("%%%d", InIndex);
     }
 
+    public static VariableWrapper GLOBALVAR(int InIndex) {
+        return new VariableWrapper("@.global.%d", InIndex);
+    }
+
     public static VariableWrapper CONSTSTRING(int InIndex) {
         return new VariableWrapper("@.str.%d", InIndex);
     }

@@ -12,10 +12,21 @@ public class VarDeclNode extends AbstractSyntaxTree {
 
     protected ParamContainer m_ScopeContainer = null;
 
+    private boolean m_GlobalVariable;
+
     public VarDeclNode(String name, TypeNode type) {
         m_Name = name;
         m_TypeNode = type;
         m_TypeNode.SetParent(this);
+        m_GlobalVariable = false;
+    }
+
+    public boolean IsGlobalVariable() {
+        return m_GlobalVariable;
+    }
+
+    public void SetGlobalVariable(boolean global) {
+        m_GlobalVariable = global;
     }
 
     public String GetName() {
@@ -36,14 +47,20 @@ public class VarDeclNode extends AbstractSyntaxTree {
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_ScopeContainer == null) {
-            // Allocate memory for the variable
-            TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
-            m_ScopeContainer = slave.AllocateMemory(wrappedType);
+            if(m_GlobalVariable) {
+                TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
+                m_ScopeContainer = slave.AllocateGlobalMemory(wrappedType, m_TypeNode.GetDefaultValue());
+            }
+            else {
+                // Allocate memory for the variable
+                TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
+                m_ScopeContainer = slave.AllocateMemory(wrappedType);
 
-            // store default value
-            ParamContainer defaultValue = m_TypeNode.GetDefaultValue();
-            if (defaultValue != null) {
-                slave.StoreInVariable(m_ScopeContainer, defaultValue);
+                // store default value
+                ParamContainer defaultValue = m_TypeNode.GetDefaultValue();
+                if (defaultValue != null) {
+                    slave.StoreInVariable(m_ScopeContainer, defaultValue);
+                }
             }
         }
 

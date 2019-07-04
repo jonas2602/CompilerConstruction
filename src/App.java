@@ -27,7 +27,7 @@ public class App {
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
         // Tokenize input file
-        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/test.pas"));
+        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/types.pas"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // Build parse tree
@@ -52,6 +52,7 @@ public class App {
             prog.CheckType();
         } catch (RuntimeException e) {
             e.printStackTrace();
+            System.exit(0);
         }
 
         CodeGenerator.CreateIntermediate(prog, "gen");

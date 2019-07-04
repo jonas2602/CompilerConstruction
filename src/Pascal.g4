@@ -228,7 +228,7 @@ procedureDeclaration
 
 // Empty Parameter Lists?
 formalParameterList
-   : LPAREN formalParameterSection (SEMI formalParameterSection)* RPAREN
+   : LPAREN (formalParameterSection (SEMI formalParameterSection)*)? RPAREN
    ;
 
 formalParameterSection
@@ -355,7 +355,7 @@ unsignedConstant
 
 // ASK: Functioncall without Parameters?
 functionDesignator
-   : identifier LPAREN parameterList RPAREN
+   : identifier LPAREN (parameterList)? RPAREN
    ;
 
 parameterList

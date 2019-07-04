@@ -3,18 +3,19 @@ source_filename = "test.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-%struct.person = type { i8*, i32 }
+%struct.person = type { i64, i8* }
+%struct.group = type { %struct.person }
+%struct.world = type { %struct.group }
 
 @myval = dso_local global i32 5, align 4
 @arraytest.mystring = private unnamed_addr constant [5 x i8] c"abcde", align 1
 @arraytest.mylist = private unnamed_addr constant [3 x i32] [i32 2, i32 4, i32 6], align 4
 @.str = private unnamed_addr constant [3 x i8] c"%c\00", align 1
 @pointertest.mylist = private unnamed_addr constant [5 x i32] [i32 0, i32 1, i32 2, i32 3, i32 4], align 16
-@.str.1 = private unnamed_addr constant [5 x i8] c"john\00", align 1
 @stringtest.mystr = private unnamed_addr constant [15 x i8] c"abcde\00\00\00\00\00\00\00\00\00\00", align 1
-@.str.2 = private unnamed_addr constant [4 x i8] c"xyz\00", align 1
-@.str.3 = private unnamed_addr constant [9 x i8] c"%s %s %s\00", align 1
-@.str.4 = private unnamed_addr constant [8 x i8] c"test123\00", align 1
+@.str.1 = private unnamed_addr constant [4 x i8] c"xyz\00", align 1
+@.str.2 = private unnamed_addr constant [9 x i8] c"%s %s %s\00", align 1
+@.str.3 = private unnamed_addr constant [8 x i8] c"test123\00", align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @arraytest() #0 {
@@ -69,10 +70,12 @@ define dso_local void @pointertest() #0 {
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @structtest() #0 {
   %1 = alloca %struct.person, align 8
-  %2 = getelementptr inbounds %struct.person, %struct.person* %1, i32 0, i32 1
-  store i32 12, i32* %2, align 8
-  %3 = getelementptr inbounds %struct.person, %struct.person* %1, i32 0, i32 0
-  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.1, i32 0, i32 0), i8** %3, align 8
+  %2 = alloca %struct.group, align 8
+  %3 = alloca %struct.world, align 8
+  %4 = getelementptr inbounds %struct.group, %struct.group* %2, i32 0, i32 0
+  %5 = bitcast %struct.person* %4 to i8*
+  %6 = bitcast %struct.person* %1 to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %5, i8* align 8 %6, i64 16, i1 false)
   ret void
 }
 
@@ -91,13 +94,13 @@ define dso_local void @stringtest() #0 {
   %2 = alloca i8*, align 8
   %3 = bitcast [15 x i8]* %1 to i8*
   call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 1 %3, i8* align 1 getelementptr inbounds ([15 x i8], [15 x i8]* @stringtest.mystr, i32 0, i32 0), i64 15, i1 false)
-  store i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0), i8** %2, align 8
+  store i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.1, i32 0, i32 0), i8** %2, align 8
   %4 = getelementptr inbounds [15 x i8], [15 x i8]* %1, i32 0, i32 0
   %5 = load i8*, i8** %2, align 8
   %6 = call i8* @strcat(i8* %4, i8* %5) #4
   %7 = getelementptr inbounds [15 x i8], [15 x i8]* %1, i32 0, i32 0
   %8 = load i8*, i8** %2, align 8
-  %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.3, i32 0, i32 0), i8* %7, i8* %8, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.4, i32 0, i32 0))
+  %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.2, i32 0, i32 0), i8* %7, i8* %8, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.3, i32 0, i32 0))
   ret void
 }
 

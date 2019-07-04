@@ -8,9 +8,19 @@ int myval = 5;
 
 typedef struct
 {
+    long age;
     char *name;
-    int age;
 } person;
+
+typedef struct
+{
+    person ps;
+} group;
+
+typedef struct
+{
+    group ps;
+} world;
 
 void arraytest()
 {
@@ -41,8 +51,12 @@ void pointertest()
 void structtest()
 {
     person john;
-    john.age = 12;
-    john.name = "john";
+    // john.age = 12;
+    // john.name = "john";
+
+    group grp;
+    grp.ps = john;
+    world w;
 }
 
 char testCast(double i)
@@ -113,7 +127,6 @@ char *strbuilder(char left, char right)
     return str;
 }
 
-
 double check(double x, int y, char *str)
 {
     return x + y;
@@ -123,26 +136,26 @@ void cases(int i)
 {
     switch (i)
     {
-        case 0:
-        {
-            break;
-        }
-        case 2:
-        {
-            break;
-        }
-        case 4:
-        {
-            break;
-        }
-        case 10:
-        {
-            break;
-        }
-        default:
-        {
-            break;
-        }
+    case 0:
+    {
+        break;
+    }
+    case 2:
+    {
+        break;
+    }
+    case 4:
+    {
+        break;
+    }
+    case 10:
+    {
+        break;
+    }
+    default:
+    {
+        break;
+    }
     }
 }
 

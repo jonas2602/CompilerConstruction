@@ -4,6 +4,7 @@ import ast.declarations.*;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import writer.GeneratorSlave;
+import writer.ParamContainer;
 
 import java.util.*;
 
@@ -94,50 +95,54 @@ public class BlockNode extends AbstractSyntaxTree {
     }
 
     public LabelDeclNode GetLabelDeclaration(String labelName) {
-        LabelDeclNode OutDecl = m_LabelDeclMap.get(labelName);
-        if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetLabelDeclaration(labelName);
+        LabelDeclNode outDecl = m_LabelDeclMap.get(labelName);
+        if (outDecl == null && GetOwningBlock() != null) {
+            outDecl = GetOwningBlock().GetLabelDeclaration(labelName);
         }
 
-        return OutDecl;
+        return outDecl;
     }
 
     public ConstDeclNode GetConstantDeclaration(String constName) {
-        ConstDeclNode OutDecl = m_ConstDeclMap.get(constName);
-        if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetConstantDeclaration(constName);
+        ConstDeclNode outDecl = m_ConstDeclMap.get(constName);
+        if (outDecl == null && GetOwningBlock() != null) {
+            outDecl = GetOwningBlock().GetConstantDeclaration(constName);
         }
 
-        return OutDecl;
+        return outDecl;
     }
 
     public TypeDeclNode GetTypeDeclaration(String typeName) {
-        TypeDeclNode OutDecl = m_TypeDeclMap.get(typeName);
-        if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetTypeDeclaration(typeName);
+        TypeDeclNode outDecl = m_TypeDeclMap.get(typeName);
+        if (outDecl == null && GetOwningBlock() != null) {
+            outDecl = GetOwningBlock().GetTypeDeclaration(typeName);
         }
 
-        return OutDecl;
+        return outDecl;
     }
 
+
     public VarDeclNode GetVariableDeclaration(String variableName) {
-        VarDeclNode OutDecl = m_VarDeclMap.get(variableName);
-        if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetVariableDeclaration(variableName);
+        VarDeclNode outDecl = m_VarDeclMap.get(variableName);
+        if (outDecl == null && GetOwningBlock() != null) {
+            outDecl = GetOwningBlock().GetVariableDeclaration(variableName);
+            if(outDecl != null) {
+                outDecl.SetGlobalVariable(true);
+            }
         }
 
         // TODO: Check constants?
-        return OutDecl;
+        return outDecl;
     }
 
     // TODO: How to check for functions that are not defined by the user? e.g. writeln(), chr() or Length()
     public List<FuncDeclNode> GetFunctionDeclaration(String functionName) {
-        List<FuncDeclNode> OutDecl = m_FuncDeclMap.get(functionName);
-        if (OutDecl == null && GetOwningBlock() != null) {
-            OutDecl = GetOwningBlock().GetFunctionDeclaration(functionName);
+        List<FuncDeclNode> outDecl = m_FuncDeclMap.get(functionName);
+        if (outDecl == null && GetOwningBlock() != null) {
+            outDecl = GetOwningBlock().GetFunctionDeclaration(functionName);
         }
 
-        return OutDecl;
+        return outDecl;
     }
 
     @Override
@@ -197,7 +202,14 @@ public class BlockNode extends AbstractSyntaxTree {
         }
 
         for (VarDeclNode var : m_VarDeclMap.values()) {
-            var.CreateSnippet(slave);
+            ParamContainer scopeVar = var.CreateSnippet(slave);
+
+            if(var.IsGlobalVariable()) {
+                ParamContainer defaultValue = var.GetType().GetDefaultValue();
+                if (defaultValue != null) {
+                    slave.StoreInVariable(scopeVar, defaultValue);
+                }
+            }
         }
 
         m_CompoundStatement.CreateSnippet(slave, ctx);
