@@ -1,4 +1,4 @@
-program test;
+program enum;
 
 type
     day = (mon, tue, wed, thur, fri, sat, sun);

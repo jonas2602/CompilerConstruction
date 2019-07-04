@@ -1,6 +1,8 @@
 package visitors;
 
 import ast.AbstractSyntaxTree;
+import ast.BlockNode;
+import ast.declarations.ConstDeclNode;
 import ast.expressions.ConstantNode;
 import ast.types.*;
 import gen.PascalBaseVisitor;
@@ -10,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
+
+    private BlockNode m_OwningBlock;
+
+    public TypeVisitor(BlockNode owningBlock) {
+        m_OwningBlock = owningBlock;
+    }
+
     @Override
     public TypeNode visitType(PascalParser.TypeContext ctx) {
         if (ctx.simpleType() != null) {
@@ -36,13 +45,14 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitScalarType(PascalParser.ScalarTypeContext ctx) {
-        List<String> names = new ArrayList<>();
+        int i = 0;
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
-            names.add(ident.IDENT().getText());
+            ConstDeclNode constDecl = new ConstDeclNode(ident.getText(), new ConstantNode(""+i, PrimitiveTypeNode.ConstIntNode));
+            m_OwningBlock.AddConstantDeclaration(constDecl);
+            i++;
         }
 
-        EnumTypeNode enumNode = new EnumTypeNode(names);
-        return enumNode;
+        return PrimitiveTypeNode.IntNode;
     }
 
     @Override

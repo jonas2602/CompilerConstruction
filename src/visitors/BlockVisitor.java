@@ -91,11 +91,11 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         String name = ctx.identifier().IDENT().getText();
         TypeNode type = null;
         if (ctx.type() != null) {
-            type = new TypeVisitor().visit(ctx.type());
+            type = new TypeVisitor(m_BlockNode).visit(ctx.type());
         } else if (ctx.functionType() != null) {
-            type = new TypeVisitor().visit(ctx.functionType());
+            type = new TypeVisitor(m_BlockNode).visit(ctx.functionType());
         } else {
-            type = new TypeVisitor().visit(ctx.procedureType());
+            type = new TypeVisitor(m_BlockNode).visit(ctx.procedureType());
         }
 
         TypeDeclNode typeDecl = new TypeDeclNode(name, type);
@@ -105,7 +105,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitVariableDeclaration(PascalParser.VariableDeclarationContext ctx) {
-        TypeNode type = new TypeVisitor().visit(ctx.type());
+        TypeNode type = new TypeVisitor(m_BlockNode).visit(ctx.type());
 
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
             m_BlockNode.AddVariableDeclaration(new VarDeclNode(ident.IDENT().getText(), type));
@@ -118,7 +118,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitFunctionDeclaration(PascalParser.FunctionDeclarationContext ctx) {
         // Create Function Node + Block
         String name = ctx.identifier().IDENT().getText();
-        TypeNode returnType = new TypeVisitor().visit(ctx.resultType());
+        TypeNode returnType = new TypeVisitor(m_BlockNode).visit(ctx.resultType());
         // Make shure VarDeclNode is created before return type gets added to the FuncDeclNode, so that the parent of the return type gets overriden by the FuncDeclNode
         VarDeclNode funcTypeNode = new VarDeclNode(name, returnType);
         BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
