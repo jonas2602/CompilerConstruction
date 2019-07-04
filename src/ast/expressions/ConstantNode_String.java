@@ -13,7 +13,7 @@ public class ConstantNode_String extends ConstantNode {
     private ParamContainer m_GlobalParam;
 
     public ConstantNode_String(String data) {
-        super(data, new ArrayTypeNode(data.length() + 1, PrimitiveTypeNode.CharNode));
+        super(data, new ArrayTypeNode(data.length() + 1, PrimitiveTypeNode.ConstCharNode));
 
         m_GlobalParam = null;
     }
@@ -21,7 +21,7 @@ public class ConstantNode_String extends ConstantNode {
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_GlobalParam == null) {
-            m_GlobalParam = slave.CreateStringConstantNew(m_Data);
+            m_GlobalParam = slave.CreateStringConstant(m_Data);
         }
 
         return m_GlobalParam;

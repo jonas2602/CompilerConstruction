@@ -1,6 +1,7 @@
 package ast.declarations;
 
 import ast.AbstractSyntaxTree;
+import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -8,29 +9,30 @@ import writer.ParamContainer;
 import writer.TypeWrapper;
 
 public class ConstDeclNode extends VarDeclNode {
-    private String m_Name;
-    private ConstantNode m_Constant;
+    private AbstractSyntaxTree m_Constant;
 
     // TODO: implement const into type system
     //  nonconst := const           (valid)
     //  const := nonconst           (invalid)
+    //  const ptr := nonconst ptr   (invalid)
+    //  const ptr := const ptr      (valid to initialize)
     //  func(x)     | call(const)   (valid)
     //  func(var x) | call(const)   (invalid)
     //  func(var const x) | call(const)   (valid)
     public ConstDeclNode(String name, AbstractSyntaxTree constant) {
         // Assuming that in types are always constant
         super(name, constant.GetType());
-        m_Name = name;
-        m_Constant = (ConstantNode) constant;
-        m_Constant.SetParent(this);
-    }
 
-    public String GetName() {
-        return m_Name;
+        m_Constant = constant;
+        m_Constant.SetParent(this);
     }
 
     @Override
     public TypeNode CheckType() {
+        if (!(m_Constant instanceof ConstantNode)) {
+            throw new TypeCheckException(this, "Constant can not get initialized with a variable right now");
+        }
+
         m_Constant.CheckType();
         return null;
     }

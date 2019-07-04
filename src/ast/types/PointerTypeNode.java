@@ -9,10 +9,10 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode CharPointerNode = new PointerTypeNode(PrimitiveTypeNode.CharNode);
     public static final PointerTypeNode BoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.BoolNode);
 
-    public static final PointerTypeNode ConstIntPointerNode = new PointerTypeNode(PrimitiveTypeNode.IntNode, true);
-    public static final PointerTypeNode ConstFloatPointerNode = new PointerTypeNode(PrimitiveTypeNode.FloatNode, true);
-    public static final PointerTypeNode ConstCharPointerNode = new PointerTypeNode(PrimitiveTypeNode.CharNode, true);
-    public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.BoolNode, true);
+    public static final PointerTypeNode ConstIntPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstIntNode);
+    public static final PointerTypeNode ConstFloatPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstFloatNode);
+    public static final PointerTypeNode ConstCharPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstCharNode);
+    public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstBoolNode);
 
     protected TypeNode m_BaseType;
 
@@ -23,6 +23,7 @@ public class PointerTypeNode extends TypeNode {
     public PointerTypeNode(TypeNode baseType, boolean bConstant) {
         super(bConstant);
         m_BaseType = baseType;
+        m_BaseType.SetParent(this);
     }
 
     @Override
@@ -43,12 +44,14 @@ public class PointerTypeNode extends TypeNode {
             return false;
         }
 
+        // only assign ptr to ptr
         if (!(otherTypeNode.GetCompareType() instanceof PointerTypeNode)) {
             return false;
         }
 
-        TypeNode OtherBaseType = ((PointerTypeNode) otherTypeNode.GetCompareType()).m_BaseType;
-        if (!OtherBaseType.CompareType(m_BaseType)) {
+        // Assigned value has fitting type?
+        TypeNode otherBaseType = ((PointerTypeNode) otherTypeNode.GetCompareType()).m_BaseType;
+        if (!otherBaseType.CompareType(m_BaseType)) {
             return false;
         }
 

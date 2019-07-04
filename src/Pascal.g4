@@ -163,7 +163,7 @@ typeList
    ;
 
 recordType
-   : RECORD fieldList? END
+   : RECORD (recordSection (SEMI recordSection)* SEMI?)? END // prior fieldList
    ;
 
 fieldList

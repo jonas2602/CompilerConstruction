@@ -1,5 +1,7 @@
 package llvm;
 
+import writer.TypeWrapper;
+
 import java.util.List;
 
 public class CodeSnippetHelper {

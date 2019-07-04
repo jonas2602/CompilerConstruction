@@ -1,4 +1,4 @@
-// Generated from C:/Users/Project_X/gitKraken/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
+// Generated from D:/JetBrains/Projects/Intellij/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
 package gen;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

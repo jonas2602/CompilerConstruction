@@ -3,13 +3,14 @@ package writer;
 import com.sun.source.tree.Scope;
 import llvm.*;
 
-import java.lang.annotation.Native;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class GeneratorSlave {
+    private List<CodeSnippet_Struct> m_Structs;
+
     private List<CodeSnippet_Base> m_Constants;
     private int m_ConstantCounter = 0;
 
@@ -21,6 +22,7 @@ public class GeneratorSlave {
     private ScopeInterface m_ActiveScope;
 
     public GeneratorSlave() {
+        m_Structs = new ArrayList<>();
         m_Constants = new ArrayList<>();
         m_NativeMap = new HashSet<>();
         m_FunctionDefinitions = new ArrayList<>();
@@ -54,7 +56,15 @@ public class GeneratorSlave {
         return name.CreateFunctionCall(this);
     }
 
-    public ParamContainer CreateStringConstantNew(String content) {
+    public void CreateStruct(String name, List<TypeWrapper> entries) {
+        CodeSnippet_Struct switchSnippet = new CodeSnippet_Struct(name);
+        m_Structs.add(switchSnippet);
+        for (TypeWrapper ent : entries) {
+            switchSnippet.AddEntry(ent);
+        }
+    }
+
+    public ParamContainer CreateStringConstant(String content) {
         // Convert \n, \t, ... to hex code
         StringBuilder builder = new StringBuilder();
         for (char c : content.toCharArray()) {
@@ -448,6 +458,12 @@ public class GeneratorSlave {
 
     public List<String> Serialize() {
         List<String> OutLines = new ArrayList<>();
+
+        for (CodeSnippet_Struct struct : m_Structs) {
+            OutLines.addAll(struct.WriteLines());
+        }
+
+        OutLines.add("");
 
         for (CodeSnippet_Base constant : m_Constants) {
             OutLines.addAll(constant.WriteLines());

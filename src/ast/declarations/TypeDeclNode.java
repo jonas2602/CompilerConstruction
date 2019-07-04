@@ -2,6 +2,8 @@ package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
+import writer.GeneratorSlave;
+import writer.ParamContainer;
 
 public class TypeDeclNode extends AbstractSyntaxTree {
     private String m_Name;
@@ -26,5 +28,10 @@ public class TypeDeclNode extends AbstractSyntaxTree {
     @Override
     public TypeNode GetType() {
         return m_Type;
+    }
+
+    @Override
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        return m_Type.CreateSnippet(slave);
     }
 }

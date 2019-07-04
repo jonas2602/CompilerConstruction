@@ -47,7 +47,7 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
     public TypeNode visitScalarType(PascalParser.ScalarTypeContext ctx) {
         int i = 0;
         for (PascalParser.IdentifierContext ident : ctx.identifierList().identifier()) {
-            ConstDeclNode constDecl = new ConstDeclNode(ident.getText(), new ConstantNode(""+i, PrimitiveTypeNode.ConstIntNode));
+            ConstDeclNode constDecl = new ConstDeclNode(ident.getText(), new ConstantNode("" + i, PrimitiveTypeNode.ConstIntNode));
             m_OwningBlock.AddConstantDeclaration(constDecl);
             i++;
         }
@@ -102,8 +102,15 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitRecordType(PascalParser.RecordTypeContext ctx) {
-        // TODO:
-        return null;
+        RecordTypeNode recordNode = new RecordTypeNode();
+        for (PascalParser.RecordSectionContext section : ctx.recordSection()) {
+            TypeNode sectionTypeNode = visitType(section.type());
+            for (PascalParser.IdentifierContext ident : section.identifierList().identifier()) {
+                recordNode.AddEntry(ident.IDENT().getText(), sectionTypeNode);
+            }
+        }
+
+        return recordNode;
     }
 
     @Override

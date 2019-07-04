@@ -51,10 +51,6 @@ public class PrimitiveTypeNode extends TypeNode {
         return m_PrimitiveType.GetIsDezimal();
     }
 
-    public String GetTypeDefault() {
-        return m_PrimitiveType.GetDefaultValue();
-    }
-
     @Override
     public TypeNode CheckType() {
         return GetType();

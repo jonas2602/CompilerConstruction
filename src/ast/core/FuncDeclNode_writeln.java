@@ -77,7 +77,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         builder.append("\n");
 
         //
-        ParamContainer constant = slave.CreateStringConstantNew(builder.toString());
+        ParamContainer constant = slave.CreateStringConstant(builder.toString());
         ParamContainer placeholderRef = slave.CreateArrayElementPtr(constant, new ConstantWrapper("0"));
         slave.CreateNativeCall(new NativeFunction_printf(placeholderRef, content));
 
