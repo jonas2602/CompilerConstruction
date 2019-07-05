@@ -1,14 +1,12 @@
 package ast.statements;
 
 import ast.AbstractSyntaxTree;
-import ast.TypeCheckException;
 import ast.core.operators.Operator;
-import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.ValueWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.ValueWrapper;
 
 public class ForNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;

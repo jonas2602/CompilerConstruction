@@ -3,7 +3,7 @@ package ast.declarations;
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class TypeDeclNode extends AbstractSyntaxTree {
     private String m_Name;

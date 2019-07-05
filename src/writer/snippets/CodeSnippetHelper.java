@@ -1,6 +1,4 @@
-package llvm;
-
-import writer.TypeWrapper;
+package writer.snippets;
 
 import java.util.List;
 

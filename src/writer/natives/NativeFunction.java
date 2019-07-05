@@ -1,6 +1,10 @@
-package llvm;
+package writer.natives;
 
+import writer.snippets.CodeSnippet_Plain;
 import writer.*;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
+import writer.wrapper.TypeWrapper_Other;
 
 import java.util.ArrayList;
 import java.util.List;

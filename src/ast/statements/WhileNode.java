@@ -2,12 +2,11 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
-import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.ValueWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.ValueWrapper;
 
 public class WhileNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Condition;

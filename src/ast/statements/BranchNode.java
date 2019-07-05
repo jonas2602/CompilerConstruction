@@ -1,10 +1,11 @@
 package ast.statements;
 
 import ast.AbstractSyntaxTree;
-import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.*;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.ValueWrapper;
 
 public class BranchNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Condition;

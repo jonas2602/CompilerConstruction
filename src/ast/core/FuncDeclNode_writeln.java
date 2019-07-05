@@ -5,10 +5,11 @@ import ast.TypeCheckException;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.*;
-import llvm.*;
-import writer.ConstantWrapper;
+import writer.CodeGenerator;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.natives.NativeFunction_printf;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.ValueWrapper_Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
 
         //
         ParamContainer constant = slave.CreateStringConstant(builder.toString());
-        ParamContainer placeholderRef = slave.CreateArrayElementPtr(constant, new ConstantWrapper("0"));
+        ParamContainer placeholderRef = slave.CreateArrayElementPtr(constant, new ValueWrapper_Constant("0"));
         slave.CreateNativeCall(new NativeFunction_printf(placeholderRef, content));
 
         return null;

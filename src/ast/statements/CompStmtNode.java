@@ -2,9 +2,9 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 import java.util.ArrayList;
 import java.util.List;

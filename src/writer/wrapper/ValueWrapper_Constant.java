@@ -1,17 +1,17 @@
-package writer;
+package writer.wrapper;
 
-public class ConstantWrapper extends ValueWrapper {
+public class ValueWrapper_Constant extends ValueWrapper {
     private String m_Data;
 
-    public ConstantWrapper(String data) {
+    public ValueWrapper_Constant(String data) {
         m_Data = data;
     }
 
-    public ConstantWrapper(int data) {
+    public ValueWrapper_Constant(int data) {
         m_Data = Integer.toString(data);
     }
 
-    public ConstantWrapper(float data) {
+    public ValueWrapper_Constant(float data) {
         m_Data = Float.toString(data);
     }
 

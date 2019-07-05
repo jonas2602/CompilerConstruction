@@ -1,6 +1,4 @@
-package writer;
-
-import ast.core.PascalType_Long;
+package writer.wrapper;
 
 public class TypeWrapper_Pointer extends TypeWrapper {
     public static TypeWrapper_Pointer CHARPTR = new TypeWrapper_Pointer(TypeWrapper_Primitive.CHAR);

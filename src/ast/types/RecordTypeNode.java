@@ -1,11 +1,10 @@
 package ast.types;
 
 import ast.TypeCheckException;
-import ast.declarations.TypeDeclNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
-import writer.TypeWrapper_Struct;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
+import writer.wrapper.TypeWrapper_Struct;
 
 import java.util.ArrayList;
 import java.util.HashMap;

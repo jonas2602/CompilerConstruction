@@ -5,7 +5,7 @@ import ast.TypeCheckException;
 import ast.declarations.LabelDeclNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class GotoNode extends AbstractSyntaxTree {
     private String m_LabelName;

@@ -1,7 +1,7 @@
 package ast.types;
 
-import writer.TypeWrapper;
-import writer.TypeWrapper_Pointer;
+import writer.wrapper.TypeWrapper;
+import writer.wrapper.TypeWrapper_Pointer;
 
 public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode IntPointerNode = new PointerTypeNode(PrimitiveTypeNode.IntNode);

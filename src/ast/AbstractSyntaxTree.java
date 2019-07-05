@@ -1,9 +1,9 @@
 package ast;
 
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public abstract class AbstractSyntaxTree {
     private AbstractSyntaxTree m_Parent;

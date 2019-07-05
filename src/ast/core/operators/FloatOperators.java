@@ -5,7 +5,7 @@ import ast.core.StdBuilder;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class FloatOperators implements StdBuilder {
 

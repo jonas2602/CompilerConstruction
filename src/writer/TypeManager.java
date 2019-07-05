@@ -1,6 +1,10 @@
 package writer;
 
 import ast.EPrimitiveType;
+import writer.wrapper.TypeWrapper;
+import writer.wrapper.TypeWrapper_Array;
+import writer.wrapper.TypeWrapper_Pointer;
+import writer.wrapper.TypeWrapper_Primitive;
 
 public class TypeManager {
     public static TypeWrapper STRING(int InSize) {

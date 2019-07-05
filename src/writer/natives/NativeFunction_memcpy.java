@@ -1,8 +1,7 @@
-package llvm;
+package writer.natives;
 
 import writer.*;
-
-import java.util.List;
+import writer.wrapper.*;
 
 public class NativeFunction_memcpy extends NativeFunction {
     public NativeFunction_memcpy(ParamContainer target, ParamContainer source, int byteSize) {
@@ -15,7 +14,7 @@ public class NativeFunction_memcpy extends NativeFunction {
 
         m_CallParams.add(target);
         m_CallParams.add(source);
-        m_CallParams.add(new ParamContainer(TypeWrapper_Primitive.LONG, new ConstantWrapper(Integer.toString(byteSize))));
+        m_CallParams.add(new ParamContainer(TypeWrapper_Primitive.LONG, new ValueWrapper_Constant(Integer.toString(byteSize))));
         m_CallParams.add(ParamContainer.BOOLCONTAINER(false));
     }
 

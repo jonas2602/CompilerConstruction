@@ -1,8 +1,5 @@
 package ast.types;
 
-import writer.TypeWrapper;
-import writer.TypeWrapper_Pointer;
-
 public class VarTypeNode extends PointerTypeNode {
     public static final VarTypeNode IntVarNode = new VarTypeNode(PrimitiveTypeNode.IntNode);
     public static final VarTypeNode FloatVarNode = new VarTypeNode(PrimitiveTypeNode.FloatNode);

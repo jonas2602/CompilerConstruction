@@ -1,16 +1,18 @@
-package writer;
+package writer.wrapper;
+
+import writer.CodeGenerator;
 
 public class ParamContainer {
     public static ParamContainer LABELCONTAINER() {
-        return new ParamContainer(TypeWrapper_Other.LABEL, new ConstantWrapper(""));
+        return new ParamContainer(TypeWrapper_Other.LABEL, new ValueWrapper_Constant(""));
     }
 
     public static ParamContainer VOIDCONTAINER() {
-        return new ParamContainer(TypeWrapper_Other.VOID, new ConstantWrapper(""));
+        return new ParamContainer(TypeWrapper_Other.VOID, new ValueWrapper_Constant(""));
     }
 
     public static ParamContainer BOOLCONTAINER(boolean InBool) {
-        return new ParamContainer(TypeWrapper_Primitive.BOOL, new ConstantWrapper(InBool ? "true" : "false"));
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, new ValueWrapper_Constant(InBool ? "true" : "false"));
     }
 
 
@@ -22,7 +24,7 @@ public class ParamContainer {
     private ValueWrapper m_ValueAccessor; // Constant or Local Variable(%X) or Global Variable(@X)
 
     public ParamContainer(TypeWrapper type, String constant) {
-        this(type, new ConstantWrapper(constant));
+        this(type, new ValueWrapper_Constant(constant));
     }
 
     public ParamContainer(TypeWrapper type, ValueWrapper value) {
@@ -32,7 +34,7 @@ public class ParamContainer {
 
     // Copy constructors
 //    public ParamContainer(ParamContainer InSourceContainer, String InConstant) {
-//        this(InSourceContainer.m_RootType, new ConstantWrapper(InConstant));
+//        this(InSourceContainer.m_RootType, new ValueWrapper_Constant(InConstant));
 //    }
 
     public ParamContainer(ParamContainer sourceContainer, ValueWrapper value) {

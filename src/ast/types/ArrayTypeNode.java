@@ -3,9 +3,8 @@ package ast.types;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
-import writer.TypeManager;
-import writer.TypeWrapper;
-import writer.TypeWrapper_Array;
+import writer.wrapper.TypeWrapper;
+import writer.wrapper.TypeWrapper_Array;
 
 public class ArrayTypeNode extends TypeNode {
     public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.IntNode);

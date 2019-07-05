@@ -3,11 +3,11 @@ package ast.statements;
 import ast.AbstractSyntaxTree;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Switch;
+import writer.snippets.CodeSnippet_Switch;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper_Primitive;
-import writer.ValueWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper_Primitive;
+import writer.wrapper.ValueWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

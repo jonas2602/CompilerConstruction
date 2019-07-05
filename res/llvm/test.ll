@@ -220,31 +220,38 @@ define dso_local void @cases(i32) #0 {
   %2 = alloca i32, align 4
   store i32 %0, i32* %2, align 4
   %3 = load i32, i32* %2, align 4
-  switch i32 %3, label %8 [
+  switch i32 %3, label %6 [
     i32 0, label %4
     i32 2, label %5
-    i32 4, label %6
-    i32 10, label %7
   ]
 
 ; <label>:4:                                      ; preds = %1
-  br label %9
+  br label %7
 
 ; <label>:5:                                      ; preds = %1
-  br label %9
+  br label %7
 
 ; <label>:6:                                      ; preds = %1
-  br label %9
+  br label %7
 
-; <label>:7:                                      ; preds = %1
-  br label %9
-
-; <label>:8:                                      ; preds = %1
-  br label %9
-
-; <label>:9:                                      ; preds = %8, %7, %6, %5, %4
+; <label>:7:                                      ; preds = %6, %5, %4
   ret void
 }
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local void @memtest() #0 {
+  %1 = alloca i64*, align 8
+  %2 = call noalias i8* @malloc(i64 8) #4
+  %3 = bitcast i8* %2 to i64*
+  store i64* %3, i64** %1, align 8
+  %4 = load i64*, i64** %1, align 8
+  %5 = bitcast i64* %4 to i8*
+  call void @free(i8* %5) #4
+  ret void
+}
+
+; Function Attrs: nounwind
+declare dso_local void @free(i8*) #3
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i32 @main() #0 {

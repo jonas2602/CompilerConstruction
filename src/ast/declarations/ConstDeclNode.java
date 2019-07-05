@@ -5,8 +5,8 @@ import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
 
 public class ConstDeclNode extends VarDeclNode {
     private AbstractSyntaxTree m_Constant;

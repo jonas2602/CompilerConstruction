@@ -1,8 +1,7 @@
-package llvm;
+package writer.snippets;
 
-import writer.ParamContainer;
-import writer.TypeWrapper;
-import writer.VariableWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.ValueWrapper_Variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ public class CodeSnippet_Switch extends CodeSnippet_Base {
         m_Default = defJump;
     }
 
-    public VariableWrapper AddParameter(CodeSnippet_Base param) {
+    public ValueWrapper_Variable AddParameter(CodeSnippet_Base param) {
         m_Labels.add(param);
         return null;
     }

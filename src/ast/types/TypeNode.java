@@ -1,8 +1,8 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
-import writer.ParamContainer;
-import writer.TypeWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
 
 public abstract class TypeNode extends AbstractSyntaxTree {
     boolean m_bConstant;

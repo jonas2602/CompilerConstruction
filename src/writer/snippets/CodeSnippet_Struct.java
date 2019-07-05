@@ -1,6 +1,6 @@
-package llvm;
+package writer.snippets;
 
-import writer.TypeWrapper;
+import writer.wrapper.TypeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

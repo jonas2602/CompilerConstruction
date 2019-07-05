@@ -2,10 +2,10 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_Plain;
+import writer.snippets.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class ConstantNode extends AbstractSyntaxTree {
     protected String m_Data;

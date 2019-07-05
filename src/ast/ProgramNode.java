@@ -2,11 +2,10 @@ package ast;
 
 import ast.core.PascalType_Int;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_FuncDef;
+import writer.snippets.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_FuncDef;
 import writer.GeneratorSlave;
-import writer.TypeWrapper;
-import writer.TypeWrapper_Primitive;
+import writer.wrapper.TypeWrapper_Primitive;
 
 import java.util.ArrayList;
 import java.util.List;

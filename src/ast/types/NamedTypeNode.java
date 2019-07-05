@@ -1,12 +1,8 @@
 package ast.types;
 
-import ast.EPrimitiveType;
 import ast.TypeCheckException;
 import ast.declarations.TypeDeclNode;
-import llvm.CodeSnippet_Base;
-import writer.GeneratorSlave;
-import writer.TypeWrapper;
-import writer.TypeWrapper_Other;
+import writer.wrapper.TypeWrapper;
 
 public class NamedTypeNode extends TypeNode {
     private String m_TypeName;

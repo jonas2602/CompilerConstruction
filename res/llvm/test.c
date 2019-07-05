@@ -9,7 +9,7 @@ int myval = 5;
 typedef struct
 {
     int age;
-    char* name;
+    char *name;
 } person;
 
 typedef struct
@@ -147,19 +147,17 @@ void cases(int i)
     {
         break;
     }
-    case 4:
-    {
-        break;
-    }
-    case 10:
-    {
-        break;
-    }
     default:
     {
         break;
     }
     }
+}
+
+void memtest()
+{
+    long *list = malloc(sizeof(int) * 2);
+    free(list);
 }
 
 int main()

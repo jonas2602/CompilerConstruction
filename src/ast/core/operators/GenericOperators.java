@@ -8,11 +8,10 @@ import ast.core.StdBuilder;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
-import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class GenericOperators implements StdBuilder {
     @Override

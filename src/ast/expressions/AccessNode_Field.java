@@ -6,7 +6,7 @@ import ast.declarations.VarDeclNode;
 import ast.types.RecordTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;

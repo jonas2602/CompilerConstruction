@@ -1,4 +1,6 @@
-package writer;
+package writer.wrapper;
+
+import writer.TypeManager;
 
 public class TypeWrapper_Array extends TypeWrapper {
     private int m_Size;

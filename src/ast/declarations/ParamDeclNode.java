@@ -2,10 +2,10 @@ package ast.declarations;
 
 import ast.types.TypeNode;
 import ast.types.VarTypeNode;
-import llvm.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
 
 public class ParamDeclNode extends VarDeclNode {
 

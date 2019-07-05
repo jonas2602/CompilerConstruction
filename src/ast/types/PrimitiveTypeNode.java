@@ -1,12 +1,12 @@
 package ast.types;
 
 import ast.core.*;
-import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_Plain;
+import writer.snippets.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
-import writer.TypeWrapper_Primitive;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
+import writer.wrapper.TypeWrapper_Primitive;
 
 public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(new PascalType_Int());

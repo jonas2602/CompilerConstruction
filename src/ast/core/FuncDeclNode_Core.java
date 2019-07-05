@@ -6,7 +6,7 @@ import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public abstract class FuncDeclNode_Core extends FuncDeclNode {
     protected boolean m_bCustomCallLogic = false;

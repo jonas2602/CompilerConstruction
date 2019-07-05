@@ -3,8 +3,8 @@ package ast.declarations;
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
 
 public class VarDeclNode extends AbstractSyntaxTree {
     protected String m_Name;

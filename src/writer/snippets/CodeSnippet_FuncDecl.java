@@ -1,7 +1,6 @@
-package llvm;
+package writer.snippets;
 
-import writer.TypeWrapper;
-import writer.VariableWrapper;
+import writer.wrapper.ValueWrapper_Variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +18,12 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInter
         m_Params = new ArrayList<>();
     }
 
-    public VariableWrapper AddParameter(CodeSnippet_Base param) {
+    public ValueWrapper_Variable AddParameter(CodeSnippet_Base param) {
         m_Params.add(param);
-        return VariableWrapper.SCOPEVAR(m_ParameterCounter++);
+        return ValueWrapper_Variable.SCOPEVAR(m_ParameterCounter++);
     }
 
-    public VariableWrapper AddParameter(String InParam) {
+    public ValueWrapper_Variable AddParameter(String InParam) {
         return AddParameter(new CodeSnippet_Plain(InParam));
     }
 

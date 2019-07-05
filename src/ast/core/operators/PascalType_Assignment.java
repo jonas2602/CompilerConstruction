@@ -4,7 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public abstract class PascalType_Assignment extends PascalType_Operator {
     public PascalType_Assignment(Operator operator, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {

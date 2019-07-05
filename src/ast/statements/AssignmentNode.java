@@ -2,20 +2,17 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
-import ast.core.FuncDeclNode_Core;
 import ast.core.operators.Operator;
 import ast.declarations.ConstDeclNode;
-import ast.declarations.FuncDeclNode;
 import ast.declarations.VarDeclNode;
 import ast.expressions.AccessInterface;
-import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
-import llvm.NativeFunction_memcpy;
 import writer.*;
-
-import java.util.List;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper_Array;
+import writer.wrapper.TypeWrapper_Struct;
 
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;

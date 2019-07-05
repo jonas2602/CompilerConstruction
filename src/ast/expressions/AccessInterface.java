@@ -1,10 +1,9 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
-import ast.declarations.ParamDeclNode;
 import ast.declarations.VarDeclNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public interface AccessInterface {
     public abstract VarDeclNode GetVarDeclNode();

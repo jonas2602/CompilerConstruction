@@ -3,7 +3,7 @@ package ast.declarations;
 import ast.AbstractSyntaxTree;
 import ast.statements.LabelNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class LabelDeclNode extends AbstractSyntaxTree {
     private String m_Name;

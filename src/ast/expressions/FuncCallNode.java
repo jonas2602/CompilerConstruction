@@ -7,11 +7,9 @@ import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
 import ast.types.TypeNode;
-import llvm.*;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
-import writer.VariableWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

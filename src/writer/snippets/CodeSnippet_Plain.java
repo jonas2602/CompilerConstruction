@@ -1,4 +1,4 @@
-package llvm;
+package writer.snippets;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
-package llvm;
+package writer.natives;
 
-import writer.ParamContainer;
-import writer.TypeWrapper_Other;
-import writer.TypeWrapper_Pointer;
-import writer.TypeWrapper_Primitive;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper_Other;
+import writer.wrapper.TypeWrapper_Pointer;
+import writer.wrapper.TypeWrapper_Primitive;
 
 import java.util.List;
 

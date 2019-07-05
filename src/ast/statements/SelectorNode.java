@@ -1,11 +1,7 @@
 package ast.statements;
 
 import ast.AbstractSyntaxTree;
-import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
-import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.ValueWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

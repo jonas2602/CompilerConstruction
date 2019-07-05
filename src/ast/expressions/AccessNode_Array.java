@@ -7,7 +7,7 @@ import ast.types.ArrayTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 import java.util.List;
 import java.util.ArrayList;

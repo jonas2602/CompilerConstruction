@@ -1,4 +1,4 @@
-package writer;
+package writer.wrapper;
 
 import ast.core.*;
 

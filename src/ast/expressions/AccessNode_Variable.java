@@ -3,12 +3,9 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.VarDeclNode;
-import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
-import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
+import writer.wrapper.ParamContainer;
 
 public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInterface {
     private String m_Name;

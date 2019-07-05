@@ -2,18 +2,14 @@ package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
-import ast.TypeCheckException;
 import ast.expressions.*;
-import ast.types.NamedTypeNode;
-import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
-import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_FuncDef;
-import llvm.CodeSnippet_Plain;
+import writer.snippets.CodeSnippet_Base;
+import writer.snippets.CodeSnippet_FuncDef;
 import writer.GeneratorSlave;
-import writer.ParamContainer;
-import writer.TypeWrapper;
+import writer.wrapper.ParamContainer;
+import writer.wrapper.TypeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

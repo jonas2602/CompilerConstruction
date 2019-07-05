@@ -1,6 +1,6 @@
-package llvm;
+package writer.snippets;
 
-import writer.VariableWrapper;
+import writer.wrapper.ValueWrapper_Variable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
     private List<CodeSnippet_Base> m_Statements;
     private int m_VariableCounter;
-    // private List<VariableWrapper> m_IndexElements = new ArrayList<>();
+    // private List<ValueWrapper_Variable> m_IndexElements = new ArrayList<>();
 
     public CodeSnippet_FuncDef(String name, CodeSnippet_Base returnType, int varIndexOffset) {
         super(name, returnType);
@@ -28,15 +28,15 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
     }
 
     // @Override
-    public VariableWrapper AddStatementWithStorage(CodeSnippet_Base stmt) {
-        VariableWrapper var = VariableWrapper.SCOPEVAR(m_VariableCounter++);
+    public ValueWrapper_Variable AddStatementWithStorage(CodeSnippet_Base stmt) {
+        ValueWrapper_Variable var = ValueWrapper_Variable.SCOPEVAR(m_VariableCounter++);
         // String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
         m_Statements.add(new CodeSnippet_Args("%s = %s", var, stmt));
         return var;
     }
 
     // @Override
-    public VariableWrapper AddStatementWithStorage(String stmt) {
+    public ValueWrapper_Variable AddStatementWithStorage(String stmt) {
         return AddStatementWithStorage(new CodeSnippet_Plain(stmt));
     }
 
@@ -45,12 +45,12 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
         m_VariableCounter++;
     }
 
-    public VariableWrapper AddLabel() {
+    public ValueWrapper_Variable AddLabel() {
         m_Statements.add(new CodeSnippet_Plain(""));
 
         String finalStmt = String.format("; <label>:%d:", m_VariableCounter);
         m_Statements.add(new CodeSnippet_Plain(finalStmt));
-        return VariableWrapper.SCOPEVAR(m_VariableCounter++);
+        return ValueWrapper_Variable.SCOPEVAR(m_VariableCounter++);
     }
 
     @Override
