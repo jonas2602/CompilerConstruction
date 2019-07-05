@@ -4,7 +4,6 @@ import ast.core.PascalType_Int;
 import ast.types.TypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
-import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
 import writer.TypeWrapper;
 import writer.TypeWrapper_Primitive;

@@ -9,10 +9,10 @@ import java.util.List;
 
 public class CodeSnippet_Switch extends CodeSnippet_Base {
     private List<CodeSnippet_Base> m_Labels;
-    private CodeSnippet_Base m_Comp;
-    private CodeSnippet_Base m_Default;
+    private ParamContainer m_Comp;
+    private ParamContainer m_Default;
 
-    public CodeSnippet_Switch(CodeSnippet_Base comp, CodeSnippet_Base defJump) {
+    public CodeSnippet_Switch(ParamContainer comp, ParamContainer defJump) {
         m_Labels = new ArrayList<>();
         m_Comp = comp;
         m_Default = defJump;
@@ -33,7 +33,7 @@ public class CodeSnippet_Switch extends CodeSnippet_Base {
     @Override
     public String Write() {
         StringBuilder builder = new StringBuilder();
-        String head = String.format("switch %s, %s [ ", m_Comp.Write(), m_Default.Write());
+        String head = String.format("switch %s, %s [ ", m_Comp.CreateParameterString(), m_Default.CreateParameterString());
         builder.append(head);
 
         for(CodeSnippet_Base c: m_Labels) {

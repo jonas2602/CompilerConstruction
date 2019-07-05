@@ -4,7 +4,6 @@ import ast.EPrimitiveType;
 import ast.TypeCheckException;
 import ast.declarations.TypeDeclNode;
 import llvm.CodeSnippet_Base;
-import llvm.CodeSnippet_Type;
 import writer.GeneratorSlave;
 import writer.TypeWrapper;
 import writer.TypeWrapper_Other;

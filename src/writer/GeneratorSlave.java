@@ -99,14 +99,6 @@ public class GeneratorSlave {
         return new ParamContainer(new TypeWrapper_Pointer(stringType), var);
     }
 
-//    public CodeSnippet_FuncCall CreatePrintfCall(CodeSnippet_Base InSourceParam, List<CodeSnippet_Base> InFiller) {
-//        InFiller.add(0, InSourceParam);
-//        CodeSnippet_FuncCall call = new CodeSnippet_FuncCall("printf", new CodeSnippet_Type(CodeSnippet_Type.EType.INTPTR), InFiller, new CodeSnippet_Plain("(i8*, ...)"));
-//        GetScopeSnippetAsDef().AddStatementWithStorage(call);
-//
-//        return call;
-//    }
-
     public ParamContainer CreateFunctionCall(String name, TypeWrapper returnType, boolean bEnterScope) {
         CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(name, returnType);
 
@@ -442,7 +434,7 @@ public class GeneratorSlave {
     }
 
     public CodeSnippet_Switch CreateSwitch(ParamContainer expression, ParamContainer defJump) {
-        CodeSnippet_Switch switchStmt = new CodeSnippet_Switch(new CodeSnippet_PlainObject(expression), new CodeSnippet_PlainObject(defJump));
+        CodeSnippet_Switch switchStmt = new CodeSnippet_Switch(expression, defJump);
         GetScopeSnippetAsDef().AddStatement(switchStmt);
         return switchStmt;
     }
