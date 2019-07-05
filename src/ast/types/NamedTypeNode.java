@@ -34,19 +34,23 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
-        return m_TypeDetails.CompareType(otherTypeNode);
-        /*if(otherTypeNode == null){
+        if (otherTypeNode == null) {
             return false;
         }
 
-        // Is the given type a valid name node?
-        if (!(otherTypeNode.GetCompareType() instanceof NamedTypeNode)) {
-            return false;
+        if (m_TypeDetails != null) {
+            return m_TypeDetails.CompareType(otherTypeNode);
+        } else {
+            // Is the given type a valid name node?
+            if (!(otherTypeNode.GetCompareType() instanceof NamedTypeNode)) {
+                return false;
+            }
+
+            // compare type names
+            NamedTypeNode otherNameNode = (NamedTypeNode) otherTypeNode.GetCompareType();
+            return m_TypeName == otherNameNode.m_TypeName;
         }
 
-        // compare type names
-        NamedTypeNode otherNameNode = (NamedTypeNode) otherTypeNode.GetCompareType();
-        return m_TypeName == otherNameNode.m_TypeName;*/
     }
 
     @Override
@@ -63,7 +67,11 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_TypeDetails.GetTypeDetails();
+        if (m_TypeDetails != null) {
+            return m_TypeDetails.GetTypeDetails();
+        } else {
+            return this;
+        }
     }
 
     @Override
