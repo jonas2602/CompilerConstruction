@@ -15,7 +15,11 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     private BlockNode m_BlockNode;
 
     public BlockVisitor() {
-        m_BlockNode = new BlockNode();
+        this(false);
+    }
+
+    public BlockVisitor(boolean mainBlock) {
+        m_BlockNode = new BlockNode(mainBlock);
     }
 
     @Override

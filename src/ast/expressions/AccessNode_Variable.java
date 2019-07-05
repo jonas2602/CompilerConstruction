@@ -22,6 +22,10 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
         return m_Declaration;
     }
 
+    public void SetDeclaration(VarDeclNode var) {
+        m_Declaration = var;
+    }
+
     @Override
     public TypeNode CheckType() {
         // Variable Declaration should already be checked by the owning Block

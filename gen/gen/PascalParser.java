@@ -1,4 +1,4 @@
-// Generated from D:/JetBrains/Projects/Intellij/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
+// Generated from C:/Users/Project_X/gitKraken/CompilerConstruction/src\Pascal.g4 by ANTLR 4.7.2
 package gen;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -4432,10 +4432,10 @@ public class PascalParser extends Parser {
 			return getRuleContext(IdentifierContext.class,0);
 		}
 		public TerminalNode LPAREN() { return getToken(PascalParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(PascalParser.RPAREN, 0); }
 		public ParameterListContext parameterList() {
 			return getRuleContext(ParameterListContext.class,0);
 		}
-		public TerminalNode RPAREN() { return getToken(PascalParser.RPAREN, 0); }
 		public ProcedureStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -4456,20 +4456,20 @@ public class PascalParser extends Parser {
 			{
 			setState(649);
 			identifier();
-			setState(654);
+			setState(650);
+			match(LPAREN);
+			setState(652);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==LPAREN) {
+			if (((((_la - 22)) & ~0x3f) == 0 && ((1L << (_la - 22)) & ((1L << (NIL - 22)) | (1L << (NOT - 22)) | (1L << (PLUS - 22)) | (1L << (MINUS - 22)) | (1L << (LPAREN - 22)) | (1L << (LBRACK - 22)) | (1L << (LBRACK2 - 22)) | (1L << (AT - 22)) | (1L << (TRUE - 22)) | (1L << (FALSE - 22)) | (1L << (IDENT - 22)) | (1L << (STRING_LITERAL - 22)) | (1L << (NUM_INT - 22)) | (1L << (NUM_REAL - 22)))) != 0)) {
 				{
-				setState(650);
-				match(LPAREN);
 				setState(651);
 				parameterList();
-				setState(652);
-				match(RPAREN);
 				}
 			}
 
+			setState(654);
+			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -5538,7 +5538,7 @@ public class PascalParser extends Parser {
 		"\3D\3D\3D\3D\3D\3D\3D\5D\u025c\nD\3E\3E\3E\5E\u0261\nE\3F\3F\3F\5F\u0266"+
 		"\nF\3F\3F\3G\3G\3G\7G\u026d\nG\fG\16G\u0270\13G\3H\3H\3H\3H\3H\3H\3H\3"+
 		"H\5H\u027a\nH\3I\3I\3I\7I\u027f\nI\fI\16I\u0282\13I\3I\5I\u0285\nI\3J"+
-		"\3J\3J\5J\u028a\nJ\3K\3K\3K\3K\3K\5K\u0291\nK\3L\3L\7L\u0295\nL\fL\16"+
+		"\3J\3J\5J\u028a\nJ\3K\3K\3K\5K\u028f\nK\3K\3K\3L\3L\7L\u0295\nL\fL\16"+
 		"L\u0298\13L\3M\3M\3M\3N\3N\3N\3O\3O\3P\3P\3P\3P\5P\u02a6\nP\3Q\3Q\3Q\3"+
 		"Q\3R\3R\3R\7R\u02af\nR\fR\16R\u02b2\13R\3S\3S\5S\u02b6\nS\3T\3T\3T\3T"+
 		"\3T\3T\5T\u02be\nT\3U\3U\3U\3U\3U\3U\7U\u02c6\nU\fU\16U\u02c9\13U\3U\3"+
@@ -5722,8 +5722,8 @@ public class PascalParser extends Parser {
 		"\u0280\3\2\2\2\u0283\u0285\3\2\2\2\u0284\u027b\3\2\2\2\u0284\u0283\3\2"+
 		"\2\2\u0285\u0091\3\2\2\2\u0286\u0289\5x=\2\u0287\u0288\7@\2\2\u0288\u028a"+
 		"\5x=\2\u0289\u0287\3\2\2\2\u0289\u028a\3\2\2\2\u028a\u0093\3\2\2\2\u028b"+
-		"\u0290\5\6\4\2\u028c\u028d\7\67\2\2\u028d\u028e\5\u008cG\2\u028e\u028f"+
-		"\78\2\2\u028f\u0291\3\2\2\2\u0290\u028c\3\2\2\2\u0290\u0291\3\2\2\2\u0291"+
+		"\u028c\5\6\4\2\u028c\u028e\7\67\2\2\u028d\u028f\5\u008cG\2\u028e\u028d"+
+		"\3\2\2\2\u028e\u028f\3\2\2\2\u028f\u0290\3\2\2\2\u0290\u0291\78\2\2\u0291"+
 		"\u0095\3\2\2\2\u0292\u0296\5x=\2\u0293\u0295\5\u0098M\2\u0294\u0293\3"+
 		"\2\2\2\u0295\u0298\3\2\2\2\u0296\u0294\3\2\2\2\u0296\u0297\3\2\2\2\u0297"+
 		"\u0097\3\2\2\2\u0298\u0296\3\2\2\2\u0299\u029a\7\60\2\2\u029a\u029b\5"+
@@ -5763,7 +5763,7 @@ public class PascalParser extends Parser {
 		"\u0157\u015e\u0167\u016b\u016d\u0174\u0177\u017e\u018d\u0195\u01a5\u01b0"+
 		"\u01be\u01c3\u01ce\u01d1\u01dc\u01e7\u01ef\u01f5\u0203\u0207\u020d\u0216"+
 		"\u021b\u0221\u0229\u0237\u023f\u0247\u024c\u025b\u0260\u0265\u026e\u0279"+
-		"\u0280\u0284\u0289\u0290\u0296\u02a5\u02b0\u02b5\u02bd\u02c7\u02cd\u02d8"+
+		"\u0280\u0284\u0289\u028e\u0296\u02a5\u02b0\u02b5\u02bd\u02c7\u02cd\u02d8"+
 		"\u02fb";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

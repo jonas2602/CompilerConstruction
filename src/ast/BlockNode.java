@@ -21,12 +21,34 @@ public class BlockNode extends AbstractSyntaxTree {
 
     private AbstractSyntaxTree m_CompoundStatement;
 
+    private boolean m_MainBlock;
+    private List<ParamDeclNode> m_PassDownParams;
+
     public BlockNode() {
+        this(false);
+    }
+
+    public BlockNode(boolean mainBlock) {
         m_LabelDeclMap = new HashMap<>();
         m_ConstDeclMap = new HashMap<>();
         m_TypeDeclMap = new HashMap<>();
         m_VarDeclMap = new HashMap<>();
         m_FuncDeclMap = new HashMap<>();
+
+        m_MainBlock = mainBlock;
+        m_PassDownParams = new ArrayList<>();
+    }
+
+    public List<ParamDeclNode> GetPassDownParams() {
+        return m_PassDownParams;
+    }
+
+    public ParamDeclNode GetPassDownParam(int index) {
+        return m_PassDownParams.get(index);
+    }
+
+    public int GetNumberPassDownParams() {
+        return m_PassDownParams.size();
     }
 
     public void AddLabelDeclaration(LabelDeclNode label) {
@@ -121,12 +143,32 @@ public class BlockNode extends AbstractSyntaxTree {
         return outDecl;
     }
 
-
     public VarDeclNode GetVariableDeclaration(String variableName) {
+        return GetVariableDeclaration(variableName, this);
+    }
+
+    public VarDeclNode GetVariableDeclaration(String variableName, BlockNode requestScope) {
         VarDeclNode outDecl = m_VarDeclMap.get(variableName);
         if (outDecl == null && GetOwningBlock() != null) {
-            outDecl = GetOwningBlock().GetVariableDeclaration(variableName);
-            if(outDecl != null) {
+            outDecl = GetOwningBlock().GetVariableDeclaration(variableName, requestScope);
+
+            //check if this is the sourceblock for this request
+            if(requestScope == this) {
+                if(!outDecl.IsGlobalVariable()) {
+                    //1: add variable to own scope
+                    ParamDeclNode param = new ParamDeclNode(variableName, outDecl.GetType());
+                    param.SetByReference();
+                    m_VarDeclMap.put(variableName, param);
+                    //2: add variable to extra list
+                    m_PassDownParams.add(param);
+                    return param;
+                }
+            }
+        }
+
+        //request is from a different scope
+        if(requestScope != this) {
+            if(m_MainBlock) {
                 outDecl.SetGlobalVariable(true);
             }
         }
@@ -199,17 +241,6 @@ public class BlockNode extends AbstractSyntaxTree {
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         for(TypeDeclNode type : m_TypeDeclMap.values()){
             type.CreateSnippet(slave);
-        }
-
-        for (VarDeclNode var : m_VarDeclMap.values()) {
-            ParamContainer scopeVar = var.CreateSnippet(slave);
-
-            if(var.IsGlobalVariable()) {
-                ParamContainer defaultValue = var.GetType().GetDefaultValue();
-                if (defaultValue != null) {
-                    slave.StoreInVariable(scopeVar, defaultValue);
-                }
-            }
         }
 
         m_CompoundStatement.CreateSnippet(slave, ctx);

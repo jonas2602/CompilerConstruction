@@ -3,9 +3,7 @@ package ast.declarations;
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.TypeCheckException;
-import ast.expressions.AccessInterface;
-import ast.expressions.ConstantNode;
-import ast.expressions.FuncCallNode;
+import ast.expressions.*;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
@@ -53,7 +51,10 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     }
 
     public ParamDeclNode GetParameter(int index) {
-        return m_Params.get(index);
+        if(index < m_Params.size()) {
+            return m_Params.get(index);
+        }
+        return m_Block.GetPassDownParam(index - m_Params.size());
     }
 
     public boolean IsInline() {
@@ -111,6 +112,13 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             }
         }
 
+        //TODO: add new inner params
+        for(VarDeclNode param: m_Block.GetPassDownParams()) {
+            AccessNode_Variable var = new AccessNode_Variable(param.GetName());
+            callNode.AddParameter(var);
+            var.GetType();
+        }
+
         return true;
     }
 
@@ -145,7 +153,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
         // Create Function Header
         TypeWrapper funcType = m_ReturnType.GetWrappedType();
-        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcType, m_Params.size(), true);
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcType, m_Params.size() + m_Block.GetNumberPassDownParams(), true);
 
         // Add Parameters
         for (ParamDeclNode param : m_Params) {
@@ -154,6 +162,11 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             // int ScopeIndex = funcDef.AddParameter(paramSnippet);
             // param.SetScopeIndex(ScopeIndex);
         }
+
+        for(ParamDeclNode param : m_Block.GetPassDownParams()) {
+            param.CreateSnippet(slave);
+        }
+
         // Create Function Body
         m_Block.CreateSnippet(slave, funcDef);
 
