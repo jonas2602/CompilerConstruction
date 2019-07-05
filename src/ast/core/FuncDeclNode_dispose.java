@@ -13,7 +13,7 @@ import writer.wrapper.TypeWrapper_Pointer;
 
 public class FuncDeclNode_dispose extends FuncDeclNode_Core {
     public FuncDeclNode_dispose() {
-        super("dispose", new VoidTypeNode());
+        super("dispose", VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
     }

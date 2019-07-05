@@ -5,6 +5,8 @@ import writer.wrapper.TypeWrapper_Other;
 
 public class VoidTypeNode extends TypeNode {
 
+    public static final VoidTypeNode VoidNode = new VoidTypeNode();
+
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
         if (otherTypeNode == null) {

@@ -18,6 +18,7 @@ public abstract class StdLib {
         new CharOperators().buildStd(stdBlock);
         new IntOperators().buildStd(stdBlock);
         new FloatOperators().buildStd(stdBlock);
+        new PointerOperators().buildStd(stdBlock);
         //new GenericOperators().buildStd(stdBlock);
 
         //types

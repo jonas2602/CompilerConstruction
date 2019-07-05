@@ -14,6 +14,8 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode ConstCharPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstCharNode);
     public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstBoolNode);
 
+    public static final PointerTypeNode WildCardPointerNode = new WildCardPointer();
+
     protected TypeNode m_BaseType;
 
     public PointerTypeNode(TypeNode baseType) {
@@ -50,6 +52,7 @@ public class PointerTypeNode extends TypeNode {
             if (otherTypeNode.GetCompareType() instanceof NullTypeNode) {
                 return true;
             }
+            return false;
         }
 
         // Assigned value has fitting type?

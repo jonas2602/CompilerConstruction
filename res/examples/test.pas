@@ -2,22 +2,15 @@ program test;
 
 var
     i: integer;
+    k: integer;
+    j: ^integer;
+    t: ^integer;
 
-procedure test();
-    var j: integer;
-    procedure innertest(i: integer);
+begin
+    j := @i;
+    t := nil;
+    if(j = t) then
     begin
-        i := i + 1;
-        j := j + i;
+        writeln('TEST');
     end;
-begin
-    j := 0;
-    innertest(1);
-    i := i + j;
-end;
-
-begin
-    i := 2;
-    test();
-    writeln(i);
 end.

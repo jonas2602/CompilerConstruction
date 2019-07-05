@@ -12,7 +12,7 @@ import writer.wrapper.TypeWrapper;
 
 public class FuncDeclNode_new extends FuncDeclNode_Core {
     public FuncDeclNode_new() {
-        super("new", new VoidTypeNode());
+        super("new", VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
     }
