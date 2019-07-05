@@ -119,7 +119,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else if (ctx.set() != null) {
             return visitSet(ctx.set());
         } else if (ctx.factor() != null) {
-            AbstractSyntaxTree factor =  visitFactor(ctx.factor());
+            AbstractSyntaxTree factor = visitFactor(ctx.factor());
             FuncCallNode funcCall = new FuncCallNode(Operator.NEG);
             funcCall.AddParameter(factor);
             return funcCall;
@@ -150,8 +150,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else if (ctx.string() != null) {
             return visitString(ctx.string());
         } else {
-            // TODO: NIL?
-            return null;
+            return new ConstantNode_NULL();
         }
     }
 

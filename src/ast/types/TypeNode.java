@@ -32,6 +32,11 @@ public abstract class TypeNode extends AbstractSyntaxTree {
     }
 
     @Override
+    public TypeNode CheckType() {
+        return GetType();
+    }
+
+    @Override
     public TypeNode GetType() {
         return this;
     }

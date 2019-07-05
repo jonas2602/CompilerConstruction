@@ -19,7 +19,7 @@ public class AccessNode_Pointer extends AbstractSyntaxTree implements AccessInte
     @Override
     public TypeNode CheckType() {
         TypeNode childType = m_Child.CheckType();
-        if (!(childType instanceof PointerTypeNode)) {
+        if (!(childType.GetCompareType() instanceof PointerTypeNode)) {
             throw new TypeCheckException(this, "Dereferencing is only possible on pointer types");
         }
 

@@ -4,6 +4,7 @@ public class TypeWrapper_Other extends TypeWrapper {
     public static TypeWrapper_Other LABEL = new TypeWrapper_Other("label");
     public static TypeWrapper_Other VOID = new TypeWrapper_Other("void");
     public static TypeWrapper_Other VARIADIC = new TypeWrapper_Other("...");
+    public static TypeWrapper_Other NULL = new TypeWrapper_Other("null");
 
     private String m_TypeName;
 

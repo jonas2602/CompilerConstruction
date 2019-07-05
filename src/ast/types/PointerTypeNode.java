@@ -46,7 +46,10 @@ public class PointerTypeNode extends TypeNode {
 
         // only assign ptr to ptr
         if (!(otherTypeNode.GetCompareType() instanceof PointerTypeNode)) {
-            return false;
+            // or null
+            if (otherTypeNode.GetCompareType() instanceof NullTypeNode) {
+                return true;
+            }
         }
 
         // Assigned value has fitting type?

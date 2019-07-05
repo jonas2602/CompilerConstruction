@@ -1,7 +1,5 @@
 package writer.wrapper;
 
-import writer.CodeGenerator;
-
 public class ParamContainer {
     public static ParamContainer LABELCONTAINER() {
         return new ParamContainer(TypeWrapper_Other.LABEL, new ValueWrapper_Constant(""));
@@ -9,6 +7,10 @@ public class ParamContainer {
 
     public static ParamContainer VOIDCONTAINER() {
         return new ParamContainer(TypeWrapper_Other.VOID, new ValueWrapper_Constant(""));
+    }
+
+    public static ParamContainer NULLCONTAINER() {
+        return new ParamContainer(TypeWrapper_Other.NULL, new ValueWrapper_Constant(""));
     }
 
     public static ParamContainer BOOLCONTAINER(boolean InBool) {

@@ -242,6 +242,10 @@ public class BlockNode extends AbstractSyntaxTree {
             type.CreateSnippet(slave);
         }
 
+        for (VarDeclNode var : m_VarDeclMap.values()) {
+            var.CreateSnippet(slave);
+        }
+
         m_CompoundStatement.CreateSnippet(slave, ctx);
         return null;
     }

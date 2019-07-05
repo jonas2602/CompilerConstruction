@@ -156,8 +156,14 @@ void cases(int i)
 
 void memtest()
 {
-    long *list = malloc(sizeof(int) * 2);
+
+    person *list = NULL;
+    person *list2 = NULL;
+    list = malloc(sizeof(person));
     free(list);
+    if (list == NULL || list == list2)
+    {
+    }
 }
 
 int main()

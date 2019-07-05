@@ -20,11 +20,10 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
         m_bCustomCallLogic = true;
         m_bInline = true;
     }
-
-    // Allows any amount of parameters, as long as they are primitive/can get serialized
-
+    
     @Override
     public boolean ValidateCall(FuncCallNode callNode) {
+        // Allows any amount of parameters, as long as they are primitive/can get serialized
         // Compare given parameters to primitive types
         for (AbstractSyntaxTree param : callNode.GetParameterList()) {
             TypeNode CallParamType = param.GetType();
