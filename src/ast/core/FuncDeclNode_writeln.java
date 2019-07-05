@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     public FuncDeclNode_writeln() {
-        super("writeln", NamedTypeNode.VoidNode);
+        super("writeln", new VoidTypeNode());
         m_bCustomCallLogic = true;
         m_bInline = true;
     }

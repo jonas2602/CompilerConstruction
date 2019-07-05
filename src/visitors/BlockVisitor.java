@@ -5,6 +5,7 @@ import ast.BlockNode;
 import ast.declarations.*;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
@@ -151,7 +152,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         // Create Procedure Node + Block
         String name = ctx.identifier().IDENT().getText();
         BlockNode body = (BlockNode) new BlockVisitor().visit(ctx.block());
-        FuncDeclNode procDecl = new FuncDeclNode(name, NamedTypeNode.VoidNode, body);
+        FuncDeclNode procDecl = new FuncDeclNode(name, new VoidTypeNode(), body);
         // ProcDeclNode procDecl = new ProcDeclNode(name, body);
 
         // Add Parameters to both, Procedure and Block

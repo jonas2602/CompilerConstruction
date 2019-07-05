@@ -7,6 +7,7 @@ import ast.expressions.*;
 import ast.types.NamedTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import llvm.CodeSnippet_Base;
 import llvm.CodeSnippet_FuncDef;
 import llvm.CodeSnippet_Plain;
@@ -62,7 +63,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     }
 
     public boolean IsVoid() {
-        return m_ReturnType.CompareType(NamedTypeNode.VoidNode);
+        return m_ReturnType.CompareType(new VoidTypeNode());
     }
 
     @Override
@@ -171,8 +172,8 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         m_Block.CreateSnippet(slave, funcDef);
 
         // Function should have return type?
-        if (m_ReturnType.CompareType(NamedTypeNode.VoidNode)) {
-            funcDef.AddStatement(new CodeSnippet_Plain("ret void"));
+        if (m_ReturnType.CompareType(new VoidTypeNode())) {
+            slave.CreateReturnStmt(ParamContainer.VOIDCONTAINER());
         } else {
             // TODO: Non Primitive Types
             VarDeclNode varDecl = m_Block.GetVariableDeclaration(m_Name);

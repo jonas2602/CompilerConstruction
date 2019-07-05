@@ -10,6 +10,7 @@ import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.NamedTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.ParamContainer;
 
@@ -23,7 +24,7 @@ public class GenericOperators implements StdBuilder {
 
     public static class AssignGenericPrimPrim extends FuncDeclNode_Core {
         public AssignGenericPrimPrim() {
-            super(Operator.AGN, NamedTypeNode.VoidNode);
+            super(Operator.AGN, new VoidTypeNode());
 
             m_bCustomCallLogic = true;
             m_bInline = true;
@@ -68,7 +69,7 @@ public class GenericOperators implements StdBuilder {
 
     public static class AssignGenericArrayArray extends FuncDeclNode_Core {
         public AssignGenericArrayArray() {
-            super(Operator.AGN, NamedTypeNode.VoidNode);
+            super(Operator.AGN, new VoidTypeNode());
 
             m_bCustomCallLogic = true;
             m_bInline = true;
