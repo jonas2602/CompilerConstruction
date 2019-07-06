@@ -3,6 +3,8 @@ package ast.types;
 import writer.wrapper.TypeWrapper;
 import writer.wrapper.TypeWrapper_Pointer;
 
+import java.util.Set;
+
 public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode IntPointerNode = new PointerTypeNode(PrimitiveTypeNode.IntNode);
     public static final PointerTypeNode FloatPointerNode = new PointerTypeNode(PrimitiveTypeNode.FloatNode);
@@ -14,7 +16,7 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode ConstCharPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstCharNode);
     public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstBoolNode);
 
-    public static final PointerTypeNode WildCardPointerNode = new WildCardPointer();
+    public static final PointerTypeNode WildCardPointerNode = new PointerTypeNode(new WildcardTypeNode());
 
     protected TypeNode m_BaseType;
 
@@ -48,16 +50,17 @@ public class PointerTypeNode extends TypeNode {
 
         // only assign ptr to ptr
         if (!(otherTypeNode.GetCompareType() instanceof PointerTypeNode)) {
-            // or null
-            if (otherTypeNode.GetCompareType() instanceof NullTypeNode) {
-                return true;
-            }
             return false;
+        }
+
+        // .. or null
+        if(otherTypeNode.GetCompareType() instanceof NilTypeNode){
+            return true;
         }
 
         // Assigned value has fitting type?
         TypeNode otherBaseType = ((PointerTypeNode) otherTypeNode.GetCompareType()).m_BaseType;
-        if (!otherBaseType.CompareType(m_BaseType)) {
+        if (!m_BaseType.CompareType(otherBaseType)) {
             return false;
         }
 
@@ -67,5 +70,10 @@ public class PointerTypeNode extends TypeNode {
     @Override
     public TypeWrapper GetWrappedType() {
         return new TypeWrapper_Pointer(m_BaseType.GetWrappedType());
+    }
+
+    @Override
+    public Set<WildcardTypeNode> GetWildcards() {
+        return m_BaseType.GetWildcards();
     }
 }

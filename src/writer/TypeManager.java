@@ -1,10 +1,7 @@
 package writer;
 
 import ast.EPrimitiveType;
-import writer.wrapper.TypeWrapper;
-import writer.wrapper.TypeWrapper_Array;
-import writer.wrapper.TypeWrapper_Pointer;
-import writer.wrapper.TypeWrapper_Primitive;
+import writer.wrapper.*;
 
 public class TypeManager {
     public static TypeWrapper STRING(int InSize) {
@@ -33,6 +30,14 @@ public class TypeManager {
 
     public static String MakeArrayType(String type, int size) {
         return String.format("[%d x %s]", size, type);
+    }
+
+    public static boolean IsNull(ParamContainer param){
+        return IsNull(param.GetRootType());
+    }
+
+    public static boolean IsNull(TypeWrapper type){
+        return TypeWrapper_Other.NULL.CompareType(type);
     }
 
 }

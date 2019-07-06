@@ -18,6 +18,6 @@ public abstract class PascalType_Assignment extends PascalType_Operator {
         ParamContainer leftParam = lParam.CreateSnippet(slave);
         ParamContainer rightParam = rParam.CreateSnippet(slave);
 
-        return operation.createFunctionCall(slave, leftParam, rightParam);
+        return m_Operation.createFunctionCall(slave, leftParam, rightParam);
     }
 }

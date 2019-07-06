@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.AbstractSyntaxTree;
+import ast.types.NilTypeNode;
 import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_Plain;
@@ -8,6 +9,8 @@ import writer.GeneratorSlave;
 import writer.wrapper.ParamContainer;
 
 public class ConstantNode extends AbstractSyntaxTree {
+    public static final ConstantNode NilNode = new ConstantNode("null", new NilTypeNode());
+
     protected String m_Data;
     protected TypeNode m_TypeNode;
 

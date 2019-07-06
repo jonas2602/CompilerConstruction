@@ -7,10 +7,9 @@ var
     t: ^integer;
 
 begin
-    j := @i;
-    t := nil;
-    if(j = t) then
+    j := nil;
+    if(nil <> j) then
     begin
-        writeln('TEST');
+        writeln('test');
     end;
 end.

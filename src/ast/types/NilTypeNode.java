@@ -3,7 +3,12 @@ package ast.types;
 import writer.wrapper.TypeWrapper;
 import writer.wrapper.TypeWrapper_Other;
 
-public class NullTypeNode extends TypeNode {
+public class NilTypeNode extends PointerTypeNode {
+    // Expands to: ((void *)0)
+
+    public NilTypeNode() {
+        super(VoidTypeNode.VoidNode);
+    }
 
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
@@ -11,7 +16,7 @@ public class NullTypeNode extends TypeNode {
             return false;
         }
 
-        if (!(otherTypeNode instanceof NullTypeNode)) {
+        if (!(otherTypeNode instanceof PointerTypeNode)) {
             return false;
         }
 

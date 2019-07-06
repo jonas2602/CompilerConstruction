@@ -4,6 +4,9 @@ import ast.AbstractSyntaxTree;
 import writer.wrapper.ParamContainer;
 import writer.wrapper.TypeWrapper;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class TypeNode extends AbstractSyntaxTree {
     boolean m_bConstant;
 
@@ -56,5 +59,9 @@ public abstract class TypeNode extends AbstractSyntaxTree {
 
     public ParamContainer GetDefaultValue() {
         return null;
+    }
+
+    public Set<WildcardTypeNode> GetWildcards() {
+        return new HashSet<>();
     }
 }

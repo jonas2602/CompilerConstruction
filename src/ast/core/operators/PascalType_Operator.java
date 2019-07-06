@@ -6,12 +6,17 @@ import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
+import ast.types.WildcardTypeNode;
 import writer.GeneratorSlave;
 import writer.wrapper.ParamContainer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class PascalType_Operator extends FuncDeclNode_Core {
 
-    protected FunctionCallTwoParams operation;
+    protected FunctionCallTwoParams m_Operation;
+    private Set<WildcardTypeNode> m_Wildcards = new HashSet<>();
 
     public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
         super(operator.GetOperatorFunctionName(), returnType);
@@ -22,7 +27,19 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
         m_bCustomCallLogic = true;
         m_bInline = true;
 
-        this.operation = operation;
+        m_Wildcards.addAll(lparam.GetWildcards());
+        m_Wildcards.addAll(rparam.GetWildcards());
+
+        this.m_Operation = operation;
+    }
+
+    @Override
+    public boolean ValidateCall(FuncCallNode callNode) {
+        for (WildcardTypeNode card : m_Wildcards) {
+            card.Clear();
+        }
+
+        return super.ValidateCall(callNode);
     }
 
     @Override
@@ -36,6 +53,6 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
         leftParam = AccessInterface.TryLoadValue(slave, lParam, leftParam);
         rightParam = AccessInterface.TryLoadValue(slave, rParam, rightParam);
 
-        return operation.createFunctionCall(slave, leftParam, rightParam);
+        return m_Operation.createFunctionCall(slave, leftParam, rightParam);
     }
 }

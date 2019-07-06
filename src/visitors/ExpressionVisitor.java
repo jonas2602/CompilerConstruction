@@ -4,6 +4,8 @@ import ast.*;
 import ast.core.operators.Operator;
 import ast.expressions.*;
 import ast.types.NamedTypeNode;
+import ast.types.NilTypeNode;
+import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
@@ -150,7 +152,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else if (ctx.string() != null) {
             return visitString(ctx.string());
         } else {
-            return new ConstantNode_NULL();
+            return ConstantNode.NilNode;
         }
     }
 

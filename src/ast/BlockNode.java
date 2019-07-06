@@ -151,6 +151,11 @@ public class BlockNode extends AbstractSyntaxTree {
         if (outDecl == null && GetOwningBlock() != null) {
             outDecl = GetOwningBlock().GetVariableDeclaration(variableName, requestScope);
 
+            // TODO: scope stuff rework required!!!
+            if(outDecl == null){
+                return null;
+            }
+
             //check if this is the sourceblock for this request
             if(requestScope == this) {
                 if(!outDecl.IsGlobalVariable()) {

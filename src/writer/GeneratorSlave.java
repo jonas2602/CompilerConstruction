@@ -348,7 +348,8 @@ public class GeneratorSlave {
     }
 
     public ParamContainer IntComparator(String cond, ParamContainer left, ParamContainer right) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("icmp %s %s, %s", cond, left, right.GetValueAccessor());
+        TypeWrapper compType = TypeManager.IsNull(left) ? right.GetRootType() : left.GetRootType();
+        CodeSnippet_Args stmt = new CodeSnippet_Args("icmp %s %s %s, %s", cond, compType, left.GetValueAccessor(), right.GetValueAccessor());
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(TypeWrapper_Primitive.BOOL, scopeVar);
     }
@@ -399,10 +400,10 @@ public class GeneratorSlave {
         return new ParamContainer(new TypeWrapper_Pointer(type), var);
     }
 
-    public void StoreInVariable(ParamContainer varAccess, ParamContainer value) {
+    public void StoreInVariable(ParamContainer varAccess, ParamContainer valueParam) {
         String varParam = varAccess.CreateParameterString();
-        String valueParam = value.CreateParameterString();
-        String exp = String.format("store %s, %s", valueParam, varParam); // TODO: alignment
+        String value = valueParam.CreateDataString();
+        String exp = String.format("store %s %s, %s", varAccess.GetRootType().GetChild(), value, varParam); // TODO: alignment
         GetScopeSnippetAsDef().AddStatement(exp);
     }
 

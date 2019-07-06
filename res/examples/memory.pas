@@ -27,7 +27,7 @@ begin
     listPtr := myList;
     while listPtr <> nil do
     begin
-        writeln (listptr^.num);
+        writeln (listPtr^.num);
         listPtr := listPtr^.next;
     end;
 
