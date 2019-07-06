@@ -1,10 +1,7 @@
 package ast.core;
 
 import ast.BlockNode;
-import ast.core.functions.FuncDeclNode_dispose;
-import ast.core.functions.FuncDeclNode_new;
-import ast.core.functions.FuncDeclNode_readln;
-import ast.core.functions.FuncDeclNode_writeln;
+import ast.core.functions.*;
 import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;

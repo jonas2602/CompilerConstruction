@@ -5,10 +5,7 @@ import writer.natives.NativeFunction_memcpy;
 import writer.snippets.*;
 import writer.wrapper.*;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class GeneratorSlave {
     private List<CodeSnippet_Struct> m_Structs;
@@ -17,6 +14,8 @@ public class GeneratorSlave {
     private List<CodeSnippet_Base> m_GlobalVariables;
     private int m_ConstantCounter;
     private int m_GlobalsCounter;
+
+    private HashMap<String, ParamContainer> m_StringConstants;
 
     private HashSet<Class> m_NativeMap;
     private List<CodeSnippet_FuncDef> m_FunctionDefinitions;
@@ -29,6 +28,7 @@ public class GeneratorSlave {
         m_Structs = new ArrayList<>();
         m_Constants = new ArrayList<>();
         m_GlobalVariables = new ArrayList<>();
+        m_StringConstants = new HashMap<>();
 
         m_ConstantCounter = 0;
         m_GlobalsCounter = 0;
@@ -75,6 +75,11 @@ public class GeneratorSlave {
     }
 
     public ParamContainer CreateStringConstant(String content) {
+        ParamContainer cached = m_StringConstants.get(content);
+        if(cached != null) {
+            return cached;
+        }
+
         // Convert \n, \t, ... to hex code
         StringBuilder builder = new StringBuilder();
         for (char c : content.toCharArray()) {
@@ -99,7 +104,9 @@ public class GeneratorSlave {
 
         m_Constants.add(snippet);
 
-        return new ParamContainer(new TypeWrapper_Pointer(stringType), var);
+        cached = new ParamContainer(new TypeWrapper_Pointer(stringType), var);
+        m_StringConstants.put(content, cached);
+        return cached;
     }
 
     public ParamContainer CreateFunctionCall(String name, TypeWrapper returnType, boolean bEnterScope) {
@@ -467,30 +474,39 @@ public class GeneratorSlave {
     public List<String> Serialize() {
         List<String> outLines = new ArrayList<>();
 
-        for (CodeSnippet_Struct struct : m_Structs) {
-            outLines.addAll(struct.WriteLines());
-        }
-
-        outLines.add("");
-
-        for (CodeSnippet_Base constant : m_Constants) {
-            outLines.addAll(constant.WriteLines());
-        }
-        outLines.add("");
-
-        for (CodeSnippet_Base global : m_GlobalVariables) {
-            outLines.addAll(global.WriteLines());
-        }
-        outLines.add("");
-
-        for (CodeSnippet_FuncDecl decl : m_FunctionDeclarations) {
-            outLines.addAll(decl.WriteLines());
-        }
-        outLines.add("");
-
-        for (CodeSnippet_FuncDef def : m_FunctionDefinitions) {
-            outLines.addAll(def.WriteLines());
+        if(m_Structs.size() > 0) {
+            for (CodeSnippet_Struct struct : m_Structs) {
+                outLines.addAll(struct.WriteLines());
+            }
             outLines.add("");
+        }
+
+        if(m_Constants.size() > 0) {
+            for (CodeSnippet_Base constant : m_Constants) {
+                outLines.addAll(constant.WriteLines());
+            }
+            outLines.add("");
+        }
+
+        if(m_GlobalVariables.size() > 0) {
+            for (CodeSnippet_Base global : m_GlobalVariables) {
+                outLines.addAll(global.WriteLines());
+            }
+            outLines.add("");
+        }
+
+        if(m_FunctionDeclarations.size() > 0) {
+            for (CodeSnippet_FuncDecl decl : m_FunctionDeclarations) {
+                outLines.addAll(decl.WriteLines());
+            }
+            outLines.add("");
+        }
+
+        if(m_FunctionDefinitions.size() > 0) {
+            for (CodeSnippet_FuncDef def : m_FunctionDefinitions) {
+                outLines.addAll(def.WriteLines());
+                outLines.add("");
+            }
         }
 
         return outLines;
