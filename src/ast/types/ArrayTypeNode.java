@@ -7,10 +7,10 @@ import writer.wrapper.TypeWrapper;
 import writer.wrapper.TypeWrapper_Array;
 
 public class ArrayTypeNode extends TypeNode {
-    public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.IntNode);
-    public static final ArrayTypeNode FloatArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.FloatNode);
-    public static final ArrayTypeNode CharArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.CharNode);
-    public static final ArrayTypeNode BoolArrayNode = new ArrayTypeNode(0, PrimitiveTypeNode.BoolNode);
+    public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.IntNode);
+    public static final ArrayTypeNode FloatArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.FloatNode);
+    public static final ArrayTypeNode CharArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.CharNode);
+    public static final ArrayTypeNode BoolArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.BoolNode);
 
     private AbstractSyntaxTree m_ElementCounter;
     private TypeNode m_ElementType;
@@ -69,7 +69,13 @@ public class ArrayTypeNode extends TypeNode {
             return false;
         }
 
-        // TODO: Compare Size?
+        // TODO: Compare Size? -1 to ignore size?
+        int otherSize = ((ArrayTypeNode) otherNodeType.GetCompareType()).GetSize();
+        if (otherSize < 0 && GetSize() < 0) {
+            if (otherSize != GetSize()) {
+                return false;
+            }
+        }
 
         return true;
     }

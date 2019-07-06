@@ -10,6 +10,7 @@ public abstract class StdLib {
         BlockNode stdBlock = new BlockNode();
         //functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_readln());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_new());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_dispose());
 

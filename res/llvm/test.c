@@ -176,5 +176,11 @@ int main()
     // stringtest();
 
     // printf("%s", strbuilder('a', 'b'));
-    cases(5);
+    // cases(5);
+
+    char str[100];
+    int i;
+
+    scanf(" %[^\n]",str);
+    printf("%s", str);
 }

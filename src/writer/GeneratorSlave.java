@@ -78,14 +78,15 @@ public class GeneratorSlave {
         // Convert \n, \t, ... to hex code
         StringBuilder builder = new StringBuilder();
         for (char c : content.toCharArray()) {
-            if (Character.isLetterOrDigit(c) || c == '%') {
-                builder.append(c);
-            } else {
+            // TODO: when to convert to hex?
+            if (Character.isISOControl(c)) {
                 String hexValue = Integer.toHexString(c);
                 if (hexValue.length() < 2) {
                     hexValue = "0" + hexValue;
                 }
                 builder.append("\\" + hexValue.toUpperCase());
+            } else {
+                builder.append(c);
             }
         }
 
