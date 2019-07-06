@@ -1,6 +1,7 @@
-package ast.core;
+package ast.core.functions;
 
 import ast.AbstractSyntaxTree;
+import ast.core.FuncDeclNode_Core;
 import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;
 import ast.types.TypeNode;

@@ -1,7 +1,8 @@
-package ast.core;
+package ast.core.functions;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.core.FuncDeclNode_Core;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;

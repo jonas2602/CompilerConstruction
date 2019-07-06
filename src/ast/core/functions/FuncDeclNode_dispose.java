@@ -1,5 +1,6 @@
-package ast.core;
+package ast.core.functions;
 
+import ast.core.FuncDeclNode_Core;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;

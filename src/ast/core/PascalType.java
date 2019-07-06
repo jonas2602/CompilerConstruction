@@ -1,5 +1,5 @@
 package ast.core;
 
-public abstract class PascalType {
+public interface PascalType {
     public abstract String GetTypeName();
 }

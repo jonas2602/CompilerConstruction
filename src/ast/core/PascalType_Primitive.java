@@ -3,14 +3,21 @@ package ast.core;
 import ast.EPrimitiveType;
 import writer.TypeManager;
 
-public class PascalType_Primitive extends PascalType {
+public enum PascalType_Primitive implements PascalType {
+    LONG(EPrimitiveType.LONG, 64, false, "%l", "0"),
+    INT(EPrimitiveType.INT, 32, false, "%d", "0"),
+    FLOAT(EPrimitiveType.FLOAT, 32, true, "%f", "0.0"),
+    DOUBLE(EPrimitiveType.DOUBLE, 64, true, "%f", "0.0"),
+    CHAR(EPrimitiveType.CHAR, 8, false, "%c", "0"),
+    BOOL(EPrimitiveType.BOOL, 1, false, "%d", "0");
+
     private EPrimitiveType m_Type;
     private int m_Size;
     private boolean m_bDezimal;
     private String m_Placeholder;
     private String m_DefaultValue;
 
-    public PascalType_Primitive(EPrimitiveType type, int size, boolean dezimal, String placeholder, String defaultValue) {
+    PascalType_Primitive(EPrimitiveType type, int size, boolean dezimal, String placeholder, String defaultValue) {
         m_Type = type;
         m_Size = size;
         m_bDezimal = dezimal;

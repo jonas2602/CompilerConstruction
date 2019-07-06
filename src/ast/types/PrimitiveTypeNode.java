@@ -9,17 +9,17 @@ import writer.wrapper.TypeWrapper;
 import writer.wrapper.TypeWrapper_Primitive;
 
 public class PrimitiveTypeNode extends TypeNode {
-    public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(new PascalType_Int());
-    public static final PrimitiveTypeNode FloatNode = new PrimitiveTypeNode(new PascalType_Float());
-    public static final PrimitiveTypeNode DoubleNode = new PrimitiveTypeNode(new PascalType_Double());
-    public static final PrimitiveTypeNode CharNode = new PrimitiveTypeNode(new PascalType_Char());
-    public static final PrimitiveTypeNode BoolNode = new PrimitiveTypeNode(new PascalType_Bool());
+    public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(PascalType_Primitive.INT);
+    public static final PrimitiveTypeNode FloatNode = new PrimitiveTypeNode(PascalType_Primitive.FLOAT);
+    public static final PrimitiveTypeNode DoubleNode = new PrimitiveTypeNode(PascalType_Primitive.DOUBLE);
+    public static final PrimitiveTypeNode CharNode = new PrimitiveTypeNode(PascalType_Primitive.CHAR);
+    public static final PrimitiveTypeNode BoolNode = new PrimitiveTypeNode(PascalType_Primitive.BOOL);
 
-    public static final PrimitiveTypeNode ConstIntNode = new PrimitiveTypeNode(new PascalType_Int(), true);
-    public static final PrimitiveTypeNode ConstFloatNode = new PrimitiveTypeNode(new PascalType_Float(), true);
-    public static final PrimitiveTypeNode ConstDoubleNode = new PrimitiveTypeNode(new PascalType_Double(), true);
-    public static final PrimitiveTypeNode ConstCharNode = new PrimitiveTypeNode(new PascalType_Char(), true);
-    public static final PrimitiveTypeNode ConstBoolNode = new PrimitiveTypeNode(new PascalType_Bool(), true);
+    public static final PrimitiveTypeNode ConstIntNode = new PrimitiveTypeNode(PascalType_Primitive.INT, true);
+    public static final PrimitiveTypeNode ConstFloatNode = new PrimitiveTypeNode(PascalType_Primitive.FLOAT, true);
+    public static final PrimitiveTypeNode ConstDoubleNode = new PrimitiveTypeNode(PascalType_Primitive.DOUBLE, true);
+    public static final PrimitiveTypeNode ConstCharNode = new PrimitiveTypeNode(PascalType_Primitive.CHAR, true);
+    public static final PrimitiveTypeNode ConstBoolNode = new PrimitiveTypeNode(PascalType_Primitive.BOOL, true);
 
 
     private PascalType_Primitive m_PrimitiveType;
@@ -67,7 +67,7 @@ public class PrimitiveTypeNode extends TypeNode {
         }
 
         PascalType_Primitive OtherType = ((PrimitiveTypeNode) otherTypeNode.GetCompareType()).m_PrimitiveType;
-        if (OtherType.getClass() != m_PrimitiveType.getClass()) {
+        if (OtherType != m_PrimitiveType) {
             return false;
         }
 
