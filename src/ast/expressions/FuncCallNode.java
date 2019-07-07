@@ -47,6 +47,10 @@ public class FuncCallNode extends AbstractSyntaxTree {
         return m_Params.get(Index);
     }
 
+    public TypeNode GetParameterType(int Index) {
+        return GetParameter(Index).GetType();
+    }
+
     @Override
     public TypeNode CheckType() {
         // Function with Name exists?
@@ -111,6 +115,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
             ParamContainer paramContainer = param.CreateSnippet(slave);
 
             // use reference for "VAR" types, else value
+            // TODO: allow VAR as keyword? expect the user to declare the parameter as pointer instead?
             ParamDeclNode decl = m_FuncDecl.GetParameter(i);
             if (decl.IsByValue()) {
                 // load value if requested from a variable

@@ -17,10 +17,18 @@ public interface AccessInterface {
             return ((AccessInterface) node).LoadValue(slave, pointer);
         }
 
-        if (node instanceof ConstantNode_String) {
-            return slave.LoadFromVariable(pointer);
-        }
+        // if (node instanceof ConstantNode_String) {
+        //     return slave.LoadFromVariable(pointer);
+        // }
 
         return pointer;
+    }
+
+    public static ParamContainer AccessByValue(GeneratorSlave slave, AbstractSyntaxTree node){
+        return null;
+    }
+
+    public static ParamContainer AccessByReference(GeneratorSlave slave, AbstractSyntaxTree node){
+        return null;
     }
 }

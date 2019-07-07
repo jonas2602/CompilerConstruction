@@ -33,8 +33,8 @@ public class ArrayOperators implements StdBuilder {
                 return false;
             }
 
-            int varSize = ((ArrayTypeNode) callNode.GetParameterList().get(0).GetType()).GetSize();
-            int expSize = ((ArrayTypeNode) callNode.GetParameterList().get(1).GetType()).GetSize();
+            int varSize = ((ArrayTypeNode) callNode.GetParameterType(0)).GetSize();
+            int expSize = ((ArrayTypeNode) callNode.GetParameterType(1)).GetSize();
             if (varSize < expSize) {
                 throw new TypeCheckException(this, "Arrays can only be copied if the target array is the same size or larger than the source array");
             }

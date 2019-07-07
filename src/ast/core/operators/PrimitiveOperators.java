@@ -22,8 +22,8 @@ public class PrimitiveOperators implements StdBuilder {
 
         @Override
         public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
-            AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
+            AbstractSyntaxTree lParam = callNode.GetParameter(0);
+            AbstractSyntaxTree rParam = callNode.GetParameter(1);
             ParamContainer leftParam = lParam.CreateSnippet(slave);
             ParamContainer rightParam = rParam.CreateSnippet(slave);
 
