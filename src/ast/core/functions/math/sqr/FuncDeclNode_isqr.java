@@ -1,4 +1,4 @@
-package ast.core.functions.math;
+package ast.core.functions.math.sqr;
 
 import ast.AbstractSyntaxTree;
 import ast.core.FuncDeclNode_Core;
@@ -7,25 +7,15 @@ import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
 import writer.GeneratorSlave;
-import writer.natives.math.NativeFunction_sqrt;
 import writer.wrappers.ParamContainer;
 
-public class FuncDeclNode_isqrt extends FuncDeclNode_Core {
-    public FuncDeclNode_isqrt() {
-        super("sqrt", PrimitiveTypeNode.FloatNode);
+public class FuncDeclNode_isqr extends FuncDeclNode_Core {
+    public FuncDeclNode_isqr() {
+        super("sqr", PrimitiveTypeNode.IntNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
 
         AddParameter(new ParamDeclNode("param", PrimitiveTypeNode.IntNode));
-    }
-
-    @Override
-    public boolean ValidateCall(FuncCallNode callNode) {
-        if (callNode.GetParameterCount() != 1) {
-            return false;
-        }
-
-        return PrimitiveTypeNode.IntNode.CompareType(callNode.GetParameter(0).GetType());
     }
 
     @Override
@@ -35,9 +25,6 @@ public class FuncDeclNode_isqrt extends FuncDeclNode_Core {
 
         container = AccessInterface.TryLoadValue(slave, param, container);
 
-        ParamContainer cast = slave.CastIntToFloat(container);
-        ParamContainer result = slave.CreateNativeCall(new NativeFunction_sqrt(cast));
-
-        return result;
+        return slave.MulIntInt(container, container);
     }
 }

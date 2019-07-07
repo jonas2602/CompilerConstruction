@@ -2,13 +2,20 @@ program test;
 
 var
     r,s: real;
-    i: integer;
+    i,j: integer;
 begin
-   s := 2.0;
-   r := sqrt((s + 1) * 3);
+   i := -1;
+   i := abs(i);
+
+   r := -3.0;
+   r := abs(r);
+
+   writeln(i);
    writeln(r);
 
-   i := 9;
-   r := sqrt(i);
-   writeln(r);
+   i := round(r);
+   j := trunc(r);
+
+   writeln(i);
+   writeln(j);
 end.
