@@ -1,8 +1,6 @@
 import ast.BlockNode;
 import ast.ProgramNode;
 import ast.core.*;
-import ast.declarations.TypeDeclNode;
-import ast.types.PrimitiveTypeNode;
 import gen.PascalLexer;
 import gen.PascalParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -12,8 +10,6 @@ import visitors.ProgramVisitor;
 import writer.CodeGenerator;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class App {
 
@@ -27,14 +23,14 @@ public class App {
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
         // Tokenize input file
-        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/tests/arrays.pas"));
+        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/test.pas"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // Build parse tree
         PascalParser parser = new PascalParser(tokens);
         ParseTree tree = parser.program();
 
-        if(parser.getNumberOfSyntaxErrors() != 0) {
+        if (parser.getNumberOfSyntaxErrors() != 0) {
             System.exit(0);
         }
 

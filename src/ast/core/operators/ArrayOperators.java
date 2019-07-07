@@ -1,7 +1,9 @@
 package ast.core.operators;
 
 import ast.BlockNode;
+import ast.TypeCheckException;
 import ast.core.StdBuilder;
+import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.VoidTypeNode;
 
@@ -23,6 +25,21 @@ public class ArrayOperators implements StdBuilder {
                 slave.CopyMemory(rParam, lParam);
                 return null;
             });
+        }
+
+        @Override
+        public boolean ValidateCall(FuncCallNode callNode) {
+            if (!super.ValidateCall(callNode)) {
+                return false;
+            }
+
+            int varSize = ((ArrayTypeNode) callNode.GetParameterList().get(0).GetType()).GetSize();
+            int expSize = ((ArrayTypeNode) callNode.GetParameterList().get(1).GetType()).GetSize();
+            if (varSize < expSize) {
+                throw new TypeCheckException(this, "Arrays can only be copied if the target array is the same size or larger than the source array");
+            }
+
+            return true;
         }
     }
 }

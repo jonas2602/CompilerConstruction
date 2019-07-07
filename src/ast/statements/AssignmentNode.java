@@ -8,6 +8,8 @@ import ast.declarations.VarDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
+import ast.types.PointerTypeNode;
+import ast.types.RecordTypeNode;
 import ast.types.TypeNode;
 import writer.*;
 import writer.wrappers.ParamContainer;
@@ -40,7 +42,7 @@ public class AssignmentNode extends AbstractSyntaxTree {
         // Only Equal types are allowed, implicit conversion is not possible
         // even primitive conversion int->real, real->int is not possible (yet)
         TypeNode expType = m_Expression.CheckType();
-        if (varType.CompareType(expType) && !(varType instanceof ArrayTypeNode)) {
+        if (false && varType.CompareType(expType) && !(varType instanceof ArrayTypeNode) && !(varType instanceof PointerTypeNode) && !(varType instanceof RecordTypeNode)) {
             // Types are arrays?
             if (varType instanceof ArrayTypeNode) {
                 int varSize = ((ArrayTypeNode) varType).GetSize();

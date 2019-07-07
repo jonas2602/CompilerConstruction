@@ -5,7 +5,7 @@ var
     x: char;
     str: ^char;
     chararr: string[5];
-    copy: string[5];
+    copy: string[6];
 begin
     x := 'x';
     cc[0][0] := 'a';
