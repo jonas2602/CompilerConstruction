@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 public class TypeWrapper_Other extends TypeWrapper {
     public static TypeWrapper_Other LABEL = new TypeWrapper_Other("label");

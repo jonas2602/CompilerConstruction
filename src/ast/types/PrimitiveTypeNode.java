@@ -4,9 +4,9 @@ import ast.core.*;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
-import writer.wrapper.TypeWrapper_Primitive;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
+import writer.wrappers.TypeWrapper_Primitive;
 
 public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode IntNode = new PrimitiveTypeNode(PascalType_Primitive.INT);

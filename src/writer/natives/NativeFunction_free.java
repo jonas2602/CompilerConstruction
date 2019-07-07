@@ -1,6 +1,6 @@
 package writer.natives;
 
-import writer.wrapper.*;
+import writer.wrappers.*;
 
 public class NativeFunction_free extends NativeFunction {
     public NativeFunction_free(ParamContainer target) {

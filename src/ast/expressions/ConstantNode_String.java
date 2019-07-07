@@ -3,7 +3,7 @@ package ast.expressions;
 import ast.types.ArrayTypeNode;
 import ast.types.PrimitiveTypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public class ConstantNode_String extends ConstantNode {
     private ParamContainer m_GlobalParam;

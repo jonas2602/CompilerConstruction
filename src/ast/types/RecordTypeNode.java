@@ -2,9 +2,9 @@ package ast.types;
 
 import ast.TypeCheckException;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
-import writer.wrapper.TypeWrapper_Struct;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
+import writer.wrappers.TypeWrapper_Struct;
 
 import java.util.ArrayList;
 import java.util.HashMap;

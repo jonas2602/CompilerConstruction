@@ -1,8 +1,8 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
 
 import java.util.HashSet;
 import java.util.Set;

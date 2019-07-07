@@ -1,15 +1,14 @@
 program test;
 
 var
+    r,s: real;
     i: integer;
-    k: integer;
-    j: ^integer;
-    t: ^integer;
-
 begin
-    j := nil;
-    if(nil <> j) then
-    begin
-        writeln('test');
-    end;
+   s := 2.0;
+   r := sqrt((s + 1) * 3);
+   writeln(r);
+
+   i := 9;
+   r := sqrt(i);
+   writeln(r);
 end.

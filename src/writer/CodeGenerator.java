@@ -1,7 +1,6 @@
 package writer;
 
 import ast.AbstractSyntaxTree;
-import writer.wrapper.ValueWrapper;
 
 import java.io.File;
 import java.io.IOException;

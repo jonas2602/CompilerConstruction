@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 import writer.TypeManager;
 

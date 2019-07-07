@@ -5,8 +5,8 @@ import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.declarations.ParamDeclNode;
 import ast.types.*;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper_Pointer;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Pointer;
 
 public class CharOperators implements StdBuilder {
 

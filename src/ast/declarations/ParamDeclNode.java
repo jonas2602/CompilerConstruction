@@ -4,8 +4,8 @@ import ast.types.TypeNode;
 import ast.types.VarTypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
 
 public class ParamDeclNode extends VarDeclNode {
 

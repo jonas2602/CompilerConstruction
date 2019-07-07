@@ -3,7 +3,7 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.declarations.VarDeclNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public interface AccessInterface {
     public abstract VarDeclNode GetVarDeclNode();

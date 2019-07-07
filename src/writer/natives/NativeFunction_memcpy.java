@@ -1,7 +1,6 @@
 package writer.natives;
 
-import writer.*;
-import writer.wrapper.*;
+import writer.wrappers.*;
 
 public class NativeFunction_memcpy extends NativeFunction {
     public NativeFunction_memcpy(ParamContainer target, ParamContainer source, int byteSize) {

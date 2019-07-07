@@ -2,6 +2,8 @@ package ast.core;
 
 import ast.BlockNode;
 import ast.core.functions.*;
+import ast.core.functions.io.*;
+import ast.core.functions.math.*;
 import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;
@@ -12,8 +14,12 @@ public abstract class StdLib {
         //functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_readln());
+
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_new());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_dispose());
+
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_fsqrt());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_isqrt());
 
         //operators
         new BoolOperators().buildStd(stdBlock);

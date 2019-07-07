@@ -1,20 +1,12 @@
-package ast.core.functions;
+package ast.core.functions.io;
 
-import ast.AbstractSyntaxTree;
-import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.declarations.ParamDeclNode;
-import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.*;
 import writer.GeneratorSlave;
-import writer.natives.NativeFunction_printf;
-import writer.natives.NativeFunction_scanf;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.ValueWrapper_Constant;
-
-import java.util.ArrayList;
-import java.util.List;
+import writer.natives.io.NativeFunction_scanf;
+import writer.wrappers.ParamContainer;
 
 public class FuncDeclNode_readln extends FuncDeclNode_Core {
     private ParamContainer m_FormatParam = null;

@@ -1,6 +1,6 @@
 package writer.snippets;
 
-import writer.wrapper.ValueWrapper_Variable;
+import writer.wrappers.ValueWrapper_Variable;
 
 public interface ScopeInterface {
     public abstract ValueWrapper_Variable AddParameter(CodeSnippet_Base param);

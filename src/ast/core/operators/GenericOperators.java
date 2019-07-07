@@ -11,7 +11,7 @@ import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public class GenericOperators implements StdBuilder {
     @Override

@@ -8,9 +8,8 @@ import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.natives.NativeFunction_free;
-import writer.natives.NativeFunction_malloc;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper_Pointer;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Pointer;
 
 public class FuncDeclNode_dispose extends FuncDeclNode_Core {
     public FuncDeclNode_dispose() {

@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 public abstract class TypeWrapper {
     public abstract String CreateTypeName();

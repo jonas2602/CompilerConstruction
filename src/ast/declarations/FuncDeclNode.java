@@ -8,8 +8,8 @@ import ast.types.VoidTypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_FuncDef;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

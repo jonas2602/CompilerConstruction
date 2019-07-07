@@ -2,7 +2,7 @@ package ast.types;
 
 import ast.TypeCheckException;
 import ast.declarations.TypeDeclNode;
-import writer.wrapper.TypeWrapper;
+import writer.wrappers.TypeWrapper;
 
 public class NamedTypeNode extends TypeNode {
     private String m_TypeName;

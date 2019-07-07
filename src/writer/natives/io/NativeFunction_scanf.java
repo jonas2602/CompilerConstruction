@@ -1,10 +1,7 @@
-package writer.natives;
+package writer.natives.io;
 
-import writer.GeneratorSlave;
-import writer.TypeManager;
-import writer.wrapper.*;
-
-import java.util.List;
+import writer.natives.NativeFunction;
+import writer.wrappers.*;
 
 public class NativeFunction_scanf extends NativeFunction {
     public NativeFunction_scanf(ParamContainer format, ParamContainer outString) {

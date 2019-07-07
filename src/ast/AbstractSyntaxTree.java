@@ -3,7 +3,7 @@ package ast;
 import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public abstract class AbstractSyntaxTree {
     private AbstractSyntaxTree m_Parent;

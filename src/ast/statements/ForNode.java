@@ -5,8 +5,8 @@ import ast.core.operators.Operator;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.ValueWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.ValueWrapper;
 
 public class ForNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;

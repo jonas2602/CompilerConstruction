@@ -5,7 +5,7 @@ import ast.declarations.VarDeclNode;
 import ast.types.PointerTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public class AccessNode_Address extends AbstractSyntaxTree implements AccessInterface {
     private AbstractSyntaxTree m_Child;

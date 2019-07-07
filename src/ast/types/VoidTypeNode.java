@@ -1,7 +1,7 @@
 package ast.types;
 
-import writer.wrapper.TypeWrapper;
-import writer.wrapper.TypeWrapper_Other;
+import writer.wrappers.TypeWrapper;
+import writer.wrappers.TypeWrapper_Other;
 
 public class VoidTypeNode extends TypeNode {
 

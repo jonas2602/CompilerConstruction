@@ -5,7 +5,7 @@ import ast.TypeCheckException;
 import ast.declarations.VarDeclNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInterface {
     private String m_Name;

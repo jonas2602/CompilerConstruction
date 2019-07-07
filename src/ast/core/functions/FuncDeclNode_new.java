@@ -1,6 +1,5 @@
 package ast.core.functions;
 
-import ast.AbstractSyntaxTree;
 import ast.core.FuncDeclNode_Core;
 import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;
@@ -8,8 +7,7 @@ import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.natives.NativeFunction_malloc;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
+import writer.wrappers.ParamContainer;
 
 public class FuncDeclNode_new extends FuncDeclNode_Core {
     public FuncDeclNode_new() {
@@ -24,8 +22,8 @@ public class FuncDeclNode_new extends FuncDeclNode_Core {
             return false;
         }
 
-        TypeNode ParamType = callNode.GetParameter(0).GetType();
-        if (!(ParamType.GetCompareType() instanceof PointerTypeNode)) {
+        TypeNode paramType = callNode.GetParameter(0).GetType();
+        if (!(paramType.GetCompareType() instanceof PointerTypeNode)) {
             return false;
         }
 

@@ -5,7 +5,7 @@ import ast.BlockNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public class IntOperators implements StdBuilder {
 

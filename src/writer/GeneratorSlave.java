@@ -3,7 +3,7 @@ package writer;
 import writer.natives.NativeFunction;
 import writer.natives.NativeFunction_memcpy;
 import writer.snippets.*;
-import writer.wrapper.*;
+import writer.wrappers.*;
 
 import java.util.*;
 

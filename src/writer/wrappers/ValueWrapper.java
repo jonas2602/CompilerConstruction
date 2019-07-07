@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 public abstract class ValueWrapper {
     public abstract String CreateDataString();

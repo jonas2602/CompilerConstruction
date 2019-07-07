@@ -10,9 +10,9 @@ import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.TypeNode;
 import writer.*;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper_Array;
-import writer.wrapper.TypeWrapper_Struct;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Array;
+import writer.wrappers.TypeWrapper_Struct;
 
 public class AssignmentNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Variable;

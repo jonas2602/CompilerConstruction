@@ -1,7 +1,7 @@
 package writer;
 
 import ast.EPrimitiveType;
-import writer.wrapper.*;
+import writer.wrappers.*;
 
 public class TypeManager {
     public static TypeWrapper STRING(int InSize) {

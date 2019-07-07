@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 public class TypeWrapper_Pointer extends TypeWrapper {
     public static TypeWrapper_Pointer CHARPTR = new TypeWrapper_Pointer(TypeWrapper_Primitive.CHAR);

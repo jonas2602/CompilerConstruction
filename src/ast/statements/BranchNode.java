@@ -4,8 +4,8 @@ import ast.AbstractSyntaxTree;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.*;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.ValueWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.ValueWrapper;
 
 public class BranchNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_Condition;

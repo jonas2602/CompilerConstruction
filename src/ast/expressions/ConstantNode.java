@@ -6,7 +6,7 @@ import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_Plain;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public class ConstantNode extends AbstractSyntaxTree {
     public static final ConstantNode NilNode = new ConstantNode("null", new NilTypeNode());

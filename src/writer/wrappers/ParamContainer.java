@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 public class ParamContainer {
     public static ParamContainer LABELCONTAINER() {

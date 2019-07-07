@@ -1,7 +1,7 @@
 package writer.snippets;
 
-import writer.wrapper.ParamContainer;
-import writer.wrapper.ValueWrapper_Variable;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.ArrayList;
 import java.util.List;

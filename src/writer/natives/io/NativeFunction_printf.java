@@ -1,9 +1,10 @@
-package writer.natives;
+package writer.natives.io;
 
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper_Other;
-import writer.wrapper.TypeWrapper_Pointer;
-import writer.wrapper.TypeWrapper_Primitive;
+import writer.natives.NativeFunction;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Other;
+import writer.wrappers.TypeWrapper_Pointer;
+import writer.wrappers.TypeWrapper_Primitive;
 
 import java.util.List;
 

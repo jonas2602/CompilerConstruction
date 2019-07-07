@@ -8,7 +8,7 @@ import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import ast.types.WildcardTypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 import java.util.HashSet;
 import java.util.Set;

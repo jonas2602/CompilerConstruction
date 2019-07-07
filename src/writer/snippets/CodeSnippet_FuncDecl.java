@@ -1,6 +1,6 @@
 package writer.snippets;
 
-import writer.wrapper.ValueWrapper_Variable;
+import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.ArrayList;
 import java.util.List;

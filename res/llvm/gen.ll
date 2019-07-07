@@ -1,32 +1,37 @@
+@.str.0 = constant [4 x i8] c"%f\0A\00"
 
-@.str.0 = constant [5 x i8] c"TEST\00"
-@.str.1 = constant [4 x i8] c"%s\0A\00"
-
-
+declare float @llvm.sqrt.f32(float)
 declare i32 @printf(i8*, ...)
 
 define i32 @main() {
 	begin:
-	%0 = alloca i32*
-	%1 = alloca i32
-	store i32 0, i32* %1
-	%2 = alloca i32*
-	%3 = alloca i32
-	store i32 0, i32* %3
-	store i32* %1, i32** %2
-	store null , i32** %0
-	%4 = load i32*, i32** %2
-	%5 = load i32*, i32** %0
-	%6 = icmp eq i32* %4, %5
-	br i1 %6, label %7, label %11
-	
-	; <label>:7:
-	%8 = getelementptr inbounds [5 x i8], [5 x i8]* @.str.0, i32 0, i32 0
-	%9 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i32 0, i32 0
-	%10 = call i32 (i8*, ...) @printf(i8* %9, i8* %8)
-	br label %11
-	
-	; <label>:11:
+	%0 = alloca float
+	store float 0.0, float* %0
+	%1 = alloca float
+	store float 0.0, float* %1
+	%2 = alloca i32
+	store i32 0, i32* %2
+	store float 2.0, float* %1
+	%3 = load float, float* %1
+	%4 = sitofp i32 1 to float
+	%5 = fadd float %3, %4
+	%6 = sitofp i32 3 to float
+	%7 = fmul float %5, %6
+	%8 = call float @llvm.sqrt.f32(float %7)
+	store float %8, float* %0
+	%9 = load float, float* %0
+	%10 = fpext float %9 to double
+	%11 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.0, i32 0, i32 0
+	%12 = call i32 (i8*, ...) @printf(i8* %11, double %10)
+	store i32 9, i32* %2
+	%13 = load i32, i32* %2
+	%14 = sitofp i32 %13 to float
+	%15 = call float @llvm.sqrt.f32(float %14)
+	store float %15, float* %0
+	%16 = load float, float* %0
+	%17 = fpext float %16 to double
+	%18 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.0, i32 0, i32 0
+	%19 = call i32 (i8*, ...) @printf(i8* %18, double %17)
 	ret i32 0
 }
 

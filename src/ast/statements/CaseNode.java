@@ -5,9 +5,9 @@ import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Switch;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper_Primitive;
-import writer.wrapper.ValueWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Primitive;
+import writer.wrappers.ValueWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

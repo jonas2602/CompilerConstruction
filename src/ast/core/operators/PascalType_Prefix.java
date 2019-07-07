@@ -7,7 +7,7 @@ import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 public abstract class PascalType_Prefix extends FuncDeclNode_Core {
 

@@ -1,7 +1,6 @@
 package writer.natives;
 
-import writer.*;
-import writer.wrapper.*;
+import writer.wrappers.*;
 
 public class NativeFunction_malloc extends NativeFunction {
     public NativeFunction_malloc(TypeWrapper type, int count) {

@@ -5,8 +5,8 @@ import ast.TypeCheckException;
 import ast.declarations.LabelDeclNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.ValueWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.ValueWrapper;
 
 public class LabelNode extends AbstractSyntaxTree {
     private String m_LabelName;

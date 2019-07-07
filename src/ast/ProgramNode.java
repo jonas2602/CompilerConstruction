@@ -5,7 +5,7 @@ import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_FuncDef;
 import writer.GeneratorSlave;
-import writer.wrapper.TypeWrapper_Primitive;
+import writer.wrappers.TypeWrapper_Primitive;
 
 import java.util.ArrayList;
 import java.util.List;

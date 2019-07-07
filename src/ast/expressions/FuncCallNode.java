@@ -8,8 +8,8 @@ import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-import writer.wrapper.TypeWrapper;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,12 @@ public class FuncCallNode extends AbstractSyntaxTree {
             }
         }
         if (m_FuncDecl == null) {
-            throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not overloaded for given types");
+            StringBuilder builder = new StringBuilder();
+            for(AbstractSyntaxTree param: m_Params) {
+                builder.append(" "+param.GetType().GetWrappedType().CreateTypeName());
+            }
+
+            throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not overloaded for given types "+builder.toString());
         }
 
         return m_FuncDecl.GetType();

@@ -1,4 +1,4 @@
-package writer.wrapper;
+package writer.wrappers;
 
 public class ValueWrapper_Variable extends ValueWrapper {
     public static ValueWrapper_Variable SCOPEVAR(int InIndex) {

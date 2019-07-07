@@ -1,20 +1,9 @@
 package ast.core.operators;
 
-import ast.AbstractSyntaxTree;
 import ast.BlockNode;
-import ast.TypeCheckException;
-import ast.core.FuncDeclNode_Core;
-import ast.core.PascalType;
 import ast.core.StdBuilder;
-import ast.declarations.ParamDeclNode;
-import ast.expressions.AccessInterface;
-import ast.expressions.FuncCallNode;
 import ast.types.*;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PointerOperators implements StdBuilder {
     @Override

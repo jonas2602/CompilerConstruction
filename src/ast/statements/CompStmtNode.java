@@ -4,7 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
-import writer.wrapper.ParamContainer;
+import writer.wrappers.ParamContainer;
 
 import java.util.ArrayList;
 import java.util.List;

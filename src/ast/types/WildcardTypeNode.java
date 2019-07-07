@@ -5,7 +5,7 @@ import java.util.Set;
 public class WildcardTypeNode extends TypeNode {
     private TypeNode m_FilledType;
 
-
+    //reset filled type
     public void Clear() {
         m_FilledType = null;
     }
@@ -16,6 +16,7 @@ public class WildcardTypeNode extends TypeNode {
             return false;
         }
 
+        //either fill again with a type or compare types (works because in the background all wildcards share same object)
         if (m_FilledType != null) {
             return m_FilledType.CompareType(otherTypeNode);
         } else {
