@@ -40,7 +40,7 @@ public class AssignmentNode extends AbstractSyntaxTree {
         // Only Equal types are allowed, implicit conversion is not possible
         // even primitive conversion int->real, real->int is not possible (yet)
         TypeNode expType = m_Expression.CheckType();
-        if (varType.CompareType(expType)) {
+        if (varType.CompareType(expType) && !(varType instanceof ArrayTypeNode)) {
             // Types are arrays?
             if (varType instanceof ArrayTypeNode) {
                 int varSize = ((ArrayTypeNode) varType).GetSize();

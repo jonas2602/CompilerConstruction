@@ -27,6 +27,7 @@ public abstract class StdLib {
         new IntOperators().buildStd(stdBlock);
         new FloatOperators().buildStd(stdBlock);
         new PointerOperators().buildStd(stdBlock);
+        new ArrayOperators().buildStd(stdBlock);
         //new GenericOperators().buildStd(stdBlock);
 
         //types

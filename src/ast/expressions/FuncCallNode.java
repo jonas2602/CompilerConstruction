@@ -88,42 +88,6 @@ public class FuncCallNode extends AbstractSyntaxTree {
         return m_FuncDecl.GetType();
     }
 
-//    @Override
-//    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-//        // build function if not already created or inline
-//        if (!m_FuncDecl.IsInline()) {
-//            m_FuncDecl.CreateSnippet(slave, null);
-//        }
-//
-//        // Execute specialized function call
-//        if (m_FuncDecl instanceof FuncDeclNode_Core) {
-//            FuncDeclNode_Core coreFunc = (FuncDeclNode_Core) m_FuncDecl;
-//            if (coreFunc.HasCustomCallLogic()) {
-//                return null; // coreFunc.CreateFunctionCall(slave, ctx, this);
-//            }
-//        } else {
-//            // TODO: default creation
-//            CodeSnippet_Base returnType = m_FuncDecl.GetType().CreateSnippet(slave, ctx);
-//            CodeSnippet_FuncCall call = new CodeSnippet_FuncCall(m_FuncName, returnType);
-//
-//            for (AbstractSyntaxTree param : m_Params) {
-//                call.AddParameter(CreateParameterSnippet(slave, call, param));
-//            }
-//
-//            if (m_FuncDecl.IsVoid()) {
-//                slave.GetScopeSnippet().AddStatement(call);
-//                return null;
-//            } else {
-//                int LocalIndex = slave.GetScopeSnippet().AddStatementWithStorage(call.Write());
-//                return new CodeSnippet_Plain("%" + LocalIndex);
-//            }
-//
-//
-//        }
-//
-//        return null;
-//    }
-
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // build function if not already created or inline

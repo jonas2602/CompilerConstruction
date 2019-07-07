@@ -87,8 +87,8 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
         // Compare given parameters to expected types
         for (int i = 0; i < m_Params.size(); i++) {
-            TypeNode CallParamType = callNode.GetParameter(i).GetType();
-            TypeNode FuncParamType = m_Params.get(i).GetType();
+            TypeNode callParamType = callNode.GetParameter(i).GetType();
+            TypeNode funcParamType = m_Params.get(i).GetType();
 
             if (m_Params.get(i).IsByReference()) {
                 AbstractSyntaxTree param = callNode.GetParameter(i);
@@ -104,7 +104,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
                 }
             }
 
-            if (!FuncParamType.CompareType(CallParamType)) {
+            if (!funcParamType.CompareType(callParamType)) {
                 return false;
             }
         }
@@ -155,9 +155,6 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         // Add Parameters
         for (ParamDeclNode param : m_Params) {
             param.CreateSnippet(slave);
-            // CodeSnippet_Base paramSnippet = param.CreateSnippet(slave, funcDef);
-            // int ScopeIndex = funcDef.AddParameter(paramSnippet);
-            // param.SetScopeIndex(ScopeIndex);
         }
 
         for(ParamDeclNode param : m_Block.GetPassDownParams()) {
@@ -184,10 +181,5 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         slave.ExitScope();
 
         return funcDef;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 }
