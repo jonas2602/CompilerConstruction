@@ -15,7 +15,7 @@ public class BoolOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AndBool());
     }
 
-    public static class NegateBool extends PascalType_Prefix {
+    public static class NegateBool extends PascalType_SingleOperator {
         public NegateBool() {
             super(Operator.NEG, PrimitiveTypeNode.BoolNode, GeneratorSlave::NegateBool);
         }

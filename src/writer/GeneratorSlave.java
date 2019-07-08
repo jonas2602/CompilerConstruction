@@ -206,34 +206,49 @@ public class GeneratorSlave {
     }
 
     public ParamContainer BitCast(ParamContainer source, TypeWrapper targetType) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("bitcast %s to %s", source, targetType);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(targetType, scopeVar);
+        return TwoParameterInstructionConstantType("bitcast", source, targetType);
     }
 
-
     public ParamContainer CastFloatToInt(ParamContainer source) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("fptosi %s to i32", source);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(TypeWrapper_Primitive.INT, scopeVar);
+        return TwoParameterInstructionConstantType("fptosi", source, TypeWrapper_Primitive.INT);
     }
 
     public ParamContainer CastIntToFloat(ParamContainer source) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("sitofp %s to float", source);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(TypeWrapper_Primitive.FLOAT, scopeVar);
+        return TwoParameterInstructionConstantType("sitofp", source, TypeWrapper_Primitive.FLOAT);
     }
 
+    public ParamContainer TruncToInt(ParamContainer source) {
+        return TwoParameterInstructionConstantType("trunc", source, TypeWrapper_Primitive.INT);
+    }
+
+    public ParamContainer TruncToChar(ParamContainer source) {
+        return TwoParameterInstructionConstantType("trunc", source, TypeWrapper_Primitive.CHAR);
+    }
+
+    public ParamContainer TruncToBool(ParamContainer source) {
+        return TwoParameterInstructionConstantType("trunc", source, TypeWrapper_Primitive.BOOL);
+    }
+
+    public ParamContainer ExtendToInt(ParamContainer source) {
+        return TwoParameterInstructionConstantType("zext", source, TypeWrapper_Primitive.INT);
+    }
+
+    public ParamContainer ExtendToChar(ParamContainer source) {
+        return TwoParameterInstructionConstantType("zext", source, TypeWrapper_Primitive.CHAR);
+    }
+
+    public ParamContainer ExtendToBool(ParamContainer source) {
+        return TwoParameterInstructionConstantType("zext", source, TypeWrapper_Primitive.BOOL);
+    }
 
     public ParamContainer ExtendFloatToDouble(ParamContainer source) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("fpext %s to double", source);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(TypeWrapper_Primitive.DOUBLE, scopeVar);
+        return TwoParameterInstructionConstantType("fpext", source, TypeWrapper_Primitive.DOUBLE);
     }
 
-    public ValueWrapper_Variable TruncateIntToChar(String source) {
-        String exp = String.format("trunc i32 %s to i8", source);
-        return GetScopeSnippetAsDef().AddStatementWithStorage(exp);
+    public ParamContainer TwoParameterInstructionConstantType(String instruction, ParamContainer source, TypeWrapper type) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("%s %s to %s", instruction, source, type.CreateTypeName());
+        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
+        return new ParamContainer(type, scopeVar);
     }
 
     public ValueWrapper_Variable ExtendToInt(String sourceType, String sourceData) {
@@ -242,94 +257,86 @@ public class GeneratorSlave {
     }
 
     public ParamContainer NegateBool(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("xor %s, 1", param);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(param, scopeVar);
+        return TwoParameterInstructionConstant("xor", param, "1");
     }
 
     public ParamContainer IncInt(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("add %s, 1", param);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(param, scopeVar);
+        return TwoParameterInstructionConstant("add", param, "1");
     }
 
     public ParamContainer DecInt(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("sub %s, 1", param);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(param, scopeVar);
+        return TwoParameterInstructionConstant("sub", param, "1");
     }
 
     public ParamContainer IncFloat(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("fadd %s, 1.0", param);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(param, scopeVar);
+        return TwoParameterInstructionConstant("fadd", param, "1.0");
     }
 
     public ParamContainer DecFloat(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("fsub %s, 1.0", param);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(param, scopeVar);
+        return TwoParameterInstructionConstant("fsub", param, "1.0");
     }
 
 
     public ParamContainer NegateInt(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("mul %s, -1", param);
-        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        return new ParamContainer(param, scopeVar);
+        return TwoParameterInstructionConstant("mul", param, "-1");
     }
 
     public ParamContainer NegateFloat(ParamContainer param) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("fmul %s, -1.0", param);
+        return TwoParameterInstructionConstant("fmul", param, "-1.0");
+    }
+
+    public ParamContainer TwoParameterInstructionConstant(String instruction, ParamContainer param, String constant) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("%s %s, %s", instruction, param, constant);
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(param, scopeVar);
     }
 
     public ParamContainer AddIntInt(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("add", left, right);
+        return TwoParametersInstruction("add", left, right);
     }
 
     public ParamContainer AddFloatFloat(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("fadd", left, right);
+        return TwoParametersInstruction("fadd", left, right);
     }
 
     public ParamContainer SubIntInt(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("sub", left, right);
+        return TwoParametersInstruction("sub", left, right);
     }
 
     public ParamContainer SubFloatFloat(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("fsub", left, right);
+        return TwoParametersInstruction("fsub", left, right);
     }
 
     public ParamContainer MulIntInt(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("mul", left, right);
+        return TwoParametersInstruction("mul", left, right);
     }
 
     public ParamContainer MulFloatFloat(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("fmul", left, right);
+        return TwoParametersInstruction("fmul", left, right);
     }
 
     public ParamContainer DivIntInt(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("sdiv", left, right);
+        return TwoParametersInstruction("sdiv", left, right);
     }
 
     public ParamContainer ModIntInt(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("srem", left, right);
+        return TwoParametersInstruction("srem", left, right);
     }
 
     public ParamContainer DivFloatFloat(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("fdiv", left, right);
+        return TwoParametersInstruction("fdiv", left, right);
     }
 
     public ParamContainer OrBoolBool(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("or", left, right);
+        return TwoParametersInstruction("or", left, right);
     }
 
     public ParamContainer AndBoolBool(ParamContainer left, ParamContainer right) {
-        return ThreeOperantsInstruction("and", left, right);
+        return TwoParametersInstruction("and", left, right);
     }
 
-    public ParamContainer ThreeOperantsInstruction(String inst, ParamContainer left, ParamContainer right) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("%s %s, %s", inst, left, right.GetValueAccessor());
+    public ParamContainer TwoParametersInstruction(String instruction, ParamContainer left, ParamContainer right) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("%s %s, %s", instruction, left, right.GetValueAccessor());
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(left, scopeVar);
     }

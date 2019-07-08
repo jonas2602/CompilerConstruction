@@ -18,8 +18,8 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
     protected FunctionCallTwoParams m_Operation;
     private Set<WildcardTypeNode> m_Wildcards = new HashSet<>();
 
-    public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
-        super(operator.GetOperatorFunctionName(), returnType);
+    public PascalType_Operator(String name, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
+        super(name, returnType);
 
         AddParameter(new ParamDeclNode("left", lparam));
         AddParameter(new ParamDeclNode("right", rparam));
@@ -31,6 +31,10 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
         m_Wildcards.addAll(rparam.GetWildcards());
 
         this.m_Operation = operation;
+    }
+
+    public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
+        this(operator.GetOperatorFunctionName(), returnType, lparam, rparam, operation);
     }
 
     @Override

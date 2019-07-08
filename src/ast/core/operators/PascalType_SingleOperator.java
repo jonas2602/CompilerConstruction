@@ -9,19 +9,23 @@ import ast.types.TypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 
-public abstract class PascalType_Prefix extends FuncDeclNode_Core {
+public abstract class PascalType_SingleOperator extends FuncDeclNode_Core {
 
-    private FunctionCallOneParam operation;
+    private FunctionCallOneParam m_Operation;
 
-    public PascalType_Prefix(Operator operator, TypeNode type, FunctionCallOneParam operation) {
-        super(operator.GetOperatorFunctionName(), type);
+    public PascalType_SingleOperator(String name, TypeNode returnType, TypeNode param, FunctionCallOneParam operation) {
+        super(name, returnType);
 
-        AddParameter(new ParamDeclNode("left", type));
+        AddParameter(new ParamDeclNode("left", param));
 
         m_bCustomCallLogic = true;
         m_bInline = true;
 
-        this.operation = operation;
+        m_Operation = operation;
+    }
+
+    public PascalType_SingleOperator(Operator operator, TypeNode type, FunctionCallOneParam operation) {
+        this(operator.GetOperatorFunctionName(), type, type, operation);
     }
 
     @Override
@@ -35,6 +39,6 @@ public abstract class PascalType_Prefix extends FuncDeclNode_Core {
         //     paramContainer = slave.LoadFromVariable(paramContainer);
         // }
 
-        return operation.createFunctionCall(slave, paramContainer);
+        return m_Operation.createFunctionCall(slave, paramContainer);
     }
 }
