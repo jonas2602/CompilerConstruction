@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class RecordTypeNode extends TypeNode {
+    public static final WildcardTypeNode WildCardRecordNode = new WildcardTypeNode(RecordTypeNode.class);
+
     private String m_RecordName;
     private List<TypeNode> m_EntryList;
     private Map<String, Integer> m_EntryNameMap;

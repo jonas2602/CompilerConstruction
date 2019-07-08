@@ -4,6 +4,15 @@ import java.util.Set;
 
 public class WildcardTypeNode extends TypeNode {
     private TypeNode m_FilledType;
+    private Class m_TypeRestriction;
+
+    public WildcardTypeNode() {
+        m_TypeRestriction = TypeNode.class;
+    }
+
+    public WildcardTypeNode(Class typeRestriction) {
+        m_TypeRestriction = typeRestriction;
+    }
 
     //reset filled type
     public void Clear() {
@@ -19,10 +28,16 @@ public class WildcardTypeNode extends TypeNode {
         //either fill again with a type or compare types (works because in the background all wildcards share same object)
         if (m_FilledType != null) {
             return m_FilledType.CompareType(otherTypeNode);
-        } else {
-            m_FilledType = otherTypeNode;
-            return true;
         }
+
+        // in type node fits the given type restriction?
+        if (!m_TypeRestriction.isInstance(otherTypeNode)) {
+            return false;
+        }
+
+        // fill wildcard with compare type
+        m_FilledType = otherTypeNode;
+        return true;
     }
 
     @Override

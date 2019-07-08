@@ -158,7 +158,7 @@ void memtest()
 {
 
     person *list = NULL;
-    person *list2 = NULL;
+    float *list2 = NULL;
     list = malloc(sizeof(person));
     free(list);
     if (list == NULL || list == list2)

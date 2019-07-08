@@ -243,9 +243,9 @@ define dso_local void @cases(i32) #0 {
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @memtest() #0 {
   %1 = alloca %struct.person*, align 8
-  %2 = alloca %struct.person*, align 8
+  %2 = alloca float*, align 8
   store %struct.person* null, %struct.person** %1, align 8
-  store %struct.person* null, %struct.person** %2, align 8
+  store float* null, float** %2, align 8
   %3 = call noalias i8* @malloc(i64 16) #4
   %4 = bitcast i8* %3 to %struct.person*
   store %struct.person* %4, %struct.person** %1, align 8
@@ -254,18 +254,19 @@ define dso_local void @memtest() #0 {
   call void @free(i8* %6) #4
   %7 = load %struct.person*, %struct.person** %1, align 8
   %8 = icmp eq %struct.person* %7, null
-  br i1 %8, label %13, label %9
+  br i1 %8, label %14, label %9
 
 ; <label>:9:                                      ; preds = %0
   %10 = load %struct.person*, %struct.person** %1, align 8
-  %11 = load %struct.person*, %struct.person** %2, align 8
-  %12 = icmp eq %struct.person* %10, %11
-  br i1 %12, label %13, label %14
+  %11 = load float*, float** %2, align 8
+  %12 = bitcast float* %11 to %struct.person*
+  %13 = icmp eq %struct.person* %10, %12
+  br i1 %13, label %14, label %15
 
-; <label>:13:                                     ; preds = %9, %0
-  br label %14
+; <label>:14:                                     ; preds = %9, %0
+  br label %15
 
-; <label>:14:                                     ; preds = %13, %9
+; <label>:15:                                     ; preds = %14, %9
   ret void
 }
 

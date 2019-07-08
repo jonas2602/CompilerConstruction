@@ -28,7 +28,9 @@ public abstract class StdLib {
         new IntOperators().buildStd(stdBlock);
         new FloatOperators().buildStd(stdBlock);
         new PointerOperators().buildStd(stdBlock);
-        //new GenericOperators().buildStd(stdBlock);
+        new ArrayOperators().buildStd(stdBlock);
+        new RecordOperators().buildStd(stdBlock);
+        new PrimitiveOperators().buildStd(stdBlock);
 
         //types
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));

@@ -1,8 +1,6 @@
 import ast.BlockNode;
 import ast.ProgramNode;
 import ast.core.*;
-import ast.declarations.TypeDeclNode;
-import ast.types.PrimitiveTypeNode;
 import gen.PascalLexer;
 import gen.PascalParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -12,8 +10,6 @@ import visitors.ProgramVisitor;
 import writer.CodeGenerator;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class App {
 
@@ -34,7 +30,7 @@ public class App {
         PascalParser parser = new PascalParser(tokens);
         ParseTree tree = parser.program();
 
-        if(parser.getNumberOfSyntaxErrors() != 0) {
+        if (parser.getNumberOfSyntaxErrors() != 0) {
             System.exit(0);
         }
 
