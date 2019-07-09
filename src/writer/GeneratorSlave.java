@@ -76,7 +76,7 @@ public class GeneratorSlave {
 
     public ParamContainer CreateStringConstant(String content) {
         ParamContainer cached = m_StringConstants.get(content);
-        if(cached != null) {
+        if (cached != null) {
             return cached;
         }
 
@@ -449,6 +449,14 @@ public class GeneratorSlave {
         return CreateArrayElementPtr(array, new ValueWrapper_Constant(index));
     }
 
+    public ParamContainer CreatePtrArrayElementPtr(ParamContainer array, ParamContainer index) {
+        TypeWrapper arrType = array.GetRootType().GetChild();
+        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, %s", arrType, array, index); // TODO: alignment
+        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
+
+        return new ParamContainer(array.GetRootType(), scopeVar);
+    }
+
     public void CreateBranch(ParamContainer condition, ParamContainer positive, ParamContainer negative) {
         CodeSnippet_Args snippet = new CodeSnippet_Args("br %s, %s, %s", condition, positive, negative);
         GetScopeSnippetAsDef().AddStatement(snippet);
@@ -484,35 +492,35 @@ public class GeneratorSlave {
     public List<String> Serialize() {
         List<String> outLines = new ArrayList<>();
 
-        if(m_Structs.size() > 0) {
+        if (m_Structs.size() > 0) {
             for (CodeSnippet_Struct struct : m_Structs) {
                 outLines.addAll(struct.WriteLines());
             }
             outLines.add("");
         }
 
-        if(m_Constants.size() > 0) {
+        if (m_Constants.size() > 0) {
             for (CodeSnippet_Base constant : m_Constants) {
                 outLines.addAll(constant.WriteLines());
             }
             outLines.add("");
         }
 
-        if(m_GlobalVariables.size() > 0) {
+        if (m_GlobalVariables.size() > 0) {
             for (CodeSnippet_Base global : m_GlobalVariables) {
                 outLines.addAll(global.WriteLines());
             }
             outLines.add("");
         }
 
-        if(m_FunctionDeclarations.size() > 0) {
+        if (m_FunctionDeclarations.size() > 0) {
             for (CodeSnippet_FuncDecl decl : m_FunctionDeclarations) {
                 outLines.addAll(decl.WriteLines());
             }
             outLines.add("");
         }
 
-        if(m_FunctionDefinitions.size() > 0) {
+        if (m_FunctionDefinitions.size() > 0) {
             for (CodeSnippet_FuncDef def : m_FunctionDefinitions) {
                 outLines.addAll(def.WriteLines());
                 outLines.add("");

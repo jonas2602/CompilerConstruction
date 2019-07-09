@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.VarDeclNode;
 import ast.types.ArrayTypeNode;
+import ast.types.ArrayTypeNode_Dynamic;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -31,16 +32,15 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
     @Override
     public TypeNode CheckType() {
         TypeNode childType = m_Child.CheckType();
-        if (!(childType instanceof ArrayTypeNode)) {
+        if (!(childType instanceof ArrayTypeNode || childType instanceof ArrayTypeNode_Dynamic)) {
             throw new TypeCheckException(this, "Indexed access is only possible on arrays");
         }
 
-        PrimitiveTypeNode IntTypeNode = PrimitiveTypeNode.IntNode;
         for (AbstractSyntaxTree index : m_IndexExpressions) {
             // Is IndexNode of primitive type INT?
             TypeNode IndexType = index.CheckType();
-            if (!IntTypeNode.CompareType(IndexType)) {
-                return null;
+            if (!PrimitiveTypeNode.IntNode.CompareType(IndexType)) {
+                throw new TypeCheckException(this, "Indexed access is only possible with integers");
             }
         }
 
@@ -57,7 +57,14 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         ParamContainer varAccess = m_Child.CreateSnippet(slave);
         ParamContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
-        return slave.CreateArrayElementPtr(varAccess, indexContainer);
+
+        if (m_Child.GetType() instanceof ArrayTypeNode) {
+            return slave.CreateArrayElementPtr(varAccess, indexContainer);
+        } else {
+            ParamContainer startPropPtr = slave.CreateArrayElementPtr(varAccess, ArrayTypeNode_Dynamic.DynamicStartIndex);
+            ParamContainer startProp = slave.LoadFromVariable(startPropPtr);
+            return slave.CreatePtrArrayElementPtr(startProp, indexContainer);
+        }
     }
 
     @Override

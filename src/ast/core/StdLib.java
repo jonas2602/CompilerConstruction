@@ -1,7 +1,6 @@
 package ast.core;
 
 import ast.BlockNode;
-import ast.core.functions.*;
 import ast.core.functions.casts.CastFunctions;
 import ast.core.functions.io.*;
 import ast.core.functions.list.FuncDeclNode_getLength;

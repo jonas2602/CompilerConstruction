@@ -6,7 +6,8 @@ var
 
 begin
     setlength(myarr, 5);
-    writeln(length(myarr));
+    myarr[2] := 2.5;
+    writeln(myarr[2], ' ', length(myarr));
 end.
 
 

@@ -47,6 +47,7 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Core {
         ParamContainer lengthProp = slave.CreateArrayElementPtr(dynArrParam, ArrayTypeNode_Dynamic.DynamicLengthIndex);
         slave.StoreInVariable(lengthProp, lengthParam);
 
+        // TODO: initialize newly created elements
 
         return ParamContainer.VOIDCONTAINER();
     }
