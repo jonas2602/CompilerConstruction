@@ -2,6 +2,8 @@ package ast.types;
 
 import ast.TypeCheckException;
 import ast.declarations.TypeDeclNode;
+import writer.GeneratorSlave;
+import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
 public class NamedTypeNode extends TypeNode {
@@ -32,7 +34,7 @@ public class NamedTypeNode extends TypeNode {
     @Override
     public TypeNode GetTypeDetails() {
         // if (m_TypeDetails != null) {
-            return m_TypeDetails.GetTypeDetails();
+        return m_TypeDetails.GetTypeDetails();
         // } else {
         //     return this;
         // }
@@ -41,7 +43,7 @@ public class NamedTypeNode extends TypeNode {
     @Override
     public TypeNode GetType() {
         // if (m_TypeDetails != null) {
-            return m_TypeDetails;
+        return m_TypeDetails;
         // }
 
         // return this;
@@ -55,9 +57,14 @@ public class NamedTypeNode extends TypeNode {
     @Override
     public TypeWrapper GetWrappedType() {
         // if (m_TypeDetails != null) {
-            return m_TypeDetails.GetWrappedType();
+        return m_TypeDetails.GetWrappedType();
         // }
 
         // return null;
+    }
+
+    @Override
+    public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
+        m_TypeDetails.InitVariable(slave, varParam);
     }
 }

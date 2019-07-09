@@ -1,15 +1,20 @@
 import ast.BlockNode;
 import ast.ProgramNode;
 import ast.core.*;
+import ast.declarations.TypeDeclNode;
+import ast.types.ArrayTypeNode_Dynamic;
+import ast.types.TypeNode;
 import gen.PascalLexer;
 import gen.PascalParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import visitors.ProgramVisitor;
+import visitors.TypeVisitor;
 import writer.CodeGenerator;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class App {
 
@@ -23,7 +28,7 @@ public class App {
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
         // Tokenize input file
-        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/test.pas"));
+        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/tests/dynamics.pas"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // Build parse tree
@@ -41,6 +46,11 @@ public class App {
         // attach parsed tree to the stdBlock to grant access to the additional functionality
         prog.SetParent(stdBlock);
 
+        // add dynamic types
+        Set<TypeNode> dynamicTypes = TypeVisitor.m_DynamicTypes;
+        for (TypeNode baseType : dynamicTypes) {
+            prog.GetBlock().AddTypeDeclaration(new TypeDeclNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(baseType), new ArrayTypeNode_Dynamic(baseType)));
+        }
 
         // type checking
         try {

@@ -9,11 +9,14 @@ import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     private BlockNode m_OwningBlock;
+    public static Set<TypeNode> m_DynamicTypes = new HashSet<>();
 
     public TypeVisitor(BlockNode owningBlock) {
         m_OwningBlock = owningBlock;
@@ -91,13 +94,17 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
     public TypeNode visitArrayType(PascalParser.ArrayTypeContext ctx) {
         TypeNode innerType = visitType(ctx.type());
 
-        // build encapsuled arrays from inside out
-        for (int i = ctx.typeList().simpleType().size() - 1; i >= 0; i--) {
-            AbstractSyntaxTree counter = visitSimpleType(ctx.typeList().simpleType(i));
-            innerType = new ArrayTypeNode(counter, innerType);
+        if (ctx.typeList() != null) {
+            // build encapsuled arrays from inside out
+            for (int i = ctx.typeList().simpleType().size() - 1; i >= 0; i--) {
+                AbstractSyntaxTree counter = visitSimpleType(ctx.typeList().simpleType(i));
+                innerType = new ArrayTypeNode(counter, innerType);
+            }
+            return innerType;
+        } else {
+            m_DynamicTypes.add(innerType);
+            return new NamedTypeNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(innerType));
         }
-
-        return innerType;
     }
 
     @Override

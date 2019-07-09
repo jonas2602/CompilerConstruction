@@ -155,6 +155,7 @@ stringtype
 arrayType
    : ARRAY LBRACK typeList RBRACK OF type
    | ARRAY LBRACK2 typeList RBRACK2 OF type
+   | ARRAY OF type
    ;
 
 // What types are allowed here? only subrange?

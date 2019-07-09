@@ -1,4 +1,4 @@
-package ast.core.functions;
+package ast.core.functions.memory;
 
 import ast.core.FuncDeclNode_Core;
 import ast.expressions.FuncCallNode;

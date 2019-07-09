@@ -47,21 +47,16 @@ public class VarDeclNode extends AbstractSyntaxTree {
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         if (m_ScopeContainer == null) {
-            if(m_GlobalVariable) {
+            if (m_GlobalVariable) {
                 TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
                 m_ScopeContainer = slave.AllocateGlobalMemory(wrappedType, m_TypeNode.GetDefaultValue());
-            }
-            else {
+            } else {
                 // Allocate memory for the variable
                 TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
                 m_ScopeContainer = slave.AllocateMemory(wrappedType);
 
                 // store default value
-                // TODO: how to initialize structured types (array, set, struct)
-                ParamContainer defaultValue = m_TypeNode.GetDefaultValue();
-                if (defaultValue != null) {
-                    slave.StoreInVariable(m_ScopeContainer, defaultValue);
-                }
+                m_TypeNode.InitVariable(slave, m_ScopeContainer);
             }
         }
 

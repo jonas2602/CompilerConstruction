@@ -57,6 +57,12 @@ public class PrimitiveTypeNode extends TypeNode {
         return GetType();
     }
 
+
+    @Override
+    public String toString() {
+        return m_PrimitiveType.toString();
+    }
+
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
         if (otherTypeNode == null) {
@@ -88,5 +94,10 @@ public class PrimitiveTypeNode extends TypeNode {
     @Override
     public ParamContainer GetDefaultValue() {
         return new ParamContainer(GetWrappedType(), m_PrimitiveType.GetDefaultValue());
+    }
+
+    @Override
+    public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
+        slave.StoreInVariable(varParam, GetDefaultValue());
     }
 }

@@ -1,9 +1,12 @@
 package ast.core;
 
 import ast.BlockNode;
-import ast.core.functions.*;
 import ast.core.functions.io.*;
+import ast.core.functions.list.FuncDeclNode_getLength;
+import ast.core.functions.list.FuncDeclNode_setLength;
 import ast.core.functions.math.MathFunctions;
+import ast.core.functions.memory.FuncDeclNode_dispose;
+import ast.core.functions.memory.FuncDeclNode_new;
 import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;
@@ -11,18 +14,19 @@ import ast.types.PrimitiveTypeNode;
 public abstract class StdLib {
     public static BlockNode CreateStdLib() {
         BlockNode stdBlock = new BlockNode();
-        //functions
-        //io functions
+        // functions
+        // io functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_readln());
 
+        // memory functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_new());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_dispose());
 
-        //math functions
+        // math functions
         new MathFunctions().buildStd(stdBlock);
 
-        //operators
+        // operators
         new BoolOperators().buildStd(stdBlock);
         new CharOperators().buildStd(stdBlock);
         new IntOperators().buildStd(stdBlock);
@@ -32,7 +36,11 @@ public abstract class StdLib {
         new RecordOperators().buildStd(stdBlock);
         new PrimitiveOperators().buildStd(stdBlock);
 
-        //types
+        // list
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_getLength());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_setLength());
+
+        // types
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));
         stdBlock.AddTypeDeclaration(new TypeDeclNode("real", PrimitiveTypeNode.FloatNode));
         stdBlock.AddTypeDeclaration(new TypeDeclNode("char", PrimitiveTypeNode.CharNode));

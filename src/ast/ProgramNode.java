@@ -26,6 +26,10 @@ public class ProgramNode extends AbstractSyntaxTree {
         m_Params.add(InParam);
     }
 
+    public BlockNode GetBlock() {
+        return m_Block;
+    }
+
     public void SetBlock(BlockNode InBlock) {
         InBlock.SetParent(this);
         this.m_Block = InBlock;

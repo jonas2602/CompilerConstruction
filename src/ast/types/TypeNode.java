@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
+import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
@@ -63,5 +64,9 @@ public abstract class TypeNode extends AbstractSyntaxTree {
 
     public Set<WildcardTypeNode> GetWildcards() {
         return new HashSet<>();
+    }
+
+    public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
+
     }
 }

@@ -14,11 +14,11 @@ import java.util.Map;
 public class RecordTypeNode extends TypeNode {
     public static final WildcardTypeNode WildCardRecordNode = new WildcardTypeNode(RecordTypeNode.class);
 
-    private String m_RecordName;
-    private List<TypeNode> m_EntryList;
-    private Map<String, Integer> m_EntryNameMap;
+    protected String m_RecordName;
+    protected List<TypeNode> m_EntryList;
+    protected Map<String, Integer> m_EntryNameMap;
 
-    private TypeWrapper_Struct m_WrapperCache;
+    protected TypeWrapper_Struct m_WrapperCache;
 
 
     public RecordTypeNode() {
@@ -111,6 +111,14 @@ public class RecordTypeNode extends TypeNode {
 
         slave.CreateStruct(m_RecordName, entryTypes);
         return null;
+    }
+
+    @Override
+    public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
+        for (int i = 0; i < m_EntryList.size(); i++) {
+            ParamContainer prop = slave.CreateArrayElementPtr(varParam, i);
+            m_EntryList.get(i).InitVariable(slave, prop);
+        }
     }
 }
 

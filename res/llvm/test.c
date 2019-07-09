@@ -22,6 +22,13 @@ typedef struct
     group ps;
 } world;
 
+typedef struct
+{
+    int length;
+    int typesize;
+    float *start;
+} myarr;
+
 void arraytest()
 {
     char first = 'x';
@@ -161,10 +168,33 @@ void memtest()
     float *list2 = NULL;
     list = malloc(sizeof(person));
     free(list);
-    if (list == NULL || list == list2)
+    if (list == NULL)
     {
     }
 }
+
+person returntest()
+{
+    person test;
+    return test;
+}
+
+float myfloatadd(float left, float right)
+{
+    return left + right;
+}
+
+// void setlength(myarr *arr, int size)
+// {
+//     void *newstart = malloc((*arr).typesize * size);
+//     memcpy(newstart, (*arr).start, min((*arr).length, size));
+//     (*arr).start = newstart;
+// }
+
+// int *getelement(myarr *arr, int index)
+// {
+//     return (*arr).start + (*arr).typesize * index;
+// }
 
 int main()
 {
@@ -178,9 +208,26 @@ int main()
     // printf("%s", strbuilder('a', 'b'));
     // cases(5);
 
-    char str[100];
-    int i;
+    // char str[100];
+    // int i;
 
-    scanf(" %[^\n]",str);
-    printf("%s", str);
+    // scanf(" %[^\n]",str);
+    // printf("%s", str);
+
+    myarr arr;
+    // arr.typesize = sizeof(float);
+    // arr.start = malloc(sizeof(float) * 0);
+    arr.length = 5;
+    // ((float *)arr.start)[0] = 1.5;
+    // ((float *)arr.start)[1] = 0.12;
+    // arr.start = realloc(arr.start, 5);
+    // ((float *)arr.start)[4] = 0.42;
+
+    // float left = ((float *)arr.start)[0];
+    // float right = ((float *)arr.start)[1];
+    // myfloatadd(left, right);
+    // float *elemptr = (float *)getelement(&arr, 1);
+    // printf("%p %p, %p %i\n", elemptr, &((float *)arr.start)[1], &((float *)arr.start)[0], arr.typesize);
+    // printf("%p", arr.start + (int*)(arr.typesize * 1));
+    // printf("%f %f %f", ((float *)arr.start)[0], ((float *)arr.start)[1], ((float *)arr.start)[4]);
 }

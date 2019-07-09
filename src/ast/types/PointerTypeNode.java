@@ -17,6 +17,7 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstBoolNode);
 
     public static final PointerTypeNode WildCardPointerNode = new PointerTypeNode(new WildcardTypeNode());
+    public static final PointerTypeNode VoidPointerNode = new PointerTypeNode(VoidTypeNode.VoidNode);
 
     protected TypeNode m_BaseType;
 
@@ -54,7 +55,7 @@ public class PointerTypeNode extends TypeNode {
         }
 
         // .. or null
-        if(otherTypeNode.GetCompareType() instanceof NilTypeNode){
+        if (otherTypeNode.GetCompareType() instanceof NilTypeNode) {
             return true;
         }
 

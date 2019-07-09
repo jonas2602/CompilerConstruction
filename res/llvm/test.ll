@@ -5,6 +5,7 @@ target triple = "x86_64-pc-linux-gnu"
 
 %struct.person = type { i32, i8* }
 %struct.group = type { %struct.person }
+%struct.myarr = type { i32, i32, float* }
 
 @myval = dso_local global i32 5, align 4
 @arraytest.mystring = private unnamed_addr constant [5 x i8] c"abcde", align 1
@@ -15,8 +16,6 @@ target triple = "x86_64-pc-linux-gnu"
 @.str.1 = private unnamed_addr constant [4 x i8] c"xyz\00", align 1
 @.str.2 = private unnamed_addr constant [9 x i8] c"%s %s %s\00", align 1
 @.str.3 = private unnamed_addr constant [8 x i8] c"test123\00", align 1
-@.str.4 = private unnamed_addr constant [7 x i8] c" %[^\0A]\00", align 1
-@.str.5 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @arraytest() #0 {
@@ -254,19 +253,12 @@ define dso_local void @memtest() #0 {
   call void @free(i8* %6) #4
   %7 = load %struct.person*, %struct.person** %1, align 8
   %8 = icmp eq %struct.person* %7, null
-  br i1 %8, label %14, label %9
+  br i1 %8, label %9, label %10
 
 ; <label>:9:                                      ; preds = %0
-  %10 = load %struct.person*, %struct.person** %1, align 8
-  %11 = load float*, float** %2, align 8
-  %12 = bitcast float* %11 to %struct.person*
-  %13 = icmp eq %struct.person* %10, %12
-  br i1 %13, label %14, label %15
+  br label %10
 
-; <label>:14:                                     ; preds = %9, %0
-  br label %15
-
-; <label>:15:                                     ; preds = %14, %9
+; <label>:10:                                     ; preds = %9, %0
   ret void
 }
 
@@ -274,17 +266,32 @@ define dso_local void @memtest() #0 {
 declare dso_local void @free(i8*) #3
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local i32 @main() #0 {
-  %1 = alloca [100 x i8], align 16
-  %2 = alloca i32, align 4
-  %3 = getelementptr inbounds [100 x i8], [100 x i8]* %1, i32 0, i32 0
-  %4 = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.4, i32 0, i32 0), i8* %3)
-  %5 = getelementptr inbounds [100 x i8], [100 x i8]* %1, i32 0, i32 0
-  %6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.5, i32 0, i32 0), i8* %5)
-  ret i32 0
+define dso_local { i32, i8* } @returntest() #0 {
+  %1 = alloca %struct.person, align 8
+  %2 = bitcast %struct.person* %1 to { i32, i8* }*
+  %3 = load { i32, i8* }, { i32, i8* }* %2, align 8
+  ret { i32, i8* } %3
 }
 
-declare dso_local i32 @__isoc99_scanf(i8*, ...) #2
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local float @myfloatadd(float, float) #0 {
+  %3 = alloca float, align 4
+  %4 = alloca float, align 4
+  store float %0, float* %3, align 4
+  store float %1, float* %4, align 4
+  %5 = load float, float* %3, align 4
+  %6 = load float, float* %4, align 4
+  %7 = fadd float %5, %6
+  ret float %7
+}
+
+; Function Attrs: noinline nounwind optnone uwtable
+define dso_local i32 @main() #0 {
+  %1 = alloca %struct.myarr, align 8
+  %2 = getelementptr inbounds %struct.myarr, %struct.myarr* %1, i32 0, i32 0
+  store i32 5, i32* %2, align 8
+  ret i32 0
+}
 
 attributes #0 = { noinline nounwind optnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { argmemonly nounwind }
