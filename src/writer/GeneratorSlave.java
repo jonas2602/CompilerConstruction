@@ -233,6 +233,10 @@ public class GeneratorSlave {
         return TwoParameterInstructionConstantType("zext", source, TypeWrapper_Primitive.INT);
     }
 
+    public ParamContainer ExtendToLong(ParamContainer source) {
+        return TwoParameterInstructionConstantType("zext", source, TypeWrapper_Primitive.LONG);
+    }
+
     public ParamContainer ExtendToChar(ParamContainer source) {
         return TwoParameterInstructionConstantType("zext", source, TypeWrapper_Primitive.CHAR);
     }

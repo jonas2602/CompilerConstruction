@@ -3,6 +3,7 @@ package ast.core.functions.io;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
+import ast.declarations.FuncDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.*;
@@ -23,7 +24,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
     }
     
     @Override
-    public boolean ValidateCall(FuncCallNode callNode) {
+    public FuncDeclNode ValidateCall(FuncCallNode callNode) {
         // Allows any amount of parameters, as long as they are primitive/can get serialized
         // Compare given parameters to primitive types
         for (AbstractSyntaxTree param : callNode.GetParameterList()) {
@@ -37,7 +38,7 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             //  signature: ([type]) -> char*
         }
 
-        return true;
+        return this;
     }
 
     @Override

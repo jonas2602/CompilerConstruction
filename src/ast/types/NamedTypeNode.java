@@ -6,6 +6,8 @@ import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
+import java.util.Set;
+
 public class NamedTypeNode extends TypeNode {
     private String m_TypeName;
     private TypeNode m_TypeDetails;
@@ -51,7 +53,7 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public String toString() {
-        return "Type(" + m_TypeName + ")";
+        return m_TypeName;
     }
 
     @Override
@@ -66,5 +68,11 @@ public class NamedTypeNode extends TypeNode {
     @Override
     public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
         m_TypeDetails.InitVariable(slave, varParam);
+    }
+
+
+    @Override
+    public Set<WildcardTypeNode> GetWildcards() {
+        return m_TypeDetails.GetWildcards();
     }
 }

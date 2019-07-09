@@ -19,7 +19,7 @@ public class PointerOperators implements StdBuilder {
 
     public static abstract class PointerOperator extends PascalType_Operator {
         public PointerOperator(Operator operator, TypeNode returnType, FunctionCallTwoParams operation) {
-            super(operator, returnType, PointerTypeNode.WildCardPointerNode, PointerTypeNode.WildCardPointerNode, operation);
+            super(operator, returnType, PointerTypeNode.WildCardPointerNode(), operation);
         }
     }
 
@@ -35,9 +35,9 @@ public class PointerOperators implements StdBuilder {
         }
     }
 
-    public static class AGNPointer extends PascalType_Operator {
+    public static class AGNPointer extends PointerOperator {
         public AGNPointer() {
-            super(Operator.AGN, PrimitiveTypeNode.BoolNode, PointerTypeNode.WildCardPointerNode, PointerTypeNode.WildCardPointerNode, null);
+            super(Operator.AGN, PrimitiveTypeNode.BoolNode, null);
         }
 
         @Override

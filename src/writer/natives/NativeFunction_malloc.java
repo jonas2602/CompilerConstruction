@@ -11,6 +11,7 @@ public class NativeFunction_malloc extends NativeFunction {
         this(new ParamContainer(TypeWrapper_Primitive.LONG, new ValueWrapper_Constant(Integer.toString(byteSize))));
     }
 
+    // TODO: change return type to charptr
     public NativeFunction_malloc(ParamContainer byteSizeParam) {
         super("malloc", TypeWrapper_Pointer.INTPTR);
 

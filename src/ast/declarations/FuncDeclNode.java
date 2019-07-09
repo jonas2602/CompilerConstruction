@@ -32,11 +32,23 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         m_Block.SetParent(this);
 
         m_Params = new ArrayList<>();
+
+        // add return type as block variable
+        if (!(returnType instanceof VoidTypeNode)) {
+            m_Block.AddParameterDeclaration(new VarDeclNode(name, returnType));
+        }
     }
 
     public void AddParameter(ParamDeclNode InParam) {
         InParam.SetParent(this);
         m_Params.add(InParam);
+
+        // add parameter to block for accessability as variable
+        m_Block.AddParameterDeclaration(InParam);
+    }
+
+    public void AddParameter(String name, TypeNode type) {
+        AddParameter(new ParamDeclNode(name, type));
     }
 
     public String GetName() {
@@ -48,7 +60,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     }
 
     public ParamDeclNode GetParameter(int index) {
-        if(index < m_Params.size()) {
+        if (index < m_Params.size()) {
             return m_Params.get(index);
         }
         return m_Block.GetPassDownParam(index - m_Params.size());
@@ -78,11 +90,11 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return GetType();
     }
 
-    public boolean ValidateCall(FuncCallNode callNode) {
+    public FuncDeclNode ValidateCall(FuncCallNode callNode) {
         // Parameter count fits the definition?
         if (callNode.GetParameterCount() != m_Params.size()) {
             // throw new TypeCheckException(callNode, "Function expected " + callNode.GetParameterCount() + " Arguments but received " + m_Params.size());
-            return false;
+            return null;
         }
 
         // Compare given parameters to expected types
@@ -95,28 +107,28 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
                 // "VAR" parameters only accept variables, no constants
                 if (param instanceof ConstantNode) {
-                    return false;
+                    return null;
                 }
 
                 // don't accept const variables if passed by reference
                 if (((AccessInterface) param).GetVarDeclNode() instanceof ConstDeclNode) {
-                    return false;
+                    return null;
                 }
             }
 
             if (!funcParamType.CompareType(callParamType)) {
-                return false;
+                return null;
             }
         }
 
         //TODO: add new inner params
-        for(VarDeclNode param: m_Block.GetPassDownParams()) {
+        for (VarDeclNode param : m_Block.GetPassDownParams()) {
             AccessNode_Variable var = new AccessNode_Variable(param.GetName());
             callNode.AddParameter(var);
             var.GetType();
         }
 
-        return true;
+        return this;
     }
 
     public boolean CompareSignature(FuncDeclNode other) {
@@ -143,7 +155,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     }
 
     @Override
-    public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // Only build once
         if (m_IsCreated) return null;
         m_IsCreated = true;
@@ -157,7 +169,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             param.CreateSnippet(slave);
         }
 
-        for(ParamDeclNode param : m_Block.GetPassDownParams()) {
+        for (ParamDeclNode param : m_Block.GetPassDownParams()) {
             param.CreateSnippet(slave);
         }
 
@@ -180,6 +192,6 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         // Remove Function from stack
         slave.ExitScope();
 
-        return funcDef;
+        return null;
     }
 }

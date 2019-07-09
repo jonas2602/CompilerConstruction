@@ -3,6 +3,7 @@ package ast.core.operators;
 import ast.BlockNode;
 import ast.TypeCheckException;
 import ast.core.StdBuilder;
+import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.VoidTypeNode;
@@ -28,9 +29,9 @@ public class ArrayOperators implements StdBuilder {
         }
 
         @Override
-        public boolean ValidateCall(FuncCallNode callNode) {
-            if (!super.ValidateCall(callNode)) {
-                return false;
+        public FuncDeclNode ValidateCall(FuncCallNode callNode) {
+            if (super.ValidateCall(callNode) == null) {
+                return null;
             }
 
             int varSize = ((ArrayTypeNode) callNode.GetParameterType(0)).GetSize();
@@ -39,7 +40,7 @@ public class ArrayOperators implements StdBuilder {
                 throw new TypeCheckException(this, "Arrays can only be copied if the target array is the same size or larger than the source array");
             }
 
-            return true;
+            return this;
         }
     }
 }

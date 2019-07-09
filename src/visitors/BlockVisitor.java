@@ -130,7 +130,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         FuncDeclNode funcDecl = new FuncDeclNode(name, returnType, body);
 
         // Add return type to block as variable
-        body.AddParameterDeclaration(funcTypeNode);
+        // body.AddParameterDeclaration(funcTypeNode);
 
         // Add Parameters to both, Procedure and Block
         if (ctx.formalParameterList() != null) {
@@ -138,7 +138,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             for (AbstractSyntaxTree param : paramList) {
                 // TODO: Add params first to block for more percise Exceptions?
                 funcDecl.AddParameter((ParamDeclNode) param);
-                body.AddParameterDeclaration((ParamDeclNode) param);
+                // body.AddParameterDeclaration((ParamDeclNode) param);
             }
         }
 
@@ -160,7 +160,7 @@ public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         for (AbstractSyntaxTree param : paramList) {
             // TODO: Add params first to block for more percise Exceptions?
             procDecl.AddParameter((ParamDeclNode) param);
-            body.AddParameterDeclaration((ParamDeclNode) param);
+            // body.AddParameterDeclaration((ParamDeclNode) param);
         }
 
         // Add declarations to the new block

@@ -5,7 +5,6 @@ target triple = "x86_64-pc-linux-gnu"
 
 %struct.person = type { i32, i8* }
 %struct.group = type { %struct.person }
-%struct.myarr = type { i32, i32, float* }
 
 @myval = dso_local global i32 5, align 4
 @arraytest.mystring = private unnamed_addr constant [5 x i8] c"abcde", align 1
@@ -287,9 +286,10 @@ define dso_local float @myfloatadd(float, float) #0 {
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local i32 @main() #0 {
-  %1 = alloca %struct.myarr, align 8
-  %2 = getelementptr inbounds %struct.myarr, %struct.myarr* %1, i32 0, i32 0
-  store i32 5, i32* %2, align 8
+  %1 = alloca float*, align 8
+  %2 = call noalias i8* @malloc(i64 16) #4
+  %3 = bitcast i8* %2 to float*
+  store float* %3, float** %1, align 8
   ret i32 0
 }
 

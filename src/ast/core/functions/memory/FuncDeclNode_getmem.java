@@ -15,19 +15,30 @@ import writer.wrappers.ParamContainer;
 
 public class FuncDeclNode_getmem extends FuncDeclNode_Core {
     public FuncDeclNode_getmem() {
-        super("getmem", PointerTypeNode.VoidPointerNode);
+        super("getmem", VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
 
-        AddParameter(new ParamDeclNode("size", PrimitiveTypeNode.IntNode));
+        AddParameter("ptr", PointerTypeNode.WildCardPointerNode());
+        AddParameter("size", PrimitiveTypeNode.IntNode);
     }
 
     @Override
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-        AbstractSyntaxTree param = callNode.GetParameter(0);
-        ParamContainer container = param.CreateSnippet(slave);
-        container = AccessInterface.TryLoadValue(slave, param, container);
+        // get func call parameter
+        ParamContainer memPtrParam = callNode.GetParameter(0).CreateSnippet(slave);
+        ParamContainer bitsizeParam = callNode.GetParameter(1).CreateSnippet(slave);
 
-        return slave.CreateNativeCall(new NativeFunction_malloc(container));
+        // Allocate Memory
+        ParamContainer bitsizeValue = AccessInterface.TryLoadValue(slave, callNode.GetParameter(1), bitsizeParam);
+        bitsizeValue = slave.ExtendToLong(bitsizeValue);
+        ParamContainer outCharPtr = slave.CreateNativeCall(new NativeFunction_malloc(bitsizeValue));
+
+        // store allocated memory in given ptr
+        ParamContainer memPtrValue = slave.LoadFromVariable(memPtrParam);
+        ParamContainer newMemory = slave.BitCast(outCharPtr, memPtrValue.GetRootType());
+        slave.StoreInVariable(memPtrParam, newMemory);
+
+        return ParamContainer.VOIDCONTAINER();
     }
 }

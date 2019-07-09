@@ -1,39 +1,21 @@
-@.str.0 = constant [4 x i8] c"%c\0A\00"
-@.str.1 = constant [4 x i8] c"%d\0A\00"
-
-declare i32 @printf(i8*, ...)
+declare i32* @malloc(i64)
+declare i8* @realloc(i8*, i64)
 
 define i32 @main() {
 	begin:
-	%0 = alloca i8
-	store i8 0, i8* %0
-	%1 = alloca i32
-	store i32 0, i32* %1
-	store i32 48, i32* %1
-	%2 = load i32, i32* %1
-	%3 = trunc i32 %2 to i8
-	store i8 %3, i8* %0
-	%4 = load i8, i8* %0
-	%5 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.0, i32 0, i32 0
-	%6 = call i32 (i8*, ...) @printf(i8* %5, i8 %4)
-	%7 = alloca i32
-	store i32 1, i32* %7
-	%8 = load i32, i32* %7
-	store i32 %8, i32* %1
-	%9 = load i32, i32* %1
-	%10 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i32 0, i32 0
-	%11 = call i32 (i8*, ...) @printf(i8* %10, i32 %9)
-	%12 = zext i1 1 to i32
-	store i32 %12, i32* %1
-	%13 = load i32, i32* %1
-	%14 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i32 0, i32 0
-	%15 = call i32 (i8*, ...) @printf(i8* %14, i32 %13)
-	%16 = load i8, i8* %0
-	%17 = zext i8 %16 to i32
-	store i32 %17, i32* %1
-	%18 = load i32, i32* %1
-	%19 = getelementptr inbounds [4 x i8], [4 x i8]* @.str.1, i32 0, i32 0
-	%20 = call i32 (i8*, ...) @printf(i8* %19, i32 %18)
+	%0 = alloca float*
+	%1 = mul i32 4, 4
+	%2 = zext i32 %1 to i64
+	%3 = call i32* @malloc(i64 %2)
+	%4 = load float*, float** %0
+	%5 = bitcast i32* %3 to float*
+	store float* %5, float** %0
+	%6 = load float*, float** %0
+	%7 = bitcast float* %6 to i8*
+	%8 = zext i32 10 to i64
+	%9 = call i8* @realloc(i8* %7, i64 %8)
+	%10 = bitcast i8* %9 to float*
+	store float* %10, float** %0
 	ret i32 0
 }
 

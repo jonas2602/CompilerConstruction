@@ -14,7 +14,7 @@ public class FuncDeclNode_getLength extends FuncDeclNode_Core {
         m_bCustomCallLogic = true;
         m_bInline = true;
 
-        AddParameter(new ParamDeclNode("arr", ArrayTypeNode_Dynamic.WildcardArrayNode));
+        AddParameter(new ParamDeclNode("arr", ArrayTypeNode_Dynamic.WildcardArrayNode()));
     }
 
     @Override

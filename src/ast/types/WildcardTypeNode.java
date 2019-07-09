@@ -14,6 +14,10 @@ public class WildcardTypeNode extends TypeNode {
         m_TypeRestriction = typeRestriction;
     }
 
+    public void SetFilledType(TypeNode type) {
+        m_FilledType = type;
+    }
+
     //reset filled type
     public void Clear() {
         m_FilledType = null;
@@ -38,6 +42,16 @@ public class WildcardTypeNode extends TypeNode {
         // fill wildcard with compare type
         m_FilledType = otherTypeNode;
         return true;
+    }
+
+    @Override
+    public TypeNode GetCompareType() {
+        return m_FilledType;
+    }
+
+    @Override
+    public TypeNode GetTypeDetails() {
+        return m_FilledType;
     }
 
     @Override

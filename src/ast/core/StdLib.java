@@ -7,7 +7,9 @@ import ast.core.functions.list.FuncDeclNode_getLength;
 import ast.core.functions.list.FuncDeclNode_setLength;
 import ast.core.functions.math.MathFunctions;
 import ast.core.functions.memory.FuncDeclNode_dispose;
+import ast.core.functions.memory.FuncDeclNode_getmem;
 import ast.core.functions.memory.FuncDeclNode_new;
+import ast.core.functions.memory.FuncDeclNode_reallocmem;
 import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;
@@ -23,6 +25,8 @@ public abstract class StdLib {
         // memory functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_new());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_dispose());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_getmem());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_reallocmem());
 
         // math functions
         new MathFunctions().buildStd(stdBlock);

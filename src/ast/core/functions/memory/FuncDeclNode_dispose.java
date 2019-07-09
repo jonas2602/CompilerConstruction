@@ -1,6 +1,7 @@
 package ast.core.functions.memory;
 
 import ast.core.FuncDeclNode_Core;
+import ast.declarations.FuncDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;
@@ -19,18 +20,18 @@ public class FuncDeclNode_dispose extends FuncDeclNode_Core {
     }
 
     @Override
-    public boolean ValidateCall(FuncCallNode callNode) {
+    public FuncDeclNode ValidateCall(FuncCallNode callNode) {
         if (callNode.GetParameterCount() != 1) {
-            return false;
+            return null;
         }
 
         TypeNode ParamType = callNode.GetParameter(0).GetType();
         if (!(ParamType.GetCompareType() instanceof PointerTypeNode)) {
-            return false;
+            return null;
         }
 
         // TODO: use voidptr to validate any type of pointer?
-        return true;
+        return this;
     }
 
     @Override

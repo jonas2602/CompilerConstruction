@@ -31,7 +31,7 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
 
     @Override
     public TypeNode CheckType() {
-        TypeNode childType = m_Child.CheckType();
+        TypeNode childType = m_Child.CheckType().GetCompareType();
         if (!(childType instanceof ArrayTypeNode || childType instanceof ArrayTypeNode_Dynamic)) {
             throw new TypeCheckException(this, "Indexed access is only possible on arrays");
         }

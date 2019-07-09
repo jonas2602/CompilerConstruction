@@ -5,8 +5,12 @@ import writer.natives.NativeFunction_malloc;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Pointer;
 
+import java.util.Set;
+
 public class ArrayTypeNode_Dynamic extends RecordTypeNode {
-    public static final ArrayTypeNode_Dynamic WildcardArrayNode = new ArrayTypeNode_Dynamic(new WildcardTypeNode());
+    public static final ArrayTypeNode_Dynamic WildcardArrayNode() {
+        return new ArrayTypeNode_Dynamic(new WildcardTypeNode());
+    }
 
     public static final String DynamicLengthName = "length";
     public static final int DynamicLengthIndex = 0;
@@ -55,9 +59,21 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
         m_EntryList.get(DynamicLengthIndex).InitVariable(slave, lengthProp);
 
         // allocate initial memory
-        ParamContainer startProp = slave.CreateArrayElementPtr(varParam, DynamicStartIndex);
-        ParamContainer startCharPtr = slave.CreateNativeCall(new NativeFunction_malloc(m_ElementType.GetWrappedType(), 0));
-        ParamContainer startParam = slave.BitCast(startCharPtr, new TypeWrapper_Pointer(m_ElementType.GetWrappedType()));
-        slave.StoreInVariable(startProp, startParam);
+        ParamContainer startPropPtr = slave.CreateArrayElementPtr(varParam, DynamicStartIndex);
+        if (m_ElementType.GetCompareType() instanceof ArrayTypeNode_Dynamic) {
+            // usually pointer would not get initialized -> need to load ptr element to initialize it
+            ParamContainer startProp = slave.LoadFromVariable(startPropPtr);
+            m_ElementType.InitVariable(slave, startProp);
+        } else {
+            ParamContainer startCharPtr = slave.CreateNativeCall(new NativeFunction_malloc(m_ElementType.GetWrappedType(), 0));
+            ParamContainer startParam = slave.BitCast(startCharPtr, new TypeWrapper_Pointer(m_ElementType.GetWrappedType()));
+            slave.StoreInVariable(startPropPtr, startParam);
+        }
+    }
+
+
+    @Override
+    public Set<WildcardTypeNode> GetWildcards() {
+        return m_ElementType.GetWildcards();
     }
 }

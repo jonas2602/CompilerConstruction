@@ -16,7 +16,6 @@ import java.util.Set;
 public abstract class PascalType_Operator extends FuncDeclNode_Core {
 
     protected FunctionCallTwoParams m_Operation;
-    private Set<WildcardTypeNode> m_Wildcards = new HashSet<>();
 
     public PascalType_Operator(String name, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
         super(name, returnType);
@@ -27,9 +26,6 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
         m_bCustomCallLogic = true;
         m_bInline = true;
 
-        m_Wildcards.addAll(lparam.GetWildcards());
-        m_Wildcards.addAll(rparam.GetWildcards());
-
         this.m_Operation = operation;
     }
 
@@ -37,13 +33,8 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
         this(operator.GetOperatorFunctionName(), returnType, lparam, rparam, operation);
     }
 
-    @Override
-    public boolean ValidateCall(FuncCallNode callNode) {
-        for (WildcardTypeNode card : m_Wildcards) {
-            card.Clear();
-        }
-
-        return super.ValidateCall(callNode);
+    public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode param, FunctionCallTwoParams operation) {
+        this(operator.GetOperatorFunctionName(), returnType, param, param, operation);
     }
 
     @Override

@@ -29,6 +29,14 @@ typedef struct
     float *start;
 } myarr;
 
+typedef struct
+{
+    int length;
+    int typesize;
+    myarr *start;
+} myarrarr;
+
+
 void arraytest()
 {
     char first = 'x';
@@ -184,6 +192,17 @@ float myfloatadd(float left, float right)
     return left + right;
 }
 
+// void overload(int i)
+// {
+// }
+
+// void overload(float i)
+// {
+// }
+// void overload(char i)
+// {
+// }
+
 // void setlength(myarr *arr, int size)
 // {
 //     void *newstart = malloc((*arr).typesize * size);
@@ -214,13 +233,17 @@ int main()
     // scanf(" %[^\n]",str);
     // printf("%s", str);
 
-    myarr arr;
+    // myarr arr;
+    // myarrarr arrarr;
+    // (*arrarr.start).start = malloc(sizeof(float) * 5);
     // arr.typesize = sizeof(float);
     // arr.start = malloc(sizeof(float) * 0);
-    arr.length = 5;
-    // ((float *)arr.start)[0] = 1.5;
+    // arr.length = 5;
+    // arr.start[0] = 1.5;
     // ((float *)arr.start)[1] = 0.12;
     // arr.start = realloc(arr.start, 5);
+    float* test = malloc(sizeof(float) * 4);
+    // test = realloc(test, 5);
     // ((float *)arr.start)[4] = 0.42;
 
     // float left = ((float *)arr.start)[0];
@@ -228,6 +251,6 @@ int main()
     // myfloatadd(left, right);
     // float *elemptr = (float *)getelement(&arr, 1);
     // printf("%p %p, %p %i\n", elemptr, &((float *)arr.start)[1], &((float *)arr.start)[0], arr.typesize);
-    // printf("%p", arr.start + (int*)(arr.typesize * 1));
+    // printf("%f", arr.start[2]);
     // printf("%f %f %f", ((float *)arr.start)[0], ((float *)arr.start)[1], ((float *)arr.start)[4]);
 }

@@ -66,18 +66,18 @@ public class FuncCallNode extends AbstractSyntaxTree {
 
         // Given parameters fit any function signature?
         for (FuncDeclNode funcDecl : funcOverloads) {
-            if (funcDecl.ValidateCall(this)) {
-                m_FuncDecl = funcDecl;
+            m_FuncDecl = funcDecl.ValidateCall(this);
+            if (m_FuncDecl != null) {
                 break;
             }
         }
         if (m_FuncDecl == null) {
             StringBuilder builder = new StringBuilder();
-            for(AbstractSyntaxTree param: m_Params) {
-                builder.append(" "+param.GetType().GetWrappedType().CreateTypeName());
+            for (AbstractSyntaxTree param : m_Params) {
+                builder.append(" " + param.GetType().GetWrappedType().CreateTypeName());
             }
 
-            throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not overloaded for given types "+builder.toString());
+            throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not overloaded for given types " + builder.toString());
         }
 
         return m_FuncDecl.GetType();
@@ -96,7 +96,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // build function if not already created or inline
         if (!m_FuncDecl.IsInline()) {
-            m_FuncDecl.CreateSnippet(slave, null);
+            m_FuncDecl.CreateSnippet(slave);
         }
 
         // Execute specialized function call

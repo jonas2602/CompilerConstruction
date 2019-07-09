@@ -16,8 +16,12 @@ public class PointerTypeNode extends TypeNode {
     public static final PointerTypeNode ConstCharPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstCharNode);
     public static final PointerTypeNode ConstBoolPointerNode = new PointerTypeNode(PrimitiveTypeNode.ConstBoolNode);
 
-    public static final PointerTypeNode WildCardPointerNode = new PointerTypeNode(new WildcardTypeNode());
     public static final PointerTypeNode VoidPointerNode = new PointerTypeNode(VoidTypeNode.VoidNode);
+
+    public static final PointerTypeNode WildCardPointerNode() {
+        return new PointerTypeNode(new WildcardTypeNode());
+    }
+
 
     protected TypeNode m_BaseType;
 

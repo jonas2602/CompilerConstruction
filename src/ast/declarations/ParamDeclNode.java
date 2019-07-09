@@ -13,6 +13,14 @@ public class ParamDeclNode extends VarDeclNode {
         super(name, type);
     }
 
+    public ParamDeclNode(String name, TypeNode type, boolean bReference) {
+        super(name, type);
+
+        if (bReference) {
+            SetByReference();
+        }
+    }
+
     public void SetByReference() {
         // Already by reference?
         if (IsByReference()) return;

@@ -3,13 +3,20 @@ package ast.core;
 import ast.BlockNode;
 import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
+import ast.declarations.ParamDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
+import ast.types.WildcardTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class FuncDeclNode_Core extends FuncDeclNode {
     protected boolean m_bCustomCallLogic = false;
+
+    protected Set<WildcardTypeNode> m_Wildcards = new HashSet<>();
 
     public FuncDeclNode_Core(String InName, TypeNode InReturnType) {
         super(InName, InReturnType, new BlockNode());
@@ -17,6 +24,22 @@ public abstract class FuncDeclNode_Core extends FuncDeclNode {
 
     public FuncDeclNode_Core(Operator InOperator, TypeNode InReturnType) {
         this(InOperator.GetOperatorFunctionName(), InReturnType);
+    }
+
+    @Override
+    public void AddParameter(ParamDeclNode InParam) {
+        super.AddParameter(InParam);
+
+        m_Wildcards.addAll(InParam.GetType().GetWildcards());
+    }
+
+    @Override
+    public FuncDeclNode ValidateCall(FuncCallNode callNode) {
+        for (WildcardTypeNode card : m_Wildcards) {
+            card.Clear();
+        }
+
+        return super.ValidateCall(callNode);
     }
 
     public boolean HasCustomCallLogic() {

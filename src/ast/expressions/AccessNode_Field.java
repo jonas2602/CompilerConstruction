@@ -22,10 +22,10 @@ public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterf
 
     @Override
     public TypeNode CheckType() {
-        TypeNode childType = m_Child.CheckType().GetTypeDetails();
+        TypeNode childType = m_Child.CheckType();
 
         // child is Record?
-        if (!(childType instanceof RecordTypeNode)) {
+        if (!(childType.GetCompareType() instanceof RecordTypeNode)) {
             throw new TypeCheckException(this, "Field Access is only possible on records");
         }
 
@@ -41,7 +41,7 @@ public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterf
 
     @Override
     public TypeNode GetType() {
-        RecordTypeNode recordType = (RecordTypeNode) m_Child.CheckType().GetTypeDetails();
+        RecordTypeNode recordType = (RecordTypeNode) m_Child.CheckType();
         return recordType.GetEntryType(m_FieldIndex);
     }
 
