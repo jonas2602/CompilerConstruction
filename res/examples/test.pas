@@ -1,21 +1,22 @@
 program test;
 
+type
+    t = (jan, feb, mar);
+
 var
-    r,s: real;
-    i,j: integer;
+    i: integer;
+    c: char;
 begin
-   i := -1;
-   i := abs(i);
+    i := 48;
+    c := chr(i);
+    writeln(c);
 
-   r := -3.0;
-   r := abs(r);
+    i := ord(feb);
+    writeln(i);
 
-   writeln(i);
-   writeln(r);
+    i := ord(TRUE);
+    writeln(i);
 
-   i := round(r);
-   j := trunc(r);
-
-   writeln(i);
-   writeln(j);
+    i := ord(c);
+    writeln(i);
 end.

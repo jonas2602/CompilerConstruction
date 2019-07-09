@@ -47,19 +47,19 @@ public class IntOperators implements StdBuilder {
         std.AddFunctionDeclaration(new GEFloat());
     }
 
-    public static class NegateInt extends PascalType_Prefix {
+    public static class NegateInt extends PascalType_SingleOperator {
         public NegateInt() {
             super(Operator.NEG, PrimitiveTypeNode.IntNode, GeneratorSlave::NegateInt);
         }
     }
 
-    public static class IncInt extends PascalType_Prefix {
+    public static class IncInt extends PascalType_SingleOperator {
         public IncInt() {
             super(Operator.INC, PrimitiveTypeNode.IntNode, GeneratorSlave::IncInt);
         }
     }
 
-    public static class DecInt extends PascalType_Prefix {
+    public static class DecInt extends PascalType_SingleOperator {
         public DecInt() {
             super(Operator.DEC, PrimitiveTypeNode.IntNode, GeneratorSlave::DecInt);
         }

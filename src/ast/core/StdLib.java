@@ -1,6 +1,8 @@
 package ast.core;
 
 import ast.BlockNode;
+import ast.core.functions.*;
+import ast.core.functions.casts.CastFunctions;
 import ast.core.functions.io.*;
 import ast.core.functions.list.FuncDeclNode_getLength;
 import ast.core.functions.list.FuncDeclNode_setLength;
@@ -25,6 +27,9 @@ public abstract class StdLib {
 
         // math functions
         new MathFunctions().buildStd(stdBlock);
+
+        //cast functions
+        new CastFunctions().buildStd(stdBlock);
 
         // operators
         new BoolOperators().buildStd(stdBlock);

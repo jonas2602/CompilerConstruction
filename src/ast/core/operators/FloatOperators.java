@@ -43,19 +43,19 @@ public class FloatOperators implements StdBuilder {
         std.AddFunctionDeclaration(new GEInt());
     }
 
-    public static class NegateFloat extends PascalType_Prefix {
+    public static class NegateFloat extends PascalType_SingleOperator {
         public NegateFloat() {
             super(Operator.NEG, PrimitiveTypeNode.FloatNode, GeneratorSlave::NegateFloat);
         }
     }
 
-    public static class IncFloat extends PascalType_Prefix {
+    public static class IncFloat extends PascalType_SingleOperator {
         public IncFloat() {
             super(Operator.INC, PrimitiveTypeNode.FloatNode, GeneratorSlave::IncFloat);
         }
     }
 
-    public static class DecFloat extends PascalType_Prefix {
+    public static class DecFloat extends PascalType_SingleOperator {
         public DecFloat() {
             super(Operator.DEC, PrimitiveTypeNode.FloatNode, GeneratorSlave::DecFloat);
         }
