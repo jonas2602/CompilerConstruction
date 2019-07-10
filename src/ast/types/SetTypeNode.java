@@ -27,7 +27,7 @@ public class SetTypeNode extends TypeNode {
         }
         else {
            if(m_Content.size() == 0) {
-               m_ElementType = PrimitiveTypeNode.WildCardPrimitiveNode;
+               m_ElementType = PrimitiveTypeNode.WildcardPrimitiveNode();
            }
            else {
                m_ElementType = m_Content.get(0).CheckType();
