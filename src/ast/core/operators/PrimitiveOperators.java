@@ -17,7 +17,7 @@ public class PrimitiveOperators implements StdBuilder {
 
     public static class AGNPrimitive extends PascalType_Operator {
         public AGNPrimitive() {
-            super(Operator.AGN, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.WildCardPrimitiveNode, PrimitiveTypeNode.WildCardPrimitiveNode, null);
+            super(Operator.AGN, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.WildcardPrimitiveNode(), null);
         }
 
         @Override

@@ -14,7 +14,7 @@ public class VarTypeNode extends PointerTypeNode {
 
     @Override
     public TypeNode GetType() {
-        return m_BaseType;
+        return m_BaseType.GetType();
     }
 
     @Override

@@ -14,13 +14,30 @@ import visitors.TypeVisitor;
 import writer.CodeGenerator;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class App {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("START");
 
+        List<String> sourceFiles = List.of("arrays", "branch", "constant", "dynamics", "enum", "goto", "innerfunctions", "innerfunctions2", "io", "loops", "memory", "pointer", "string", "switch", "types");
+
+        for (String fileName : sourceFiles) {
+            try {
+                Compile(String.format("res/examples/tests/%s.pas", fileName), "gen");
+            } catch (Exception ex) {
+                System.out.println("Compiling failed at " + fileName);
+                ex.printStackTrace();
+            }
+        }
+
+        // Compile("res/examples/test.pas", "gen");
+    }
+
+    public static void Compile(String sourcePath, String targetFileName) throws IOException {
         // create block with predefined functions of pascal
         BlockNode stdBlock = StdLib.CreateStdLib();
 
@@ -28,7 +45,7 @@ public class App {
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
         // Tokenize input file
-        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName("res/examples/tests/dynamics.pas"));
+        PascalLexer lexer = new PascalLexer(CharStreams.fromFileName(sourcePath));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         // Build parse tree
@@ -61,9 +78,6 @@ public class App {
             System.exit(0);
         }
 
-        CodeGenerator.CreateIntermediate(prog, "gen");
-        return;
-        //Visitor for old grammar won't work anymore
-        //new Interpreter().ProcessExpression("3 + 4.5");
+        CodeGenerator.CreateIntermediate(prog, targetFileName);
     }
 }

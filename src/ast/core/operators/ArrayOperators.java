@@ -22,7 +22,7 @@ public class ArrayOperators implements StdBuilder {
 
     public static class AGNArray extends PascalType_Assignment {
         public AGNArray() {
-            super(Operator.AGN, new VoidTypeNode(), ArrayTypeNode.WildCardArrayNode, ArrayTypeNode.WildCardArrayNode, (slave, lParam, rParam) -> {
+            super(Operator.AGN, new VoidTypeNode(), ArrayTypeNode.WildcardArrayNode(), (slave, lParam, rParam) -> {
                 slave.CopyMemory(rParam, lParam);
                 return null;
             });

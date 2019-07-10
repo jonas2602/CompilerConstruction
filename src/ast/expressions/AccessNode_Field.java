@@ -30,7 +30,7 @@ public class AccessNode_Field extends AbstractSyntaxTree implements AccessInterf
         }
 
         // has property with fieldname?
-        RecordTypeNode recordType = (RecordTypeNode) childType;
+        RecordTypeNode recordType = (RecordTypeNode) childType.GetCompareType();
         m_FieldIndex = recordType.GetFieldIndex(m_FieldName);
         if (m_FieldIndex < 0) {
             throw new TypeCheckException(this, "Record has no property called " + m_FieldName);

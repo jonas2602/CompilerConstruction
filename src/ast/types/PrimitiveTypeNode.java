@@ -22,7 +22,9 @@ public class PrimitiveTypeNode extends TypeNode {
     public static final PrimitiveTypeNode ConstCharNode = new PrimitiveTypeNode(PascalType_Primitive.CHAR, true);
     public static final PrimitiveTypeNode ConstBoolNode = new PrimitiveTypeNode(PascalType_Primitive.BOOL, true);
 
-    public static final WildcardTypeNode WildCardPrimitiveNode = new WildcardTypeNode(PrimitiveTypeNode.class);
+    public static final WildcardTypeNode WildcardPrimitiveNode() {
+        return new WildcardTypeNode(PrimitiveTypeNode.class);
+    }
 
     private PascalType_Primitive m_PrimitiveType;
 

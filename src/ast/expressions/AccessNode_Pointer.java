@@ -28,7 +28,8 @@ public class AccessNode_Pointer extends AbstractSyntaxTree implements AccessInte
 
     @Override
     public TypeNode GetType() {
-        return m_Child.GetType().GetTypeDetails();
+        PointerTypeNode pointerNode = (PointerTypeNode) m_Child.GetType();
+        return pointerNode.GetTypeDetails();
     }
 
     @Override

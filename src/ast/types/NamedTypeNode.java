@@ -36,20 +36,12 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        // if (m_TypeDetails != null) {
         return m_TypeDetails.GetTypeDetails();
-        // } else {
-        //     return this;
-        // }
     }
 
     @Override
     public TypeNode GetType() {
-        // if (m_TypeDetails != null) {
-        return m_TypeDetails;
-        // }
-
-        // return this;
+        return m_TypeDetails.GetType();
     }
 
     @Override

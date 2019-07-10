@@ -11,6 +11,10 @@ public abstract class PascalType_Assignment extends PascalType_Operator {
         super(operator, returnType, lparam, rparam, operation);
     }
 
+    public PascalType_Assignment(Operator operator, TypeNode returnType, TypeNode param, FunctionCallTwoParams operation) {
+        super(operator, returnType, param, param, operation);
+    }
+
     @Override
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);

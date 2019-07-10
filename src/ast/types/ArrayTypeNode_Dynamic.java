@@ -41,7 +41,7 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_ElementType.GetTypeDetails();
+        return m_ElementType.GetType();
     }
 
     @Override

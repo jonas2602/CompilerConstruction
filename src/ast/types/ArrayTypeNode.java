@@ -12,7 +12,9 @@ public class ArrayTypeNode extends TypeNode {
     public static final ArrayTypeNode CharArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.CharNode);
     public static final ArrayTypeNode BoolArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.BoolNode);
 
-    public static final ArrayTypeNode WildCardArrayNode = new ArrayTypeNode(-1, new WildcardTypeNode());
+    public static final ArrayTypeNode WildcardArrayNode() {
+        return new ArrayTypeNode(-1, new WildcardTypeNode());
+    }
 
     private AbstractSyntaxTree m_ElementCounter;
     private TypeNode m_ElementType;
@@ -53,7 +55,7 @@ public class ArrayTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_ElementType;
+        return m_ElementType.GetType();
     }
 
     @Override

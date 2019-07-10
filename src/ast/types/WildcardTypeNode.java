@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
+import writer.wrappers.TypeWrapper;
 
 import java.util.Set;
 
@@ -48,12 +49,29 @@ public class WildcardTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetCompareType() {
-        return m_FilledType;
+        if (m_FilledType != null) {
+            return m_FilledType.GetType();
+        }
+
+        return null;
     }
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_FilledType;
+        if (m_FilledType != null) {
+            return m_FilledType.GetType();
+        }
+
+        return null;
+    }
+
+    @Override
+    public TypeWrapper GetWrappedType() {
+        if (m_FilledType != null) {
+            return m_FilledType.GetWrappedType();
+        }
+
+        return null;
     }
 
     @Override

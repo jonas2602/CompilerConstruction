@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RecordTypeNode extends TypeNode {
-    public static final WildcardTypeNode WildCardRecordNode = new WildcardTypeNode(RecordTypeNode.class);
+    public static final WildcardTypeNode WildcardRecordNode() {
+        return new WildcardTypeNode(RecordTypeNode.class);
+    }
 
     protected String m_RecordName = "";
     protected List<TypeNode> m_EntryList;
@@ -59,7 +61,7 @@ public class RecordTypeNode extends TypeNode {
     }
 
     public TypeNode GetEntryType(int entryIndex) {
-        return m_EntryList.get(entryIndex);
+        return m_EntryList.get(entryIndex).GetType();
     }
 
     @Override

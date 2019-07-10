@@ -45,7 +45,7 @@ public class PointerTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_BaseType;
+        return m_BaseType.GetType();
     }
 
     @Override

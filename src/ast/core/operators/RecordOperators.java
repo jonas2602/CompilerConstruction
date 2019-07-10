@@ -22,7 +22,7 @@ public class RecordOperators implements StdBuilder {
 
     public static class AGNStruct extends PascalType_Assignment {
         public AGNStruct() {
-            super(Operator.AGN, new VoidTypeNode(), RecordTypeNode.WildCardRecordNode, RecordTypeNode.WildCardRecordNode, (slave, lParam, rParam) -> {
+            super(Operator.AGN, new VoidTypeNode(), RecordTypeNode.WildcardRecordNode(), (slave, lParam, rParam) -> {
                 slave.CopyMemory(rParam, lParam);
                 return null;
             });
