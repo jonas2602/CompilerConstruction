@@ -20,22 +20,31 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
 
     public FuncDeclNode_Generic(String InName, TypeNode InReturnType) {
         super(InName, InReturnType);
-
-        CompStmtNode compNode = new CompStmtNode();
-        m_Block.SetCompoundStatement(compNode);
-        GenerateBody(compNode);
     }
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
         FuncDeclNode_Generic copy = (FuncDeclNode_Generic) super.clone();
+        copy.SetParent(this);
 
+        // Build unique name
+        String genericName = m_Name;
+        for (WildcardTypeNode wildcard : m_Wildcards) {
+            genericName += wildcard.GetTypeDetails().GetShortName();
+        }
+        copy.SetName(genericName);
+
+        // Create Function Block
         copy.m_Block = new BlockNode();
-        copy.m_Block.SetCompoundStatement(m_Block.GetCompoundStatement());
+        copy.m_Block.SetParent(copy);
+        CompStmtNode compNode = new CompStmtNode();
+        copy.GenerateBody(compNode);
+        copy.m_Block.SetCompoundStatement(compNode);
 
+        // Copy parameter list
         copy.m_Params = new ArrayList<>();
         for (ParamDeclNode param : m_Params) {
-            copy.AddParameter(param.GetName(), param.GetType());
+            copy.AddParameter((ParamDeclNode) param.Copy());
         }
 
         // TODO: support variables that are no parameters?

@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
@@ -24,6 +25,12 @@ public class RecordTypeNode extends TypeNode {
     public RecordTypeNode() {
         m_EntryList = new ArrayList<>();
         m_EntryNameMap = new HashMap<>();
+    }
+
+    public RecordTypeNode(Map<String, TypeNode> entries) {
+        for (Map.Entry<String, TypeNode> element : entries.entrySet()) {
+            AddEntry(element.getKey(), element.getValue());
+        }
     }
 
     public void AddEntry(String entryName, TypeNode entryType) {
@@ -124,6 +131,16 @@ public class RecordTypeNode extends TypeNode {
             ParamContainer prop = slave.CreateArrayElementPtr(varParam, i);
             m_EntryList.get(i).InitVariable(slave, prop);
         }
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        Map<String, TypeNode> entryCopy = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : m_EntryNameMap.entrySet()) {
+            entryCopy.put(entry.getKey(), (TypeNode) m_EntryList.get(entry.getValue()).Copy());
+        }
+
+        return new RecordTypeNode(entryCopy);
     }
 }
 

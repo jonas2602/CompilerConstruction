@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
 import ast.core.*;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_Plain;
@@ -40,8 +41,9 @@ public class PrimitiveTypeNode extends TypeNode {
         return m_PrimitiveType.GetPlaceholder();
     }
 
-    public String GetTypeShortName() {
-        return m_PrimitiveType.GetTypeName();
+    @Override
+    public String GetShortName() {
+        return m_PrimitiveType.GetShortName();
     }
 
     public int GetTypeSize() {
@@ -99,5 +101,10 @@ public class PrimitiveTypeNode extends TypeNode {
     @Override
     public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
         slave.StoreInVariable(varParam, GetDefaultValue());
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new PrimitiveTypeNode(m_PrimitiveType, m_bConstant);
     }
 }

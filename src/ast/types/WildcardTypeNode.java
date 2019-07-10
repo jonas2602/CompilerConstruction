@@ -1,5 +1,7 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
+
 import java.util.Set;
 
 public class WildcardTypeNode extends TypeNode {
@@ -66,5 +68,15 @@ public class WildcardTypeNode extends TypeNode {
         }
 
         return "empty";
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return m_FilledType.Copy();
+
+        // WildcardTypeNode outCopy = new WildcardTypeNode();
+        // outCopy.SetFilledType((TypeNode) m_FilledType.Copy());
+
+        // return outCopy;
     }
 }

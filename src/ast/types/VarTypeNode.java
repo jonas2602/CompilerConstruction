@@ -1,5 +1,7 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
+
 public class VarTypeNode extends PointerTypeNode {
     public static final VarTypeNode IntVarNode = new VarTypeNode(PrimitiveTypeNode.IntNode);
     public static final VarTypeNode FloatVarNode = new VarTypeNode(PrimitiveTypeNode.FloatNode);
@@ -26,5 +28,10 @@ public class VarTypeNode extends PointerTypeNode {
         }
 
         return true;
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new VarTypeNode((TypeNode) m_BaseType.Copy());
     }
 }

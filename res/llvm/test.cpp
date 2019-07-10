@@ -1,15 +1,20 @@
 
-
-template <typename T>
-T addValues(T left, T right)
+typedef struct
 {
-    return left + right;
+    int i;
+    char *c;
+} help;
+
+template <typename T, typename U>
+T addValues(T left, U right, int x, int y, int z)
+{
+    return left;
 }
 
 int main()
 {
-    addValues<float>(1, 1);
-    addValues(1.2, 1.5);
+    addValues("test123", help(), 1, 1, 1);
+    addValues(1.0, 2.0, 1, 1, 1);
 }
 
 // template <typename T>

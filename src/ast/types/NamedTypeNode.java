@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.TypeDeclNode;
 import writer.GeneratorSlave;
@@ -74,5 +75,10 @@ public class NamedTypeNode extends TypeNode {
     @Override
     public Set<WildcardTypeNode> GetWildcards() {
         return m_TypeDetails.GetWildcards();
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new NamedTypeNode(m_TypeName);
     }
 }

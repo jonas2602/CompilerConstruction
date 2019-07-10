@@ -48,11 +48,19 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     }
 
     public void AddParameter(String name, TypeNode type) {
-        AddParameter(new ParamDeclNode(name, type));
+        AddParameter(name, type, false);
+    }
+
+    public void AddParameter(String name, TypeNode type, boolean bReference) {
+        AddParameter(new ParamDeclNode(name, type, bReference));
     }
 
     public String GetName() {
         return m_Name;
+    }
+
+    public void SetName(String name) {
+        m_Name = name;
     }
 
     public List<ParamDeclNode> GetParameters() {

@@ -5,6 +5,7 @@ import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
+import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +38,10 @@ public abstract class TypeNode extends AbstractSyntaxTree {
 
     public void SetTypeName(String name) {
 
+    }
+
+    public String GetShortName() {
+        return "";
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ast.core.functions.memory;
 
 import ast.core.FuncDeclNode_Core;
+import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
@@ -28,6 +29,7 @@ public class FuncDeclNode_reallocmem extends FuncDeclNode_Core {
         // convert params to fit native function call
         memPtrParam = slave.LoadFromVariable(memPtrParam);
         ParamContainer memCharPtr = slave.BitCast(memPtrParam, TypeWrapper_Pointer.CHARPTR);
+        lengthParam = AccessInterface.TryLoadValue(slave, callNode.GetParameter(1), lengthParam);
         lengthParam = slave.ExtendToLong(lengthParam);
 
         // native call to reallocate memory

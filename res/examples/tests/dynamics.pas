@@ -11,12 +11,15 @@ end.}
 
 var
     myarr: array of real;
+    myarr2: array of integer;
 
 begin
     setlength(myarr, 5);
-    setlength(myarr, 5);
-    {setlength(myarr[0], 5);
-    writeln(myarr[0][0]);}
+    setlength(myarr2, 5);
+    writeln(length(myarr));
+    myarr[0] := 2.5;
+    myarr2[0] := 1;
+    writeln(myarr[0], ' ', myarr2[0]);
 end.
 
 

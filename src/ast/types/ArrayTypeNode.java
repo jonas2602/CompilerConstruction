@@ -90,4 +90,9 @@ public class ArrayTypeNode extends TypeNode {
 
         return new TypeWrapper_Array(m_ElementType.GetWrappedType(), GetSize());
     }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new ArrayTypeNode(m_ElementCounter.Copy(), (TypeNode) m_ElementType.Copy());
+    }
 }

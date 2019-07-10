@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
 import writer.wrappers.TypeWrapper;
 import writer.wrappers.TypeWrapper_Pointer;
 
@@ -80,5 +81,10 @@ public class PointerTypeNode extends TypeNode {
     @Override
     public Set<WildcardTypeNode> GetWildcards() {
         return m_BaseType.GetWildcards();
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new PointerTypeNode(m_BaseType, m_bConstant);
     }
 }

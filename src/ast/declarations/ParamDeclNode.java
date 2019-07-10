@@ -1,5 +1,6 @@
 package ast.declarations;
 
+import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
 import ast.types.VarTypeNode;
 import writer.snippets.CodeSnippet_Base;
@@ -70,5 +71,10 @@ public class ParamDeclNode extends VarDeclNode {
         }
 
         return m_ScopeContainer;
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new ParamDeclNode(m_Name, (TypeNode) m_TypeNode.Copy());
     }
 }

@@ -16,6 +16,13 @@ public class CompStmtNode extends AbstractSyntaxTree {
         m_Statements = new ArrayList<>();
     }
 
+    public CompStmtNode(AbstractSyntaxTree... elements) {
+        m_Statements = new ArrayList<>();
+        for (AbstractSyntaxTree e : elements) {
+            AddStatement(e);
+        }
+    }
+
     public void AddStatement(AbstractSyntaxTree stmt) {
         m_Statements.add(stmt);
         stmt.SetParent(this);
@@ -32,7 +39,7 @@ public class CompStmtNode extends AbstractSyntaxTree {
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        for(AbstractSyntaxTree node : m_Statements){
+        for (AbstractSyntaxTree node : m_Statements) {
             // node.CreateSnippet(slave, ctx);
             node.CreateSnippet(slave);
             // slave.GetScopeSnippet().AddStatement(stmt);
@@ -43,7 +50,7 @@ public class CompStmtNode extends AbstractSyntaxTree {
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        for(AbstractSyntaxTree node : m_Statements){
+        for (AbstractSyntaxTree node : m_Statements) {
             // node.CreateSnippet(slave, ctx);
             node.CreateSnippet(slave);
             // slave.GetScopeSnippet().AddStatement(stmt);

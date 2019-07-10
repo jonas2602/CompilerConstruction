@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AbstractSyntaxTree;
 import writer.GeneratorSlave;
 import writer.natives.NativeFunction_malloc;
 import writer.wrappers.ParamContainer;
@@ -40,7 +41,7 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
 
     @Override
     public TypeNode GetTypeDetails() {
-        return m_ElementType;
+        return m_ElementType.GetTypeDetails();
     }
 
     @Override
@@ -61,28 +62,33 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
         return true;
     }
 
-    @Override
-    public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
-        // Init length
-        ParamContainer lengthProp = slave.CreateArrayElementPtr(varParam, DynamicLengthIndex);
-        m_EntryList.get(DynamicLengthIndex).InitVariable(slave, lengthProp);
-
-        // allocate initial memory
-        ParamContainer startPropPtr = slave.CreateArrayElementPtr(varParam, DynamicStartIndex);
-        if (m_ElementType.GetCompareType() instanceof ArrayTypeNode_Dynamic) {
-            // usually pointer would not get initialized -> need to load ptr element to initialize it
-            ParamContainer startProp = slave.LoadFromVariable(startPropPtr);
-            m_ElementType.InitVariable(slave, startProp);
-        } else {
-            ParamContainer startCharPtr = slave.CreateNativeCall(new NativeFunction_malloc(m_ElementType.GetWrappedType(), 0));
-            ParamContainer startParam = slave.BitCast(startCharPtr, new TypeWrapper_Pointer(m_ElementType.GetWrappedType()));
-            slave.StoreInVariable(startPropPtr, startParam);
-        }
-    }
+    // @Override
+    // public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
+    //     // Init length
+    //     ParamContainer lengthProp = slave.CreateArrayElementPtr(varParam, DynamicLengthIndex);
+    //     m_EntryList.get(DynamicLengthIndex).InitVariable(slave, lengthProp);
+    //
+    //     // allocate initial memory
+    //     ParamContainer startPropPtr = slave.CreateArrayElementPtr(varParam, DynamicStartIndex);
+    //     if (m_ElementType.GetCompareType() instanceof ArrayTypeNode_Dynamic) {
+    //         // usually pointer would not get initialized -> need to load ptr element to initialize it
+    //         ParamContainer startProp = slave.LoadFromVariable(startPropPtr);
+    //         m_ElementType.InitVariable(slave, startProp);
+    //     } else {
+    //         ParamContainer startCharPtr = slave.CreateNativeCall(new NativeFunction_malloc(m_ElementType.GetWrappedType(), 0));
+    //         ParamContainer startParam = slave.BitCast(startCharPtr, new TypeWrapper_Pointer(m_ElementType.GetWrappedType()));
+    //         slave.StoreInVariable(startPropPtr, startParam);
+    //     }
+    // }
 
 
     @Override
     public Set<WildcardTypeNode> GetWildcards() {
         return m_ElementType.GetWildcards();
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new ArrayTypeNode_Dynamic((TypeNode) m_ElementType.Copy());
     }
 }

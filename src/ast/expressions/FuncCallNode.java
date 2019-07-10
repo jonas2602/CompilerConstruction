@@ -71,6 +71,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
                 break;
             }
         }
+
         if (m_FuncDecl == null) {
             StringBuilder builder = new StringBuilder();
             for (AbstractSyntaxTree param : m_Params) {
@@ -127,7 +128,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
 
         // Create Function Call Snippet + Parameter
         TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
-        ParamContainer OutParam = slave.CreateFunctionCall(m_FuncName, returnType, true);
+        ParamContainer OutParam = slave.CreateFunctionCall(m_FuncDecl.GetName(), returnType, true);
         for (ParamContainer param : funcParams) {
             slave.CreateFunctionCallParameter(param);
         }
