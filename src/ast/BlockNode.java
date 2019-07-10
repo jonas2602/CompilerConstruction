@@ -109,6 +109,10 @@ public class BlockNode extends AbstractSyntaxTree {
         overloads.add(function);
     }
 
+    public AbstractSyntaxTree GetCompoundStatement() {
+        return m_CompoundStatement;
+    }
+
     public void SetCompoundStatement(AbstractSyntaxTree compoundStatement) {
         m_CompoundStatement = compoundStatement;
         // TODO: Validate if the compund Statement should be child of the function/procedure/program or of the block
@@ -152,13 +156,13 @@ public class BlockNode extends AbstractSyntaxTree {
             outDecl = GetOwningBlock().GetVariableDeclaration(variableName, requestScope);
 
             // TODO: scope stuff rework required!!!
-            if(outDecl == null){
+            if (outDecl == null) {
                 return null;
             }
 
             //check if this is the sourceblock for this request
-            if(requestScope == this) {
-                if(!outDecl.IsGlobalVariable()) {
+            if (requestScope == this) {
+                if (!outDecl.IsGlobalVariable()) {
                     //1: add variable to own scope
                     ParamDeclNode param = new ParamDeclNode(variableName, outDecl.GetType());
                     param.SetByReference();
@@ -171,8 +175,8 @@ public class BlockNode extends AbstractSyntaxTree {
         }
 
         //request is from a different scope
-        if(requestScope != this) {
-            if(m_MainBlock) {
+        if (requestScope != this) {
+            if (m_MainBlock) {
                 outDecl.SetGlobalVariable(true);
             }
         }
@@ -226,7 +230,7 @@ public class BlockNode extends AbstractSyntaxTree {
             for (int i = 0; i < funcOverloads.size(); i++) {
                 for (int j = i + 1; j < funcOverloads.size(); j++) {
                     if (funcOverloads.get(i).CompareSignature(funcOverloads.get(j))) {
-                        throw new TypeCheckException(this, "Functions with the same signature found "+(funcOverloads.get(i).GetName()));
+                        throw new TypeCheckException(this, "Functions with the same signature found " + (funcOverloads.get(i).GetName()));
                     }
                 }
             }
@@ -243,7 +247,7 @@ public class BlockNode extends AbstractSyntaxTree {
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
-        for(TypeDeclNode type : m_TypeDeclMap.values()){
+        for (TypeDeclNode type : m_TypeDeclMap.values()) {
             type.CreateSnippet(slave);
         }
 

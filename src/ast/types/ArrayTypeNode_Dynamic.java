@@ -30,6 +30,15 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
     }
 
     @Override
+    public String GetTypeName() {
+        if (m_RecordName.isEmpty()) {
+            return CreateDynamicArrayName(m_ElementType);
+        }
+
+        return m_RecordName;
+    }
+
+    @Override
     public TypeNode GetTypeDetails() {
         return m_ElementType;
     }

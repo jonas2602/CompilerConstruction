@@ -14,7 +14,7 @@ import java.util.Map;
 public class RecordTypeNode extends TypeNode {
     public static final WildcardTypeNode WildCardRecordNode = new WildcardTypeNode(RecordTypeNode.class);
 
-    protected String m_RecordName;
+    protected String m_RecordName = "";
     protected List<TypeNode> m_EntryList;
     protected Map<String, Integer> m_EntryNameMap;
 
@@ -31,6 +31,11 @@ public class RecordTypeNode extends TypeNode {
         m_EntryList.add(entryType);
 
         entryType.SetParent(this);
+    }
+
+    @Override
+    public String GetTypeName() {
+        return m_RecordName;
     }
 
     @Override
@@ -86,7 +91,7 @@ public class RecordTypeNode extends TypeNode {
     public TypeWrapper GetWrappedType() {
         if (m_WrapperCache == null) {
             System.out.println("Record type requested before construction finished");
-            m_WrapperCache = new TypeWrapper_Struct(m_RecordName);
+            m_WrapperCache = new TypeWrapper_Struct(GetTypeName());
 
             for (TypeNode entry : m_EntryList) {
                 m_WrapperCache.AddEntry(entry.GetWrappedType());
@@ -100,7 +105,7 @@ public class RecordTypeNode extends TypeNode {
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // gets called by the owning type definition node at least once
         // => get struct name from parent
-        m_WrapperCache = new TypeWrapper_Struct(m_RecordName);
+        m_WrapperCache = new TypeWrapper_Struct(GetTypeName());
 
         List<TypeWrapper> entryTypes = new ArrayList<>();
         for (TypeNode entryType : m_EntryList) {
@@ -109,7 +114,7 @@ public class RecordTypeNode extends TypeNode {
             m_WrapperCache.AddEntry(wrapper);
         }
 
-        slave.CreateStruct(m_RecordName, entryTypes);
+        slave.CreateStruct(GetTypeName(), entryTypes);
         return null;
     }
 

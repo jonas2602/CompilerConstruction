@@ -58,4 +58,13 @@ public class WildcardTypeNode extends TypeNode {
     public Set<WildcardTypeNode> GetWildcards() {
         return Set.of(this);
     }
+
+    @Override
+    public String toString() {
+        if (m_FilledType != null) {
+            return m_FilledType.toString();
+        }
+
+        return "empty";
+    }
 }

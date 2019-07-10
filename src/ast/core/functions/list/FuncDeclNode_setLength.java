@@ -22,8 +22,8 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
         // m_bCustomCallLogic = true;
         // m_bInline = true;
 
-        AddParameter(new ParamDeclNode("arr", ArrayTypeNode_Dynamic.WildcardArrayNode()));
-        AddParameter(new ParamDeclNode("newLength", PrimitiveTypeNode.IntNode));
+        AddParameter("arr", ArrayTypeNode_Dynamic.WildcardArrayNode());
+        AddParameter("newLength", PrimitiveTypeNode.IntNode);
     }
 
     @Override
@@ -35,33 +35,36 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
         greaterComparison.AddParameter(lengthAccess);
         greaterComparison.AddParameter(new ConstantNode("0", PrimitiveTypeNode.IntNode));
 
-        TypeNode genericType = PrimitiveTypeNode.IntNode;
+//        TypeNode genericType = PrimitiveTypeNode.IntNode;
+//
+//        // bytesize = newLength * sizeof(type)
+//        int typeSize = genericType.GetWrappedType().GetTypeSize();
+//        FuncCallNode mulCall = new FuncCallNode(Operator.MUL);
+//        mulCall.AddParameter(new AccessNode_Variable("newLength"));
+//        mulCall.AddParameter(new ConstantNode(Integer.toString(typeSize), PrimitiveTypeNode.IntNode));
+//
+//        // arr.start = malloc(bytesize)
+//        AccessNode_Field startAccess = new AccessNode_Field(arrAccess, ArrayTypeNode_Dynamic.DynamicStartName);
+//        FuncCallNode mallocCall = new FuncCallNode("getmem");
+//        mallocCall.AddParameter(startAccess);
+//        mallocCall.AddParameter(mulCall);
+//        // AssignmentNode assignNodeMalloc = new AssignmentNode(startAccess, mallocCall);
+//
+//        // arr.start = realloc(arr.start, newLength)
+//        FuncCallNode reallocCall = new FuncCallNode("reallocmem");
+//        reallocCall.AddParameter(startAccess);
+//        reallocCall.AddParameter(new AccessNode_Variable("newLength"));
+//        AssignmentNode assignNodeRealloc = new AssignmentNode(startAccess, reallocCall);
+//
+//        BranchNode branch = new BranchNode(greaterComparison, mallocCall, assignNodeRealloc);
+//        compNode.AddStatement(branch);
+//
+//        // arr.length = newLength
+//        AssignmentNode assignNodeLength = new AssignmentNode(lengthAccess, new AccessNode_Variable("newLength"));
+//        compNode.AddStatement(assignNodeLength);
 
-        // bytesize = newLength * sizeof(type)
-        int typeSize = genericType.GetWrappedType().GetTypeSize();
-        FuncCallNode mulCall = new FuncCallNode(Operator.MUL);
-        mulCall.AddParameter(new AccessNode_Variable("newLength"));
-        mulCall.AddParameter(new ConstantNode(Integer.toString(typeSize), PrimitiveTypeNode.IntNode));
 
-        // arr.start = malloc(bytesize)
-        AccessNode_Field startAccess = new AccessNode_Field(arrAccess, ArrayTypeNode_Dynamic.DynamicStartName);
-        FuncCallNode mallocCall = new FuncCallNode("getmem");
-        mallocCall.AddParameter(startAccess);
-        mallocCall.AddParameter(mulCall);
-        // AssignmentNode assignNodeMalloc = new AssignmentNode(startAccess, mallocCall);
-
-        // arr.start = realloc(arr.start, newLength)
-        FuncCallNode reallocCall = new FuncCallNode("reallocmem");
-        reallocCall.AddParameter(startAccess);
-        reallocCall.AddParameter(new AccessNode_Variable("newLength"));
-        AssignmentNode assignNodeRealloc = new AssignmentNode(startAccess, reallocCall);
-
-        BranchNode branch = new BranchNode(greaterComparison, mallocCall, assignNodeRealloc);
-        compNode.AddStatement(branch);
-
-        // arr.length = newLength
-        AssignmentNode assignNodeLength = new AssignmentNode(lengthAccess, new AccessNode_Variable("newLength"));
-        compNode.AddStatement(assignNodeLength);
+        compNode.AddStatement(greaterComparison);
     }
 
 //    @Override

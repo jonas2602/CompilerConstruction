@@ -62,7 +62,7 @@ public class App {
         }
 
         CodeGenerator.CreateIntermediate(prog, "gen");
-
+        return;
         //Visitor for old grammar won't work anymore
         //new Interpreter().ProcessExpression("3 + 4.5");
     }

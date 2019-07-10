@@ -1,7 +1,9 @@
 package ast.core.functions.list;
 
+import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.declarations.FuncDeclNode;
+import ast.declarations.ParamDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.statements.CompStmtNode;
 import ast.types.TypeNode;
@@ -19,12 +21,25 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
     public FuncDeclNode_Generic(String InName, TypeNode InReturnType) {
         super(InName, InReturnType);
 
-        m_Config = new HashMap<>();
-
-
         CompStmtNode compNode = new CompStmtNode();
         m_Block.SetCompoundStatement(compNode);
         GenerateBody(compNode);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        FuncDeclNode_Generic copy = (FuncDeclNode_Generic) super.clone();
+
+        copy.m_Block = new BlockNode();
+        copy.m_Block.SetCompoundStatement(m_Block.GetCompoundStatement());
+
+        copy.m_Params = new ArrayList<>();
+        for (ParamDeclNode param : m_Params) {
+            copy.AddParameter(param.GetName(), param.GetType());
+        }
+
+        // TODO: support variables that are no parameters?
+        return copy;
     }
 
     protected void GenerateBody(CompStmtNode compNode) {
@@ -41,17 +56,22 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         try {
             // has fitting instance?
             for (FuncDeclNode_Generic inst : m_Instances) {
-                if (inst.CompareSignature(this)) {
+                if (inst.CompareConfig()) {
                     return inst;
                 }
             }
 
             // Create new version of generic function
             FuncDeclNode_Generic copy = (FuncDeclNode_Generic) clone();
+            copy.CheckType();
+            // set ocnfig of wildcard parameters
+            copy.m_Config = new HashMap<>();
             m_Instances.add(copy);
             for (WildcardTypeNode wildcard : m_Wildcards) {
                 copy.m_Config.put(wildcard, wildcard.GetTypeDetails());
             }
+            // TODO: build generic name
+
             return copy;
 
         } catch (CloneNotSupportedException e) {
@@ -61,18 +81,26 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         return this;
     }
 
+    protected boolean CompareConfig() {
+        for (WildcardTypeNode wildcard : m_Wildcards) {
+            if (!wildcard.CompareType(m_Config.get(wildcard))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        // rebuild config
+        for (WildcardTypeNode element : m_Wildcards) {
+            TypeNode configType = m_Config.get(element);
+            element.SetFilledType(configType);
+        }
 
-//        for (Map<WildcardTypeNode, TypeNode> config : m_WildcardTypes) {
-//            for (Map.Entry<WildcardTypeNode, TypeNode> element : config.entrySet()) {
-//                element.getKey().SetFilledType(element.getValue());
-//            }
-//
-//            super.CreateSnippet(slave);
-//        }
-
-        return null;
+        // create function as usual
+        return super.CreateSnippet(slave);
     }
 
 //    @Override
