@@ -370,11 +370,11 @@ set
 
 elementList
    : element (COMMA element)*
-   |
    ;
 
 element
-   : expression (DOTDOT expression)?
+   : constant
+   | subrangeType
    ;
 
 procedureStatement

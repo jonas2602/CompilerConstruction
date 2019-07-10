@@ -3,13 +3,11 @@ package visitors;
 import ast.*;
 import ast.core.operators.Operator;
 import ast.expressions.*;
-import ast.types.NamedTypeNode;
-import ast.types.NilTypeNode;
-import ast.types.PointerTypeNode;
-import ast.types.PrimitiveTypeNode;
+import ast.types.*;
 import gen.PascalBaseVisitor;
 import gen.PascalParser;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
@@ -128,6 +126,24 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else {
             return visitBool(ctx.bool());
         }
+    }
+
+    @Override
+    public AbstractSyntaxTree visitSet(PascalParser.SetContext ctx) {
+        List<AbstractSyntaxTree> list = new LinkedList<>();
+        TypeVisitor visitor = new TypeVisitor(null);
+
+        PascalParser.ElementListContext elemlist = ctx.elementList();
+        for(PascalParser.ElementContext elem : elemlist.element()) {
+            if(elem.constant() != null) {
+                list.add(visitConstant(elem.constant()));
+            }
+            else {
+                list.add(visitor.visitSubrangeType(elem.subrangeType()));
+            }
+        }
+
+        return new SetTypeNode(list);
     }
 
     @Override

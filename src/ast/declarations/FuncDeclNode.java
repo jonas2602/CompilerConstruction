@@ -99,18 +99,20 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     }
 
     public FuncDeclNode ValidateCall(FuncCallNode callNode) {
-        // Parameter count fits the definition?
-        if (callNode.GetParameterCount() != m_Params.size()) {
-            // throw new TypeCheckException(callNode, "Function expected " + callNode.GetParameterCount() + " Arguments but received " + m_Params.size());
-            return null;
+        int size = m_Params.size();
+        if (callNode.GetParameterCount() != size) {
+            size += m_Block.GetNumberPassDownParams();
+            if (callNode.GetParameterCount() != size) {
+                return null;
+            }
         }
 
         // Compare given parameters to expected types
-        for (int i = 0; i < m_Params.size(); i++) {
+        for (int i = 0; i < size; i++) {
             TypeNode callParamType = callNode.GetParameter(i).GetType();
-            TypeNode funcParamType = m_Params.get(i).GetType();
+            ParamDeclNode paramDecl = GetParameter(i);
 
-            if (m_Params.get(i).IsByReference()) {
+            if (paramDecl.IsByReference()) {
                 AbstractSyntaxTree param = callNode.GetParameter(i);
 
                 // "VAR" parameters only accept variables, no constants
@@ -124,16 +126,17 @@ public class FuncDeclNode extends AbstractSyntaxTree {
                 }
             }
 
-            if (!funcParamType.CompareType(callParamType)) {
+            if (!paramDecl.GetType().CompareType(callParamType)) {
                 return null;
             }
         }
 
-        //TODO: add new inner params
-        for (VarDeclNode param : m_Block.GetPassDownParams()) {
-            AccessNode_Variable var = new AccessNode_Variable(param.GetName());
-            callNode.AddParameter(var);
-            var.GetType();
+        if (size == m_Params.size()) {
+            for (VarDeclNode param : m_Block.GetPassDownParams()) {
+                AccessNode_Variable var = new AccessNode_Variable(param.GetName());
+                callNode.AddParameter(var);
+                var.GetType();
+            }
         }
 
         return this;
