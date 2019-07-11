@@ -1,17 +1,18 @@
 program switch;
 
+type
+    day = (mon, tue, wed, thu, fri, sat, sun);
+
 var
-    i: integer;
+    current: day;
 
 begin
-    case 1 + 4 of
-        1, 2:
-            i := 1 + 0;
-        3:
-            i := 2 + 0;
-        else
-            i := 3 + 0;
-    end;
+    current := mon;
 
-    writeln(i);
+    case current of
+        mon..wed:   writeln('MEH');
+        thu,fri:   writeln('WEEKEND INCOMING');
+        sat,sun:   writeln('RELAX');
+        else        writeln('WAIT WHAT?');
+    end;
 end.
