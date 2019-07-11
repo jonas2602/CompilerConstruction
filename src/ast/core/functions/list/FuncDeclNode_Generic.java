@@ -1,6 +1,7 @@
 package ast.core.functions.list;
 
 import ast.BlockNode;
+import ast.ProgramNode;
 import ast.core.FuncDeclNode_Core;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
@@ -25,7 +26,8 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
     @Override
     protected Object clone() throws CloneNotSupportedException {
         FuncDeclNode_Generic copy = (FuncDeclNode_Generic) super.clone();
-        copy.SetParent(this);
+        // TODO: use AddFunctionDeclaration of program blocknode
+        copy.SetParent(ProgramNode.INSTANCE.GetBlock());
 
         // Build unique name
         String genericName = m_Name;

@@ -11,8 +11,9 @@ public class ProgramVisitor extends PascalBaseVisitor<ProgramNode> {
     @Override
     public ProgramNode visitProgram(PascalParser.ProgramContext ctx) {
         ProgramNode programNode = visitProgramHeading(ctx.programHeading());
-        BlockNode blockNode = (BlockNode) new BlockVisitor(true).visit(ctx.block());
-        programNode.SetBlock(blockNode);
+        BlockVisitor blockVis = new BlockVisitor(true);
+        programNode.SetBlock(blockVis.m_BlockNode);
+        blockVis.visit(ctx.block());
 
         return programNode;
     }

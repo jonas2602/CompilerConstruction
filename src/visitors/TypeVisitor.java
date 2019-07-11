@@ -2,6 +2,7 @@ package visitors;
 
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
+import ast.ProgramNode;
 import ast.declarations.ConstDeclNode;
 import ast.expressions.ConstantNode;
 import ast.types.*;
@@ -16,7 +17,6 @@ import java.util.Set;
 public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     private BlockNode m_OwningBlock;
-    public static Set<TypeNode> m_DynamicTypes = new HashSet<>();
 
     public TypeVisitor(BlockNode owningBlock) {
         m_OwningBlock = owningBlock;
@@ -103,8 +103,10 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
             }
             return innerType;
         } else {
-            m_DynamicTypes.add(innerType);
-            return new NamedTypeNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(innerType));
+            String dynArrName = ArrayTypeNode_Dynamic.CreateDynamicArrayName(innerType);
+            BlockNode progBlock = ProgramNode.INSTANCE.GetBlock();
+            progBlock.AddTypeDeclaration(dynArrName, new ArrayTypeNode_Dynamic(innerType));
+            return new NamedTypeNode(dynArrName);
         }
     }
 
@@ -123,8 +125,12 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitSetType(PascalParser.SetTypeContext ctx) {
-        TypeNode setType = visitSimpleType(ctx.simpleType());
-        return new SetTypeNode(setType);
+        TypeNode innerType = visitSimpleType(ctx.simpleType());
+
+        String newSetName = SetTypeNode.CreateDynamicSetName(innerType);
+        BlockNode progBlock = ProgramNode.INSTANCE.GetBlock();
+        progBlock.AddTypeDeclaration(newSetName, new SetTypeNode(innerType));
+        return new NamedTypeNode(newSetName);
     }
 
     @Override

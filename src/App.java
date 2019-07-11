@@ -36,7 +36,7 @@ public class App {
         //     System.out.println(fileName + " succeeded");
         // }
 
-        Compile("res/examples/tests/dynamics.pas", "gen");
+        Compile("res/examples/tests/sets.pas", "gen");
     }
 
     public static void Compile(String sourcePath, String targetFileName) throws IOException {
@@ -66,10 +66,10 @@ public class App {
         prog.SetParent(stdBlock);
 
         // add dynamic types
-        Set<TypeNode> dynamicTypes = TypeVisitor.m_DynamicTypes;
-        for (TypeNode baseType : dynamicTypes) {
-            stdBlock.AddTypeDeclaration(new TypeDeclNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(baseType), new ArrayTypeNode_Dynamic(baseType)));
-        }
+        // Set<TypeNode> dynamicTypes = TypeVisitor.m_DynamicTypes;
+        // for (TypeNode baseType : dynamicTypes) {
+        //     prog.GetBlock().AddTypeDeclaration(new TypeDeclNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(baseType), new ArrayTypeNode_Dynamic(baseType)));
+        // }
 
         // type checking
         try {

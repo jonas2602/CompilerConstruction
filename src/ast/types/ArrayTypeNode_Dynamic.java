@@ -27,6 +27,7 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
 
     public ArrayTypeNode_Dynamic(TypeNode elementType) {
         m_ElementType = elementType;
+        m_ElementType.SetParent(this);
         AddEntry(DynamicLengthName, PrimitiveTypeNode.IntNode);
         AddEntry(DynamicStartName, new PointerTypeNode(m_ElementType));
     }
@@ -46,16 +47,16 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
     }
 
     @Override
-    public boolean CompareType(TypeNode otherNodeType) {
-        if (otherNodeType == null) {
+    public boolean CompareType(TypeNode otherTypeNode) {
+        if (otherTypeNode == null) {
             return false;
         }
 
-        if (!(otherNodeType.GetCompareType() instanceof ArrayTypeNode_Dynamic)) {
+        if (!(otherTypeNode.GetCompareType() instanceof ArrayTypeNode_Dynamic)) {
             return false;
         }
 
-        TypeNode otherElementType = ((ArrayTypeNode_Dynamic) otherNodeType.GetCompareType()).m_ElementType;
+        TypeNode otherElementType = ((ArrayTypeNode_Dynamic) otherTypeNode.GetCompareType()).m_ElementType;
         if (!m_ElementType.CompareType(otherElementType)) {
             return false;
         }

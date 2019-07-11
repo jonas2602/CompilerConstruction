@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
-    private BlockNode m_BlockNode;
+    public BlockNode m_BlockNode;
 
     public BlockVisitor() {
         this(false);

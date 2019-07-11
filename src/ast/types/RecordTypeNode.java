@@ -135,6 +135,7 @@ public class RecordTypeNode extends TypeNode {
     @Override
     public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
         for (int i = 0; i < m_EntryList.size(); i++) {
+            // TODO: Rework to avoid unnecessary ArrayElement accesses that will not be used for initialization
             ParamContainer prop = slave.CreateArrayElementPtr(varParam, i);
             m_EntryList.get(i).InitVariable(slave, prop);
         }

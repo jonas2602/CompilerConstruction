@@ -16,9 +16,13 @@ public class ProgramNode extends AbstractSyntaxTree {
     private List<AbstractSyntaxTree> m_Params;
     private BlockNode m_Block;
 
+    public static ProgramNode INSTANCE;
+
     public ProgramNode(String name) {
         m_Name = name;
         m_Params = new ArrayList<>();
+
+        ProgramNode.INSTANCE = this;
     }
 
     public void AddParameter(AbstractSyntaxTree InParam) {

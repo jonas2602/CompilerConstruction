@@ -68,6 +68,10 @@ public class BlockNode extends AbstractSyntaxTree {
         m_ConstDeclMap.put(constant.GetName(), constant);
     }
 
+    public void AddTypeDeclaration(String name, TypeNode type) {
+        AddTypeDeclaration(new TypeDeclNode(name, type));
+    }
+
     public void AddTypeDeclaration(TypeDeclNode type) {
         if (m_VarDeclMap.containsKey(type.GetName())) {
             throw new RuntimeException("Variable with Name " + type.GetName() + " already defined in Scope");

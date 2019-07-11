@@ -168,7 +168,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         } else if (ctx.identifier() != null) {
             constantNode = new AccessNode_Variable(ctx.identifier().IDENT().getText());
         } else {
-            return visitUnsignedNumber(ctx.unsignedNumber());
+            return visitString(ctx.string());
         }
 
         if (ctx.sign() != null && ctx.sign().MINUS() != null) {
