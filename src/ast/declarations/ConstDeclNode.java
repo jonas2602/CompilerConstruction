@@ -2,6 +2,7 @@ package ast.declarations;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.expressions.AccessNode_Variable;
 import ast.expressions.ConstantNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -21,7 +22,7 @@ public class ConstDeclNode extends VarDeclNode {
     //  func(var const x) | call(const)   (valid)
     public ConstDeclNode(String name, AbstractSyntaxTree constant) {
         // Assuming that in types are always constant
-        super(name, constant.GetType());
+        super(name);
 
         m_Constant = constant;
         m_Constant.SetParent(this);
@@ -30,7 +31,8 @@ public class ConstDeclNode extends VarDeclNode {
     @Override
     public TypeNode CheckType() {
         if (!(m_Constant instanceof ConstantNode)) {
-            throw new TypeCheckException(this, "Constant can not get initialized with a variable right now");
+            //throw new TypeCheckException(this, "Constant can not get initialized with a variable right now");
+            SetType(m_Constant.GetType());
         }
 
         m_Constant.CheckType();
@@ -42,18 +44,12 @@ public class ConstDeclNode extends VarDeclNode {
         return m_Constant.GetType();
     }
 
+    public AbstractSyntaxTree GetConstant() {
+        return m_Constant;
+    }
+
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
-        if (m_ScopeContainer == null) {
-            // Allocate memory for the variable
-            TypeWrapper wrappedType = m_TypeNode.GetWrappedType();
-            m_ScopeContainer = slave.AllocateMemory(wrappedType);
-
-            // store const value
-            ParamContainer constValue = m_Constant.CreateSnippet(slave);
-            slave.StoreInVariable(m_ScopeContainer, constValue);
-        }
-
-        return m_ScopeContainer;
+        return m_Constant.CreateSnippet(slave);
     }
 }

@@ -1,6 +1,8 @@
 package ast.statements;
 
 import ast.AbstractSyntaxTree;
+import ast.declarations.ConstDeclNode;
+import ast.expressions.AccessNode_Variable;
 import ast.types.TypeNode;
 
 import java.util.ArrayList;
@@ -35,9 +37,17 @@ public class SelectorNode extends AbstractSyntaxTree {
         m_CompStmt.CheckType();
 
         TypeNode type = m_Selectors.get(0).CheckType();
-        for(AbstractSyntaxTree selc: m_Selectors) {
-            if(!type.CompareType(selc.CheckType())) {
+        for (AbstractSyntaxTree selc: m_Selectors) {
+            if (!type.CompareType(selc.CheckType())) {
                 throw new RuntimeException("Typecheck failed at Selector Node because of type missmatch!");
+            }
+
+            //check for const
+            if (selc instanceof AccessNode_Variable) {
+                AccessNode_Variable av = (AccessNode_Variable) selc;
+                if (!(av.GetDeclaration() instanceof ConstDeclNode)) {
+                    throw new RuntimeException("Typecheck failed at Selector Node because only constants are supported!");
+                }
             }
         }
 
