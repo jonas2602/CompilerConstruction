@@ -198,8 +198,8 @@ public class GeneratorSlave {
 
     public void CopyMemory(ParamContainer source, ParamContainer target) {
         // target and source are both pointer -> need to compare the sizes of the pointed types
-        int sourceSize = source.GetRootType().GetChild().GetTypeByteSize(8);
-        int targetSize = target.GetRootType().GetChild().GetTypeByteSize(8);
+        int sourceSize = source.GetRootType().GetChild().GetTypeByteSize();
+        int targetSize = target.GetRootType().GetChild().GetTypeByteSize();
         int blockSize = Math.min(sourceSize, targetSize);
 
         // convert to char* if given as other types
