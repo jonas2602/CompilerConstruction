@@ -74,6 +74,18 @@ public class GeneratorSlave {
         }
     }
 
+    public ParamContainer CreateArrayConstant(List<ParamContainer> content) {
+        TypeWrapper baseType = content.get(0).GetRootType();
+
+        ValueWrapper_Variable var = ValueWrapper_Variable.CONSTARRAY(m_ConstantCounter++);
+        TypeWrapper arrType = new TypeWrapper_Array(baseType, content.size());
+        String contentString = CodeSnippetHelper.MakeSeperatedParams(", ", content);
+        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s [%s]", var, arrType, contentString);
+        m_Constants.add(snippet);
+
+        return new ParamContainer(new TypeWrapper_Pointer(baseType), var);
+    }
+
     public ParamContainer CreateStringConstant(String content) {
         ParamContainer cached = m_StringConstants.get(content);
         if (cached != null) {

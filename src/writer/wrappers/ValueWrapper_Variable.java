@@ -13,6 +13,10 @@ public class ValueWrapper_Variable extends ValueWrapper {
         return new ValueWrapper_Variable("@.str.%d", InIndex);
     }
 
+    public static ValueWrapper_Variable CONSTARRAY(int InIndex) {
+        return new ValueWrapper_Variable("@.arr.%d", InIndex);
+    }
+
     private String m_Format;
     private int m_ScopeIndex;
 

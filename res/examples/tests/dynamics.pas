@@ -20,7 +20,22 @@ end.}
 
 
 
+procedure test(x: array of integer);
+begin
+    writeln(length(x), ' ', x[1]);
+end;
+
 var
+    arr: array of integer;
+
+begin
+    setlength(arr, 3);
+    arr[1] := 42;
+    test(arr);
+end.
+
+
+{var
     x: array of integer;
     y: array of integer;
 
@@ -37,7 +52,7 @@ begin
     setlength(x, 3);
     x[1] := 3;
     writeln (x[1], ' ', y[1]);
-end.
+end.}
 
 
 

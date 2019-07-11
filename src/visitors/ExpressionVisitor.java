@@ -134,16 +134,15 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         TypeVisitor visitor = new TypeVisitor(null);
 
         PascalParser.ElementListContext elemlist = ctx.elementList();
-        for(PascalParser.ElementContext elem : elemlist.element()) {
-            if(elem.constant() != null) {
+        for (PascalParser.ElementContext elem : elemlist.element()) {
+            if (elem.constant() != null) {
                 list.add(visitConstant(elem.constant()));
-            }
-            else {
+            } else {
                 list.add(visitor.visitSubrangeType(elem.subrangeType()));
             }
         }
 
-        return new SetTypeNode(list);
+        return new ConstantNode_Set(list);
     }
 
     @Override
@@ -159,6 +158,26 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         }
 
         return funcCall;
+    }
+
+    @Override
+    public AbstractSyntaxTree visitConstant(PascalParser.ConstantContext ctx) {
+        AbstractSyntaxTree constantNode;
+        if (ctx.unsignedNumber() != null) {
+            constantNode = visitUnsignedNumber(ctx.unsignedNumber());
+        } else if (ctx.identifier() != null) {
+            constantNode = new AccessNode_Variable(ctx.identifier().IDENT().getText());
+        } else {
+            return visitUnsignedNumber(ctx.unsignedNumber());
+        }
+
+        if (ctx.sign() != null && ctx.sign().MINUS() != null) {
+            FuncCallNode funcCall = new FuncCallNode(Operator.NEG);
+            funcCall.AddParameter(constantNode);
+            constantNode = funcCall;
+        }
+
+        return constantNode;
     }
 
     @Override
