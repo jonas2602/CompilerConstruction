@@ -60,8 +60,9 @@ public class TypeVisitor extends PascalBaseVisitor<TypeNode> {
 
     @Override
     public TypeNode visitSubrangeType(PascalParser.SubrangeTypeContext ctx) {
-        AbstractSyntaxTree minNode = new ExpressionVisitor().visitConstant(ctx.constant(0));
-        AbstractSyntaxTree maxNode = new ExpressionVisitor().visitConstant(ctx.constant(1));
+        ExpressionVisitor visitor = new ExpressionVisitor();
+        AbstractSyntaxTree minNode = visitor.visitConstant(ctx.constant(0));
+        AbstractSyntaxTree maxNode = visitor.visitConstant(ctx.constant(1));
         RangeTypeNode rangeNode = new RangeTypeNode(minNode, maxNode);
 
         return rangeNode;

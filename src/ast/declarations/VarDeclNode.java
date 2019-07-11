@@ -14,11 +14,14 @@ public class VarDeclNode extends AbstractSyntaxTree {
 
     private boolean m_GlobalVariable;
 
-    public VarDeclNode(String name, TypeNode type) {
+    public VarDeclNode(String name) {
         m_Name = name;
-        m_TypeNode = type;
-        m_TypeNode.SetParent(this);
         m_GlobalVariable = false;
+    }
+
+    public VarDeclNode(String name, TypeNode type) {
+        this(name);
+        SetType(type);
     }
 
     public boolean IsGlobalVariable() {
@@ -37,6 +40,11 @@ public class VarDeclNode extends AbstractSyntaxTree {
     public TypeNode CheckType() {
         m_TypeNode.CheckType();
         return null;
+    }
+
+    public void SetType(TypeNode type) {
+        m_TypeNode = type;
+        m_TypeNode.SetParent(this);
     }
 
     @Override

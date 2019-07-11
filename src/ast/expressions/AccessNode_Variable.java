@@ -2,6 +2,7 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.declarations.ConstDeclNode;
 import ast.declarations.VarDeclNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -61,6 +62,10 @@ public class AccessNode_Variable extends AbstractSyntaxTree implements AccessInt
 
     @Override
     public ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer) {
+        if (m_Declaration instanceof ConstDeclNode) {
+            return pointer;
+        }
+
         return slave.LoadFromVariable(pointer);
     }
 }

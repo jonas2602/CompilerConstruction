@@ -182,6 +182,11 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     }
 
     @Override
+    public AbstractSyntaxTree visitIdentifier(PascalParser.IdentifierContext ctx) {
+        return new AccessNode_Variable(ctx.getText());
+    }
+
+    @Override
     public AbstractSyntaxTree visitUnsignedInteger(PascalParser.UnsignedIntegerContext ctx) {
         // TODO: Create Constant Node of type Integer
         return new ConstantNode(ctx.NUM_INT().getText(), PrimitiveTypeNode.ConstIntNode);
