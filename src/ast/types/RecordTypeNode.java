@@ -52,6 +52,11 @@ public class RecordTypeNode extends TypeNode {
         m_RecordName = name;
     }
 
+    @Override
+    public String GetShortName() {
+        return m_RecordName;
+    }
+
     public int GetFieldIndex(String name) {
         if (!m_EntryNameMap.containsKey(name)) {
             return -1;

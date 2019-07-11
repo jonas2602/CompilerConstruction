@@ -186,8 +186,8 @@ public class GeneratorSlave {
 
     public void CopyMemory(ParamContainer source, ParamContainer target) {
         // target and source are both pointer -> need to compare the sizes of the pointed types
-        int sourceSize = source.GetRootType().GetChild().GetTypeByteSize();
-        int targetSize = target.GetRootType().GetChild().GetTypeByteSize();
+        int sourceSize = source.GetRootType().GetChild().GetTypeByteSize(8);
+        int targetSize = target.GetRootType().GetChild().GetTypeByteSize(8);
         int blockSize = Math.min(sourceSize, targetSize);
 
         // convert to char* if given as other types
@@ -199,7 +199,7 @@ public class GeneratorSlave {
             target = BitCast(target, TypeManager.CHARPTR());
         }
 
-        CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize));
+        CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize, 8));
 
         // CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
         // GetScopeSnippetAsDef().AddStatement(stmt);

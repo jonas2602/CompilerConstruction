@@ -255,7 +255,10 @@ public class BlockNode extends AbstractSyntaxTree {
             var.CreateSnippet(slave);
         }
 
-        m_CompoundStatement.CreateSnippet(slave, ctx);
+        if (m_CompoundStatement != null) {
+            m_CompoundStatement.CreateSnippet(slave, ctx);
+        }
+
         return null;
     }
 }

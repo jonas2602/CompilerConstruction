@@ -28,8 +28,8 @@ public class TypeWrapper_Primitive extends TypeWrapper {
     }
 
     @Override
-    public int GetTypeSize() {
-        return m_BaseType.GetSize();
+    public int GetTypeSize(int align) {
+        return AlignSize(align, m_BaseType.GetSize());
     }
 
     @Override

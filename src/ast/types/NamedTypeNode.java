@@ -7,6 +7,7 @@ import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class NamedTypeNode extends TypeNode {
@@ -66,7 +67,11 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public Set<WildcardTypeNode> GetWildcards() {
-        return m_TypeDetails.GetWildcards();
+        if (m_TypeDetails != null) {
+            return m_TypeDetails.GetWildcards();
+        }
+
+        return new HashSet<>();
     }
 
     @Override

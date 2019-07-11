@@ -23,8 +23,11 @@ public class RecordOperators implements StdBuilder {
     public static class AGNStruct extends PascalType_Assignment {
         public AGNStruct() {
             super(Operator.AGN, new VoidTypeNode(), RecordTypeNode.WildcardRecordNode(), (slave, lParam, rParam) -> {
+                // TODO: keep same start reference of copy data?
+                //  -> realloc memory of target pointers and copy memory of data
                 slave.CopyMemory(rParam, lParam);
                 return null;
+
             });
         }
     }

@@ -2,36 +2,43 @@ program dynamics;
 
 
 {var
-    mystr: ^real;
+    myarr: array of array of real;
+    myarr2: array of array of integer;
 
 begin
-    getmem(mystr, 4 * 4);
-    mystr := reallocmem(mystr, 10);
+    setlength(myarr, 5);
+    setlength(myarr[0], 2);
+    myarr[0][0] := 5.0;
+    writeln(length(myarr[0]), ' ', myarr[0][0]);
+
+
+    setlength(myarr2, 5);
+    setlength(myarr2[0], 2);
+    myarr2[0][0] := 5;
+    writeln(length(myarr2[0]), ' ', myarr2[0][0]);
 end.}
+
+
 
 var
-    myarr: array of real;
-    myarr2: array of integer;
+    x: array of integer;
+    y: array of integer;
 
 begin
-    setlength(myarr, 5);
-    setlength(myarr2, 5);
-    writeln(length(myarr));
-    myarr[0] := 2.5;
-    myarr2[0] := 1;
-    writeln(myarr[0], ' ', myarr2[0]);
+    setlength(y, 2);
+    writeln(length(x), ' ', length(y));
+    y[1] := 12;
+    x := y;
+    writeln (x[1], ' ', y[1]);
+    x[1] := 10;
+    writeln (x[1], ' ', y[1]);
+    x[1] := 14;
+    writeln (x[1], ' ', y[1]);
+    setlength(x, 3);
+    x[1] := 3;
+    writeln (x[1], ' ', y[1]);
 end.
 
-
-
-{var
-    myarr: array of real;
-
-begin
-    setlength(myarr, 5);
-    myarr[2] := 2.5;
-    writeln(myarr[2], ' ', length(myarr));
-end.}
 
 
 

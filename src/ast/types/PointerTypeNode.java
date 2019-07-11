@@ -74,6 +74,11 @@ public class PointerTypeNode extends TypeNode {
     }
 
     @Override
+    public String GetShortName() {
+        return "p" + m_BaseType.GetShortName();
+    }
+
+    @Override
     public TypeWrapper GetWrappedType() {
         return new TypeWrapper_Pointer(m_BaseType.GetWrappedType());
     }

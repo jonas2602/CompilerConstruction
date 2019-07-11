@@ -20,21 +20,23 @@ import java.util.Set;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("START");
 
         List<String> sourceFiles = List.of("arrays", "branch", "constant", "dynamics", "enum", "goto", "innerfunctions", "innerfunctions2", "io", "loops", "memory", "pointer", "string", "switch", "types");
 
-        for (String fileName : sourceFiles) {
-            try {
-                Compile(String.format("res/examples/tests/%s.pas", fileName), "gen");
-            } catch (Exception ex) {
-                System.out.println("Compiling failed at " + fileName);
-                ex.printStackTrace();
-            }
-        }
+        // for (String fileName : sourceFiles) {
+        //     try {
+        //         Compile(String.format("res/examples/tests/%s.pas", fileName), "gen");
+        //     } catch (Exception ex) {
+        //         System.out.println("Compiling failed at " + fileName);
+        //         ex.printStackTrace();
+        //     }
+        //
+        //     System.out.println(fileName + " succeeded");
+        // }
 
-        // Compile("res/examples/test.pas", "gen");
+        Compile("res/examples/tests/dynamics.pas", "gen");
     }
 
     public static void Compile(String sourcePath, String targetFileName) throws IOException {
@@ -66,7 +68,7 @@ public class App {
         // add dynamic types
         Set<TypeNode> dynamicTypes = TypeVisitor.m_DynamicTypes;
         for (TypeNode baseType : dynamicTypes) {
-            prog.GetBlock().AddTypeDeclaration(new TypeDeclNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(baseType), new ArrayTypeNode_Dynamic(baseType)));
+            stdBlock.AddTypeDeclaration(new TypeDeclNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(baseType), new ArrayTypeNode_Dynamic(baseType)));
         }
 
         // type checking
@@ -78,6 +80,6 @@ public class App {
             System.exit(0);
         }
 
-        CodeGenerator.CreateIntermediate(prog, targetFileName);
+        CodeGenerator.CreateIntermediate(prog, stdBlock, targetFileName);
     }
 }

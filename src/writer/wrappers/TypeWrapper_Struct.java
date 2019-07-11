@@ -27,10 +27,10 @@ public class TypeWrapper_Struct extends TypeWrapper {
     }
 
     @Override
-    public int GetTypeSize() {
+    public int GetTypeSize(int align) {
         int size = 0;
         for (TypeWrapper entry : m_EntryTypes) {
-            size += entry.GetTypeSize();
+            size += entry.GetTypeSize(align);
         }
 
         return size;

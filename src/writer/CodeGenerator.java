@@ -8,8 +8,9 @@ import java.nio.file.Files;
 
 public class CodeGenerator {
 
-    public static void CreateIntermediate(AbstractSyntaxTree root, String fileName) throws IOException {
+    public static void CreateIntermediate(AbstractSyntaxTree root, AbstractSyntaxTree std, String fileName) throws IOException {
         GeneratorSlave slave = new GeneratorSlave();
+        std.CreateSnippet(slave, null);
         root.CreateSnippet(slave, null);
 
         File file = CreateFile(fileName);

@@ -24,9 +24,9 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     }
 
     @Override
-    public int GetTypeSize() {
+    public int GetTypeSize(int align) {
         // Pointer are always 64 bit integer
-        return 64;
+        return AlignSize(align, 64);
     }
 
     @Override
