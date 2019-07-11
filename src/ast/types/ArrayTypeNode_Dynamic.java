@@ -13,6 +13,7 @@ public class ArrayTypeNode_Dynamic extends RecordTypeNode {
         return new ArrayTypeNode_Dynamic(new WildcardTypeNode());
     }
 
+    // screams for an enum
     public static final String DynamicLengthName = "length";
     public static final int DynamicLengthIndex = 0;
     public static final String DynamicStartName = "start";

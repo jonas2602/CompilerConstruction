@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SelectorNode extends AbstractSyntaxTree {
     private AbstractSyntaxTree m_CompStmt;
-    private List<Integer> m_Selectors;
+    private List<AbstractSyntaxTree> m_Selectors;
 
     public SelectorNode(AbstractSyntaxTree compstmt) {
         m_CompStmt = compstmt;
@@ -21,17 +21,26 @@ public class SelectorNode extends AbstractSyntaxTree {
         return m_CompStmt;
     }
 
-    public List<Integer> GetSelectors() {
+    public List<AbstractSyntaxTree> GetSelectors() {
         return m_Selectors;
     }
 
-    public void AddSelector(int selector) {
+    public void AddSelector(AbstractSyntaxTree selector) {
         m_Selectors.add(selector);
+        selector.SetParent(this);
     }
 
     @Override
     public TypeNode CheckType() {
         m_CompStmt.CheckType();
-        return null;
+
+        TypeNode type = m_Selectors.get(0).CheckType();
+        for(AbstractSyntaxTree selc: m_Selectors) {
+            if(!type.CompareType(selc.CheckType())) {
+                throw new RuntimeException("Typecheck failed at Selector Node because of type missmatch!");
+            }
+        }
+
+        return type;
     }
 }

@@ -248,7 +248,7 @@ identifierList
    ;
 
 constList
-   : constant (COMMA constant)*
+   : (constant | subrangeType) (COMMA (constant | subrangeType))*
    ;
 
 functionDeclaration

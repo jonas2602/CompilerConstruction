@@ -7,13 +7,13 @@ import writer.wrappers.TypeWrapper;
 import writer.wrappers.TypeWrapper_Array;
 
 public class ArrayTypeNode extends TypeNode {
-    public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.IntNode);
-    public static final ArrayTypeNode FloatArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.FloatNode);
-    public static final ArrayTypeNode CharArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.CharNode);
-    public static final ArrayTypeNode BoolArrayNode = new ArrayTypeNode(-1, PrimitiveTypeNode.BoolNode);
+    public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(Integer.MAX_VALUE, PrimitiveTypeNode.IntNode);
+    public static final ArrayTypeNode FloatArrayNode = new ArrayTypeNode(Integer.MAX_VALUE, PrimitiveTypeNode.FloatNode);
+    public static final ArrayTypeNode CharArrayNode = new ArrayTypeNode(Integer.MAX_VALUE, PrimitiveTypeNode.CharNode);
+    public static final ArrayTypeNode BoolArrayNode = new ArrayTypeNode(Integer.MAX_VALUE, PrimitiveTypeNode.BoolNode);
 
     public static final ArrayTypeNode WildcardArrayNode() {
-        return new ArrayTypeNode(-1, new WildcardTypeNode());
+        return new ArrayTypeNode(Integer.MAX_VALUE, new WildcardTypeNode());
     }
 
     private AbstractSyntaxTree m_ElementCounter;
@@ -75,7 +75,7 @@ public class ArrayTypeNode extends TypeNode {
 
         // TODO: Compare Size? -1 to ignore size?
         int otherSize = ((ArrayTypeNode) otherNodeType.GetCompareType()).GetSize();
-        if (otherSize < 0 && GetSize() < 0) {
+        if (otherSize == Integer.MAX_VALUE && GetSize() == Integer.MAX_VALUE) {
             if (otherSize != GetSize()) {
                 return false;
             }

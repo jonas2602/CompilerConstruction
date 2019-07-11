@@ -171,19 +171,25 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
 
     @Override
     public AbstractSyntaxTree visitCaseStatement(PascalParser.CaseStatementContext ctx) {
-        AbstractSyntaxTree expression = new ExpressionVisitor().visit(ctx.expression());
+        ExpressionVisitor visitor = new ExpressionVisitor();
+
+        AbstractSyntaxTree expression = visitor.visit(ctx.expression());
         AbstractSyntaxTree elseBlock = null;
-        if(ctx.ELSE() != null) {
+        if (ctx.ELSE() != null) {
             elseBlock = visitStatements(ctx.statements());
         }
 
         CaseNode cNode = new CaseNode(expression, elseBlock);
 
-        for(PascalParser.CaseListElementContext e: ctx.caseListElement()) {
+        for (PascalParser.CaseListElementContext e: ctx.caseListElement()) {
             AbstractSyntaxTree stmt = visitStatement(e.statement());
             SelectorNode selector = new SelectorNode(stmt);
-            for(PascalParser.ConstantContext c: e.constList().constant()) {
-                selector.AddSelector(Integer.parseInt(c.getText()));
+            for (PascalParser.ConstantContext c: e.constList().constant()) {
+                selector.AddSelector(visitor.visitConstant(c));
+            }
+
+            for (PascalParser.SubrangeTypeContext s: e.constList().subrangeType()) {
+                selector.AddSelector(new TypeVisitor(null).visitSubrangeType(s));
             }
 
             cNode.AddSelector(selector);

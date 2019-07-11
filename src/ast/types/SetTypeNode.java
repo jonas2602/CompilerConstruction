@@ -2,14 +2,20 @@ package ast.types;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import writer.GeneratorSlave;
+import writer.wrappers.ParamContainer;
+
 import java.util.List;
 
 public class SetTypeNode extends TypeNode {
     private TypeNode m_ElementType;
     private List<AbstractSyntaxTree> m_Content;
 
+    private RecordTypeNode m_Struct;
+
     public SetTypeNode(TypeNode type) {
         m_ElementType = type;
+        m_ElementType.SetParent(this);
     }
 
     public SetTypeNode(List<AbstractSyntaxTree> content) {
@@ -18,6 +24,14 @@ public class SetTypeNode extends TypeNode {
         for(AbstractSyntaxTree a: m_Content) {
             a.SetParent(this);
         }
+    }
+
+    public void initStruct() {
+        m_Struct = new RecordTypeNode();
+        m_Struct.AddEntry("array", new ArrayTypeNode_Dynamic(m_ElementType));
+        m_Struct.AddEntry("counter", PrimitiveTypeNode.IntNode);
+        m_Struct.SetParent(this);
+        m_Struct.CheckType();
     }
 
     @Override
@@ -39,6 +53,8 @@ public class SetTypeNode extends TypeNode {
            }
         }
 
+        //ready to init struct now
+        initStruct();
         return super.CheckType();
     }
 
@@ -61,7 +77,7 @@ public class SetTypeNode extends TypeNode {
     }
 
     @Override
-    public TypeNode GetTypeDetails() {
-        return m_ElementType;
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        return m_Struct.CreateSnippet(slave);
     }
 }

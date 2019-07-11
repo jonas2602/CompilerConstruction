@@ -37,6 +37,9 @@ public class RangeTypeNode extends TypeNode {
         }
 
         // TODO: check that min is less than max
+        if (GetRangeSize() < 0) {
+            throw new TypeCheckException(this, "Min is not lower or equal to Max");
+        }
 
         return GetType();
     }
@@ -72,5 +75,12 @@ public class RangeTypeNode extends TypeNode {
         int maxValue = Integer.parseInt(((ConstantNode) m_Max).GetData());
 
         return (maxValue - minValue) + 1;
+    }
+
+    public boolean CheckInRange(int value) {
+        int minValue = Integer.parseInt(((ConstantNode) m_Min).GetData());
+        int maxValue = Integer.parseInt(((ConstantNode) m_Max).GetData());
+
+        return minValue <= value && maxValue >= value;
     }
 }

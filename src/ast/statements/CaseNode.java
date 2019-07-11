@@ -34,17 +34,23 @@ public class CaseNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
-        if (!PrimitiveTypeNode.IntNode.CompareType(m_Expression.CheckType())) {
-            throw new RuntimeException("Typecheck failed at Case Node because Condition is not of type integer");
+        TypeNode type = m_Expression.CheckType();
+        if((!PrimitiveTypeNode.IntNode.CompareType(type)) && (!PrimitiveTypeNode.CharNode.CompareType(type)) && (!PrimitiveTypeNode.BoolNode.CompareType(type))) {
+            throw new RuntimeException("Typecheck failed at Case Node because Condition is not of type integer, char or bool");
         }
 
         for(SelectorNode s: m_Selectors) {
-            s.CheckType();
+            TypeNode stype = s.CheckType();
+            if(!type.CompareType(stype)) {
+                throw new RuntimeException("Typecheck failed at Case Node because Selector Node type does not match expression type");
+            }
         }
 
         if (m_ElseBlock != null) {
             m_ElseBlock.CheckType();
         }
+
+        //check for collisions
 
         return null;
     }
@@ -65,8 +71,8 @@ public class CaseNode extends AbstractSyntaxTree {
         for(SelectorNode s: m_Selectors) {
             ParamContainer blockContainer = ParamContainer.LABELCONTAINER();
 
-            for(Integer i: s.GetSelectors()) {
-                ParamContainer num = new ParamContainer(TypeWrapper_Primitive.INT, i.toString());
+            for(AbstractSyntaxTree i: s.GetSelectors()) {
+                ParamContainer num = i.CreateSnippet(slave);
                 slave.AddLabelSwitch(stmt, num, blockContainer);
             }
 
