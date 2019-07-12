@@ -28,6 +28,7 @@ begin
 end;
 
 begin
+    writeln('READY');
     writeln(classify(100));
     writeln(classify(2));
     writeln(classify(0));

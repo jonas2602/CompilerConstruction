@@ -7,6 +7,7 @@ var
     chararr: string[5];
     copy: string[6];
 begin
+    writeln('READY');
     x := 'x';
     cc[0][0] := 'a';
     cc[0][1] := 'b';

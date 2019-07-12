@@ -10,6 +10,7 @@ var
     p : ^integer;
     i : array[0..2] of integer;
 begin
+    writeln('READY');
     c[0] := 0;
     c[1] := 1;
     c[2] := 2;

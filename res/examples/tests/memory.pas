@@ -11,6 +11,7 @@ program TestProg(output);
         listPtr : PList;
         nextPtr : PList;
 begin
+    writeln('READY');
     (* Construct list 42 -> 99 -> 12 -| *)
 
     new (myList);

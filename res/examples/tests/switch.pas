@@ -7,6 +7,7 @@ var
     current: day;
 
 begin
+    writeln('READY');
     current := mon;
 
     case current of

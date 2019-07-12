@@ -7,6 +7,7 @@ label
     1;
 
 begin
+    writeln('READY');
     writeln(test);
     goto 1;
     test := test + 1;

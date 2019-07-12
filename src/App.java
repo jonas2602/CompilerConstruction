@@ -1,22 +1,18 @@
 import ast.BlockNode;
 import ast.ProgramNode;
 import ast.core.*;
-import ast.declarations.TypeDeclNode;
-import ast.types.ArrayTypeNode_Dynamic;
-import ast.types.TypeNode;
 import gen.PascalLexer;
 import gen.PascalParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import test.LocalTester;
+import test.TestBattery;
 import visitors.ProgramVisitor;
-import visitors.TypeVisitor;
 import writer.CodeGenerator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class App {
 
@@ -36,7 +32,13 @@ public class App {
         //     System.out.println(fileName + " succeeded");
         // }
 
-        Compile("res/examples/tests/sets.pas", "gen");
+        Compile("res/examples/tests/loops.pas", "gen");
+
+        LocalTester t = new LocalTester();
+        t.compile("gen");
+
+        // TestBattery battery = new TestBattery();
+        // battery.Fire();
     }
 
     public static void Compile(String sourcePath, String targetFileName) throws IOException {

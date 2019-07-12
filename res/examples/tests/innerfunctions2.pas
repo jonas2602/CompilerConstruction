@@ -17,6 +17,7 @@ begin
 end;
 
 begin
+    writeln('READY');
     i := 2;
     test();
     writeln(i);

@@ -16,5 +16,6 @@ var
     chars: array[0..4] of char = ('a', 'b', 'c', 'd', 'e');
 
 begin
-  writeln (str);
+    writeln('READY');
+    writeln (str);
 end.}

@@ -31,6 +31,7 @@ begin
 end;
 
 begin
+    writeln('READY');
     forloop(12);
     writeln(' ');
     whileloop(12);

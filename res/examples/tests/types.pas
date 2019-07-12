@@ -16,6 +16,7 @@ var
     c: person;
     gr: group;
 begin
+    writeln('READY');
     str := 'test';
     str2 := str;
 
