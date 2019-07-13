@@ -27,7 +27,7 @@ public class FuncDeclNode_appendElement extends FuncDeclNode_Core {
         AccessNode_Variable setAccess = new AccessNode_Variable("set");
         AccessNode_Array indexAccess = new AccessNode_Array(setAccess);
         indexAccess.AddIndexExpression(elementAccess);
-        AssignmentNode assignment = new AssignmentNode(indexAccess, ConstantNode.CharNode('1'));
+        AssignmentNode assignment = new AssignmentNode(indexAccess, ConstantNode.CharNode((char) 1));
 
         BranchNode branch = new BranchNode(compCall, assignment);
         m_Block.SetCompoundStatement(branch);

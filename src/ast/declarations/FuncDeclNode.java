@@ -63,6 +63,11 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         m_Name = name;
     }
 
+    public void SetReturnType(TypeNode type) {
+        m_ReturnType = type;
+        m_ReturnType.SetParent(this);
+    }
+
     public List<ParamDeclNode> GetParameters() {
         return m_Params;
     }

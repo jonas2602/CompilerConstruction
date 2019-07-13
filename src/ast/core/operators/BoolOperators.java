@@ -29,13 +29,13 @@ public class BoolOperators implements StdBuilder {
 
     public static class OrBool extends BoolOperator {
         public OrBool() {
-            super(Operator.OR, GeneratorSlave::ORIType);
+            super(Operator.OR, GeneratorSlave::OrIType);
         }
     }
 
     public static class AndBool extends BoolOperator {
         public AndBool() {
-            super(Operator.AND, GeneratorSlave::AndBoolBool);
+            super(Operator.AND, GeneratorSlave::AndIType);
         }
     }
 }

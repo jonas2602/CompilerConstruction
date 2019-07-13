@@ -70,7 +70,7 @@ public class SetTypeNode extends ArrayTypeNode {
 
     @Override
     public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
-        slave.SetMemory(ParamContainer.CHARCONTAINER('0'), varParam);
+        slave.SetMemory(ParamContainer.CHARCONTAINER((char)0), varParam);
     }
 
     @Override

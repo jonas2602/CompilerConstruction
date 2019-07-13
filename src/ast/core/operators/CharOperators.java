@@ -15,8 +15,11 @@ public class CharOperators implements StdBuilder {
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AddChar());
 
-        std.AddFunctionDeclaration(new XORChar());
-        std.AddFunctionDeclaration(new ORChar());
+        std.AddFunctionDeclaration(new XorChar());
+        std.AddFunctionDeclaration(new OrChar());
+        std.AddFunctionDeclaration(new AndChar());
+        std.AddFunctionDeclaration(new NegChar());
+        std.AddFunctionDeclaration(new InvChar());
 
         std.AddFunctionDeclaration(new AssignCharPointerArray());
     }
@@ -31,15 +34,33 @@ public class CharOperators implements StdBuilder {
         }
     }
 
-    public static class XORChar extends PascalType_Operator {
-        public XORChar() {
-            super(Operator.XOR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::XORIType);
+    public static class XorChar extends PascalType_Operator {
+        public XorChar() {
+            super(Operator.XOR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::XorIType);
         }
     }
 
-    public static class ORChar extends PascalType_Operator {
-        public ORChar() {
-            super(Operator.OR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::ORIType);
+    public static class OrChar extends PascalType_Operator {
+        public OrChar() {
+            super(Operator.OR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::OrIType);
+        }
+    }
+
+    public static class AndChar extends PascalType_Operator {
+        public AndChar() {
+            super(Operator.AND, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::AndIType);
+        }
+    }
+
+    public static class NegChar extends PascalType_SingleOperator {
+        public NegChar() {
+            super(Operator.NEG, PrimitiveTypeNode.CharNode, GeneratorSlave::NegateInt);
+        }
+    }
+
+    public static class InvChar extends PascalType_SingleOperator {
+        public InvChar() {
+            super(Operator.INV, PrimitiveTypeNode.CharNode, GeneratorSlave::InvIType);
         }
     }
 

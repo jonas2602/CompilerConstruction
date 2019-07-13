@@ -1,39 +1,85 @@
 package ast.core.functions.set;
 
+import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.core.operators.Operator;
+import ast.declarations.FuncDeclNode;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;
 import ast.statements.BranchNode;
 import ast.statements.ForNode;
-import ast.types.PrimitiveTypeNode;
-import ast.types.SetTypeNode;
-import ast.types.WildcardTypeNode;
+import ast.types.*;
+import writer.GeneratorSlave;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Array;
+import writer.wrappers.TypeWrapper_Other;
+import writer.wrappers.TypeWrapper_Primitive;
+
+import java.util.Set;
 
 public class SetOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
-        std.AddFunctionDeclaration(new SetOperators.AddSet());
-        std.AddFunctionDeclaration(new SetOperators.SubSet());
-        std.AddFunctionDeclaration(new SetOperators.InSet());
+        std.AddFunctionDeclaration(new AddSetWrapper());
+        std.AddFunctionDeclaration(new AddSet());
+
+        std.AddFunctionDeclaration(new SubSetWrapper());
+        std.AddFunctionDeclaration(new SubSet());
+        std.AddFunctionDeclaration(new InSet());
     }
 
-    public static class AddSet extends FuncDeclNode_Core {
-        public AddSet() {
+    public static class AddSetWrapper extends FuncDeclNode_Core {
+        public AddSetWrapper() {
             super(Operator.ADD, SetTypeNode.WildcardSetNode());
 
             AddParameter("set1", m_ReturnType);
             AddParameter("set2", m_ReturnType);
 
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
+            AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
+            ParamContainer leftParam = lParam.CreateSnippet(slave);
+            ParamContainer rightParam = rParam.CreateSnippet(slave);
+
+            ParamContainer temp = slave.AllocateMemory(new TypeWrapper_Array(TypeWrapper_Primitive.CHAR, 256));
+            slave.SetMemory(ParamContainer.CHARCONTAINER((char)0), temp);
+
+            slave.CreateFunctionCall("addsetcore", TypeWrapper_Other.VOID, true);
+            slave.CreateFunctionCallParameter(temp);
+            slave.CreateFunctionCallParameter(leftParam);
+            slave.CreateFunctionCallParameter(rightParam);
+
+            FuncDeclNode dirty = m_Block.GetFunctionDeclaration("addsetcore").get(0);
+            dirty.CreateSnippet(slave);
+
+            slave.ExitScope();
+            return temp;
+        }
+    }
+
+    public static class AddSet extends FuncDeclNode_Core {
+        public AddSet() {
+            super("addsetcore", VoidTypeNode.VoidNode);
+
+            SetTypeNode subSet = SetTypeNode.WildcardSetNode();
+
+            AddParameter("target", subSet, true);
+            AddParameter("set1", subSet, true);
+            AddParameter("set2", subSet, true);
+
             // Create temp variables
-            m_Block.AddVariableDeclaration("tempSet", m_ReturnType);
             m_Block.AddVariableDeclaration("i", PrimitiveTypeNode.IntNode);
 
             AccessNode_Variable set1Access = new AccessNode_Variable("set1");
             AccessNode_Variable set2Access = new AccessNode_Variable("set2");
-            AccessNode_Variable tempSetAccess = new AccessNode_Variable("tempSet");
+            AccessNode_Variable tempSetAccess = new AccessNode_Variable("target");
             AccessNode_Variable loopIndexAccess = new AccessNode_Variable("i");
             AccessNode_Array set1IndexAccess = new AccessNode_Array(set1Access, loopIndexAccess);
             AccessNode_Array set2IndexAccess = new AccessNode_Array(set2Access, loopIndexAccess);
@@ -48,34 +94,69 @@ public class SetOperators implements StdBuilder {
         }
     }
 
-    public static class SubSet extends FuncDeclNode_Core {
-        public SubSet() {
+    public static class SubSetWrapper extends FuncDeclNode_Core {
+        public SubSetWrapper() {
             super(Operator.SUB, SetTypeNode.WildcardSetNode());
 
             AddParameter("set1", m_ReturnType);
             AddParameter("set2", m_ReturnType);
 
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
+            AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
+            ParamContainer leftParam = lParam.CreateSnippet(slave);
+            ParamContainer rightParam = rParam.CreateSnippet(slave);
+
+            ParamContainer temp = slave.AllocateMemory(new TypeWrapper_Array(TypeWrapper_Primitive.CHAR, 256));
+            slave.SetMemory(ParamContainer.CHARCONTAINER((char)0), temp);
+
+            slave.CreateFunctionCall("subsetcore", TypeWrapper_Other.VOID, true);
+            slave.CreateFunctionCallParameter(temp);
+            slave.CreateFunctionCallParameter(leftParam);
+            slave.CreateFunctionCallParameter(rightParam);
+
+            FuncDeclNode dirty = m_Block.GetFunctionDeclaration("subsetcore").get(0);
+            dirty.CreateSnippet(slave);
+
+            slave.ExitScope();
+            return temp;
+        }
+    }
+
+    public static class SubSet extends FuncDeclNode_Core {
+        public SubSet() {
+            super("subsetcore", VoidTypeNode.VoidNode);
+
+            SetTypeNode subSet = SetTypeNode.WildcardSetNode();
+
+            AddParameter("target", subSet, true);
+            AddParameter("set1", subSet, true);
+            AddParameter("set2", subSet, true);
+
             // Create temp variables
-            m_Block.AddVariableDeclaration("tempSet", m_ReturnType);
             m_Block.AddVariableDeclaration("i", PrimitiveTypeNode.IntNode);
 
             AccessNode_Variable set1Access = new AccessNode_Variable("set1");
             AccessNode_Variable set2Access = new AccessNode_Variable("set2");
-            AccessNode_Variable tempSetAccess = new AccessNode_Variable("tempSet");
+            AccessNode_Variable tempSetAccess = new AccessNode_Variable("target");
             AccessNode_Variable loopIndexAccess = new AccessNode_Variable("i");
             AccessNode_Array set1IndexAccess = new AccessNode_Array(set1Access, loopIndexAccess);
             AccessNode_Array set2IndexAccess = new AccessNode_Array(set2Access, loopIndexAccess);
             AccessNode_Array tempSetIndexAccess = new AccessNode_Array(tempSetAccess, loopIndexAccess);
 
             // Body that adds element
-            FuncCallNode orCall = new FuncCallNode(Operator.XOR, set1IndexAccess, set2IndexAccess);
-            AssignmentNode assignIndex = new AssignmentNode(tempSetIndexAccess, orCall);
+            FuncCallNode invCall = new FuncCallNode(Operator.INV, set2IndexAccess);
+            FuncCallNode andCall = new FuncCallNode(Operator.AND, set1IndexAccess, invCall);
+            AssignmentNode assignIndex = new AssignmentNode(tempSetIndexAccess, andCall);
 
             ForNode loop = new ForNode(new AccessNode_Variable("i"), ConstantNode.IntNode(0), ConstantNode.IntNode(255), true, assignIndex);
             m_Block.SetCompoundStatement(loop);
         }
-
-
     }
 
     public static class InSet extends FuncDeclNode_Core {

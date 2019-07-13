@@ -14,6 +14,7 @@ public enum Operator {
     AND("operator&&"),
     OR("operator||"),
     XOR("operator^"),
+    INV("operator~"),
 
     IN("operatorIN"), // operator#
 
