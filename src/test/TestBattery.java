@@ -28,20 +28,27 @@ public class TestBattery {
     public TestBattery() {
         m_TestCases = new ArrayList<>();
 
-        m_TestCases.add(new TestCase("arrays", "a aba 1.000000", "afgh"));
-        m_TestCases.add(new TestCase("branch", "1000", "2", "0", "-1"));
-        m_TestCases.add(new TestCase("constant", "0", "1", "2", "3", "4", "5", "5"));
-        m_TestCases.add(new TestCase("enum", "6", "0", "2", "Not start", "middle"));
-        m_TestCases.add(new TestCase("goto", "0", "2"));
-        m_TestCases.add(new TestCase("loops", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));
-        m_TestCases.add(new TestCase("memory", "42", "99", "12"));
-        m_TestCases.add(new TestCase("pointer", "0 10 2 3 4, 10" ,"3"));
-        m_TestCases.add(new TestCase("string", "test my random string test123"));
-        m_TestCases.add(new TestCase("innerfunctions", "1", "1", "1"));
-        m_TestCases.add(new TestCase("innerfunctions2", "4"));
-        m_TestCases.add(new TestCase("switch", "MEH"));
-        m_TestCases.add(new TestCase("sets"));
-        m_TestCases.add(new TestCase("types", "3", "10"));
+        add("arrays").AddLines("a aba 1.000000", "afgh");
+        add("branch").AddSeperatorLines("1000 2 0 -1");
+        add("constant").AddSeperatorLines("0 1 2 3 4 5 5");
+        add("enum").AddSeperatorLines("6 0 2").AddLines("Not start", "middle");
+        add("goto").AddSeperatorLines("0 2");
+        add("loops").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12");
+        add("memory").AddSeperatorLines("42 99 12");
+        add("pointer").AddLines("0 10 2 3 4, 10" ,"3");
+        add("string").AddLines("test my random string test123");
+        add("innerfunctions").AddSeperatorLines("1 1 1");
+        add("innerfunctions2").AddLines("4");
+        add("switch").AddLines("MEH");
+        // TODO
+        add("sets");
+        add("types").AddSeperatorLines("3 10");
+    }
+
+    public TestCase add(String name) {
+        TestCase t = new TestCase(name);
+        m_TestCases.add(t);
+        return t;
     }
 
     public void Fire() {
@@ -53,6 +60,16 @@ public class TestBattery {
 
         String libFolder = "lib" + fileSeparator + "llvm" + fileSeparator;
         File libFile = new File(libFolder);
+
+        String classpath = null;
+        try {
+            classpath = new File(TestBattery.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath()+";"+libFile.getAbsolutePath()+fileSeparator + "*";
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+
+        String[] cmd = new String[]{javaHome, "-cp", classpath, PROCESSCLASSNAME, testFile.getAbsolutePath()};
 
         m_Failed = 0;
         m_Passed = 0;
@@ -107,21 +124,24 @@ public class TestBattery {
 
             //Test if it can be executed an is runnable
             try {
-                ProcessBuilder processBuilder = new ProcessBuilder(javaHome, "-cp", new File(TestBattery.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath()+";"+libFile.getAbsolutePath()+fileSeparator + "*", PROCESSCLASSNAME, testFile.getAbsolutePath());
+                ProcessBuilder processBuilder = new ProcessBuilder(cmd);
                 processBuilder.redirectErrorStream(true);
                 Process process = processBuilder.start();
-                Scanner scanner = new Scanner(process.getInputStream());
+                BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 int counter = 0;
                 List<String> expected = c.GetLines();
                 String error = "";
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
+                String line = null;
+                boolean checkError = false;
+                while ((line = stdout.readLine()) != null)  {
                     if (!line.equals(expected.get(counter))) {
                         if (counter == 0) {
                             error = line;
                             break;
                         }
-                        PrintError(c, "Expected "+expected.get(counter)+" got "+line+" for input "+(counter+1));
+                        System.out.println("Expected "+expected.get(counter)+" got "+line+" for input "+counter);
+                        checkError = true;
                     }
 
                     counter++;
@@ -131,13 +151,25 @@ public class TestBattery {
                     PrintError(c,"Missing "+(expected.size() - counter)+" output(s)");
                 }
 
+                if (checkError) {
+                    PrintError(c,"Logic Failed");
+                }
+
                 int ret = process.waitFor();
                 if (ret != 0) {
                     PrintError(c, "Process finished with errorcode "+ret+" and error: "+error);
-                    System.err.println(scanner.nextLine());
+                    System.err.println("stdout output");
+                    while ((line = stdout.readLine()) != null)  {
+                        System.err.println(line);
+                    }
+
+                    System.err.println("stderr output");
+                    while ((line = stderr.readLine()) != null)  {
+                        System.err.println(line);
+                    }
                     continue;
                 }
-            } catch (IOException | InterruptedException | URISyntaxException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
 
