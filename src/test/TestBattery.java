@@ -116,7 +116,7 @@ public class TestBattery {
             prog.CheckType();
 
             try {
-                CodeGenerator.CreateIntermediate(prog, stdBlock, TESTFILENAME);
+                CodeGenerator.CreateIntermediate(prog, stdBlock, TESTFILENAME, true);
             } catch (IOException e) {
                 PrintError(c, e.getMessage());
                 continue;
