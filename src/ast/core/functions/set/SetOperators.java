@@ -53,10 +53,10 @@ public class SetOperators implements StdBuilder {
 
             AccessNode_Variable setAccess = new AccessNode_Variable("set");
             AccessNode_Array indexAccess = new AccessNode_Array(setAccess, elementAccess);
-            
 
 
-            BranchNode branch = new BranchNode(compCall, assignment);
+
+            // BranchNode branch = new BranchNode(compCall, assignment);
 
             // m_Block.SetCompoundStatement();
         }
