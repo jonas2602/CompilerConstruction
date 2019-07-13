@@ -24,6 +24,14 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
         m_IndexExpressions = new ArrayList<>();
     }
 
+    public AccessNode_Array(AbstractSyntaxTree child, AbstractSyntaxTree... indices) {
+        this(child);
+
+        for (AbstractSyntaxTree element : indices) {
+            AddIndexExpression(element);
+        }
+    }
+
     public void AddIndexExpression(AbstractSyntaxTree exp) {
         m_IndexExpressions.add(exp);
         exp.SetParent(this);
@@ -57,6 +65,7 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         ParamContainer varAccess = m_Child.CreateSnippet(slave);
         ParamContainer indexContainer = m_IndexExpressions.get(0).CreateSnippet(slave);
+        indexContainer = AccessInterface.TryLoadValue(slave, m_IndexExpressions.get(0), indexContainer);
 
         if (m_Child.GetType() instanceof ArrayTypeNode) {
             return slave.CreateArrayElementPtr(varAccess, indexContainer);

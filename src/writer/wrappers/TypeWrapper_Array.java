@@ -22,6 +22,11 @@ public class TypeWrapper_Array extends TypeWrapper {
     }
 
     @Override
+    public TypeWrapper GetChild(String index) {
+        return m_BaseType;
+    }
+
+    @Override
     public int GetTypeSize(int align) {
         return m_Size * m_BaseType.GetTypeSize(align);
     }

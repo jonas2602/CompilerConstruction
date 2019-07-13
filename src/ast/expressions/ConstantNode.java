@@ -2,6 +2,7 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.types.NilTypeNode;
+import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.snippets.CodeSnippet_Plain;
@@ -10,6 +11,15 @@ import writer.wrappers.ParamContainer;
 
 public class ConstantNode extends AbstractSyntaxTree {
     public static final ConstantNode NilNode = new ConstantNode("null", new NilTypeNode());
+
+    public static ConstantNode IntNode(int i) {
+        return new ConstantNode(Integer.toString(i), PrimitiveTypeNode.IntNode);
+    }
+
+    public static ConstantNode CharNode(char c) {
+        return new ConstantNode(Integer.toString((int)c), PrimitiveTypeNode.CharNode);
+    }
+
 
     protected String m_Data;
     protected TypeNode m_TypeNode;

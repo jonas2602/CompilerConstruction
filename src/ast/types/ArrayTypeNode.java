@@ -16,8 +16,8 @@ public class ArrayTypeNode extends TypeNode {
         return new ArrayTypeNode(Integer.MAX_VALUE, new WildcardTypeNode());
     }
 
-    private AbstractSyntaxTree m_ElementCounter;
-    private TypeNode m_ElementType;
+    protected AbstractSyntaxTree m_ElementCounter;
+    protected TypeNode m_ElementType;
 
     public ArrayTypeNode(AbstractSyntaxTree elementCounter, TypeNode elementType) {
         m_ElementCounter = elementCounter;
@@ -28,9 +28,7 @@ public class ArrayTypeNode extends TypeNode {
     }
 
     public ArrayTypeNode(int size, TypeNode elementType) {
-        ConstantNode min = new ConstantNode("0", PrimitiveTypeNode.IntNode);
-        ConstantNode max = new ConstantNode(Integer.toString(size - 1), PrimitiveTypeNode.IntNode);
-        m_ElementCounter = new RangeTypeNode(min, max);
+        m_ElementCounter = new RangeTypeNode(0, size - 1, PrimitiveTypeNode.IntNode);
         m_ElementType = elementType;
 
         m_ElementCounter.SetParent(this);

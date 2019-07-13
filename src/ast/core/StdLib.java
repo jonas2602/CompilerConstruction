@@ -10,6 +10,10 @@ import ast.core.functions.memory.FuncDeclNode_dispose;
 import ast.core.functions.memory.FuncDeclNode_getmem;
 import ast.core.functions.memory.FuncDeclNode_new;
 import ast.core.functions.memory.FuncDeclNode_reallocmem;
+import ast.core.functions.set.FuncDeclNode_appendElement;
+import ast.core.functions.set.FuncDeclNode_appendRange;
+import ast.core.functions.set.FuncDeclNode_inRange;
+import ast.core.functions.set.SetOperators;
 import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;
@@ -47,6 +51,12 @@ public abstract class StdLib {
         // list
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_getLength());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_setLength());
+
+        // set
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_appendElement());
+        // stdBlock.AddFunctionDeclaration(new FuncDeclNode_appendRange());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_inRange());
+        new SetOperators().buildStd(stdBlock);
 
         // types
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));

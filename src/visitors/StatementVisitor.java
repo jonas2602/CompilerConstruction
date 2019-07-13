@@ -161,12 +161,12 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     public AbstractSyntaxTree visitIfStatement(PascalParser.IfStatementContext ctx) {
         AbstractSyntaxTree condition = new ExpressionVisitor().visit(ctx.expression());
         AbstractSyntaxTree thenStatement = visitStatement(ctx.statement(0));
-        AbstractSyntaxTree elseStatement = null;
         if (ctx.ELSE() != null) {
-            elseStatement = visitStatement(ctx.statement(1));
+            AbstractSyntaxTree elseStatement = visitStatement(ctx.statement(1));
+            return new BranchNode(condition, thenStatement, elseStatement);
         }
 
-        return new BranchNode(condition, thenStatement, elseStatement);
+        return new BranchNode(condition, thenStatement);
     }
 
     @Override

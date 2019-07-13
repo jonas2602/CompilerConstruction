@@ -3,6 +3,7 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
+import ast.core.functions.math.MathFunctions;
 import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
@@ -25,8 +26,24 @@ public class FuncCallNode extends AbstractSyntaxTree {
         m_Params = new ArrayList<>();
     }
 
+    public FuncCallNode(String name, AbstractSyntaxTree... params) {
+        this(name);
+
+        for (AbstractSyntaxTree param : params) {
+            AddParameter(param);
+        }
+    }
+
     public FuncCallNode(Operator operator) {
         this(operator.GetOperatorFunctionName());
+    }
+
+    public FuncCallNode(Operator operator, AbstractSyntaxTree... params) {
+        this(operator);
+
+        for (AbstractSyntaxTree param : params) {
+            AddParameter(param);
+        }
     }
 
     public void AddParameter(AbstractSyntaxTree InParam) {
@@ -76,10 +93,9 @@ public class FuncCallNode extends AbstractSyntaxTree {
             StringBuilder builder = new StringBuilder();
             for (AbstractSyntaxTree param : m_Params) {
                 TypeWrapper type = param.GetType().GetWrappedType();
-                if(type == null) {
-                    builder.append(" "+param+" (Couldn't load WrappedType)");
-                }
-                else {
+                if (type == null) {
+                    builder.append(" " + param + " (Couldn't load WrappedType)");
+                } else {
                     builder.append(" " + type.CreateTypeName());
                 }
             }

@@ -1,5 +1,6 @@
 package ast.core.functions.list;
 
+import ast.core.functions.FuncDeclNode_Generic;
 import ast.core.operators.Operator;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;

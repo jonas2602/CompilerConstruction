@@ -142,7 +142,7 @@ public class ExpressionVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
             }
         }
 
-        return new ConstantNode_Set(list);
+        return new SetBuilderNode(list);
     }
 
     @Override

@@ -7,7 +7,7 @@ import writer.wrappers.ParamContainer;
 import java.util.Set;
 
 
-public class SetTypeNode extends RecordTypeNode {
+public class SetTypeNode extends ArrayTypeNode {
     public static final SetTypeNode WildcardSetNode() {
         return new SetTypeNode(new WildcardTypeNode());
     }
@@ -16,68 +16,34 @@ public class SetTypeNode extends RecordTypeNode {
         return "set" + baseType.toString();
     }
 
-    public enum ESetProps {
-        LEFT,
-        RIGHT,
-        CONTENT
-    }
+    // not the type of the actual array
+    // but the type the set is unsing in type checking
+    private TypeNode m_SourceType;
 
-    private TypeNode m_ElementType;
-    // private List<AbstractSyntaxTree> m_Content;
-
-    // private RecordTypeNode m_Struct;
-
-    public SetTypeNode(TypeNode type) {
-        m_ElementType = type;
-        m_ElementType.SetParent(this);
-
-        AddEntry(ESetProps.LEFT.name(), new PointerTypeNode(this));
-        AddEntry(ESetProps.RIGHT.name(), new PointerTypeNode(this));
-        AddEntry(ESetProps.CONTENT.name(), m_ElementType);
-    }
-
-//    public SetTypeNode(List<AbstractSyntaxTree> content) {
-//        m_Content = content;
-//
-//        for(AbstractSyntaxTree a: m_Content) {
-//            a.SetParent(this);
-//        }
-//    }
-
-//    public void initStruct() {
-//        m_Struct = new RecordTypeNode();
-//        m_Struct.AddEntry("array", new ArrayTypeNode_Dynamic(m_ElementType));
-//        m_Struct.AddEntry("counter", PrimitiveTypeNode.IntNode);
-//        m_Struct.SetParent(this);
-//        m_Struct.CheckType();
-//    }
-
-//    @Override
-    public TypeNode CheckType() {
-//        if (m_ElementType != null) {
-            m_ElementType.CheckType();
-//        } else {
-//            if (m_Content.size() == 0) {
-//                m_ElementType = PrimitiveTypeNode.WildcardPrimitiveNode();
-//            } else {
-//                m_ElementType = m_Content.get(0).CheckType();
-//                for (AbstractSyntaxTree param : m_Content) {
-//                    if (!m_ElementType.CompareType(param.CheckType())) {
-//                        throw new TypeCheckException(this, "Types missmatch in set! " + m_ElementType.GetWrappedType().CreateTypeName() + " vs " + param.GetType().GetWrappedType().CreateTypeName());
-//                    }
-//                }
-//            }
-//        }
-//
-//        // ready to init struct now
-//        initStruct();
-        return GetType();
+    public SetTypeNode(TypeNode elementType) {
+        super(256, PrimitiveTypeNode.CharNode);
+        m_SourceType = elementType;
     }
 
     @Override
-    public TypeNode GetTypeDetails() {
-        return m_ElementType.GetType();
+    public TypeNode CheckType() {
+        // check used array
+        super.CheckType();
+
+        // check actual set type
+        m_SourceType.CheckType();
+
+        return GetType();
     }
+
+    public TypeNode GetSetElementType() {
+        return m_SourceType;
+    }
+
+    // @Override
+    // public TypeNode GetTypeDetails() {
+    //     return m_SourceType.GetType();
+    // }
 
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
@@ -89,27 +55,27 @@ public class SetTypeNode extends RecordTypeNode {
             return false;
         }
 
-        TypeNode otherElementType = ((SetTypeNode) otherTypeNode.GetCompareType()).m_ElementType;
-        if (!m_ElementType.CompareType(otherElementType)) {
+        TypeNode otherSourceType = ((SetTypeNode) otherTypeNode.GetCompareType()).m_SourceType;
+        if (!m_SourceType.CompareType(otherSourceType)) {
             return false;
         }
 
         return true;
     }
 
-//    @Override
-//    public ParamContainer CreateSnippet(GeneratorSlave slave) {
-//        return m_Struct.CreateSnippet(slave);
-//    }
-
     @Override
     public Set<WildcardTypeNode> GetWildcards() {
-        return m_ElementType.GetWildcards();
+        return m_SourceType.GetWildcards();
+    }
+
+    @Override
+    public void InitVariable(GeneratorSlave slave, ParamContainer varParam) {
+        slave.SetMemory(ParamContainer.CHARCONTAINER('0'), varParam);
     }
 
     @Override
     public AbstractSyntaxTree Copy() {
-        return new ArrayTypeNode_Dynamic((TypeNode) m_ElementType.Copy());
+        return new SetTypeNode((TypeNode) m_SourceType.Copy());
     }
 
 }

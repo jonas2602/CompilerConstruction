@@ -99,6 +99,10 @@ public class BlockNode extends AbstractSyntaxTree {
         m_VarDeclMap.put(variable.GetName(), variable);
     }
 
+    public void AddVariableDeclaration(String varName, TypeNode varType) {
+        AddVariableDeclaration(new VarDeclNode(varName, varType));
+    }
+
     public void AddFunctionDeclaration(FuncDeclNode function) {
         if (m_VarDeclMap.containsKey(function.GetName())) {
             throw new RuntimeException("Variable with Name " + function.GetName() + " already defined in Scope");
@@ -260,7 +264,7 @@ public class BlockNode extends AbstractSyntaxTree {
         }
 
         if (m_CompoundStatement != null) {
-            m_CompoundStatement.CreateSnippet(slave, ctx);
+            m_CompoundStatement.CreateSnippet(slave);
         }
 
         return null;

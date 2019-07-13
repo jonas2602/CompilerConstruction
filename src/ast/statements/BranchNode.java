@@ -24,6 +24,10 @@ public class BranchNode extends AbstractSyntaxTree {
         }
     }
 
+    public BranchNode(AbstractSyntaxTree condition, AbstractSyntaxTree thenBlock) {
+        this(condition, thenBlock, null);
+    }
+
     @Override
     public TypeNode CheckType() {
         if (!PrimitiveTypeNode.BoolNode.CompareType(m_Condition.CheckType())) {

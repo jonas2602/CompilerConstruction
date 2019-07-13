@@ -12,6 +12,10 @@ public class RangeTypeNode extends TypeNode {
     private AbstractSyntaxTree m_Min;
     private AbstractSyntaxTree m_Max;
 
+    public RangeTypeNode(int min, int max, TypeNode type) {
+        this(new ConstantNode(Integer.toString(min), type), new ConstantNode(Integer.toString(max), type));
+    }
+
     public RangeTypeNode(AbstractSyntaxTree min, AbstractSyntaxTree max) {
         this.m_Min = min;
         this.m_Max = max;

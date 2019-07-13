@@ -28,6 +28,12 @@ public class TypeWrapper_Primitive extends TypeWrapper {
     }
 
     @Override
+    public TypeWrapper GetChild(String index) {
+        System.err.println("Reached bottom of TypeWrapper");
+        return null;
+    }
+
+    @Override
     public int GetTypeSize(int align) {
         return AlignSize(align, m_BaseType.GetSize());
     }

@@ -27,6 +27,11 @@ public class TypeWrapper_Struct extends TypeWrapper {
     }
 
     @Override
+    public TypeWrapper GetChild(String index) {
+        return m_EntryTypes.get(Integer.parseInt(index));
+    }
+
+    @Override
     public int GetTypeSize(int align) {
         int size = 0;
         for (TypeWrapper entry : m_EntryTypes) {

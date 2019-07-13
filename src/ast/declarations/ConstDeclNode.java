@@ -22,7 +22,7 @@ public class ConstDeclNode extends VarDeclNode {
     //  func(var const x) | call(const)   (valid)
     public ConstDeclNode(String name, AbstractSyntaxTree constant) {
         // Assuming that in types are always constant
-        super(name);
+        super(name, (TypeNode) constant.GetType().Copy());
 
         m_Constant = constant;
         m_Constant.SetParent(this);

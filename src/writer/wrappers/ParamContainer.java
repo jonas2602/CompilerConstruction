@@ -17,6 +17,10 @@ public class ParamContainer {
         return new ParamContainer(TypeWrapper_Primitive.BOOL, new ValueWrapper_Constant(InBool ? "true" : "false"));
     }
 
+    public static ParamContainer CHARCONTAINER(char InChar) {
+        return new ParamContainer(TypeWrapper_Primitive.CHAR, new ValueWrapper_Constant(InChar));
+    }
+
 
     public static ParamContainer FromTypeString(String typeString) {
         return null; // TODO:

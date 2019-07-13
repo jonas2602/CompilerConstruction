@@ -24,6 +24,12 @@ public class TypeWrapper_Other extends TypeWrapper {
     }
 
     @Override
+    public TypeWrapper GetChild(String index) {
+        System.err.println("Reached bottom of TypeWrapper");
+        return null;
+    }
+
+    @Override
     public int GetTypeSize(int align) {
         System.out.println("Unknown size of type " + m_TypeName);
         return 0;

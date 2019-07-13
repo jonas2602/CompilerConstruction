@@ -2,6 +2,7 @@ package writer;
 
 import writer.natives.NativeFunction;
 import writer.natives.NativeFunction_memcpy;
+import writer.natives.NativeFunction_memset;
 import writer.snippets.*;
 import writer.wrappers.*;
 
@@ -212,6 +213,21 @@ public class GeneratorSlave {
         }
 
         CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize, 8));
+
+        // CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
+        // GetScopeSnippetAsDef().AddStatement(stmt);
+    }
+
+    public void SetMemory(ParamContainer content, ParamContainer target) {
+        int blockSize = target.GetRootType().GetChild().GetTypeByteSize();
+
+        // convert to char* if given as other types
+        if (!TypeManager.CHARPTR().CompareType(target.GetRootType())) {
+            // source = CreateArrayElementPtr(source, 0);
+            target = BitCast(target, TypeManager.CHARPTR());
+        }
+
+        CreateNativeCall(new NativeFunction_memset(target, content, blockSize));
 
         // CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
         // GetScopeSnippetAsDef().AddStatement(stmt);
@@ -456,7 +472,7 @@ public class GeneratorSlave {
         TypeWrapper arrType = array.GetRootType().GetChild();
         CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i32 0, i32 %s", arrType, array, index); // TODO: alignment
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
-        TypeWrapper elementType = arrType.GetChild(Integer.parseInt(index.CreateDataString()));
+        TypeWrapper elementType = arrType.GetChild(index.CreateDataString());
 
         return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
     }

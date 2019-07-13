@@ -1,16 +1,17 @@
-package ast.core.functions.list;
+package ast.core.functions;
 
 import ast.BlockNode;
 import ast.ProgramNode;
 import ast.core.FuncDeclNode_Core;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
+import ast.declarations.VarDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.statements.CompStmtNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import ast.types.WildcardTypeNode;
 import writer.GeneratorSlave;
-import writer.snippets.CodeSnippet_Base;
 import writer.wrappers.ParamContainer;
 
 import java.util.*;
@@ -47,6 +48,11 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         copy.m_Params = new ArrayList<>();
         for (ParamDeclNode param : m_Params) {
             copy.AddParameter((ParamDeclNode) param.Copy());
+        }
+
+        // copy return type
+        if (!(m_ReturnType instanceof VoidTypeNode)) {
+            copy.m_Block.AddParameterDeclaration(new VarDeclNode(genericName, (TypeNode) m_ReturnType.Copy()));
         }
 
         // TODO: support variables that are no parameters?

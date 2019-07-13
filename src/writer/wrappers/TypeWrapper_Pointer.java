@@ -24,6 +24,11 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     }
 
     @Override
+    public TypeWrapper GetChild(String index) {
+        return m_PointedType;
+    }
+
+    @Override
     public int GetTypeSize(int align) {
         // Pointer are always 64 bit integer
         return AlignSize(align, 64);

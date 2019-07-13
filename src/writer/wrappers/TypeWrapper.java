@@ -4,6 +4,7 @@ public abstract class TypeWrapper {
     public abstract String CreateTypeName();
 
     public abstract TypeWrapper GetChild(int index);
+    public abstract TypeWrapper GetChild(String index);
 
     public TypeWrapper GetChild() {
         return GetChild(0);

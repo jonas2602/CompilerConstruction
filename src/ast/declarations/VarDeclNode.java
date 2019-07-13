@@ -14,14 +14,11 @@ public class VarDeclNode extends AbstractSyntaxTree {
 
     private boolean m_GlobalVariable;
 
-    public VarDeclNode(String name) {
-        m_Name = name;
-        m_GlobalVariable = false;
-    }
-
     public VarDeclNode(String name, TypeNode type) {
-        this(name);
+        m_Name = name;
         SetType(type);
+
+        m_GlobalVariable = false;
     }
 
     public boolean IsGlobalVariable() {

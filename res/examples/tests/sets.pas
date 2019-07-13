@@ -14,11 +14,25 @@ begin
 
 end.}
 
+
 var
-    upper: set of char;
+    upper: set of integer;
 begin
-    upper := ['A', 'B', 'Z'];
+    upper := [1, 2, 3];
+    writeln(upper[0],' ', upper[1]);
+    writeln(upper[2],' ', upper[3]);
+    writeln(upper[4],' ', upper[5]);
+    {writeln(1 in upper);}
 end.
+
+
+{var
+    valid: boolean;
+
+begin
+    valid := inrange(0,100,20);
+end.}
+
 
 {var
     myset: set of char;
