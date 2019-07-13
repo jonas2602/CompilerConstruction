@@ -4,10 +4,8 @@ import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.core.operators.Operator;
-import ast.expressions.AccessNode_Array;
-import ast.expressions.AccessNode_Variable;
-import ast.expressions.ConstantNode;
-import ast.expressions.FuncCallNode;
+import ast.expressions.*;
+import ast.statements.AssignmentNode;
 import ast.statements.BranchNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.SetTypeNode;
@@ -44,8 +42,8 @@ public class SetOperators implements StdBuilder {
             super(Operator.IN, PrimitiveTypeNode.BoolNode);
 
             WildcardTypeNode primWildcard = PrimitiveTypeNode.WildcardPrimitiveNode();
-            AddParameter("set", new SetTypeNode(primWildcard));
-            AddParameter("element", primWildcard);
+            AddParameter("element", PrimitiveTypeNode.IntNode); // primWildcard);
+            AddParameter("set", SetTypeNode.WildcardSetNode()); // new SetTypeNode(primWildcard));
 
 
             AccessNode_Variable elementAccess = new AccessNode_Variable("element");
@@ -53,12 +51,15 @@ public class SetOperators implements StdBuilder {
 
             AccessNode_Variable setAccess = new AccessNode_Variable("set");
             AccessNode_Array indexAccess = new AccessNode_Array(setAccess, elementAccess);
+            FuncCallNode castCharBool = new FuncCallNode("bool", indexAccess);
+            AssignmentNode assignValid = new AssignmentNode(new AccessNode_Variable(m_Name), castCharBool);
+
+            AssignmentNode assignInvalid = new AssignmentNode(new AccessNode_Variable(m_Name), ConstantNode.BoolNode(false));
 
 
+            BranchNode branch = new BranchNode(compCall, assignValid, assignInvalid);
 
-            // BranchNode branch = new BranchNode(compCall, assignment);
-
-            // m_Block.SetCompoundStatement();
+            m_Block.SetCompoundStatement(branch);
         }
     }
 }

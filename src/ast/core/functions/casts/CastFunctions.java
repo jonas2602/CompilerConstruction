@@ -14,6 +14,7 @@ public class CastFunctions implements StdBuilder {
         std.AddFunctionDeclaration(new OrdInt());
         std.AddFunctionDeclaration(new OrdChar());
         std.AddFunctionDeclaration(new OrdBool());
+        std.AddFunctionDeclaration(new BoolChar());
     }
 
     public static class ChrInt extends PascalType_SingleOperator {
@@ -37,6 +38,12 @@ public class CastFunctions implements StdBuilder {
     public static class OrdBool extends PascalType_SingleOperator {
         public OrdBool() {
             super("ord", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.BoolNode, GeneratorSlave::ExtendToInt);
+        }
+    }
+
+    public static class BoolChar extends PascalType_SingleOperator {
+        public BoolChar() {
+            super("bool", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.CharNode, GeneratorSlave::TruncToBool);
         }
     }
 }

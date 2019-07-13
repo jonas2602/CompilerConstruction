@@ -17,7 +17,11 @@ public class ConstantNode extends AbstractSyntaxTree {
     }
 
     public static ConstantNode CharNode(char c) {
-        return new ConstantNode(Integer.toString((int)c), PrimitiveTypeNode.CharNode);
+        return new ConstantNode(Integer.toString((int) c), PrimitiveTypeNode.CharNode);
+    }
+
+    public static ConstantNode BoolNode(boolean b) {
+        return new ConstantNode(b ? Integer.toString(1) : Integer.toString(0), PrimitiveTypeNode.BoolNode);
     }
 
 

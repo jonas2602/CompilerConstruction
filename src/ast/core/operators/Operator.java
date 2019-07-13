@@ -14,7 +14,7 @@ public enum Operator {
     AND("operator&&"),
     OR("operator||"),
 
-    IN("operator#"),
+    IN("operatorIN"), // operator#
 
     EQ("operator=="),
     NE("operator<>"),
