@@ -82,6 +82,6 @@ public class App {
             System.exit(0);
         }
 
-        CodeGenerator.CreateIntermediate(prog, stdBlock, targetFileName);
+        CodeGenerator.CreateIntermediate(prog, stdBlock, targetFileName, false);
     }
 }

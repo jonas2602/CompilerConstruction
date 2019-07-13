@@ -23,17 +23,15 @@ public class TestProcess {
         BytePointer error = new BytePointer((Pointer)null);;
         LLVMContextRef context = LLVMContextCreate();
 
-        //get file size
-        File file = new File(args[0]);
 
+        File file = new File(args[0]);
         if(!file.exists() || !file.isFile()) {
             System.out.println("Error while loading file!. File does not exist or is a directory");
+            System.exit(1);
         }
 
-        long size = file.length();
 
         //load file
-
         LLVMMemoryBufferRef buf = new LLVMMemoryBufferRef();
         BytePointer path = new BytePointer(args[0]);
         int res = LLVMCreateMemoryBufferWithContentsOfFile(path, buf, error);
@@ -43,7 +41,6 @@ public class TestProcess {
         }
 
         //parse IR
-
         LLVMModuleRef mod = new LLVMModuleRef();
         res = LLVMParseIRInContext(context, buf, mod, error);
         if(res == 1) {
@@ -52,12 +49,10 @@ public class TestProcess {
         }
 
         //verify module
-
         LLVMVerifyModule(mod, LLVMAbortProcessAction, error);
         LLVMDisposeMessage(error);
 
         //create execute engine
-
         LLVMExecutionEngineRef engine = new LLVMExecutionEngineRef();
         if(LLVMCreateJITCompilerForModule(engine, mod, 2, error) != 0) {
             System.out.println("Error while creating execution engine");

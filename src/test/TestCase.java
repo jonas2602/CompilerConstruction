@@ -17,6 +17,19 @@ public class TestCase {
         }
     }
 
+    public TestCase AddLines(String... lines) {
+        for(String s: lines) {
+            m_Lines.add(s);
+        }
+
+        return this;
+    }
+
+    public TestCase AddSeperatorLines(String lines) {
+        String[] unpackedLines = lines.split(" ");
+        return AddLines(unpackedLines);
+    }
+
     public String GetFileName() {
         return m_FileName;
     }
