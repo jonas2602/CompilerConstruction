@@ -359,8 +359,12 @@ public class GeneratorSlave {
         return TwoParametersInstruction("fdiv", left, right);
     }
 
-    public ParamContainer OrBoolBool(ParamContainer left, ParamContainer right) {
+    public ParamContainer ORIType(ParamContainer left, ParamContainer right) {
         return TwoParametersInstruction("or", left, right);
+    }
+
+    public ParamContainer XORIType(ParamContainer left, ParamContainer right) {
+        return TwoParametersInstruction("xor", left, right);
     }
 
     public ParamContainer AndBoolBool(ParamContainer left, ParamContainer right) {

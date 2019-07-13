@@ -54,7 +54,7 @@ public abstract class StdLib {
 
         // set
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_appendElement());
-        // stdBlock.AddFunctionDeclaration(new FuncDeclNode_appendRange());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_appendRange());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_inRange());
         new SetOperators().buildStd(stdBlock);
 

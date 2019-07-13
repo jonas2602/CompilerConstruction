@@ -3,6 +3,7 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.VarDeclNode;
+import ast.types.RangeTypeNode;
 import ast.types.SetTypeNode;
 import ast.types.TypeNode;
 import writer.GeneratorSlave;
@@ -25,7 +26,12 @@ public class SetBuilderNode extends ConstantNode {
         m_AppendCalls = new ArrayList<>();
 
         for (AbstractSyntaxTree e : elements) {
-            AddElement(e);
+            if (e instanceof RangeTypeNode) {
+                AddRange((RangeTypeNode)e);
+            }
+            else {
+                AddElement(e);
+            }
         }
     }
 
@@ -36,6 +42,19 @@ public class SetBuilderNode extends ConstantNode {
         FuncCallNode appendCall = new FuncCallNode("append");
         appendCall.AddParameter(m_TempSetAccess);
         appendCall.AddParameter(node);
+
+        m_AppendCalls.add(appendCall);
+        appendCall.SetParent(this);
+    }
+
+    public void AddRange(RangeTypeNode r) {
+        AccessNode_Variable m_TempSetAccess = new AccessNode_Variable("");
+        m_TempSetAccess.SetDeclaration(m_TempSetVariable);
+
+        FuncCallNode appendCall = new FuncCallNode("appendRange");
+        appendCall.AddParameter(m_TempSetAccess);
+        appendCall.AddParameter(r.GetMin());
+        appendCall.AddParameter(r.GetMax());
 
         m_AppendCalls.add(appendCall);
         appendCall.SetParent(this);

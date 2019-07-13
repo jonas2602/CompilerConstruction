@@ -29,7 +29,7 @@ public class BoolOperators implements StdBuilder {
 
     public static class OrBool extends BoolOperator {
         public OrBool() {
-            super(Operator.OR, GeneratorSlave::OrBoolBool);
+            super(Operator.OR, GeneratorSlave::ORIType);
         }
     }
 

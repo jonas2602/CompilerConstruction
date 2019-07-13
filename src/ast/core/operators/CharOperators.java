@@ -5,6 +5,7 @@ import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.declarations.ParamDeclNode;
 import ast.types.*;
+import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Pointer;
 
@@ -13,6 +14,9 @@ public class CharOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AddChar());
+
+        std.AddFunctionDeclaration(new XORChar());
+        std.AddFunctionDeclaration(new ORChar());
 
         std.AddFunctionDeclaration(new AssignCharPointerArray());
     }
@@ -24,6 +28,18 @@ public class CharOperators implements StdBuilder {
                 slave.StoreInVariable(lParam, cast);
                 return null;
             });
+        }
+    }
+
+    public static class XORChar extends PascalType_Operator {
+        public XORChar() {
+            super(Operator.XOR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::XORIType);
+        }
+    }
+
+    public static class ORChar extends PascalType_Operator {
+        public ORChar() {
+            super(Operator.OR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.CharNode, GeneratorSlave::ORIType);
         }
     }
 

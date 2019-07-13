@@ -33,14 +33,15 @@ public class SetOperators implements StdBuilder {
 
             AccessNode_Variable set1Access = new AccessNode_Variable("set1");
             AccessNode_Variable set2Access = new AccessNode_Variable("set2");
+            AccessNode_Variable tempSetAccess = new AccessNode_Variable("tempSet");
             AccessNode_Variable loopIndexAccess = new AccessNode_Variable("i");
             AccessNode_Array set1IndexAccess = new AccessNode_Array(set1Access, loopIndexAccess);
             AccessNode_Array set2IndexAccess = new AccessNode_Array(set2Access, loopIndexAccess);
+            AccessNode_Array tempSetIndexAccess = new AccessNode_Array(tempSetAccess, loopIndexAccess);
 
             // Body that adds element
-            AccessNode_Variable tempSetAccess = new AccessNode_Variable("tempSet");
             FuncCallNode orCall = new FuncCallNode(Operator.OR, set1IndexAccess, set2IndexAccess);
-            AssignmentNode assignIndex = new AssignmentNode(tempSetAccess, orCall);
+            AssignmentNode assignIndex = new AssignmentNode(tempSetIndexAccess, orCall);
 
             ForNode loop = new ForNode(new AccessNode_Variable("i"), ConstantNode.IntNode(0), ConstantNode.IntNode(255), true, assignIndex);
             m_Block.SetCompoundStatement(loop);
@@ -53,6 +54,25 @@ public class SetOperators implements StdBuilder {
 
             AddParameter("set1", m_ReturnType);
             AddParameter("set2", m_ReturnType);
+
+            // Create temp variables
+            m_Block.AddVariableDeclaration("tempSet", m_ReturnType);
+            m_Block.AddVariableDeclaration("i", PrimitiveTypeNode.IntNode);
+
+            AccessNode_Variable set1Access = new AccessNode_Variable("set1");
+            AccessNode_Variable set2Access = new AccessNode_Variable("set2");
+            AccessNode_Variable tempSetAccess = new AccessNode_Variable("tempSet");
+            AccessNode_Variable loopIndexAccess = new AccessNode_Variable("i");
+            AccessNode_Array set1IndexAccess = new AccessNode_Array(set1Access, loopIndexAccess);
+            AccessNode_Array set2IndexAccess = new AccessNode_Array(set2Access, loopIndexAccess);
+            AccessNode_Array tempSetIndexAccess = new AccessNode_Array(tempSetAccess, loopIndexAccess);
+
+            // Body that adds element
+            FuncCallNode orCall = new FuncCallNode(Operator.XOR, set1IndexAccess, set2IndexAccess);
+            AssignmentNode assignIndex = new AssignmentNode(tempSetIndexAccess, orCall);
+
+            ForNode loop = new ForNode(new AccessNode_Variable("i"), ConstantNode.IntNode(0), ConstantNode.IntNode(255), true, assignIndex);
+            m_Block.SetCompoundStatement(loop);
         }
 
 

@@ -15,7 +15,7 @@ import ast.types.VoidTypeNode;
 
 public class FuncDeclNode_appendRange extends FuncDeclNode_Core {
     public FuncDeclNode_appendRange() {
-        super("append", VoidTypeNode.VoidNode);
+        super("appendRange", VoidTypeNode.VoidNode);
 
         AddParameter("set", SetTypeNode.WildcardSetNode(), true);
         AddParameter("min", PrimitiveTypeNode.IntNode);
