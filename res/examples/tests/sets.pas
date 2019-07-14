@@ -19,22 +19,22 @@ var
     upper: set of integer;
 begin
     upper := [1, 2, 3, 4, 5];
-    writeln(ord(upper[0]),' ', ord(upper[1]), ' ', ord(upper[2]));
-    writeln(ord(upper[3]),' ', ord(upper[4]), ' ', ord(upper[5]));
-    writeln(ord(upper[6]),' ', ord(upper[7]), ' ', ord(upper[8]));
+    writeln(0 in upper,' ',1 in upper,' ',2 in upper);
+    writeln(3 in upper,' ',4 in upper,' ',5 in upper);
+    writeln(6 in upper,' ',7 in upper,' ',8 in upper);
     writeln(' ');
 
     upper := upper - [0, 3 .. 6];
-    writeln(ord(upper[0]),' ', ord(upper[1]), ' ', ord(upper[2]));
-    writeln(ord(upper[3]),' ', ord(upper[4]), ' ', ord(upper[5]));
-    writeln(ord(upper[6]),' ', ord(upper[7]), ' ', ord(upper[8]));
+    writeln(0 in upper,' ',1 in upper,' ',2 in upper);
+    writeln(3 in upper,' ',4 in upper,' ',5 in upper);
+    writeln(6 in upper,' ',7 in upper,' ',8 in upper);
     writeln(1 in upper);
     writeln(' ');
 
     upper := upper + [5, 6 .. 10];
-    writeln(ord(upper[0]),' ', ord(upper[1]), ' ', ord(upper[2]));
-    writeln(ord(upper[3]),' ', ord(upper[4]), ' ', ord(upper[5]));
-    writeln(ord(upper[6]),' ', ord(upper[7]), ' ', ord(upper[8]));
+    writeln(0 in upper,' ',1 in upper,' ',2 in upper);
+    writeln(3 in upper,' ',4 in upper,' ',5 in upper);
+    writeln(6 in upper,' ',7 in upper,' ',8 in upper);
     writeln(8 in upper);
     writeln(' ');
 end.

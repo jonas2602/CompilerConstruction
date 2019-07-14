@@ -5,9 +5,9 @@ begin
     writeln('test');
 end;
 
-procedure innertest();
-    procedure test();
-        procedure test();
+procedure innerTest();
+    procedure Test();
+        procedure tEst();
         begin
             writeln('test3');
         end;

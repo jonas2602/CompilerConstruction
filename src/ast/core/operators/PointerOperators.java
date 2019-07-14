@@ -25,13 +25,13 @@ public class PointerOperators implements StdBuilder {
 
     public static class EQPointer extends PointerOperator {
         public EQPointer() {
-            super(Operator.EQ, PrimitiveTypeNode.BoolNode, GeneratorSlave::IntEQ);
+            super(Operator.EQ, PrimitiveTypeNode.BoolNode, GeneratorSlave::EQIType);
         }
     }
 
     public static class NEPointer extends PointerOperator {
         public NEPointer() {
-            super(Operator.NE, PrimitiveTypeNode.BoolNode, GeneratorSlave::IntNE);
+            super(Operator.NE, PrimitiveTypeNode.BoolNode, GeneratorSlave::NEIType);
         }
     }
 

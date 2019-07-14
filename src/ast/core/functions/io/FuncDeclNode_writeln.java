@@ -10,6 +10,7 @@ import ast.types.*;
 import writer.GeneratorSlave;
 import writer.natives.io.NativeFunction_printf;
 import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Primitive;
 import writer.wrappers.ValueWrapper_Constant;
 
 import java.util.ArrayList;
@@ -59,6 +60,10 @@ public class FuncDeclNode_writeln extends FuncDeclNode_Core {
             } else {
                 // handle primitive types + string pointer type
                 elementContainer = AccessInterface.TryLoadValue(slave, element, elementContainer);
+
+                if (elementType.CompareType(PrimitiveTypeNode.BoolNode)) {
+                    elementContainer = slave.ExtendToInt(elementContainer);
+                }
 
                 // some primitive types require additional conversion
                 if (elementType instanceof PrimitiveTypeNode) {

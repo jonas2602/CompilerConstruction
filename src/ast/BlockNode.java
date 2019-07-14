@@ -23,6 +23,7 @@ public class BlockNode extends AbstractSyntaxTree {
 
     private boolean m_MainBlock;
     private List<ParamDeclNode> m_PassDownParams;
+    private String m_Hierarchy;
 
     public BlockNode() {
         this(false);
@@ -35,6 +36,7 @@ public class BlockNode extends AbstractSyntaxTree {
         m_VarDeclMap = new HashMap<>();
         m_FuncDeclMap = new HashMap<>();
 
+        m_Hierarchy = null;
         m_MainBlock = mainBlock;
         m_PassDownParams = new ArrayList<>();
     }
@@ -110,10 +112,10 @@ public class BlockNode extends AbstractSyntaxTree {
         }
 
         function.SetParent(this);
-        List<FuncDeclNode> overloads = m_FuncDeclMap.get(function.GetName());
+        List<FuncDeclNode> overloads = m_FuncDeclMap.get(function.GetName().toLowerCase());
         if (overloads == null) {
             overloads = new ArrayList<>();
-            m_FuncDeclMap.put(function.GetName(), overloads);
+            m_FuncDeclMap.put(function.GetName().toLowerCase(), overloads);
         }
         overloads.add(function);
     }
@@ -196,6 +198,7 @@ public class BlockNode extends AbstractSyntaxTree {
 
     // TODO: How to check for functions that are not defined by the user? e.g. writeln(), chr() or Length()
     public List<FuncDeclNode> GetFunctionDeclaration(String functionName) {
+        functionName = functionName.toLowerCase();
         List<FuncDeclNode> outDecl = m_FuncDeclMap.get(functionName);
         if (outDecl == null && GetOwningBlock() != null) {
             outDecl = GetOwningBlock().GetFunctionDeclaration(functionName);
@@ -255,6 +258,10 @@ public class BlockNode extends AbstractSyntaxTree {
     }
 
     public String BuildHierarchicalName() {
+        if (m_Hierarchy != null) {
+            return m_Hierarchy;
+        }
+
         String temp = null;
 
         BlockNode owningBlock = GetOwningBlock();
@@ -273,6 +280,8 @@ public class BlockNode extends AbstractSyntaxTree {
             }
             return temp+"."+name;
         }
+
+        m_Hierarchy = temp;
 
         return temp;
     }
