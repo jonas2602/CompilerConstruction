@@ -4,6 +4,7 @@ var
     charptr: ^char;
     chars: array[2..10] of char;
 begin
+    writeln('READY');
     str := 'test';
     charptr := 'test123';
     writeln (str, ' my random string ', charptr);

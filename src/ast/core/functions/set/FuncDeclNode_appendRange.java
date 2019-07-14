@@ -15,14 +15,14 @@ import ast.types.VoidTypeNode;
 
 public class FuncDeclNode_appendRange extends FuncDeclNode_Core {
     public FuncDeclNode_appendRange() {
-        super("appendRange", VoidTypeNode.VoidNode);
+        super(".appendRange", VoidTypeNode.VoidNode);
 
         AddParameter("set", SetTypeNode.WildcardSetNode(), true);
         AddParameter("min", PrimitiveTypeNode.IntNode);
         AddParameter("max", PrimitiveTypeNode.IntNode);
 
         // Body that adds element
-        FuncCallNode appendCall = new FuncCallNode("append");
+        FuncCallNode appendCall = new FuncCallNode(".append");
         AccessNode_Variable setAccess = new AccessNode_Variable("set");
         AccessNode_Variable indexAccess = new AccessNode_Variable("i");
         appendCall.AddParameter(setAccess);

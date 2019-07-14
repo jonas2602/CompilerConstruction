@@ -18,12 +18,12 @@ public abstract class FuncDeclNode_Core extends FuncDeclNode {
 
     protected Set<WildcardTypeNode> m_Wildcards = new HashSet<>();
 
-    public FuncDeclNode_Core(String InName, TypeNode InReturnType) {
-        super(InName, InReturnType, new BlockNode());
+    public FuncDeclNode_Core(String name, TypeNode returnType) {
+        super(name, returnType, new BlockNode());
     }
 
-    public FuncDeclNode_Core(Operator InOperator, TypeNode InReturnType) {
-        this(InOperator.GetOperatorFunctionName(), InReturnType);
+    public FuncDeclNode_Core(Operator operator, TypeNode returnType) {
+        this(operator.GetOperatorFunctionName(), returnType);
     }
 
     @Override

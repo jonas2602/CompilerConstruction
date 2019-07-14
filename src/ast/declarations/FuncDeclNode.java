@@ -23,6 +23,8 @@ public class FuncDeclNode extends AbstractSyntaxTree {
     protected boolean m_IsCreated = false;
     protected boolean m_bInline = false;
 
+    protected String m_HierarchicalName;
+
     public FuncDeclNode(String name, TypeNode returnType, BlockNode block) {
         m_Name = name;
         m_ReturnType = returnType;
@@ -37,6 +39,8 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         if (!(returnType instanceof VoidTypeNode)) {
             m_Block.AddParameterDeclaration(new VarDeclNode(name, returnType));
         }
+
+        m_HierarchicalName = "";
     }
 
     public void AddParameter(ParamDeclNode InParam) {
@@ -61,6 +65,14 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
     public void SetName(String name) {
         m_Name = name;
+    }
+
+    public String GetHierarchicalName() {
+        return m_HierarchicalName;
+    }
+
+    public void SetHierarchicalName(String name) {
+        m_HierarchicalName = name;
     }
 
     public void SetReturnType(TypeNode type) {
@@ -98,6 +110,14 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode CheckType() {
+        String name = GetOwningBlock().BuildHierarchicalName();
+        if (name != null) {
+            m_HierarchicalName = name +"."+ m_Name;
+        }
+        else {
+            m_HierarchicalName = m_Name;
+        }
+
         // Block will also Check the Parameters, because they are stored in the block as variables
         m_Block.CheckType();
         return GetType();
@@ -203,7 +223,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
         // Create Function Header
         TypeWrapper funcType = m_ReturnType.GetWrappedType();
-        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_Name, funcType, m_Params.size() + m_Block.GetNumberPassDownParams(), true);
+        CodeSnippet_FuncDef funcDef = slave.CreateFunctionDefinition(m_HierarchicalName, funcType, m_Params.size() + m_Block.GetNumberPassDownParams(), true);
 
         // Add Parameters
         for (ParamDeclNode param : m_Params) {

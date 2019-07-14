@@ -254,6 +254,29 @@ public class BlockNode extends AbstractSyntaxTree {
         return null;
     }
 
+    public String BuildHierarchicalName() {
+        String temp = null;
+
+        BlockNode owningBlock = GetOwningBlock();
+        if (owningBlock == null || owningBlock.m_MainBlock) {
+            temp = null;
+        }
+        else {
+            temp = owningBlock.BuildHierarchicalName();
+        }
+
+        AbstractSyntaxTree parent = GetParent();
+        if (parent instanceof FuncDeclNode) {
+            String name = ((FuncDeclNode)parent).GetName();
+            if (temp == null) {
+                return name;
+            }
+            return temp+"."+name;
+        }
+
+        return temp;
+    }
+
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         for (TypeDeclNode type : m_TypeDeclMap.values()) {

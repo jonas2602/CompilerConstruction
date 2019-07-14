@@ -154,7 +154,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
         } else {
             // Create Function Call Snippet + Parameter
             TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
-            OutParam = slave.CreateFunctionCall(m_FuncDecl.GetName(), returnType, true);
+            OutParam = slave.CreateFunctionCall(m_FuncDecl.GetHierarchicalName(), returnType, true);
             for (ParamContainer param : funcParams) {
                 slave.CreateFunctionCallParameter(param);
             }

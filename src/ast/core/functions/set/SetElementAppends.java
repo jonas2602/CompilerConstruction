@@ -25,7 +25,7 @@ public class SetElementAppends implements StdBuilder {
 
     public static class AppendInt extends FuncDeclNode_Core {
         public AppendInt() {
-            super("append", VoidTypeNode.VoidNode);
+            super(".append", VoidTypeNode.VoidNode);
 
             AddParameter("set", SetTypeNode.WildcardSetNode(), true);
             AddParameter("element", PrimitiveTypeNode.IntNode);
@@ -34,7 +34,7 @@ public class SetElementAppends implements StdBuilder {
 
             // check if element is in range element > 0 && element < 256
             AccessNode_Variable elementAccess = new AccessNode_Variable("element");
-            FuncCallNode compCall = new FuncCallNode("inrange", ConstantNode.IntNode(0), ConstantNode.IntNode(256), elementAccess);
+            FuncCallNode compCall = new FuncCallNode(".inrange", ConstantNode.IntNode(0), ConstantNode.IntNode(256), elementAccess);
 
 
             // switch index in set to valid
@@ -51,7 +51,7 @@ public class SetElementAppends implements StdBuilder {
     public static class AppendChar extends FuncDeclNode_Core {
 
         public AppendChar() {
-            super("append", VoidTypeNode.VoidNode);
+            super(".append", VoidTypeNode.VoidNode);
 
             m_bInline = true;
 
@@ -59,7 +59,7 @@ public class SetElementAppends implements StdBuilder {
             AddParameter("element", PrimitiveTypeNode.CharNode);
 
             FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
-            FuncCallNode appendCall = new FuncCallNode("append");
+            FuncCallNode appendCall = new FuncCallNode(".append");
             appendCall.AddParameter(new AccessNode_Variable("set"));
             appendCall.AddParameter(ordCall);
 
@@ -70,7 +70,7 @@ public class SetElementAppends implements StdBuilder {
     public static class AppendBool extends FuncDeclNode_Core {
 
         public AppendBool() {
-            super("append", VoidTypeNode.VoidNode);
+            super(".append", VoidTypeNode.VoidNode);
 
             m_bInline = true;
 
@@ -78,7 +78,7 @@ public class SetElementAppends implements StdBuilder {
             AddParameter("element", PrimitiveTypeNode.BoolNode);
 
             FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
-            FuncCallNode appendCall = new FuncCallNode("append");
+            FuncCallNode appendCall = new FuncCallNode(".append");
             appendCall.AddParameter(new AccessNode_Variable("set"));
             appendCall.AddParameter(ordCall);
 

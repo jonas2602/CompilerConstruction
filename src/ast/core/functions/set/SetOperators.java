@@ -58,7 +58,7 @@ public class SetOperators implements StdBuilder {
             slave.SetMemory(ParamContainer.CHARCONTAINER((char) 0), temp);
 
             // create call to inner function
-            slave.CreateFunctionCall(m_WrappedFunc.GetName(), TypeWrapper_Other.VOID, true);
+            slave.CreateFunctionCall(m_WrappedFunc.GetHierarchicalName(), TypeWrapper_Other.VOID, true);
             slave.CreateFunctionCallParameter(temp);
             slave.CreateFunctionCallParameter(leftParam);
             slave.CreateFunctionCallParameter(rightParam);
@@ -154,7 +154,7 @@ public class SetOperators implements StdBuilder {
 
 
             AccessNode_Variable elementAccess = new AccessNode_Variable("element");
-            FuncCallNode compCall = new FuncCallNode("inrange", ConstantNode.IntNode(0), ConstantNode.IntNode(256), elementAccess);
+            FuncCallNode compCall = new FuncCallNode(".inrange", ConstantNode.IntNode(0), ConstantNode.IntNode(256), elementAccess);
 
             AccessNode_Variable setAccess = new AccessNode_Variable("set");
             AccessNode_Array indexAccess = new AccessNode_Array(setAccess, elementAccess);

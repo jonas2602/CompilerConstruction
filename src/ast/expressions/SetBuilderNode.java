@@ -39,7 +39,7 @@ public class SetBuilderNode extends ConstantNode {
         AccessNode_Variable m_TempSetAccess = new AccessNode_Variable("");
         m_TempSetAccess.SetDeclaration(m_TempSetVariable);
 
-        FuncCallNode appendCall = new FuncCallNode("append");
+        FuncCallNode appendCall = new FuncCallNode(".append");
         appendCall.AddParameter(m_TempSetAccess);
         appendCall.AddParameter(node);
 
@@ -51,7 +51,7 @@ public class SetBuilderNode extends ConstantNode {
         AccessNode_Variable m_TempSetAccess = new AccessNode_Variable("");
         m_TempSetAccess.SetDeclaration(m_TempSetVariable);
 
-        FuncCallNode appendCall = new FuncCallNode("appendRange");
+        FuncCallNode appendCall = new FuncCallNode(".appendRange");
         appendCall.AddParameter(m_TempSetAccess);
         appendCall.AddParameter(r.GetMin());
         appendCall.AddParameter(r.GetMax());

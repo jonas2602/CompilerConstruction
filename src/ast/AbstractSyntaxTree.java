@@ -25,7 +25,7 @@ public abstract class AbstractSyntaxTree {
         return m_OwningBlock;
     }
 
-    protected AbstractSyntaxTree GetParent() {
+    public AbstractSyntaxTree GetParent() {
         return m_Parent;
     }
 
