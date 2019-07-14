@@ -149,37 +149,37 @@ public class IntOperators implements StdBuilder {
 
     public static class EQInt extends IntOperator {
         public EQInt() {
-            super(Operator.EQ, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntEQ);
+            super(Operator.EQ, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::EQIType);
         }
     }
 
     public static class NEInt extends IntOperator {
         public NEInt() {
-            super(Operator.NE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntNE);
+            super(Operator.NE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::NEIType);
         }
     }
 
     public static class LTInt extends IntOperator {
         public LTInt() {
-            super(Operator.LT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntLT);
+            super(Operator.LT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::LTIType);
         }
     }
 
     public static class LEInt extends IntOperator {
         public LEInt() {
-            super(Operator.LE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntLE);
+            super(Operator.LE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::LEIType);
         }
     }
 
     public static class GTInt extends IntOperator {
         public GTInt() {
-            super(Operator.GT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntGT);
+            super(Operator.GT, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::GTIType);
         }
     }
 
     public static class GEInt extends IntOperator {
         public GEInt() {
-            super(Operator.GE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::IntGE);
+            super(Operator.GE, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.IntNode, GeneratorSlave::GEIType);
         }
     }
 

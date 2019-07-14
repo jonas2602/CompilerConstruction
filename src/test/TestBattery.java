@@ -40,7 +40,7 @@ public class TestBattery {
         add("innerfunctions").AddSeperatorLines("1 1 1");
         add("innerfunctions2").AddLines("4");
         add("innerfunctions3").AddSeperatorLines("test test2 test3");
-        add("switch").AddLines("MEH");
+        add("switch").AddSeperatorLines("MEH uppercase");
         // TODO
         add("sets");
         add("types").AddSeperatorLines("3 10");

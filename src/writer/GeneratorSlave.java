@@ -381,27 +381,27 @@ public class GeneratorSlave {
         return new ParamContainer(left, scopeVar);
     }
 
-    public ParamContainer IntEQ(ParamContainer left, ParamContainer right) {
+    public ParamContainer EQIType(ParamContainer left, ParamContainer right) {
         return IntComparator("eq", left, right);
     }
 
-    public ParamContainer IntNE(ParamContainer left, ParamContainer right) {
+    public ParamContainer NEIType(ParamContainer left, ParamContainer right) {
         return IntComparator("ne", left, right);
     }
 
-    public ParamContainer IntLT(ParamContainer left, ParamContainer right) {
+    public ParamContainer LTIType(ParamContainer left, ParamContainer right) {
         return IntComparator("slt", left, right);
     }
 
-    public ParamContainer IntLE(ParamContainer left, ParamContainer right) {
+    public ParamContainer LEIType(ParamContainer left, ParamContainer right) {
         return IntComparator("sle", left, right);
     }
 
-    public ParamContainer IntGT(ParamContainer left, ParamContainer right) {
+    public ParamContainer GTIType(ParamContainer left, ParamContainer right) {
         return IntComparator("sgt", left, right);
     }
 
-    public ParamContainer IntGE(ParamContainer left, ParamContainer right) {
+    public ParamContainer GEIType(ParamContainer left, ParamContainer right) {
         return IntComparator("sge", left, right);
     }
 
