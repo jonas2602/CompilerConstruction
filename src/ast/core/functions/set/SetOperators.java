@@ -23,22 +23,25 @@ public class SetOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AddSetWrapper());
-        std.AddFunctionDeclaration(new AddSet());
-
         std.AddFunctionDeclaration(new SubSetWrapper());
-        std.AddFunctionDeclaration(new SubSet());
+
         std.AddFunctionDeclaration(new InSet());
     }
 
-    public static class AddSetWrapper extends FuncDeclNode_Core {
-        public AddSetWrapper() {
-            super(Operator.ADD, SetTypeNode.WildcardSetNode());
+    public static class FuncSetWrapper extends FuncDeclNode_Core {
+        private FuncDeclNode m_WrappedFunc;
+
+        public FuncSetWrapper(Operator operator, FuncDeclNode wrappedFunc) {
+            super(operator, SetTypeNode.WildcardSetNode());
 
             AddParameter("set1", m_ReturnType);
             AddParameter("set2", m_ReturnType);
 
             m_bInline = true;
             m_bCustomCallLogic = true;
+
+            m_WrappedFunc = wrappedFunc;
+            m_Block.AddFunctionDeclaration(wrappedFunc);
         }
 
         @Override
@@ -48,19 +51,27 @@ public class SetOperators implements StdBuilder {
             ParamContainer leftParam = lParam.CreateSnippet(slave);
             ParamContainer rightParam = rParam.CreateSnippet(slave);
 
+            // allocate temp set array
             ParamContainer temp = slave.AllocateMemory(new TypeWrapper_Array(TypeWrapper_Primitive.CHAR, 256));
-            slave.SetMemory(ParamContainer.CHARCONTAINER((char)0), temp);
+            slave.SetMemory(ParamContainer.CHARCONTAINER((char) 0), temp);
 
-            slave.CreateFunctionCall("addsetcore", TypeWrapper_Other.VOID, true);
+            // create call to inner function
+            slave.CreateFunctionCall(m_WrappedFunc.GetName(), TypeWrapper_Other.VOID, true);
             slave.CreateFunctionCallParameter(temp);
             slave.CreateFunctionCallParameter(leftParam);
             slave.CreateFunctionCallParameter(rightParam);
 
-            FuncDeclNode dirty = m_Block.GetFunctionDeclaration("addsetcore").get(0);
-            dirty.CreateSnippet(slave);
+            // construct inner function
+            m_WrappedFunc.CreateSnippet(slave);
 
             slave.ExitScope();
             return temp;
+        }
+    }
+
+    public static class AddSetWrapper extends FuncSetWrapper {
+        public AddSetWrapper() {
+            super(Operator.ADD, new AddSet());
         }
     }
 
@@ -94,37 +105,9 @@ public class SetOperators implements StdBuilder {
         }
     }
 
-    public static class SubSetWrapper extends FuncDeclNode_Core {
+    public static class SubSetWrapper extends FuncSetWrapper {
         public SubSetWrapper() {
-            super(Operator.SUB, SetTypeNode.WildcardSetNode());
-
-            AddParameter("set1", m_ReturnType);
-            AddParameter("set2", m_ReturnType);
-
-            m_bInline = true;
-            m_bCustomCallLogic = true;
-        }
-
-        @Override
-        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
-            AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
-            ParamContainer leftParam = lParam.CreateSnippet(slave);
-            ParamContainer rightParam = rParam.CreateSnippet(slave);
-
-            ParamContainer temp = slave.AllocateMemory(new TypeWrapper_Array(TypeWrapper_Primitive.CHAR, 256));
-            slave.SetMemory(ParamContainer.CHARCONTAINER((char)0), temp);
-
-            slave.CreateFunctionCall("subsetcore", TypeWrapper_Other.VOID, true);
-            slave.CreateFunctionCallParameter(temp);
-            slave.CreateFunctionCallParameter(leftParam);
-            slave.CreateFunctionCallParameter(rightParam);
-
-            FuncDeclNode dirty = m_Block.GetFunctionDeclaration("subsetcore").get(0);
-            dirty.CreateSnippet(slave);
-
-            slave.ExitScope();
-            return temp;
+            super(Operator.SUB, new SubSet());
         }
     }
 
