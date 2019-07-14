@@ -39,6 +39,7 @@ public class TestBattery {
         add("string").AddLines("test my random string test123");
         add("innerfunctions").AddSeperatorLines("1 1 1");
         add("innerfunctions2").AddLines("4");
+        add("innerfunctions3").AddSeperatorLines("test test2 test3");
         add("switch").AddLines("MEH");
         // TODO
         add("sets");
@@ -135,9 +136,15 @@ public class TestBattery {
                 String line = null;
                 boolean checkError = false;
                 while ((line = stdout.readLine()) != null)  {
+                    if (counter >= expected.size()) {
+                        error = "Got more output than expected "+line;
+                        checkError = true;
+                        break;
+                    }
                     if (!line.equals(expected.get(counter))) {
                         if (counter == 0) {
-                            error = line;
+                            error = "Expected 'READY' got "+line;
+                            checkError = true;
                             break;
                         }
                         System.out.println("Expected "+expected.get(counter)+" got "+line+" for input "+counter);
@@ -148,11 +155,13 @@ public class TestBattery {
                 }
 
                 if (counter != 0 && counter != expected.size()) {
-                    PrintError(c,"Missing "+(expected.size() - counter)+" output(s)");
+                    checkError = true;
+                    error = "Missing "+(expected.size() - counter)+" output(s)";
                 }
 
                 if (checkError) {
-                    PrintError(c,"Logic Failed");
+                    PrintError(c,"Logic Failed with error "+error);
+                    continue;
                 }
 
                 int ret = process.waitFor();

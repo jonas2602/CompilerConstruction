@@ -1,36 +1,37 @@
 package ast.core.operators;
 
 public enum Operator {
-    ADD("operator+"),
-    SUB("operator-"),
-    MUL("operator*"),
-    DIV("operator/"),
+    ADD(".operatoradd"),
+    SUB(".operatorsub"),
+    MUL(".operatormul"),
+    DIV(".operatordiv"),
 
-    MOD("operator%"),
-    INTDIV("operatorint/"),
+    MOD(".operatormod"),
+    INTDIV(".operatorintdiv"),
 
-    NEG("operator!"),
+    NEG(".operatorneg"),
 
-    AND("operator&&"),
-    OR("operator||"),
-    XOR("operator^"),
-    INV("operator~"),
+    AND(".operatorand"),
+    OR(".operatoror"),
+    XOR( ".operatorxor"),
+    INV(".operatorinv"),
 
-    IN("operatorIN"), // operator#
+    IN(".operatorin"),
 
-    EQ("operator=="),
-    NE("operator<>"),
-    LT("operator<"),
-    LE("operator<="),
-    GT("operator>"),
-    GE("operator>="),
+    EQ(".operatoreq"),
+    NE(".operatorne"),
+    LT(".operatorlt"),
+    LE( ".operatorle"),
+    GT(".operatorgt"),
+    GE(".operatorge"),
 
-    INC("operator++"),
-    DEC("operator--"),
+    INC(".operatorinc"),
+    DEC(".operatordec"),
 
-    AGN("operator:=");
+    AGN(".operatoragn");
 
     private String m_OperatorFunctionName;
+
     Operator(String operatorFunctionName) {
         m_OperatorFunctionName = operatorFunctionName;
     }

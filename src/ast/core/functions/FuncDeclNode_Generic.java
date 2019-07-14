@@ -20,8 +20,8 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
     private Set<FuncDeclNode_Generic> m_Instances = new HashSet<>();
     private Map<WildcardTypeNode, TypeNode> m_Config;
 
-    public FuncDeclNode_Generic(String InName, TypeNode InReturnType) {
-        super(InName, InReturnType);
+    public FuncDeclNode_Generic(String name, TypeNode returnType) {
+        super(name, returnType);
     }
 
     @Override
@@ -36,6 +36,7 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
             genericName += wildcard.GetTypeDetails().GetShortName();
         }
         copy.SetName(genericName);
+        copy.SetHierarchicalName(genericName);
 
         // Create Function Block
         copy.m_Block = new BlockNode();
