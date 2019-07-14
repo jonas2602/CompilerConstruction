@@ -19,7 +19,7 @@ public class SetBuilderNode extends ConstantNode {
     private List<AbstractSyntaxTree> m_Constants;
 
     public SetBuilderNode(List<AbstractSyntaxTree> elements) {
-        super("", new SetTypeNode((TypeNode) elements.get(0).GetType().Copy()));
+        super("", new SetTypeNode((TypeNode) elements.get(0).GetType().GetTypeDetails().Copy()));
 
         m_TempSetVariable = new VarDeclNode("", m_TypeNode);
         m_Constants = elements;

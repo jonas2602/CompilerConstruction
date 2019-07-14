@@ -80,7 +80,7 @@ public class RangeTypeNode extends TypeNode {
     @Override
     public TypeNode GetTypeDetails() {
         // TODO: use type of min?
-        return this;
+        return m_Min.GetType();
     }
 
     @Override
@@ -132,5 +132,10 @@ public class RangeTypeNode extends TypeNode {
 
     public AbstractSyntaxTree GetMax() {
         return m_Max;
+    }
+
+    @Override
+    public AbstractSyntaxTree Copy() {
+        return new RangeTypeNode(m_Min, m_Max);
     }
 }
