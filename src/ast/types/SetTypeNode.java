@@ -82,4 +82,8 @@ public class SetTypeNode extends ArrayTypeNode {
         return new SetTypeNode((TypeNode) m_SourceType.Copy());
     }
 
+    @Override
+    public String toString() {
+        return "Set of " + m_SourceType.toString();
+    }
 }

@@ -2,9 +2,11 @@ package ast.core.functions.set;
 
 import ast.AbstractSyntaxTree;
 import ast.BlockNode;
+import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.core.operators.Operator;
+import ast.core.operators.PascalType_Assignment;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;
@@ -22,12 +24,24 @@ import java.util.Set;
 public class SetOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
+        std.AddFunctionDeclaration(new AGNSet());
+
         std.AddFunctionDeclaration(new AddSetWrapper());
         std.AddFunctionDeclaration(new SubSetWrapper());
 
+        std.AddFunctionDeclaration(new InternInSet());
         std.AddFunctionDeclaration(new IntInSet());
         std.AddFunctionDeclaration(new CharInSet());
         std.AddFunctionDeclaration(new BoolInSet());
+    }
+
+    public static class AGNSet extends PascalType_Assignment {
+        public AGNSet() {
+            super(Operator.AGN, new VoidTypeNode(), SetTypeNode.WildcardSetNode(), (slave, lParam, rParam) -> {
+                slave.CopyMemory(rParam, lParam);
+                return null;
+            });
+        }
     }
 
     public static class FuncSetWrapper extends FuncDeclNode_Core {
@@ -144,9 +158,9 @@ public class SetOperators implements StdBuilder {
         }
     }
 
-    public static class IntInSet extends FuncDeclNode_Core {
-        public IntInSet() {
-            super(Operator.IN, PrimitiveTypeNode.BoolNode);
+    public static class InternInSet extends FuncDeclNode_Core {
+        public InternInSet(){
+            super(Operator.IN + "_intern.", PrimitiveTypeNode.BoolNode);
 
             // WildcardTypeNode primWildcard = PrimitiveTypeNode.WildcardPrimitiveNode();
             AddParameter("element", PrimitiveTypeNode.IntNode); // primWildcard);
@@ -170,6 +184,23 @@ public class SetOperators implements StdBuilder {
         }
     }
 
+    public static class IntInSet extends FuncDeclNode_Core {
+        public IntInSet() {
+            super(Operator.IN, PrimitiveTypeNode.BoolNode);
+
+            m_bInline = true;
+
+            AddParameter("element", PrimitiveTypeNode.IntNode);
+            AddParameter("set", SetTypeNode.IntSetNode);
+
+            FuncCallNode appendCall = new FuncCallNode(Operator.IN + "_intern.");
+            appendCall.AddParameter(new AccessNode_Variable("element"));
+            appendCall.AddParameter(new AccessNode_Variable("set"));
+
+            m_Block.SetCompoundStatement(appendCall);
+        }
+    }
+
     public static class CharInSet extends FuncDeclNode_Core {
 
         public CharInSet() {
@@ -181,7 +212,7 @@ public class SetOperators implements StdBuilder {
             AddParameter("set", SetTypeNode.CharSetNode);
 
             FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
-            FuncCallNode appendCall = new FuncCallNode(Operator.IN);
+            FuncCallNode appendCall = new FuncCallNode(Operator.IN + "_intern.");
             appendCall.AddParameter(ordCall);
             appendCall.AddParameter(new AccessNode_Variable("set"));
 
@@ -200,7 +231,7 @@ public class SetOperators implements StdBuilder {
             AddParameter("set", SetTypeNode.BoolSetNode);
 
             FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
-            FuncCallNode appendCall = new FuncCallNode(Operator.IN);
+            FuncCallNode appendCall = new FuncCallNode(Operator.IN + "_intern.");
             appendCall.AddParameter(ordCall);
             appendCall.AddParameter(new AccessNode_Variable("set"));
 

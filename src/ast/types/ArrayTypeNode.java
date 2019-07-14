@@ -62,7 +62,13 @@ public class ArrayTypeNode extends TypeNode {
             return false;
         }
 
+        // is subclass of ArrayTypeNode?
         if (!(otherNodeType.GetCompareType() instanceof ArrayTypeNode)) {
+            return false;
+        }
+
+        // is exactly Array type node?
+        if (!(otherNodeType.GetCompareType().getClass() == ArrayTypeNode.class)) {
             return false;
         }
 

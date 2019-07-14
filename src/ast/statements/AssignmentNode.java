@@ -39,22 +39,6 @@ public class AssignmentNode extends AbstractSyntaxTree {
             throw new TypeCheckException(this, "Can't assign value to a const variable");
         }
 
-        // Only Equal types are allowed, implicit conversion is not possible
-        // even primitive conversion int->real, real->int is not possible (yet)
-        TypeNode expType = m_Expression.CheckType();
-        if (false && varType.CompareType(expType) && !(varType instanceof ArrayTypeNode) && !(varType instanceof PointerTypeNode) && !(varType instanceof RecordTypeNode)) {
-            // Types are arrays?
-            if (varType instanceof ArrayTypeNode) {
-                int varSize = ((ArrayTypeNode) varType).GetSize();
-                int expSize = ((ArrayTypeNode) expType).GetSize();
-                if (varSize != expSize) {
-                    throw new TypeCheckException(this, "Arrays can only be copied if the target array is the same size as the source array");
-                }
-            }
-
-            return null;
-        }
-
         // "operator:=" is defined for the given parameters?
         m_FuncCallNode = new FuncCallNode(Operator.AGN);
         m_FuncCallNode.AddParameter(m_Variable);
