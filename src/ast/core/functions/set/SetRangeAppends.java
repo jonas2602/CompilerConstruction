@@ -33,7 +33,7 @@ public class SetRangeAppends implements StdBuilder {
             AddParameter("max", PrimitiveTypeNode.IntNode);
 
             // Body that adds element
-            FuncCallNode appendCall = new FuncCallNode("append");
+            FuncCallNode appendCall = new FuncCallNode(".append");
             AccessNode_Variable setAccess = new AccessNode_Variable("set");
             AccessNode_Variable indexAccess = new AccessNode_Variable("i");
             appendCall.AddParameter(setAccess);
