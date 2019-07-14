@@ -140,7 +140,7 @@ public class FuncCallNode extends AbstractSyntaxTree {
             // use reference for "VAR" types, else value
             // TODO: allow VAR as keyword? expect the user to declare the parameter as pointer instead?
             ParamDeclNode decl = m_FuncDecl.GetParameter(i);
-            if (decl.IsByValue()) {
+            if (decl.IsByValue() && !m_FuncDecl.IsInline()) {
                 // load value if requested from a variable
                 paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
             }
@@ -148,17 +148,19 @@ public class FuncCallNode extends AbstractSyntaxTree {
             funcParams.add(paramContainer);
         }
 
-        // Create Function Call Snippet + Parameter
-        TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
-        ParamContainer OutParam = slave.CreateFunctionCall(m_FuncDecl.GetName(), returnType, true);
-        for (ParamContainer param : funcParams) {
-            slave.CreateFunctionCallParameter(param);
+        ParamContainer OutParam;
+        if (m_FuncDecl.IsInline()) {
+            OutParam = m_FuncDecl.CreateInlineSnippet(slave, this, funcParams);
+        } else {
+            // Create Function Call Snippet + Parameter
+            TypeWrapper returnType = m_FuncDecl.GetType().GetWrappedType();
+            OutParam = slave.CreateFunctionCall(m_FuncDecl.GetName(), returnType, true);
+            for (ParamContainer param : funcParams) {
+                slave.CreateFunctionCallParameter(param);
+            }
+            slave.ExitScope();
         }
 
-        // Create Type Extension for function call
-        // TODO: only available in native functions?
-
-        slave.ExitScope();
         return OutParam;
     }
 }

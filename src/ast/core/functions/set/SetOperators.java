@@ -25,7 +25,9 @@ public class SetOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AddSetWrapper());
         std.AddFunctionDeclaration(new SubSetWrapper());
 
-        std.AddFunctionDeclaration(new InSet());
+        std.AddFunctionDeclaration(new IntInSet());
+        std.AddFunctionDeclaration(new CharInSet());
+        std.AddFunctionDeclaration(new BoolInSet());
     }
 
     public static class FuncSetWrapper extends FuncDeclNode_Core {
@@ -142,8 +144,8 @@ public class SetOperators implements StdBuilder {
         }
     }
 
-    public static class InSet extends FuncDeclNode_Core {
-        public InSet() {
+    public static class IntInSet extends FuncDeclNode_Core {
+        public IntInSet() {
             super(Operator.IN, PrimitiveTypeNode.BoolNode);
 
             // WildcardTypeNode primWildcard = PrimitiveTypeNode.WildcardPrimitiveNode();
@@ -165,6 +167,44 @@ public class SetOperators implements StdBuilder {
             BranchNode branch = new BranchNode(compCall, assignValid, assignInvalid);
 
             m_Block.SetCompoundStatement(branch);
+        }
+    }
+
+    public static class CharInSet extends FuncDeclNode_Core {
+
+        public CharInSet() {
+            super(Operator.IN, PrimitiveTypeNode.BoolNode);
+
+            m_bInline = true;
+
+            AddParameter("element", PrimitiveTypeNode.CharNode);
+            AddParameter("set", SetTypeNode.CharSetNode);
+
+            FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
+            FuncCallNode appendCall = new FuncCallNode(Operator.IN);
+            appendCall.AddParameter(ordCall);
+            appendCall.AddParameter(new AccessNode_Variable("set"));
+
+            m_Block.SetCompoundStatement(appendCall);
+        }
+    }
+
+    public static class BoolInSet extends FuncDeclNode_Core {
+
+        public BoolInSet() {
+            super(Operator.IN, PrimitiveTypeNode.BoolNode);
+
+            m_bInline = true;
+
+            AddParameter("element", PrimitiveTypeNode.BoolNode);
+            AddParameter("set", SetTypeNode.BoolSetNode);
+
+            FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
+            FuncCallNode appendCall = new FuncCallNode(Operator.IN);
+            appendCall.AddParameter(ordCall);
+            appendCall.AddParameter(new AccessNode_Variable("set"));
+
+            m_Block.SetCompoundStatement(appendCall);
         }
     }
 }

@@ -20,6 +20,7 @@ public class SetElementAppends implements StdBuilder {
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AppendInt());
         std.AddFunctionDeclaration(new AppendChar());
+        std.AddFunctionDeclaration(new AppendBool());
     }
 
     public static class AppendInt extends FuncDeclNode_Core {
@@ -52,18 +53,36 @@ public class SetElementAppends implements StdBuilder {
         public AppendChar() {
             super("append", VoidTypeNode.VoidNode);
 
+            m_bInline = true;
+
             AddParameter("set", SetTypeNode.CharSetNode, true);
             AddParameter("element", PrimitiveTypeNode.CharNode);
-        }
 
-//        @Override
-//        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-//            AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
-//            AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
-//            ParamContainer leftParam = lParam.CreateSnippet(slave);
-//            ParamContainer rightParam = rParam.CreateSnippet(slave);
-//
-//
-//        }
+            FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
+            FuncCallNode appendCall = new FuncCallNode("append");
+            appendCall.AddParameter(new AccessNode_Variable("set"));
+            appendCall.AddParameter(ordCall);
+
+            m_Block.SetCompoundStatement(appendCall);
+        }
+    }
+
+    public static class AppendBool extends FuncDeclNode_Core {
+
+        public AppendBool() {
+            super("append", VoidTypeNode.VoidNode);
+
+            m_bInline = true;
+
+            AddParameter("set", SetTypeNode.BoolSetNode, true);
+            AddParameter("element", PrimitiveTypeNode.BoolNode);
+
+            FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
+            FuncCallNode appendCall = new FuncCallNode("append");
+            appendCall.AddParameter(new AccessNode_Variable("set"));
+            appendCall.AddParameter(ordCall);
+
+            m_Block.SetCompoundStatement(appendCall);
+        }
     }
 }

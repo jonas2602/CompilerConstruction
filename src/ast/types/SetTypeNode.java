@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class SetTypeNode extends ArrayTypeNode {
     public static final SetTypeNode IntSetNode = new SetTypeNode(PrimitiveTypeNode.IntNode);
+    public static final SetTypeNode BoolSetNode = new SetTypeNode(PrimitiveTypeNode.IntNode);
     public static final SetTypeNode CharSetNode = new SetTypeNode(PrimitiveTypeNode.CharNode);
 
     public static final SetTypeNode WildcardSetNode() {

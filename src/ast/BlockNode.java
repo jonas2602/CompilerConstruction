@@ -4,6 +4,7 @@ import ast.declarations.*;
 import ast.types.TypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
+import writer.wrappers.ParamContainer;
 
 import java.util.*;
 
@@ -265,6 +266,23 @@ public class BlockNode extends AbstractSyntaxTree {
 
         if (m_CompoundStatement != null) {
             m_CompoundStatement.CreateSnippet(slave);
+        }
+
+        return null;
+    }
+
+    @Override
+    public ParamContainer CreateSnippet(GeneratorSlave slave) {
+        for (TypeDeclNode type : m_TypeDeclMap.values()) {
+            type.CreateSnippet(slave);
+        }
+
+        for (VarDeclNode var : m_VarDeclMap.values()) {
+            var.CreateSnippet(slave);
+        }
+
+        if (m_CompoundStatement != null) {
+            return m_CompoundStatement.CreateSnippet(slave);
         }
 
         return null;

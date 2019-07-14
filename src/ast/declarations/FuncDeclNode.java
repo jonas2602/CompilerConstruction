@@ -170,6 +170,31 @@ public class FuncDeclNode extends AbstractSyntaxTree {
         return true;
     }
 
+    public ParamContainer CreateInlineSnippet(GeneratorSlave slave, FuncCallNode callNode, List<ParamContainer> callParams) {
+        // Fill Function Parameter List with the given ParamContainers of the function call
+        for (int i = 0; i < m_Params.size(); i++) {
+            m_Params.get(i).SetInlineContainer(callParams.get(i));
+        }
+        // TODO: check if pass down params are still working
+
+        // Create Function Body
+        ParamContainer blockResult = m_Block.CreateSnippet(slave);
+        // TODO: check if stable solution
+        if (blockResult != null) {
+            return blockResult;
+        }
+
+        // Function should have return type?
+        if (!m_ReturnType.CompareType(new VoidTypeNode())) {
+            // TODO: Non Primitive Types
+            VarDeclNode varDecl = m_Block.GetVariableDeclaration(m_Name);
+            ParamContainer outParam = varDecl.CreateSnippet(slave);
+            return slave.LoadFromVariable(outParam);
+        }
+
+        return ParamContainer.VOIDCONTAINER();
+    }
+
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // Only build once

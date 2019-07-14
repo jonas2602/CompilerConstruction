@@ -43,6 +43,7 @@ public class AccessNode_Array extends AbstractSyntaxTree implements AccessInterf
         if (!(childType instanceof ArrayTypeNode || childType instanceof ArrayTypeNode_Dynamic)) {
             throw new TypeCheckException(this, "Indexed access is only possible on arrays");
         }
+        // TODO: check for overloaded operator[] if not ArrayTypeNode
 
         for (AbstractSyntaxTree index : m_IndexExpressions) {
             // Is IndexNode of primitive type INT?

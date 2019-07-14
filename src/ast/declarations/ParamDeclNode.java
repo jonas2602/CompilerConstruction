@@ -38,6 +38,10 @@ public class ParamDeclNode extends VarDeclNode {
         return !IsByReference();
     }
 
+    public void SetInlineContainer(ParamContainer container) {
+        m_ScopeContainer = container;
+    }
+
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         return m_TypeNode.CreateSnippet(slave, ctx);
