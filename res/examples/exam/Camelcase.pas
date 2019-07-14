@@ -13,7 +13,7 @@ begin
     readln(text);
     lastSpace := true;
     cc := '';
-    for i := 1 to Length(text) do
+    for i := 1 to length(text) do
     begin
         c := text[i];
         if (c in lower) or (c in upper) then

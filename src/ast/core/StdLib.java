@@ -47,6 +47,7 @@ public abstract class StdLib {
         new ArrayOperators().buildStd(stdBlock);
         new RecordOperators().buildStd(stdBlock);
         new PrimitiveOperators().buildStd(stdBlock);
+        new StringOperators().buildStd(stdBlock);
 
         // list
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_getLength());

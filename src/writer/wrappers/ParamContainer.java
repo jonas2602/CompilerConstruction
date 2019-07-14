@@ -21,6 +21,10 @@ public class ParamContainer {
         return new ParamContainer(TypeWrapper_Primitive.CHAR, new ValueWrapper_Constant(InChar));
     }
 
+    public static ParamContainer INTCONTAINER(int InInt) {
+        return new ParamContainer(TypeWrapper_Primitive.INT, new ValueWrapper_Constant(InInt));
+    }
+
 
     public static ParamContainer FromTypeString(String typeString) {
         return null; // TODO:

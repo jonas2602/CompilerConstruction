@@ -4,8 +4,11 @@ import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.declarations.ParamDeclNode;
+import ast.expressions.FuncCallNode;
 import ast.types.*;
 import writer.GeneratorSlave;
+import writer.natives.string.NativeFunction_strbuilder;
+import writer.natives.string.NativeFunction_strlen;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Pointer;
 
@@ -20,19 +23,8 @@ public class CharOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AndChar());
         std.AddFunctionDeclaration(new NegChar());
         std.AddFunctionDeclaration(new InvChar());
-
-        std.AddFunctionDeclaration(new AssignCharPointerArray());
     }
 
-    public static class AssignCharPointerArray extends PascalType_Assignment {
-        public AssignCharPointerArray() {
-            super(Operator.AGN, new VoidTypeNode(), PointerTypeNode.CharPointerNode, ArrayTypeNode.CharArrayNode, (slave, lParam, rParam) -> {
-                ParamContainer cast = slave.BitCast(rParam, TypeWrapper_Pointer.CHARPTR);
-                slave.StoreInVariable(lParam, cast);
-                return null;
-            });
-        }
-    }
 
     public static class XorChar extends PascalType_Operator {
         public XorChar() {
@@ -67,7 +59,7 @@ public class CharOperators implements StdBuilder {
     //TODO: implement this (needs string support first)
     public static class AddChar extends FuncDeclNode_Core {
         public AddChar() {
-            super("operator+", PrimitiveTypeNode.CharNode);
+            super(Operator.ADD, PointerTypeNode.CharPointerNode);
 
             AddParameter(new ParamDeclNode("left", PrimitiveTypeNode.CharNode));
             AddParameter(new ParamDeclNode("right", PrimitiveTypeNode.CharNode));
@@ -76,5 +68,11 @@ public class CharOperators implements StdBuilder {
             m_bInline = true;
         }
 
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            ParamContainer leftParam = callNode.GetParameter(0).CreateSnippet(slave);
+            ParamContainer rightParam = callNode.GetParameter(1).CreateSnippet(slave);
+            return slave.CreateNativeCall(new NativeFunction_strbuilder(leftParam, rightParam));
+        }
     }
 }
