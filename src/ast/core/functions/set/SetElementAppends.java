@@ -4,16 +4,12 @@ import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
-import ast.core.operators.Operator;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;
 import ast.statements.BranchNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.SetTypeNode;
-import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
-import writer.GeneratorSlave;
-import writer.wrappers.ParamContainer;
 
 public class SetElementAppends implements StdBuilder {
     @Override

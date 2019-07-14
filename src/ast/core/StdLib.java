@@ -10,7 +10,7 @@ import ast.core.functions.memory.FuncDeclNode_dispose;
 import ast.core.functions.memory.FuncDeclNode_getmem;
 import ast.core.functions.memory.FuncDeclNode_new;
 import ast.core.functions.memory.FuncDeclNode_reallocmem;
-import ast.core.functions.set.FuncDeclNode_appendRange;
+import ast.core.functions.set.SetRangeAppends;
 import ast.core.functions.set.FuncDeclNode_inRange;
 import ast.core.functions.set.SetElementAppends;
 import ast.core.functions.set.SetOperators;
@@ -54,7 +54,7 @@ public abstract class StdLib {
 
         // set
         new SetElementAppends().buildStd(stdBlock);
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_appendRange());
+        new SetRangeAppends().buildStd(stdBlock);
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_inRange());
         new SetOperators().buildStd(stdBlock);
 
