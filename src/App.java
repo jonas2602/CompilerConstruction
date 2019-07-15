@@ -32,7 +32,7 @@ public class App {
         //     System.out.println(fileName + " succeeded");
         // }
 
-        Compile("res/examples/tests/sets.pas", "gen");
+        // Compile("res/examples/tests/string.pas", "gen");
 
         LocalTester t = new LocalTester();
         t.compile("gen");

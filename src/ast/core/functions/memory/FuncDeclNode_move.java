@@ -24,6 +24,11 @@ public class FuncDeclNode_move extends FuncDeclNode_Core {
     }
 
     @Override
+    public FuncDeclNode ValidateCall(FuncCallNode callNode) {
+        return super.ValidateCall(callNode);
+    }
+
+    @Override
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         ParamContainer destParam = callNode.GetParameter(0).CreateSnippet(slave);
         ParamContainer sourceParam = callNode.GetParameter(1).CreateSnippet(slave);

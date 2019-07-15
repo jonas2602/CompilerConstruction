@@ -492,7 +492,7 @@ public class GeneratorSlave {
     }
 
     public ParamContainer CreateArrayElementPtr(ParamContainer array, int index) {
-        return CreateArrayElementPtr(array, new ValueWrapper_Constant(index));
+        return CreateArrayElementPtr(array, ValueWrapper_Constant.ValueWrapperInt(index));
     }
 
     public ParamContainer CreatePtrArrayElementPtr(ParamContainer array, ParamContainer index) {

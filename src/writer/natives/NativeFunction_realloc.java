@@ -6,7 +6,7 @@ import writer.wrappers.*;
 //            -> new pointer can point to the same location but it's no deterministic behaviour
 public class NativeFunction_realloc extends NativeFunction {
     public NativeFunction_realloc(ParamContainer source, int newSize) {
-        this(source, new ParamContainer(TypeWrapper_Primitive.LONG, new ValueWrapper_Constant(newSize)));
+        this(source, new ParamContainer(TypeWrapper_Primitive.LONG, ValueWrapper_Constant.ValueWrapperInt(newSize)));
     }
 
     public NativeFunction_realloc(ParamContainer source, ParamContainer newSize) {

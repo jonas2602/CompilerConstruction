@@ -14,7 +14,7 @@ public class NativeFunction_memset extends NativeFunction {
         // TODO: add alignment
         m_CallParams.add(target);
         m_CallParams.add(content);
-        m_CallParams.add(new ParamContainer(TypeWrapper_Primitive.LONG, new ValueWrapper_Constant(byteSize)));
+        m_CallParams.add(new ParamContainer(TypeWrapper_Primitive.LONG, ValueWrapper_Constant.ValueWrapperInt(byteSize)));
         m_CallParams.add(ParamContainer.BOOLCONTAINER(false));
     }
 

@@ -3,9 +3,9 @@ package ast.core.operators;
 import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
-import ast.expressions.AccessNode_Variable;
-import ast.expressions.ConstantNode;
-import ast.expressions.FuncCallNode;
+import ast.declarations.FuncDeclNode;
+import ast.expressions.*;
+import ast.statements.CompStmtNode;
 import ast.types.ArrayTypeNode;
 import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
@@ -21,6 +21,7 @@ public class StringOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new StringLength());
+        std.AddFunctionDeclaration(new CharPtrLength());
         std.AddFunctionDeclaration(new AssignCharPointerArray());
         std.AddFunctionDeclaration(new AssignCharArrayPointer());
         std.AddFunctionDeclaration(new AddChar());
@@ -34,6 +35,8 @@ public class StringOperators implements StdBuilder {
             m_bCustomCallLogic = true;
 
             AddParameter("str", ArrayTypeNode.CharArrayNode);
+
+
         }
 
         @Override
@@ -42,6 +45,30 @@ public class StringOperators implements StdBuilder {
             ParamContainer strStart = slave.CreateArrayElementPtr(strArrParam, 0);
 
             ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strlen(strStart));
+            return slave.TruncToInt(outLong);
+        }
+    }
+
+    public static class CharPtrLength extends FuncDeclNode_Core {
+        public CharPtrLength() {
+            super("length", PrimitiveTypeNode.IntNode);
+
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+
+            AddParameter("str", PointerTypeNode.CharPointerNode);
+        }
+
+        @Override
+        public FuncDeclNode ValidateCall(FuncCallNode callNode) {
+            return super.ValidateCall(callNode);
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            ParamContainer charPtrParam = callNode.GetParameter(0).CreateSnippet(slave);
+
+            ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strlen(charPtrParam));
             return slave.TruncToInt(outLong);
         }
     }
@@ -59,7 +86,7 @@ public class StringOperators implements StdBuilder {
 
     public static class AssignCharArrayPointer extends FuncDeclNode_Core {
         public AssignCharArrayPointer() {
-            super(Operator.AGN, ArrayTypeNode.CharArrayNode);
+            super(Operator.AGN, VoidTypeNode.VoidNode);
 
             AddParameter("str", ArrayTypeNode.CharArrayNode);
             AddParameter("ptr", PointerTypeNode.CharPointerNode);
@@ -73,7 +100,12 @@ public class StringOperators implements StdBuilder {
             staticLength = new FuncCallNode(Operator.ADD, staticLength, ConstantNode.IntNode(1));
             FuncCallNode dynamicLength = new FuncCallNode("length", ptrAccess);
             FuncCallNode minCall = new FuncCallNode("min", staticLength, dynamicLength);
-            FuncCallNode cpyCall = new FuncCallNode("move", strAccess, ptrAccess, minCall);
+
+            AccessNode_Array firstChar = new AccessNode_Array(strAccess, ConstantNode.IntNode(0));
+            AccessNode_Address charptr = new AccessNode_Address(firstChar);
+            FuncCallNode cpyCall = new FuncCallNode("move", charptr, ptrAccess, minCall);
+
+            m_Block.SetCompoundStatement(cpyCall);
 
         }
     }
@@ -87,26 +119,16 @@ public class StringOperators implements StdBuilder {
 
             m_bInline = true;
             m_bCustomCallLogic = true;
-
-            m_Block.AddVariableDeclaration("charptr", PointerTypeNode.CharPointerNode);
-            AccessNode_Variable varAccess = new AccessNode_Variable("charptr");
-
-            FuncCallNode strLengthCall = new FuncCallNode("length");
-            strLengthCall.AddParameter(new AccessNode_Variable("str"));
-
-            FuncCallNode addCall = new FuncCallNode(Operator.ADD, strLengthCall, ConstantNode.IntNode(2));
-            FuncCallNode allocCall = new FuncCallNode("getmem", varAccess, addCall);
-
-
         }
 
         @Override
         public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
             ParamContainer strParam = callNode.GetParameter(0).CreateSnippet(slave);
+            ParamContainer strPtr = slave.CreateArrayElementPtr(strParam, 0);
             ParamContainer charParam = callNode.GetParameter(1).CreateSnippet(slave);
 
             // get length of source string
-            ParamContainer strLen = slave.CreateNativeCall(new NativeFunction_strlen(strParam));
+            ParamContainer strLen = slave.CreateNativeCall(new NativeFunction_strlen(strPtr));
             ParamContainer newSize = slave.AddIntInt(strLen, ParamContainer.INTCONTAINER(2));
 
             // allocate new momory with size + char + \0
@@ -114,7 +136,7 @@ public class StringOperators implements StdBuilder {
             newMem = slave.BitCast(newMem, TypeWrapper_Pointer.CHARPTR);
 
             // Copy source string to the new memory
-            slave.CreateNativeCall(new NativeFunction_strcpy(newMem, strParam));
+            slave.CreateNativeCall(new NativeFunction_strcpy(newMem, strPtr));
 
             // Copy char behind it
             ParamContainer charPosPtr = slave.CreatePtrArrayElementPtr(newMem, strLen);

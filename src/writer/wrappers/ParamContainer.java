@@ -18,19 +18,15 @@ public class ParamContainer {
     }
 
     public static ParamContainer CHARCONTAINER(char InChar) {
-        return new ParamContainer(TypeWrapper_Primitive.CHAR, new ValueWrapper_Constant(InChar));
+        return new ParamContainer(TypeWrapper_Primitive.CHAR, ValueWrapper_Constant.ValueWrapperInt(InChar));
     }
 
     public static ParamContainer INTCONTAINER(int InInt) {
-        return new ParamContainer(TypeWrapper_Primitive.INT, new ValueWrapper_Constant(InInt));
+        return new ParamContainer(TypeWrapper_Primitive.INT, ValueWrapper_Constant.ValueWrapperInt(InInt));
     }
 
     public static ParamContainer LONGCONTAINER(long InLong) {
-        return new ParamContainer(TypeWrapper_Primitive.LONG, new ValueWrapper_Constant(InLong));
-    }
-
-    public static ParamContainer FromTypeString(String typeString) {
-        return null; // TODO:
+        return new ParamContainer(TypeWrapper_Primitive.LONG, ValueWrapper_Constant.ValueWrapperLong(InLong));
     }
 
     private TypeWrapper m_RootType; // i8, i32, float, [3 x i8], [10 x [ 10 x i8]], ...
