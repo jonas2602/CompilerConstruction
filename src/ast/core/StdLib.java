@@ -5,6 +5,7 @@ import ast.core.functions.casts.CastFunctions;
 import ast.core.functions.io.*;
 import ast.core.functions.list.FuncDeclNode_getLength;
 import ast.core.functions.list.FuncDeclNode_setLength;
+import ast.core.functions.math.FuncDeclNode_random;
 import ast.core.functions.math.MathFunctions;
 import ast.core.functions.memory.*;
 import ast.core.functions.set.*;
@@ -18,6 +19,7 @@ public abstract class StdLib {
         // functions
         // io functions
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_write());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_readln());
 
         // memory functions
@@ -29,6 +31,7 @@ public abstract class StdLib {
 
         // math functions
         new MathFunctions().buildStd(stdBlock);
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_random());
 
         //cast functions
         new CastFunctions().buildStd(stdBlock);

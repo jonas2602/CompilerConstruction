@@ -66,14 +66,13 @@ var
  
 begin
   setlength(data, 8);
-  Randomize;
   writeln('The data before sorting:');
   for i := low(data) to high(data) do
   begin
     data[i] := Random(high(data));
     write(data[i]:4);
   end;
-  writeln;
+  writeln();
   data := mergeSort(data);
   writeln('The data after sorting:');
   for i := low(data) to high(data) do

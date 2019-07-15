@@ -32,7 +32,7 @@ public class App {
         //     System.out.println(fileName + " succeeded");
         // }
 
-        Compile("res/examples/exam/Camelcase.pas", "gen");
+        Compile("res/examples/exam/MergeSortDemo.pas", "gen");
 
         LocalTester t = new LocalTester();
         t.compile("gen");
