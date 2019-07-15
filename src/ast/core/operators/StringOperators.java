@@ -99,6 +99,7 @@ public class StringOperators implements StdBuilder {
             FuncCallNode staticLength = new FuncCallNode("high", strAccess);
             staticLength = new FuncCallNode(Operator.ADD, staticLength, ConstantNode.IntNode(1));
             FuncCallNode dynamicLength = new FuncCallNode("length", ptrAccess);
+            dynamicLength = new FuncCallNode(Operator.ADD, dynamicLength, ConstantNode.IntNode(1));
             FuncCallNode minCall = new FuncCallNode("min", staticLength, dynamicLength);
 
             AccessNode_Array firstChar = new AccessNode_Array(strAccess, ConstantNode.IntNode(0));
@@ -126,6 +127,7 @@ public class StringOperators implements StdBuilder {
             ParamContainer strParam = callNode.GetParameter(0).CreateSnippet(slave);
             ParamContainer strPtr = slave.CreateArrayElementPtr(strParam, 0);
             ParamContainer charParam = callNode.GetParameter(1).CreateSnippet(slave);
+            charParam = AccessInterface.TryLoadValue(slave, callNode.GetParameter(1), charParam);
 
             // get length of source string
             ParamContainer strLen = slave.CreateNativeCall(new NativeFunction_strlen(strPtr));

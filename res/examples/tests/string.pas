@@ -1,15 +1,15 @@
 program strings;
 var
     str: string[7];
-    {charptr: ^char;
-    chars: array[2..10] of char;}
+    charptr: ^char;
+    chars: array[2..10] of char;
 begin
-    {writeln('READY');}
+    writeln('READY');
     str := 'test';
-    {writeln(high(str));
-    charptr := 'test123';}
+    writeln(high(str));
+    charptr := 'test123';
     str := str + 'a';
-    writeln (str); {, ' my random string ', charptr);}
+    writeln (str, ' my random string ', charptr);
 end.
 
 {program Hello;

@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.AbstractSyntaxTree;
+import ast.expressions.AccessInterface;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
 import writer.*;
@@ -46,6 +47,7 @@ public class BranchNode extends AbstractSyntaxTree {
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         // Generate result of condition
         ParamContainer condContainer = m_Condition.CreateSnippet(slave);
+        condContainer = AccessInterface.TryLoadValue(slave, m_Condition, condContainer);
 
         // Create branch instruction with empty params
         ParamContainer posContainer = ParamContainer.LABELCONTAINER();  // jumps to then

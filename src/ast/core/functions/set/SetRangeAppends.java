@@ -13,6 +13,7 @@ import ast.statements.BranchNode;
 import ast.statements.ForNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.SetTypeNode;
+import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 
 public class SetRangeAppends implements StdBuilder {
@@ -87,6 +88,11 @@ public class SetRangeAppends implements StdBuilder {
             appendCall.AddParameter(ordMaxCall);
 
             m_Block.SetCompoundStatement(appendCall);
+        }
+
+        @Override
+        public TypeNode CheckType() {
+            return super.CheckType();
         }
     }
 
