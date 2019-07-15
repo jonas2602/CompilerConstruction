@@ -16,13 +16,14 @@ import writer.natives.string.NativeFunction_strcpy;
 import writer.natives.string.NativeFunction_strlen;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Pointer;
-import writer.wrappers.TypeWrapper_Primitive;
 
 public class StringOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new StringLength());
         std.AddFunctionDeclaration(new AssignCharPointerArray());
+        std.AddFunctionDeclaration(new AssignCharArrayPointer());
+        std.AddFunctionDeclaration(new AddChar());
     }
 
     public static class StringLength extends FuncDeclNode_Core {
@@ -56,6 +57,27 @@ public class StringOperators implements StdBuilder {
         }
     }
 
+    public static class AssignCharArrayPointer extends FuncDeclNode_Core {
+        public AssignCharArrayPointer() {
+            super(Operator.AGN, ArrayTypeNode.CharArrayNode);
+
+            AddParameter("str", ArrayTypeNode.CharArrayNode);
+            AddParameter("ptr", PointerTypeNode.CharPointerNode);
+
+            m_bInline = true;
+
+            AccessNode_Variable strAccess = new AccessNode_Variable("str");
+            AccessNode_Variable ptrAccess = new AccessNode_Variable("ptr");
+
+            FuncCallNode staticLength = new FuncCallNode("high", strAccess);
+            staticLength = new FuncCallNode(Operator.ADD, staticLength, ConstantNode.IntNode(1));
+            FuncCallNode dynamicLength = new FuncCallNode("length", ptrAccess);
+            FuncCallNode minCall = new FuncCallNode("min", staticLength, dynamicLength);
+            FuncCallNode cpyCall = new FuncCallNode("move", strAccess, ptrAccess, minCall);
+
+        }
+    }
+
     public static class AddChar extends FuncDeclNode_Core {
         public AddChar() {
             super(Operator.ADD, PointerTypeNode.CharPointerNode);
@@ -64,6 +86,7 @@ public class StringOperators implements StdBuilder {
             AddParameter("chr", PrimitiveTypeNode.CharNode);
 
             m_bInline = true;
+            m_bCustomCallLogic = true;
 
             m_Block.AddVariableDeclaration("charptr", PointerTypeNode.CharPointerNode);
             AccessNode_Variable varAccess = new AccessNode_Variable("charptr");

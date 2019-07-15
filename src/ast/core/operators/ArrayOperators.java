@@ -6,12 +6,19 @@ import ast.core.StdBuilder;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
+import ast.types.PrimitiveTypeNode;
 import ast.types.VoidTypeNode;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Array;
+
+import javax.lang.model.type.ArrayType;
 
 public class ArrayOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AGNArray());
+        std.AddFunctionDeclaration(new HighArray());
+        std.AddFunctionDeclaration(new LowArray());
     }
 
     // public static abstract class ArrayOperator extends PascalType_Assignment {
@@ -19,6 +26,21 @@ public class ArrayOperators implements StdBuilder {
     //         super(operator, returnType, ArrayTypeNode.WildCardArrayNode, ArrayTypeNode.WildCardArrayNode, operation);
     //     }
     // }
+
+    public static class HighArray extends PascalType_SingleOperator {
+        public HighArray() {
+            super("high", PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> {
+                TypeWrapper_Array arr = (TypeWrapper_Array)lParam.GetRootType();
+                return ParamContainer.INTCONTAINER(arr.GetRawSize() - 1);
+            });
+        }
+    }
+
+    public static class LowArray extends PascalType_SingleOperator {
+        public LowArray() {
+            super("low", PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
+        }
+    }
 
     public static class AGNArray extends PascalType_Assignment {
         public AGNArray() {

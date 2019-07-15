@@ -25,6 +25,9 @@ public class ParamContainer {
         return new ParamContainer(TypeWrapper_Primitive.INT, new ValueWrapper_Constant(InInt));
     }
 
+    public static ParamContainer LONGCONTAINER(long InLong) {
+        return new ParamContainer(TypeWrapper_Primitive.LONG, new ValueWrapper_Constant(InLong));
+    }
 
     public static ParamContainer FromTypeString(String typeString) {
         return null; // TODO:

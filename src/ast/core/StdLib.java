@@ -6,14 +6,8 @@ import ast.core.functions.io.*;
 import ast.core.functions.list.FuncDeclNode_getLength;
 import ast.core.functions.list.FuncDeclNode_setLength;
 import ast.core.functions.math.MathFunctions;
-import ast.core.functions.memory.FuncDeclNode_dispose;
-import ast.core.functions.memory.FuncDeclNode_getmem;
-import ast.core.functions.memory.FuncDeclNode_new;
-import ast.core.functions.memory.FuncDeclNode_reallocmem;
-import ast.core.functions.set.SetRangeAppends;
-import ast.core.functions.set.FuncDeclNode_inRange;
-import ast.core.functions.set.SetElementAppends;
-import ast.core.functions.set.SetOperators;
+import ast.core.functions.memory.*;
+import ast.core.functions.set.*;
 import ast.core.operators.*;
 import ast.declarations.TypeDeclNode;
 import ast.types.PrimitiveTypeNode;
@@ -31,6 +25,7 @@ public abstract class StdLib {
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_dispose());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_getmem());
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_reallocmem());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_move());
 
         // math functions
         new MathFunctions().buildStd(stdBlock);
@@ -57,6 +52,7 @@ public abstract class StdLib {
         new SetElementAppends().buildStd(stdBlock);
         new SetRangeAppends().buildStd(stdBlock);
         stdBlock.AddFunctionDeclaration(new FuncDeclNode_inRange());
+        stdBlock.AddFunctionDeclaration(new FuncDeclNode_min());
         new SetOperators().buildStd(stdBlock);
 
         // types
