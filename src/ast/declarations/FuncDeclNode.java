@@ -37,7 +37,9 @@ public class FuncDeclNode extends AbstractSyntaxTree {
 
         // add return type as block variable
         if (!(returnType instanceof VoidTypeNode)) {
-            m_Block.AddParameterDeclaration(new VarDeclNode(name, returnType));
+            VarDeclNode returnVar = new VarDeclNode(name, returnType);
+            returnVar.SetParent(this);
+            m_Block.AddParameterDeclaration(returnVar);
         }
 
         m_HierarchicalName = "";

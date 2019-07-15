@@ -2,12 +2,14 @@ package ast.core.operators;
 
 import ast.BlockNode;
 import ast.TypeCheckException;
+import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.declarations.FuncDeclNode;
+import ast.expressions.AccessNode_Field;
+import ast.expressions.AccessNode_Variable;
+import ast.expressions.ConstantNode;
 import ast.expressions.FuncCallNode;
-import ast.types.ArrayTypeNode;
-import ast.types.PrimitiveTypeNode;
-import ast.types.VoidTypeNode;
+import ast.types.*;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Array;
 
@@ -19,6 +21,8 @@ public class ArrayOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AGNArray());
         std.AddFunctionDeclaration(new HighArray());
         std.AddFunctionDeclaration(new LowArray());
+        std.AddFunctionDeclaration(new HighArrayDynamic());
+        std.AddFunctionDeclaration(new LowArrayDynamic());
     }
 
     // public static abstract class ArrayOperator extends PascalType_Assignment {
@@ -39,6 +43,27 @@ public class ArrayOperators implements StdBuilder {
     public static class LowArray extends PascalType_SingleOperator {
         public LowArray() {
             super("low", PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
+        }
+    }
+
+    public static class HighArrayDynamic extends FuncDeclNode_Core {
+        public HighArrayDynamic() {
+            super("high", PrimitiveTypeNode.IntNode);
+            AddParameter("array", ArrayTypeNode_Dynamic.WildcardArrayNode());
+
+            m_bInline = true;
+
+            AccessNode_Variable arrAccess = new AccessNode_Variable("array");
+            AccessNode_Field fieldAccess = new AccessNode_Field(arrAccess, "length");
+            FuncCallNode subCall = new FuncCallNode(Operator.SUB, fieldAccess, ConstantNode.IntNode(1));
+
+            m_Block.SetCompoundStatement(subCall);
+        }
+    }
+
+    public static class LowArrayDynamic extends PascalType_SingleOperator {
+        public LowArrayDynamic() {
+            super("low", PrimitiveTypeNode.IntNode, ArrayTypeNode_Dynamic.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
         }
     }
 

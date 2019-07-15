@@ -25,8 +25,8 @@ public enum Operator {
     GT(".operatorgt"),
     GE(".operatorge"),
 
-    INC(".operatorinc"),
-    DEC(".operatordec"),
+    INC("inc"),
+    DEC("dec"),
 
     AGN(".operatoragn");
 
