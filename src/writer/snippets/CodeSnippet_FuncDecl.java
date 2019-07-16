@@ -1,5 +1,6 @@
 package writer.snippets;
 
+import writer.wrappers.TypeWrapper;
 import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.ArrayList;
@@ -8,13 +9,13 @@ import java.util.List;
 public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInterface {
     protected String m_Name;
     protected List<CodeSnippet_Base> m_Params;
-    protected CodeSnippet_Base m_ReturnType;
+    protected TypeWrapper m_ReturnType;
 
     protected int m_ParameterCounter = 0;
 
-    public CodeSnippet_FuncDecl(String name, CodeSnippet_Base returnType) {
+    public CodeSnippet_FuncDecl(String name, TypeWrapper returnType) {
         m_Name = name;
-        m_ReturnType = returnType;
+        m_ReturnType = returnType.MakeExtended();
         m_Params = new ArrayList<>();
     }
 
@@ -38,7 +39,7 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInter
     public String Write() {
         return String.format(
                 "declare %s @%s(%s)",
-                m_ReturnType.Write(),
+                m_ReturnType.CreateTypeName(),
                 m_Name,
                 MakeParameterString()
         );

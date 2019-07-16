@@ -1,5 +1,6 @@
 package writer.snippets;
 
+import writer.wrappers.TypeWrapper;
 import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
     private int m_VariableCounter;
     // private List<ValueWrapper_Variable> m_IndexElements = new ArrayList<>();
 
-    public CodeSnippet_FuncDef(String name, CodeSnippet_Base returnType, int varIndexOffset) {
+    public CodeSnippet_FuncDef(String name, TypeWrapper returnType, int varIndexOffset) {
         super(name, returnType);
 
         m_VariableCounter = varIndexOffset;
@@ -61,7 +62,7 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
 
         List<String> lines = new ArrayList<>();
 
-        lines.add(String.format("define %s @%s(%s)", m_ReturnType.Write(), m_Name, MakeParameterString()) + " {");
+        lines.add(String.format("define %s @%s(%s)", m_ReturnType.CreateTypeName(), m_Name, MakeParameterString()) + " {");
 
         for (CodeSnippet_Base stmt : m_Statements) {
             for (String line : stmt.WriteLines()) {

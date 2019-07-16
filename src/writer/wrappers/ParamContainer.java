@@ -88,6 +88,14 @@ public class ParamContainer {
         return m_RootType instanceof TypeWrapper_Pointer;
     }
 
+    public boolean HasExtendableType() {
+        return m_RootType.IsExtendable();
+    }
+
+    public boolean HasExtendedType() {
+        return m_RootType.IsExtended();
+    }
+
     @Override
     public String toString() {
         return CreateParameterString();

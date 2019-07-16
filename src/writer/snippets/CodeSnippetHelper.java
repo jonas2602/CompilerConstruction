@@ -1,6 +1,7 @@
 package writer.snippets;
 
 import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
 
 import java.util.List;
 
@@ -45,6 +46,21 @@ public class CodeSnippetHelper {
         for (int i = 1; i < elements.size(); i++) {
             builder.append(seperator);
             builder.append(elements.get(i).CreateParameterString());
+        }
+
+        return builder.toString();
+    }
+
+    public static String MakeSeperatedTypes(String seperator, List<TypeWrapper> elements) {
+        StringBuilder builder = new StringBuilder();
+
+        if (elements.size() > 0) {
+            builder.append(elements.get(0).CreateTypeName());
+        }
+
+        for (int i = 1; i < elements.size(); i++) {
+            builder.append(seperator);
+            builder.append(elements.get(i).CreateTypeName());
         }
 
         return builder.toString();

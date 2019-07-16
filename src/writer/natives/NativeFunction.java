@@ -37,7 +37,7 @@ public abstract class NativeFunction {
     }
 
     public void CreateFunctionDeclaration(GeneratorSlave slave) {
-        slave.CreateFunctionDeclaration(m_Name, new CodeSnippet_Plain(m_ReturnType.CreateTypeName()), true);
+        slave.CreateFunctionDeclaration(m_Name, m_ReturnType, true);
         for (TypeWrapper paramType : m_ParamTypes) {
             slave.CreateFunctionParameter(paramType);
         }

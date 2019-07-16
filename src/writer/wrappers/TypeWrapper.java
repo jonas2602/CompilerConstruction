@@ -4,6 +4,7 @@ public abstract class TypeWrapper {
     public abstract String CreateTypeName();
 
     public abstract TypeWrapper GetChild(int index);
+
     public abstract TypeWrapper GetChild(String index);
 
     public TypeWrapper GetChild() {
@@ -36,4 +37,15 @@ public abstract class TypeWrapper {
         return CreateTypeName();
     }
 
+    public boolean IsExtendable() {
+        return false;
+    }
+
+    public boolean IsExtended() {
+        return false;
+    }
+
+    public TypeWrapper MakeExtended() {
+        return this;
+    }
 }

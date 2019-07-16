@@ -75,6 +75,21 @@ public class GeneratorSlave {
         }
     }
 
+    public ParamContainer TryExtendType(ParamContainer collapsed) {
+        // Is the Parameter Type extendable?
+        if (!collapsed.GetRootType().IsExtendable()) {
+            return collapsed;
+        }
+
+        // Type already extended?
+        if (collapsed.HasExtendedType()) {
+            return collapsed;
+        }
+
+        // Extend Type;
+        return BitCast(collapsed, collapsed.GetRootType().MakeExtended());
+    }
+
     public ParamContainer CreateArrayConstant(List<ParamContainer> content) {
         TypeWrapper baseType = content.get(0).GetRootType();
 
@@ -132,7 +147,7 @@ public class GeneratorSlave {
             outContainer = ParamContainer.VOIDCONTAINER();
         } else {
             ValueWrapper_Variable ScopeIndex = GetScopeSnippetAsDef().AddStatementWithStorage(call);
-            outContainer = new ParamContainer(returnType, ScopeIndex);
+            outContainer = new ParamContainer(returnType.MakeExtended(), ScopeIndex);
         }
 
         if (bEnterScope) {
@@ -160,7 +175,7 @@ public class GeneratorSlave {
     }
 
     public CodeSnippet_FuncDef CreateFunctionDefinition(String name, TypeWrapper returnType, int paramCount, boolean bEnterScope) {
-        CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(name, new CodeSnippet_Plain(returnType.CreateTypeName()), paramCount);
+        CodeSnippet_FuncDef def = new CodeSnippet_FuncDef(name, returnType, paramCount);
         def.AddStatement(new CodeSnippet_Plain("begin:"));
         m_FunctionDefinitions.add(def);
         if (bEnterScope) {
@@ -187,7 +202,7 @@ public class GeneratorSlave {
         }
     }
 
-    public CodeSnippet_FuncDecl CreateFunctionDeclaration(String name, CodeSnippet_Base returnType, boolean bEnterScope) {
+    public CodeSnippet_FuncDecl CreateFunctionDeclaration(String name, TypeWrapper returnType, boolean bEnterScope) {
         CodeSnippet_FuncDecl decl = new CodeSnippet_FuncDecl(name, returnType);
         m_FunctionDeclarations.add(decl);
         if (bEnterScope) {
@@ -467,7 +482,7 @@ public class GeneratorSlave {
 
     public ParamContainer LoadFromVariable(ParamContainer variable) {
         TypeWrapper pointedType = variable.GetRootType().GetChild();
-        if(pointedType == null){
+        if (pointedType == null) {
             // Seams, that the given variable is already a constant
             // TODO: find better solution (relevant for inline functions that get a constant as parameter)
             return variable;

@@ -48,4 +48,23 @@ public class TypeWrapper_Pointer extends TypeWrapper {
 
         return true;
     }
+
+    @Override
+    public boolean IsExtendable() {
+        return m_PointedType instanceof TypeWrapper_Struct;
+    }
+
+    @Override
+    public boolean IsExtended() {
+        return m_PointedType.IsExtended();
+    }
+
+    @Override
+    public TypeWrapper MakeExtended() {
+        if (IsExtended()) {
+            return this;
+        }
+
+        return new TypeWrapper_Pointer(m_PointedType.MakeExtended());
+    }
 }

@@ -246,6 +246,7 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             // TODO: Non Primitive Types
             VarDeclNode varDecl = m_Block.GetVariableDeclaration(m_Name);
             ParamContainer outParam = varDecl.CreateSnippet(slave);
+            outParam = slave.TryExtendType(outParam);
             outParam = slave.LoadFromVariable(outParam);
             slave.CreateReturnStmt(outParam);
             // String OutValue = varDecl.HasScopeIndex() ? "%" + varDecl.GetScopeIndex() : ((PrimitiveTypeNode) varDecl.GetType()).GetTypeDefault();

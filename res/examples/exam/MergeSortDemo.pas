@@ -70,14 +70,14 @@ begin
   for i := low(data) to high(data) do
   begin
     data[i] := Random(high(data));
-    write(data[i]);
+    write(data[i], ' ');
   end;
   writeln();
   data := mergeSort(data);
   writeln('The data after sorting:');
   for i := low(data) to high(data) do
   begin
-    write(data[i]);
+    write(data[i], ' ');
   end;
   writeln();
 end.

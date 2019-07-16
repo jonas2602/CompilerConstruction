@@ -1,15 +1,24 @@
 package writer.wrappers;
 
+import writer.snippets.CodeSnippetHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TypeWrapper_Struct extends TypeWrapper {
     private String m_RawName;
     private List<TypeWrapper> m_EntryTypes;
+    private boolean m_bExtended;
 
     public TypeWrapper_Struct(String rawName) {
         m_RawName = rawName;
         m_EntryTypes = new ArrayList<>();
+    }
+
+    public TypeWrapper_Struct(String rawName, List<TypeWrapper> entries, boolean bExtended) {
+        m_RawName = rawName;
+        m_EntryTypes = entries;
+        m_bExtended = bExtended;
     }
 
     public void AddEntry(TypeWrapper entry) {
@@ -18,7 +27,11 @@ public class TypeWrapper_Struct extends TypeWrapper {
 
     @Override
     public String CreateTypeName() {
-        return String.format("%%struct.%s", m_RawName);
+        if (m_bExtended) {
+            return String.format("{ %s }", CodeSnippetHelper.MakeSeperatedTypes(", ", m_EntryTypes));
+        } else {
+            return String.format("%%struct.%s", m_RawName);
+        }
     }
 
     @Override
@@ -46,5 +59,20 @@ public class TypeWrapper_Struct extends TypeWrapper {
         // assuming, that all references of the same struct type use the same type wrapper object
         // it's only necessary to compare the object ptr
         return otherType == this;
+    }
+
+    @Override
+    public boolean IsExtended() {
+        return m_bExtended;
+    }
+
+    @Override
+    public TypeWrapper MakeExtended() {
+        if (m_bExtended) {
+            // return self if already an extended struct
+            return this;
+        }
+
+        return new TypeWrapper_Struct(m_RawName, m_EntryTypes, true);
     }
 }

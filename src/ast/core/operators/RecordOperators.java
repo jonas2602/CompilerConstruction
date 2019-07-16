@@ -7,6 +7,8 @@ import ast.expressions.FuncCallNode;
 import ast.types.ArrayTypeNode;
 import ast.types.RecordTypeNode;
 import ast.types.VoidTypeNode;
+import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper_Struct;
 
 public class RecordOperators implements StdBuilder {
     @Override
@@ -25,9 +27,14 @@ public class RecordOperators implements StdBuilder {
             super(Operator.AGN, new VoidTypeNode(), RecordTypeNode.WildcardRecordNode(), (slave, lParam, rParam) -> {
                 // TODO: keep same start reference of copy data?
                 //  -> realloc memory of target pointers and copy memory of data
-                slave.CopyMemory(rParam, lParam);
-                return null;
-
+                if (rParam.HasExtendedType()) {
+                    ParamContainer extended = slave.TryExtendType(lParam);
+                    slave.StoreInVariable(extended, rParam);
+                    return null;
+                } else {
+                    slave.CopyMemory(rParam, lParam);
+                    return null;
+                }
             });
         }
     }

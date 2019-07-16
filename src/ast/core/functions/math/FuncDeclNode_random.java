@@ -13,6 +13,9 @@ public class FuncDeclNode_random extends FuncDeclNode_Core {
     public FuncDeclNode_random() {
         super("random", PrimitiveTypeNode.IntNode);
 
+        m_bCustomCallLogic = true;
+        m_bInline = true;
+
         AddParameter("limit", PrimitiveTypeNode.IntNode);
     }
 
