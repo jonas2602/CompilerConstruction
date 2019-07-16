@@ -1,6 +1,6 @@
 program strings;
 var
-    str: string[7];
+    str: string[15];
     charptr: ^char;
     chars: array[2..10] of char;
 begin
@@ -8,8 +8,9 @@ begin
     str := 'test';
     writeln(high(str));
     charptr := 'test123';
-    str := str + 'a';
-    writeln (str, ' my random string ', charptr);
+    str := str + 'abc' + 'd';
+    writeln(length(str));
+    writeln(str, ' my random string ', charptr);
 end.
 
 {program Hello;

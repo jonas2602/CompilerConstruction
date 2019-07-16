@@ -35,7 +35,7 @@ public class App {
         Compile("res/examples/exam/MergeSortDemo.pas", "gen");
 
         LocalTester t = new LocalTester();
-        t.compile("gen");
+        t.Compile("gen");
 
         // TestBattery battery = new TestBattery();
         // battery.Fire();

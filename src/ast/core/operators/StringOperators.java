@@ -14,6 +14,7 @@ import ast.types.PrimitiveTypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.natives.memory.NativeFunction_malloc;
+import writer.natives.string.NativeFunction_strcat;
 import writer.natives.string.NativeFunction_strcpy;
 import writer.natives.string.NativeFunction_strlen;
 import writer.wrappers.ParamContainer;
@@ -27,6 +28,8 @@ public class StringOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AssignCharPointerArray());
         std.AddFunctionDeclaration(new AssignCharArrayPointer());
         std.AddFunctionDeclaration(new AddChar());
+        std.AddFunctionDeclaration(new AddString());
+        std.AddFunctionDeclaration(new AddStringPtr());
     }
 
     public static class StringLength extends FuncDeclNode_Core {
@@ -37,8 +40,6 @@ public class StringOperators implements StdBuilder {
             m_bCustomCallLogic = true;
 
             AddParameter("str", ArrayTypeNode.CharArrayNode);
-
-
         }
 
         @Override
@@ -155,5 +156,66 @@ public class StringOperators implements StdBuilder {
         }
     }
 
+    public static class AddStringPtr extends FuncDeclNode_Core {
+        public AddStringPtr() {
+            super(Operator.ADD, PointerTypeNode.CharPointerNode);
 
+            AddParameter("str1", ArrayTypeNode.CharArrayNode);
+            AddParameter("str2", PointerTypeNode.CharPointerNode);
+
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            ParamContainer str1Param = callNode.GetParameter(0).CreateSnippet(slave);
+            ParamContainer str1Ptr = slave.CreateArrayElementPtr(str1Param, 0);
+            ParamContainer str2Ptr = callNode.GetParameter(1).CreateSnippet(slave);
+
+            return StringOperators.buildCat(slave, str1Ptr, str2Ptr);
+        }
+    }
+
+    public static class AddString extends FuncDeclNode_Core {
+        public AddString() {
+            super(Operator.ADD, PointerTypeNode.CharPointerNode);
+
+            AddParameter("str1", ArrayTypeNode.CharArrayNode);
+            AddParameter("str2", ArrayTypeNode.CharArrayNode);
+
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            ParamContainer str1Param = callNode.GetParameter(0).CreateSnippet(slave);
+            ParamContainer str1Ptr = slave.CreateArrayElementPtr(str1Param, 0);
+            ParamContainer str2Param = callNode.GetParameter(1).CreateSnippet(slave);
+            ParamContainer str2Ptr = slave.CreateArrayElementPtr(str2Param, 0);
+
+            return StringOperators.buildCat(slave, str1Ptr, str2Ptr);
+        }
+    }
+
+    private static ParamContainer buildCat(GeneratorSlave slave, ParamContainer str1Ptr, ParamContainer str2Ptr) {
+        // get length of source string
+        ParamContainer str1Len = slave.CreateNativeCall(new NativeFunction_strlen(str1Ptr));
+        ParamContainer str2Len = slave.CreateNativeCall(new NativeFunction_strlen(str1Ptr));
+        ParamContainer newSize = slave.AddIntInt(str1Len, str2Len);
+        ParamContainer newSizeNull = slave.AddIntInt(newSize, ParamContainer.INTCONTAINER(1));
+
+        // allocate new momory with size + char + \0
+        ParamContainer newMem = slave.CreateNativeCall(new NativeFunction_malloc(newSizeNull));
+        newMem = slave.BitCast(newMem, TypeWrapper_Pointer.CHARPTR);
+
+        // Copy source string to the new memory
+        slave.CreateNativeCall(new NativeFunction_strcpy(newMem, str1Ptr));
+
+        // Copy other string behind it
+        slave.CreateNativeCall(new NativeFunction_strcat(newMem, str2Ptr));
+
+        return newMem;
+    }
 }

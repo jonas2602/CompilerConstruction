@@ -37,7 +37,7 @@ public class TestBattery {
         add("loops").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12");
         add("memory").AddSeperatorLines("42 99 12");
         add("pointer").AddLines("0 10 2 3 4, 10" ,"3");
-        add("string").AddLines("6", "testa my random string test123");
+        add("string").AddLines("14", "8", "testabcd my random string test123");
         add("innerfunctions").AddSeperatorLines("1 1 1");
         add("innerfunctions2").AddLines("4");
         add("innerfunctions3").AddSeperatorLines("test test2 test3");
@@ -148,7 +148,7 @@ public class TestBattery {
                 boolean checkError = false;
                 while ((line = stdout.readLine()) != null)  {
                     if (counter >= expected.size()) {
-                        error = "Got more output than expected "+line;
+                        error = "Got more output than expected " + line;
                         checkError = true;
                         break;
                     }

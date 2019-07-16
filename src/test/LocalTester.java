@@ -23,7 +23,7 @@ public class LocalTester {
         LLVMInitializeNativeTarget();
     }
 
-    public void compile(String fileName) {
+    public void Compile(String fileName) {
         m_Context = LLVMContextCreate();
 
         String fileSeparator = System.getProperty("file.separator");
@@ -58,7 +58,7 @@ public class LocalTester {
             onError();
         }
 
-        //fine main function
+        //find main function
         LLVMValueRef main = new LLVMValueRef();
         BytePointer mainptr = new BytePointer("main");
         res = LLVMFindFunction(engine, mainptr, main);
