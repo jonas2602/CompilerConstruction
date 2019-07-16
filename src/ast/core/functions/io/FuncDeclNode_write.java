@@ -18,7 +18,7 @@ import java.util.List;
 public class FuncDeclNode_write extends FuncDeclNode_Core {
     // TODO: maybe use puts instead of printf (no format required)
     public FuncDeclNode_write() {
-        super("write", VoidTypeNode.VoidNode);
+        super(IO.WRITE, VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
     }

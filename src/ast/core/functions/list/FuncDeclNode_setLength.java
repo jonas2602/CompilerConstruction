@@ -1,6 +1,7 @@
 package ast.core.functions.list;
 
 import ast.core.functions.FuncDeclNode_Generic;
+import ast.core.functions.memory.Memory;
 import ast.core.operators.Operator;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;
@@ -10,7 +11,7 @@ import ast.types.*;
 
 public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
     public FuncDeclNode_setLength() {
-        super("setlength", VoidTypeNode.VoidNode);
+        super(List.SETLEN, VoidTypeNode.VoidNode);
         // m_bCustomCallLogic = true;
         // m_bInline = true;
 
@@ -37,7 +38,7 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
 
         // arr.start = malloc(bytesize)
         AccessNode_Field startAccess = new AccessNode_Field(arrAccess, ArrayTypeNode_Dynamic.DynamicStartName);
-        FuncCallNode mallocCall = new FuncCallNode("getmem");
+        FuncCallNode mallocCall = new FuncCallNode(Memory.GETMEM);
         mallocCall.AddParameter(startAccess);
         mallocCall.AddParameter(mulCall);
         // FuncCallNode printCall = new FuncCallNode("writeln");
@@ -45,7 +46,7 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
         // CompStmtNode thenBranch = new CompStmtNode(mallocCall, printCall);
 
         // arr.start = realloc(arr.start, newLength)
-        FuncCallNode reallocCall = new FuncCallNode("reallocmem");
+        FuncCallNode reallocCall = new FuncCallNode(Memory.REALLOC);
         reallocCall.AddParameter(startAccess);
         reallocCall.AddParameter(new AccessNode_Variable("newLength"));
         AssignmentNode assignNodeRealloc = new AssignmentNode(startAccess, reallocCall);

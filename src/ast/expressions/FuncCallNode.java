@@ -3,7 +3,7 @@ package ast.expressions;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
-import ast.core.functions.math.MathFunctions;
+import ast.core.FunctionNameWrapper;
 import ast.core.operators.Operator;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
@@ -34,12 +34,12 @@ public class FuncCallNode extends AbstractSyntaxTree {
         }
     }
 
-    public FuncCallNode(Operator operator) {
-        this(operator.GetOperatorFunctionName());
+    public FuncCallNode(FunctionNameWrapper function) {
+        this(function.GetFunctionName());
     }
 
-    public FuncCallNode(Operator operator, AbstractSyntaxTree... params) {
-        this(operator);
+    public FuncCallNode(FunctionNameWrapper function, AbstractSyntaxTree... params) {
+        this(function);
 
         for (AbstractSyntaxTree param : params) {
             AddParameter(param);

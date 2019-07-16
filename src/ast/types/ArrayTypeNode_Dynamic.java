@@ -1,10 +1,6 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
-import writer.GeneratorSlave;
-import writer.natives.NativeFunction_malloc;
-import writer.wrappers.ParamContainer;
-import writer.wrappers.TypeWrapper_Pointer;
 
 import java.util.Set;
 

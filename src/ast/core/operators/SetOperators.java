@@ -1,25 +1,15 @@
-package ast.core.functions.set;
+package ast.core.operators;
 
-import ast.AbstractSyntaxTree;
 import ast.BlockNode;
-import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
-import ast.core.operators.Operator;
-import ast.core.operators.PascalType_Assignment;
-import ast.declarations.FuncDeclNode;
+import ast.core.functions.casts.Cast;
+import ast.core.functions.set.Set;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;
 import ast.statements.BranchNode;
 import ast.statements.ForNode;
 import ast.types.*;
-import writer.GeneratorSlave;
-import writer.wrappers.ParamContainer;
-import writer.wrappers.TypeWrapper_Array;
-import writer.wrappers.TypeWrapper_Other;
-import writer.wrappers.TypeWrapper_Primitive;
-
-import java.util.Set;
 
 public class SetOperators implements StdBuilder {
     @Override
@@ -113,11 +103,11 @@ public class SetOperators implements StdBuilder {
 
 
             AccessNode_Variable elementAccess = new AccessNode_Variable("element");
-            FuncCallNode compCall = new FuncCallNode(".inrange", ConstantNode.IntNode(0), ConstantNode.IntNode(256), elementAccess);
+            FuncCallNode compCall = new FuncCallNode(Set.INRANGE, ConstantNode.IntNode(0), ConstantNode.IntNode(256), elementAccess);
 
             AccessNode_Variable setAccess = new AccessNode_Variable("set");
             AccessNode_Array indexAccess = new AccessNode_Array(setAccess, elementAccess);
-            FuncCallNode castCharBool = new FuncCallNode("bool", indexAccess);
+            FuncCallNode castCharBool = new FuncCallNode(Cast.BOOL, indexAccess);
             AssignmentNode assignValid = new AssignmentNode(new AccessNode_Variable(m_Name), castCharBool);
 
             AssignmentNode assignInvalid = new AssignmentNode(new AccessNode_Variable(m_Name), ConstantNode.BoolNode(false));
@@ -156,7 +146,7 @@ public class SetOperators implements StdBuilder {
             AddParameter("element", PrimitiveTypeNode.CharNode);
             AddParameter("set", SetTypeNode.CharSetNode);
 
-            FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
+            FuncCallNode ordCall = new FuncCallNode(Cast.ORD, new AccessNode_Variable("element"));
             FuncCallNode appendCall = new FuncCallNode(Operator.IN + "_intern.");
             appendCall.AddParameter(ordCall);
             appendCall.AddParameter(new AccessNode_Variable("set"));
@@ -175,7 +165,7 @@ public class SetOperators implements StdBuilder {
             AddParameter("element", PrimitiveTypeNode.BoolNode);
             AddParameter("set", SetTypeNode.BoolSetNode);
 
-            FuncCallNode ordCall = new FuncCallNode("ord", new AccessNode_Variable("element"));
+            FuncCallNode ordCall = new FuncCallNode(Cast.ORD, new AccessNode_Variable("element"));
             FuncCallNode appendCall = new FuncCallNode(Operator.IN + "_intern.");
             appendCall.AddParameter(ordCall);
             appendCall.AddParameter(new AccessNode_Variable("set"));

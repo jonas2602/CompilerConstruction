@@ -3,9 +3,7 @@ package ast.core;
 import ast.BlockNode;
 import ast.core.functions.casts.CastFunctions;
 import ast.core.functions.io.*;
-import ast.core.functions.list.FuncDeclNode_getLength;
-import ast.core.functions.list.FuncDeclNode_setLength;
-import ast.core.functions.math.FuncDeclNode_random;
+import ast.core.functions.list.ListFunctions;
 import ast.core.functions.math.MathFunctions;
 import ast.core.functions.memory.*;
 import ast.core.functions.set.*;
@@ -18,20 +16,13 @@ public abstract class StdLib {
         BlockNode stdBlock = new BlockNode();
         // functions
         // io functions
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_writeln());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_write());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_readln());
+        new IOFunctions().buildStd(stdBlock);
 
         // memory functions
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_new());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_dispose());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_getmem());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_reallocmem());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_move());
+        new MemoryFunctions().buildStd(stdBlock);
 
         // math functions
         new MathFunctions().buildStd(stdBlock);
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_random());
 
         //cast functions
         new CastFunctions().buildStd(stdBlock);
@@ -46,17 +37,13 @@ public abstract class StdLib {
         new RecordOperators().buildStd(stdBlock);
         new PrimitiveOperators().buildStd(stdBlock);
         new StringOperators().buildStd(stdBlock);
+        new SetOperators().buildStd(stdBlock);
 
         // list
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_getLength());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_setLength());
+        new ListFunctions().buildStd(stdBlock);
 
         // set
-        new SetElementAppends().buildStd(stdBlock);
-        new SetRangeAppends().buildStd(stdBlock);
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_inRange());
-        stdBlock.AddFunctionDeclaration(new FuncDeclNode_min());
-        new SetOperators().buildStd(stdBlock);
+        new SetFunctions().buildStd(stdBlock);
 
         // types
         stdBlock.AddTypeDeclaration(new TypeDeclNode("integer", PrimitiveTypeNode.IntNode));

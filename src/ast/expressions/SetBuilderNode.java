@@ -2,6 +2,7 @@ package ast.expressions;
 
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
+import ast.core.functions.set.Set;
 import ast.declarations.VarDeclNode;
 import ast.types.RangeTypeNode;
 import ast.types.SetTypeNode;
@@ -39,7 +40,7 @@ public class SetBuilderNode extends ConstantNode implements AccessInterface {
         AccessNode_Variable m_TempSetAccess = new AccessNode_Variable("");
         m_TempSetAccess.SetDeclaration(m_TempSetVariable);
 
-        FuncCallNode appendCall = new FuncCallNode(".append");
+        FuncCallNode appendCall = new FuncCallNode(Set.APPEND);
         appendCall.AddParameter(m_TempSetAccess);
         appendCall.AddParameter(node);
 
@@ -51,7 +52,7 @@ public class SetBuilderNode extends ConstantNode implements AccessInterface {
         AccessNode_Variable m_TempSetAccess = new AccessNode_Variable("");
         m_TempSetAccess.SetDeclaration(m_TempSetVariable);
 
-        FuncCallNode appendCall = new FuncCallNode(".appendRange");
+        FuncCallNode appendCall = new FuncCallNode(Set.APPEND_RANGE);
         appendCall.AddParameter(m_TempSetAccess);
         appendCall.AddParameter(r.GetMin());
         appendCall.AddParameter(r.GetMax());

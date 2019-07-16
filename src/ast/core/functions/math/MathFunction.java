@@ -18,8 +18,8 @@ public abstract class MathFunction extends FuncDeclNode_Core {
     protected boolean m_Cast;
     private Class<? extends NativeMathFunction> m_Function;
 
-    public MathFunction(String InName, PrimitiveTypeNode returnType, PrimitiveTypeNode param, Class<? extends NativeMathFunction> function) {
-        super(InName, returnType);
+    public MathFunction(String name, PrimitiveTypeNode returnType, PrimitiveTypeNode param, Class<? extends NativeMathFunction> function) {
+        super(name, returnType);
         m_bCustomCallLogic = true;
         m_bInline = true;
 
@@ -32,8 +32,16 @@ public abstract class MathFunction extends FuncDeclNode_Core {
         m_Function = function;
     }
 
-    public MathFunction(String InName, PrimitiveTypeNode param, Class<? extends NativeMathFunction> function) {
-        this(InName, PrimitiveTypeNode.FloatNode, param, function);
+    public MathFunction(Math functionName, PrimitiveTypeNode returnType, PrimitiveTypeNode param, Class<? extends NativeMathFunction> function) {
+        this(functionName.GetFunctionName(), returnType, param, function);
+    }
+
+    public MathFunction(String name, PrimitiveTypeNode param, Class<? extends NativeMathFunction> function) {
+        this(name, PrimitiveTypeNode.FloatNode, param, function);
+    }
+
+    public MathFunction(Math functionName, PrimitiveTypeNode param, Class<? extends NativeMathFunction> function) {
+        this(functionName.GetFunctionName(), PrimitiveTypeNode.FloatNode, param, function);
     }
 
     @Override

@@ -6,13 +6,13 @@ import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
 import writer.GeneratorSlave;
-import writer.natives.NativeFunction_realloc;
+import writer.natives.memory.NativeFunction_realloc;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Pointer;
 
 public class FuncDeclNode_reallocmem extends FuncDeclNode_Core {
     public FuncDeclNode_reallocmem() {
-        super("reallocmem", PointerTypeNode.WildCardPointerNode());
+        super(Memory.REALLOC, PointerTypeNode.WildCardPointerNode());
         m_bCustomCallLogic = true;
         m_bInline = true;
 

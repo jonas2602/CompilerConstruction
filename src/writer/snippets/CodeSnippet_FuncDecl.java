@@ -24,8 +24,8 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInter
         return ValueWrapper_Variable.SCOPEVAR(m_ParameterCounter++);
     }
 
-    public ValueWrapper_Variable AddParameter(String InParam) {
-        return AddParameter(new CodeSnippet_Plain(InParam));
+    public ValueWrapper_Variable AddParameter(String param) {
+        return AddParameter(new CodeSnippet_Plain(param));
     }
 
     @Override

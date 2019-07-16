@@ -13,7 +13,7 @@ public class FuncDeclNode_readln extends FuncDeclNode_Core {
 
     // TODO: maybe use puts instead of printf (no format required)
     public FuncDeclNode_readln() {
-        super("readln", PrimitiveTypeNode.IntNode);
+        super(IO.READLN, PrimitiveTypeNode.IntNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
 

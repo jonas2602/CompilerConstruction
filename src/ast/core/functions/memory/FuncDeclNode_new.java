@@ -7,13 +7,13 @@ import ast.types.PointerTypeNode;
 import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
-import writer.natives.NativeFunction_malloc;
+import writer.natives.memory.NativeFunction_malloc;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
 public class FuncDeclNode_new extends FuncDeclNode_Core {
     public FuncDeclNode_new() {
-        super("new", VoidTypeNode.VoidNode);
+        super(Memory.NEW, VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
     }

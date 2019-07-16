@@ -8,8 +8,12 @@ import writer.wrappers.ParamContainer;
 
 public abstract class MathRecastFunction extends MathFunction {
 
-    public MathRecastFunction(String InName, PrimitiveTypeNode type, Class<? extends NativeMathFunction> function) {
-        super(InName, type, type, function);
+    public MathRecastFunction(String name, PrimitiveTypeNode type, Class<? extends NativeMathFunction> function) {
+        super(name, type, type, function);
+    }
+
+    public MathRecastFunction(Math functionName,  PrimitiveTypeNode type, Class<? extends NativeMathFunction> function) {
+        this(functionName.GetFunctionName(), type, function);
     }
 
     @Override

@@ -6,12 +6,8 @@ import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.TypeNode;
-import ast.types.WildcardTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public abstract class PascalType_Operator extends FuncDeclNode_Core {
 
@@ -30,11 +26,11 @@ public abstract class PascalType_Operator extends FuncDeclNode_Core {
     }
 
     public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode lparam, TypeNode rparam, FunctionCallTwoParams operation) {
-        this(operator.GetOperatorFunctionName(), returnType, lparam, rparam, operation);
+        this(operator.GetFunctionName(), returnType, lparam, rparam, operation);
     }
 
     public PascalType_Operator(Operator operator, TypeNode returnType, TypeNode param, FunctionCallTwoParams operation) {
-        this(operator.GetOperatorFunctionName(), returnType, param, param, operation);
+        this(operator.GetFunctionName(), returnType, param, param, operation);
     }
 
     @Override

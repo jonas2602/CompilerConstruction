@@ -13,20 +13,20 @@ public class ParamContainer {
         return new ParamContainer(TypeWrapper_Other.NULL, new ValueWrapper_Constant(""));
     }
 
-    public static ParamContainer BOOLCONTAINER(boolean InBool) {
-        return new ParamContainer(TypeWrapper_Primitive.BOOL, new ValueWrapper_Constant(InBool ? "true" : "false"));
+    public static ParamContainer BOOLCONTAINER(boolean b) {
+        return new ParamContainer(TypeWrapper_Primitive.BOOL, new ValueWrapper_Constant(b ? "true" : "false"));
     }
 
-    public static ParamContainer CHARCONTAINER(char InChar) {
-        return new ParamContainer(TypeWrapper_Primitive.CHAR, ValueWrapper_Constant.ValueWrapperInt(InChar));
+    public static ParamContainer CHARCONTAINER(char c) {
+        return new ParamContainer(TypeWrapper_Primitive.CHAR, ValueWrapper_Constant.ValueWrapperInt(c));
     }
 
-    public static ParamContainer INTCONTAINER(int InInt) {
-        return new ParamContainer(TypeWrapper_Primitive.INT, ValueWrapper_Constant.ValueWrapperInt(InInt));
+    public static ParamContainer INTCONTAINER(int i) {
+        return new ParamContainer(TypeWrapper_Primitive.INT, ValueWrapper_Constant.ValueWrapperInt(i));
     }
 
-    public static ParamContainer LONGCONTAINER(long InLong) {
-        return new ParamContainer(TypeWrapper_Primitive.LONG, ValueWrapper_Constant.ValueWrapperLong(InLong));
+    public static ParamContainer LONGCONTAINER(long l) {
+        return new ParamContainer(TypeWrapper_Primitive.LONG, ValueWrapper_Constant.ValueWrapperLong(l));
     }
 
     private TypeWrapper m_RootType; // i8, i32, float, [3 x i8], [10 x [ 10 x i8]], ...

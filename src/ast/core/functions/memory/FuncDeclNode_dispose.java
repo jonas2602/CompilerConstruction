@@ -8,13 +8,13 @@ import ast.types.PointerTypeNode;
 import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
-import writer.natives.NativeFunction_free;
+import writer.natives.memory.NativeFunction_free;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Pointer;
 
 public class FuncDeclNode_dispose extends FuncDeclNode_Core {
     public FuncDeclNode_dispose() {
-        super("dispose", VoidTypeNode.VoidNode);
+        super(Memory.DISPOSE, VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
     }

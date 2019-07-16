@@ -19,31 +19,31 @@ public class CastFunctions implements StdBuilder {
 
     public static class ChrInt extends PascalType_SingleOperator {
         public ChrInt() {
-            super("chr", PrimitiveTypeNode.CharNode, PrimitiveTypeNode.IntNode, GeneratorSlave::TruncToChar);
+            super(Cast.CHR, PrimitiveTypeNode.CharNode, PrimitiveTypeNode.IntNode, GeneratorSlave::TruncToChar);
         }
     }
 
     public static class OrdInt extends PascalType_SingleOperator {
         public OrdInt() {
-            super("ord", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam) -> lParam);
+            super(Cast.ORD, PrimitiveTypeNode.IntNode, PrimitiveTypeNode.IntNode, (slave, lParam) -> lParam);
         }
     }
 
     public static class OrdChar extends PascalType_SingleOperator {
         public OrdChar() {
-            super("ord", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.CharNode, GeneratorSlave::ExtendToInt);
+            super(Cast.ORD, PrimitiveTypeNode.IntNode, PrimitiveTypeNode.CharNode, GeneratorSlave::ExtendToInt);
         }
     }
 
     public static class OrdBool extends PascalType_SingleOperator {
         public OrdBool() {
-            super("ord", PrimitiveTypeNode.IntNode, PrimitiveTypeNode.BoolNode, GeneratorSlave::ExtendToInt);
+            super(Cast.ORD, PrimitiveTypeNode.IntNode, PrimitiveTypeNode.BoolNode, GeneratorSlave::ExtendToInt);
         }
     }
 
     public static class BoolChar extends PascalType_SingleOperator {
         public BoolChar() {
-            super("bool", PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.CharNode, GeneratorSlave::TruncToBool);
+            super(Cast.BOOL, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.CharNode, GeneratorSlave::TruncToBool);
         }
     }
 }

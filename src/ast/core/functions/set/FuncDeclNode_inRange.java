@@ -13,7 +13,7 @@ import ast.types.WildcardTypeNode;
 
 public class FuncDeclNode_inRange extends FuncDeclNode_Generic {
     public FuncDeclNode_inRange() {
-        super(".inrange", PrimitiveTypeNode.BoolNode);
+        super(Set.INRANGE, PrimitiveTypeNode.BoolNode);
 
         // TODO: replace with wildcards
         WildcardTypeNode wildcard = new WildcardTypeNode();

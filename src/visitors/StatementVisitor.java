@@ -61,7 +61,7 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     //     AbstractSyntaxTree variable = new VariableAccessVisitor().visit(ctx.variable());
     //     AbstractSyntaxTree expression = new ExpressionVisitor().visit(ctx.expression());
     //     //return new AssignmentNode(variable, expression);
-    //     FuncCallNode funcCall = new FuncCallNode(Operator.AGN.GetOperatorFunctionName());
+    //     FuncCallNode funcCall = new FuncCallNode(Operator.AGN.GetFunctionName());
     //     funcCall.AddParameter(variable);
     //     funcCall.AddParameter(expression);
     //     return funcCall;

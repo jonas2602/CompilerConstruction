@@ -1,4 +1,4 @@
-package ast.core.functions.set;
+package ast.core.functions.math;
 
 import ast.core.functions.FuncDeclNode_Generic;
 import ast.core.operators.Operator;
@@ -14,7 +14,7 @@ import java.awt.image.renderable.RenderableImage;
 
 public class FuncDeclNode_min extends FuncDeclNode_Generic {
     public FuncDeclNode_min() {
-        super("min", PrimitiveTypeNode.WildcardPrimitiveNode());
+        super(Math.MIN, PrimitiveTypeNode.WildcardPrimitiveNode());
 
         AddParameter("left", m_ReturnType);
         AddParameter("right", m_ReturnType);

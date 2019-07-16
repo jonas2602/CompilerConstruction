@@ -3,15 +3,17 @@ package ast.core.operators;
 import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
+import ast.core.functions.list.List;
+import ast.core.functions.math.Math;
+import ast.core.functions.memory.Memory;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.*;
-import ast.statements.CompStmtNode;
 import ast.types.ArrayTypeNode;
 import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
-import writer.natives.NativeFunction_malloc;
+import writer.natives.memory.NativeFunction_malloc;
 import writer.natives.string.NativeFunction_strcpy;
 import writer.natives.string.NativeFunction_strlen;
 import writer.wrappers.ParamContainer;
@@ -29,7 +31,7 @@ public class StringOperators implements StdBuilder {
 
     public static class StringLength extends FuncDeclNode_Core {
         public StringLength() {
-            super("length", PrimitiveTypeNode.IntNode);
+            super(Operator.LENGTH, PrimitiveTypeNode.IntNode);
 
             m_bInline = true;
             m_bCustomCallLogic = true;
@@ -51,7 +53,7 @@ public class StringOperators implements StdBuilder {
 
     public static class CharPtrLength extends FuncDeclNode_Core {
         public CharPtrLength() {
-            super("length", PrimitiveTypeNode.IntNode);
+            super(Operator.LENGTH, PrimitiveTypeNode.IntNode);
 
             m_bInline = true;
             m_bCustomCallLogic = true;
@@ -96,15 +98,15 @@ public class StringOperators implements StdBuilder {
             AccessNode_Variable strAccess = new AccessNode_Variable("str");
             AccessNode_Variable ptrAccess = new AccessNode_Variable("ptr");
 
-            FuncCallNode staticLength = new FuncCallNode("high", strAccess);
+            FuncCallNode staticLength = new FuncCallNode(Operator.HIGH, strAccess);
             staticLength = new FuncCallNode(Operator.ADD, staticLength, ConstantNode.IntNode(1));
-            FuncCallNode dynamicLength = new FuncCallNode("length", ptrAccess);
+            FuncCallNode dynamicLength = new FuncCallNode(List.GETLEN, ptrAccess);
             dynamicLength = new FuncCallNode(Operator.ADD, dynamicLength, ConstantNode.IntNode(1));
-            FuncCallNode minCall = new FuncCallNode("min", staticLength, dynamicLength);
+            FuncCallNode minCall = new FuncCallNode(Math.MIN, staticLength, dynamicLength);
 
             AccessNode_Array firstChar = new AccessNode_Array(strAccess, ConstantNode.IntNode(0));
             AccessNode_Address charptr = new AccessNode_Address(firstChar);
-            FuncCallNode cpyCall = new FuncCallNode("move", charptr, ptrAccess, minCall);
+            FuncCallNode cpyCall = new FuncCallNode(Memory.MOVE, charptr, ptrAccess, minCall);
 
             m_Block.SetCompoundStatement(cpyCall);
 

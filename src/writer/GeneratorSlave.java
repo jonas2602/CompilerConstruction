@@ -1,8 +1,8 @@
 package writer;
 
 import writer.natives.NativeFunction;
-import writer.natives.NativeFunction_memcpy;
-import writer.natives.NativeFunction_memset;
+import writer.natives.memory.NativeFunction_memcpy;
+import writer.natives.memory.NativeFunction_memset;
 import writer.snippets.*;
 import writer.wrappers.*;
 

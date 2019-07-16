@@ -2,6 +2,7 @@ package ast.core.operators;
 
 import ast.AbstractSyntaxTree;
 import ast.core.FuncDeclNode_Core;
+import ast.core.FunctionNameWrapper;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
@@ -24,8 +25,12 @@ public abstract class PascalType_SingleOperator extends FuncDeclNode_Core {
         m_Operation = operation;
     }
 
-    public PascalType_SingleOperator(Operator operator, TypeNode type, FunctionCallOneParam operation) {
-        this(operator.GetOperatorFunctionName(), type, type, operation);
+    public PascalType_SingleOperator(FunctionNameWrapper functionName, TypeNode returnType, TypeNode param, FunctionCallOneParam operation) {
+        this(functionName.GetFunctionName(), returnType, param, operation);
+    }
+
+    public PascalType_SingleOperator(FunctionNameWrapper functionName, TypeNode type, FunctionCallOneParam operation) {
+        this(functionName.GetFunctionName(), type, type, operation);
     }
 
     @Override

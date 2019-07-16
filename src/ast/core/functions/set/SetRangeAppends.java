@@ -3,6 +3,7 @@ package ast.core.functions.set;
 import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
+import ast.core.functions.casts.Cast;
 import ast.core.operators.Operator;
 import ast.expressions.AccessNode_Array;
 import ast.expressions.AccessNode_Variable;
@@ -34,7 +35,7 @@ public class SetRangeAppends implements StdBuilder {
             AddParameter("max", PrimitiveTypeNode.IntNode);
 
             // Body that adds element
-            FuncCallNode appendCall = new FuncCallNode(".append");
+            FuncCallNode appendCall = new FuncCallNode(Set.APPEND);
             AccessNode_Variable setAccess = new AccessNode_Variable("set");
             AccessNode_Variable indexAccess = new AccessNode_Variable("i");
             appendCall.AddParameter(setAccess);
@@ -51,7 +52,7 @@ public class SetRangeAppends implements StdBuilder {
 
     public static class AppendRangeInt extends FuncDeclNode_Core {
         public AppendRangeInt() {
-            super(".appendRange", VoidTypeNode.VoidNode);
+            super(Set.APPEND_RANGE, VoidTypeNode.VoidNode);
 
             m_bInline = true;
 
@@ -70,7 +71,7 @@ public class SetRangeAppends implements StdBuilder {
 
     public static class AppendRangeChar extends FuncDeclNode_Core {
         public AppendRangeChar() {
-            super(".appendRange", VoidTypeNode.VoidNode);
+            super(Set.APPEND_RANGE, VoidTypeNode.VoidNode);
 
             m_bInline = true;
 
@@ -79,8 +80,8 @@ public class SetRangeAppends implements StdBuilder {
             AddParameter("max", PrimitiveTypeNode.CharNode);
 
             // convert range to int
-            FuncCallNode ordMinCall = new FuncCallNode("ord", new AccessNode_Variable("min"));
-            FuncCallNode ordMaxCall = new FuncCallNode("ord", new AccessNode_Variable("max"));
+            FuncCallNode ordMinCall = new FuncCallNode(Cast.ORD, new AccessNode_Variable("min"));
+            FuncCallNode ordMaxCall = new FuncCallNode(Cast.ORD, new AccessNode_Variable("max"));
 
             FuncCallNode appendCall = new FuncCallNode(".appendRange_internal");
             appendCall.AddParameter(new AccessNode_Variable("set"));
@@ -98,7 +99,7 @@ public class SetRangeAppends implements StdBuilder {
 
     public static class AppendRangeBool extends FuncDeclNode_Core {
         public AppendRangeBool() {
-            super(".appendRange", VoidTypeNode.VoidNode);
+            super(Set.APPEND_RANGE, VoidTypeNode.VoidNode);
 
             m_bInline = true;
 
@@ -107,8 +108,8 @@ public class SetRangeAppends implements StdBuilder {
             AddParameter("max", PrimitiveTypeNode.BoolNode);
 
             // convert range to int
-            FuncCallNode ordMinCall = new FuncCallNode("ord", new AccessNode_Variable("min"));
-            FuncCallNode ordMaxCall = new FuncCallNode("ord", new AccessNode_Variable("max"));
+            FuncCallNode ordMinCall = new FuncCallNode(Cast.ORD, new AccessNode_Variable("min"));
+            FuncCallNode ordMaxCall = new FuncCallNode(Cast.ORD, new AccessNode_Variable("max"));
 
             FuncCallNode appendCall = new FuncCallNode(".appendRange_internal");
             appendCall.AddParameter(new AccessNode_Variable("set"));

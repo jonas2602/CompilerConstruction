@@ -8,8 +8,12 @@ import writer.wrappers.ParamContainer;
 
 public abstract class MathIntFunction extends MathFunction {
 
-    public MathIntFunction(String InName, Class<? extends NativeMathFunction> function) {
-        super(InName, PrimitiveTypeNode.IntNode, PrimitiveTypeNode.FloatNode, function);
+    public MathIntFunction(String name, Class<? extends NativeMathFunction> function) {
+        super(name, PrimitiveTypeNode.IntNode, PrimitiveTypeNode.FloatNode, function);
+    }
+
+    public MathIntFunction(Math functionName, Class<? extends NativeMathFunction> function) {
+        this(functionName.GetFunctionName(), function);
     }
 
     @Override

@@ -1,5 +1,6 @@
-package writer.natives;
+package writer.natives.memory;
 
+import writer.natives.NativeFunction;
 import writer.wrappers.*;
 
 public class NativeFunction_memset extends NativeFunction {

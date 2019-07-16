@@ -10,7 +10,7 @@ import writer.wrappers.ParamContainer;
 
 public class FuncDeclNode_getLength extends FuncDeclNode_Core {
     public FuncDeclNode_getLength() {
-        super("length", PrimitiveTypeNode.IntNode);
+        super(List.GETLEN, PrimitiveTypeNode.IntNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
 

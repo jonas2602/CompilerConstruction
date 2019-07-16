@@ -22,8 +22,8 @@ public abstract class FuncDeclNode_Core extends FuncDeclNode {
         super(name, returnType, new BlockNode());
     }
 
-    public FuncDeclNode_Core(Operator operator, TypeNode returnType) {
-        this(operator.GetOperatorFunctionName(), returnType);
+    public FuncDeclNode_Core(FunctionNameWrapper function, TypeNode returnType) {
+        this(function.GetFunctionName(), returnType);
     }
 
     @Override

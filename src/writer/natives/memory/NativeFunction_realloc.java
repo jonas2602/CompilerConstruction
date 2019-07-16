@@ -1,6 +1,7 @@
-package writer.natives;
+package writer.natives.memory;
 
 import writer.wrappers.*;
+import writer.natives.NativeFunction;
 
 // Attention: realloc will reuse the existing memory if enough space for the new size!!!
 //            -> new pointer can point to the same location but it's no deterministic behaviour

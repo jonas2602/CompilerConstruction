@@ -3,6 +3,7 @@ package ast.core.functions;
 import ast.BlockNode;
 import ast.ProgramNode;
 import ast.core.FuncDeclNode_Core;
+import ast.core.FunctionNameWrapper;
 import ast.declarations.FuncDeclNode;
 import ast.declarations.ParamDeclNode;
 import ast.declarations.VarDeclNode;
@@ -24,7 +25,11 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         super(name, returnType);
     }
 
-    @Override
+    public FuncDeclNode_Generic(FunctionNameWrapper function, TypeNode returnType) {
+        this(function.GetFunctionName(), returnType);
+    }
+
+                                @Override
     protected Object clone() throws CloneNotSupportedException {
         FuncDeclNode_Generic copy = (FuncDeclNode_Generic) super.clone();
         // TODO: use AddFunctionDeclaration of program blocknode

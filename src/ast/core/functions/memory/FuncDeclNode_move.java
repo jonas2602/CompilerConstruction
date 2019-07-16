@@ -5,16 +5,14 @@ import ast.declarations.FuncDeclNode;
 import ast.expressions.FuncCallNode;
 import ast.types.PointerTypeNode;
 import ast.types.PrimitiveTypeNode;
-import ast.types.TypeNode;
 import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
-import writer.natives.NativeFunction_malloc;
-import writer.natives.NativeFunction_memcpy;
+import writer.natives.memory.NativeFunction_memcpy;
 import writer.wrappers.ParamContainer;
 
 public class FuncDeclNode_move extends FuncDeclNode_Core {
     public FuncDeclNode_move() {
-        super("move", VoidTypeNode.VoidNode);
+        super(Memory.MOVE, VoidTypeNode.VoidNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
 

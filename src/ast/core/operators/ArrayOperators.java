@@ -33,7 +33,7 @@ public class ArrayOperators implements StdBuilder {
 
     public static class HighArray extends PascalType_SingleOperator {
         public HighArray() {
-            super("high", PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> {
+            super(Operator.HIGH, PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> {
                 TypeWrapper_Array arr = (TypeWrapper_Array)lParam.GetRootType();
                 return ParamContainer.INTCONTAINER(arr.GetRawSize() - 1);
             });
@@ -42,13 +42,13 @@ public class ArrayOperators implements StdBuilder {
 
     public static class LowArray extends PascalType_SingleOperator {
         public LowArray() {
-            super("low", PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
+            super(Operator.LOW, PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
         }
     }
 
     public static class HighArrayDynamic extends FuncDeclNode_Core {
         public HighArrayDynamic() {
-            super("high", PrimitiveTypeNode.IntNode);
+            super(Operator.HIGH, PrimitiveTypeNode.IntNode);
             AddParameter("array", ArrayTypeNode_Dynamic.WildcardArrayNode());
 
             m_bInline = true;
@@ -63,7 +63,7 @@ public class ArrayOperators implements StdBuilder {
 
     public static class LowArrayDynamic extends PascalType_SingleOperator {
         public LowArrayDynamic() {
-            super("low", PrimitiveTypeNode.IntNode, ArrayTypeNode_Dynamic.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
+            super(Operator.LOW, PrimitiveTypeNode.IntNode, ArrayTypeNode_Dynamic.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
         }
     }
 

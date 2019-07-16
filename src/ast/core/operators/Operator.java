@@ -1,6 +1,8 @@
 package ast.core.operators;
 
-public enum Operator {
+import ast.core.FunctionNameWrapper;
+
+public enum Operator implements FunctionNameWrapper {
     ADD(".operatoradd"),
     SUB(".operatorsub"),
     MUL(".operatormul"),
@@ -28,7 +30,12 @@ public enum Operator {
     INC("inc"),
     DEC("dec"),
 
-    AGN(".operatoragn");
+    AGN(".operatoragn"),
+
+    HIGH("high"),
+    LOW("low"),
+
+    LENGTH("length");
 
     private String m_OperatorFunctionName;
 
@@ -36,7 +43,7 @@ public enum Operator {
         m_OperatorFunctionName = operatorFunctionName;
     }
 
-    public String GetOperatorFunctionName() {
+    public String GetFunctionName() {
         return m_OperatorFunctionName;
     }
 }

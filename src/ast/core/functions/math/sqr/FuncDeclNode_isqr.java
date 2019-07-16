@@ -2,6 +2,7 @@ package ast.core.functions.math.sqr;
 
 import ast.AbstractSyntaxTree;
 import ast.core.FuncDeclNode_Core;
+import ast.core.functions.math.Math;
 import ast.declarations.ParamDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
@@ -11,7 +12,7 @@ import writer.wrappers.ParamContainer;
 
 public class FuncDeclNode_isqr extends FuncDeclNode_Core {
     public FuncDeclNode_isqr() {
-        super("sqr", PrimitiveTypeNode.IntNode);
+        super(Math.SQR, PrimitiveTypeNode.IntNode);
         m_bCustomCallLogic = true;
         m_bInline = true;
 
