@@ -214,8 +214,10 @@ public class GeneratorSlave {
 
     public void CopyMemory(ParamContainer source, ParamContainer target) {
         // target and source are both pointer -> need to compare the sizes of the pointed types
-        int sourceSize = source.GetRootType().GetChild().GetTypeByteSize();
-        int targetSize = target.GetRootType().GetChild().GetTypeByteSize();
+        TypeWrapper sourceType = source.GetRootType().GetChild();
+        TypeWrapper targetType = target.GetRootType().GetChild();
+        int sourceSize = sourceType.GetTypeByteSize(sourceType.GetAlignment());
+        int targetSize = targetType.GetTypeByteSize(targetType.GetAlignment());
         int blockSize = Math.min(sourceSize, targetSize);
 
         // convert to char* if given as other types
@@ -227,7 +229,7 @@ public class GeneratorSlave {
             target = BitCast(target, TypeManager.CHARPTR());
         }
 
-        CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize, 8));
+        CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize));
     }
 
     public void SetMemory(ParamContainer content, ParamContainer target) {

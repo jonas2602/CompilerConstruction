@@ -6,6 +6,8 @@ import ast.expressions.ConstantNode;
 import writer.wrappers.TypeWrapper;
 import writer.wrappers.TypeWrapper_Array;
 
+import java.util.Set;
+
 public class ArrayTypeNode extends TypeNode {
     public static final ArrayTypeNode IntArrayNode = new ArrayTypeNode(Integer.MAX_VALUE, PrimitiveTypeNode.IntNode);
     public static final ArrayTypeNode FloatArrayNode = new ArrayTypeNode(Integer.MAX_VALUE, PrimitiveTypeNode.FloatNode);
@@ -95,6 +97,11 @@ public class ArrayTypeNode extends TypeNode {
         }
 
         return new TypeWrapper_Array(m_ElementType.GetWrappedType(), GetSize());
+    }
+
+    @Override
+    public Set<WildcardTypeNode> GetWildcards() {
+        return m_ElementType.GetWildcards();
     }
 
     @Override

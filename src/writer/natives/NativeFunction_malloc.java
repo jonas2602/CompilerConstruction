@@ -4,7 +4,7 @@ import writer.wrappers.*;
 
 public class NativeFunction_malloc extends NativeFunction {
     public NativeFunction_malloc(TypeWrapper type, int count) {
-        this(type.GetTypeByteSize() * count);
+        this(type.GetTypeByteSize(type.GetAlignment()) * count);
     }
 
     public NativeFunction_malloc(int byteSize) {

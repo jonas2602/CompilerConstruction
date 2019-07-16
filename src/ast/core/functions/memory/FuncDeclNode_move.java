@@ -34,7 +34,7 @@ public class FuncDeclNode_move extends FuncDeclNode_Core {
         ParamContainer sourceParam = callNode.GetParameter(1).CreateSnippet(slave);
         ParamContainer sizeParam = callNode.GetParameter(2).CreateSnippet(slave);
         sizeParam = slave.ExtendToLong(sizeParam);
-        slave.CreateNativeCall(new NativeFunction_memcpy(destParam, sourceParam, sizeParam, 0));
+        slave.CreateNativeCall(new NativeFunction_memcpy(destParam, sourceParam, sizeParam));
 
         return ParamContainer.VOIDCONTAINER();
     }

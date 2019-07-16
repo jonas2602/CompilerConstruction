@@ -1,6 +1,5 @@
 package writer.natives;
 
-import writer.snippets.CodeSnippet_Plain;
 import writer.*;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;

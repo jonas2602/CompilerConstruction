@@ -9,6 +9,7 @@ import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.natives.NativeFunction_malloc;
 import writer.wrappers.ParamContainer;
+import writer.wrappers.TypeWrapper;
 
 public class FuncDeclNode_new extends FuncDeclNode_Core {
     public FuncDeclNode_new() {
@@ -35,7 +36,8 @@ public class FuncDeclNode_new extends FuncDeclNode_Core {
     @Override
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         ParamContainer targetParam = callNode.GetParameter(0).CreateSnippet(slave);
-        ParamContainer heapPtr = slave.CreateNativeCall(new NativeFunction_malloc(targetParam.GetRootType(), 1));
+        TypeWrapper elementType = targetParam.GetRootType().GetChild().GetChild();
+        ParamContainer heapPtr = slave.CreateNativeCall(new NativeFunction_malloc(elementType, 1));
         ParamContainer castPtr = slave.BitCast(heapPtr, targetParam.GetRootType().GetChild());
         slave.StoreInVariable(targetParam, castPtr);
 

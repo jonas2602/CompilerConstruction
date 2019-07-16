@@ -3,11 +3,11 @@ package writer.natives;
 import writer.wrappers.*;
 
 public class NativeFunction_memcpy extends NativeFunction {
-    public NativeFunction_memcpy(ParamContainer target, ParamContainer source, int byteSize, int align) {
-        this(target, source, ParamContainer.LONGCONTAINER(byteSize), align);
+    public NativeFunction_memcpy(ParamContainer target, ParamContainer source, int byteSize) {
+        this(target, source, ParamContainer.LONGCONTAINER(byteSize));
     }
 
-    public NativeFunction_memcpy(ParamContainer target, ParamContainer source, ParamContainer byteSize, int align) {
+    public NativeFunction_memcpy(ParamContainer target, ParamContainer source, ParamContainer byteSize) {
         super("llvm.memcpy.p0i8.p0i8.i64", TypeWrapper_Other.VOID);
 
         AddParamDecl(TypeWrapper_Pointer.CHARPTR);
