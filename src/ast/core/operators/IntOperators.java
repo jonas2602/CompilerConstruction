@@ -1,9 +1,15 @@
 package ast.core.operators;
 
+import ast.AbstractSyntaxTree;
+import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
 import ast.BlockNode;
+import ast.declarations.ParamDeclNode;
+import ast.expressions.AccessInterface;
+import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 
@@ -53,15 +59,47 @@ public class IntOperators implements StdBuilder {
         }
     }
 
-    public static class IncInt extends PascalType_SingleOperator {
+    public static class IncInt extends FuncDeclNode_Core {
         public IncInt() {
-            super(Operator.INC, PrimitiveTypeNode.IntNode, GeneratorSlave::IncInt);
+            super(Operator.INC, VoidTypeNode.VoidNode);
+
+            AddParameter("left", PrimitiveTypeNode.IntNode, true);
+
+            m_bCustomCallLogic = true;
+            m_bInline = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            AbstractSyntaxTree param = callNode.GetParameter(0);
+            ParamContainer paramContainer = param.CreateSnippet(slave);
+            ParamContainer value = AccessInterface.TryLoadValue(slave, param, paramContainer);
+            value = slave.IncInt(value);
+            slave.StoreInVariable(paramContainer, value);
+
+            return null;
         }
     }
 
-    public static class DecInt extends PascalType_SingleOperator {
+    public static class DecInt extends FuncDeclNode_Core {
         public DecInt() {
-            super(Operator.DEC, PrimitiveTypeNode.IntNode, GeneratorSlave::DecInt);
+            super(Operator.DEC, VoidTypeNode.VoidNode);
+
+            AddParameter("left", PrimitiveTypeNode.IntNode, true);
+
+            m_bCustomCallLogic = true;
+            m_bInline = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            AbstractSyntaxTree param = callNode.GetParameter(0);
+            ParamContainer paramContainer = param.CreateSnippet(slave);
+            ParamContainer value = AccessInterface.TryLoadValue(slave, param, paramContainer);
+            value = slave.DecInt(value);
+            slave.StoreInVariable(paramContainer, value);
+
+            return null;
         }
     }
 

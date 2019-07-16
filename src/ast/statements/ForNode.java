@@ -82,7 +82,6 @@ public class ForNode extends AbstractSyntaxTree {
         stepBranch.SetValueAccessor(stepLabel);
         ParamContainer variable = m_Variable.CreateSnippet(slave);
         ParamContainer newValue = m_StepCall.CreateSnippet(slave);
-        slave.StoreInVariable(variable, newValue);
         slave.CreateJump(compBranch);
 
         // Create Exit Block
