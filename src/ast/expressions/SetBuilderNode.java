@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SetBuilderNode extends ConstantNode {
+public class SetBuilderNode extends ConstantNode implements AccessInterface {
     private VarDeclNode m_TempSetVariable;
     private List<FuncCallNode> m_AppendCalls;
     private List<AbstractSyntaxTree> m_Constants;
@@ -86,5 +86,15 @@ public class SetBuilderNode extends ConstantNode {
 
 
         return m_TempSetVariable.CreateSnippet(slave);
+    }
+
+    @Override
+    public VarDeclNode GetVarDeclNode() {
+        return m_TempSetVariable;
+    }
+
+    @Override
+    public ParamContainer LoadValue(GeneratorSlave slave, ParamContainer pointer) {
+        return slave.LoadFromVariable(pointer);
     }
 }

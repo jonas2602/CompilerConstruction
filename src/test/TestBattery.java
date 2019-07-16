@@ -20,6 +20,7 @@ import java.util.Scanner;
 public class TestBattery {
     private static final String TESTFILENAME = "test_battery";
     private static final String PROCESSCLASSNAME = "test.TestProcess";
+    private static final String fileSeparator = System.getProperty("file.separator");
 
     private List<TestCase> m_TestCases;
     private int m_Passed;
@@ -36,24 +37,34 @@ public class TestBattery {
         add("loops").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12");
         add("memory").AddSeperatorLines("42 99 12");
         add("pointer").AddLines("0 10 2 3 4, 10" ,"3");
-        add("string").AddLines("test my random string test123");
+        add("string").AddLines("6", "testa my random string test123");
         add("innerfunctions").AddSeperatorLines("1 1 1");
         add("innerfunctions2").AddLines("4");
         add("innerfunctions3").AddSeperatorLines("test test2 test3");
         add("switch").AddSeperatorLines("MEH uppercase");
-        // TODO
-        add("sets");
+        add("sets").AddLines("0 1 1", "1 1 1", "0 0 0", " ", "0 1 1", "0 0 0", "0 0 0", "1", " ", "0 1 1", "0 0 1", "1 1 1", "1", " ");
         add("types").AddSeperatorLines("3 10");
+
+        //exam tests
+        addExam("factorial").AddSeperatorLines("0!=1 1!=1 2!=2 3!=6 4!=24 5!=120 6!=720 7!=5040 8!=40320 9!=362880 10!=3628800 11!=39916800 12!=479001600 13!=1932053504 14!=1278945280 15!=2004310016 16!=2004189184");
+        addExam("fibonacci").AddLines("1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, ...");
+        addExam("helloworld").AddLines("Hello, World!");
+        addExam("MergeSortDemo").AddLines("The data before sorting:", "6 1 6 5 3 2 5 0 ", "The data after sorting:", "0 1 2 3 5 5 6 6 ");
     }
 
     public TestCase add(String name) {
-        TestCase t = new TestCase(name);
+        TestCase t = new TestCase("res" + fileSeparator + "examples" + fileSeparator + "tests" +fileSeparator + name + ".pas");
+        m_TestCases.add(t);
+        return t;
+    }
+
+    public TestCase addExam(String name) {
+        TestCase t = new TestCase("res" + fileSeparator + "examples" + fileSeparator + "exam" +fileSeparator + name + ".pas");
         m_TestCases.add(t);
         return t;
     }
 
     public void Fire() {
-        String fileSeparator = System.getProperty("file.separator");
         String testFileName = "res" + fileSeparator + "llvm" + fileSeparator + TESTFILENAME + ".ll";
         File testFile = new File(testFileName);
 
@@ -77,7 +88,7 @@ public class TestBattery {
         long time = System.currentTimeMillis();
 
         for(TestCase c: m_TestCases) {
-            String relativePath = "res" + fileSeparator + "examples" + fileSeparator + "tests" +fileSeparator + c.GetFileName() + ".pas";
+            String relativePath = c.GetFileName();
             File file = new File(relativePath);
 
             if(!file.exists() || !file.isFile()) {

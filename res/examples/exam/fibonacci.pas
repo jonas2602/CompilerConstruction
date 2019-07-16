@@ -12,6 +12,7 @@ var
     i: integer;
 
 begin
+    writeln('READY');
     for i := 1 to 16 do
         write(fib(i), ', ');
     writeln('...');

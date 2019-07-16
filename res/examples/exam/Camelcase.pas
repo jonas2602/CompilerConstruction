@@ -8,6 +8,7 @@ var
     upper, lower: set of char;
 
 begin
+    writeln('READY');
     upper := ['A'..'Z'];
     lower := ['a'..'z'];
     readln(text);

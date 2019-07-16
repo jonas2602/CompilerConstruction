@@ -26,8 +26,8 @@ public class SetOperators implements StdBuilder {
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AGNSet());
 
-        std.AddFunctionDeclaration(new AddSetWrapper());
-        std.AddFunctionDeclaration(new SubSetWrapper());
+        std.AddFunctionDeclaration(new AddSet());
+        std.AddFunctionDeclaration(new SubSet());
 
         std.AddFunctionDeclaration(new InternInSet());
         std.AddFunctionDeclaration(new IntInSet());
@@ -38,75 +38,29 @@ public class SetOperators implements StdBuilder {
     public static class AGNSet extends PascalType_Assignment {
         public AGNSet() {
             super(Operator.AGN, new VoidTypeNode(), SetTypeNode.WildcardSetNode(), (slave, lParam, rParam) -> {
-                slave.CopyMemory(rParam, lParam);
+                if (!rParam.IsPointer()) {
+                    slave.StoreInVariable(lParam, rParam);
+                } else {
+                    slave.CopyMemory(rParam, lParam);
+                }
                 return null;
             });
         }
     }
 
-    public static class FuncSetWrapper extends FuncDeclNode_Core {
-        private FuncDeclNode m_WrappedFunc;
-
-        public FuncSetWrapper(Operator operator, FuncDeclNode wrappedFunc) {
-            super(operator, SetTypeNode.WildcardSetNode());
+    public static class AddSet extends FuncDeclNode_Core {
+        public AddSet() {
+            super(Operator.ADD, SetTypeNode.WildcardSetNode());
 
             AddParameter("set1", m_ReturnType);
             AddParameter("set2", m_ReturnType);
-
-            m_bInline = true;
-            m_bCustomCallLogic = true;
-
-            m_WrappedFunc = wrappedFunc;
-            m_Block.AddFunctionDeclaration(wrappedFunc);
-        }
-
-        @Override
-        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            AbstractSyntaxTree lParam = callNode.GetParameterList().get(0);
-            AbstractSyntaxTree rParam = callNode.GetParameterList().get(1);
-            ParamContainer leftParam = lParam.CreateSnippet(slave);
-            ParamContainer rightParam = rParam.CreateSnippet(slave);
-
-            // allocate temp set array
-            ParamContainer temp = slave.AllocateMemory(new TypeWrapper_Array(TypeWrapper_Primitive.CHAR, 256));
-            slave.SetMemory(ParamContainer.CHARCONTAINER((char) 0), temp);
-
-            // create call to inner function
-            slave.CreateFunctionCall(m_WrappedFunc.GetHierarchicalName(), TypeWrapper_Other.VOID, true);
-            slave.CreateFunctionCallParameter(temp);
-            slave.CreateFunctionCallParameter(leftParam);
-            slave.CreateFunctionCallParameter(rightParam);
-
-            // construct inner function
-            m_WrappedFunc.CreateSnippet(slave);
-
-            slave.ExitScope();
-            return temp;
-        }
-    }
-
-    public static class AddSetWrapper extends FuncSetWrapper {
-        public AddSetWrapper() {
-            super(Operator.ADD, new AddSet());
-        }
-    }
-
-    public static class AddSet extends FuncDeclNode_Core {
-        public AddSet() {
-            super("addsetcore", VoidTypeNode.VoidNode);
-
-            SetTypeNode subSet = SetTypeNode.WildcardSetNode();
-
-            AddParameter("target", subSet, true);
-            AddParameter("set1", subSet, true);
-            AddParameter("set2", subSet, true);
 
             // Create temp variables
             m_Block.AddVariableDeclaration("i", PrimitiveTypeNode.IntNode);
 
             AccessNode_Variable set1Access = new AccessNode_Variable("set1");
             AccessNode_Variable set2Access = new AccessNode_Variable("set2");
-            AccessNode_Variable tempSetAccess = new AccessNode_Variable("target");
+            AccessNode_Variable tempSetAccess = new AccessNode_Variable(m_Name);
             AccessNode_Variable loopIndexAccess = new AccessNode_Variable("i");
             AccessNode_Array set1IndexAccess = new AccessNode_Array(set1Access, loopIndexAccess);
             AccessNode_Array set2IndexAccess = new AccessNode_Array(set2Access, loopIndexAccess);
@@ -121,28 +75,19 @@ public class SetOperators implements StdBuilder {
         }
     }
 
-    public static class SubSetWrapper extends FuncSetWrapper {
-        public SubSetWrapper() {
-            super(Operator.SUB, new SubSet());
-        }
-    }
-
     public static class SubSet extends FuncDeclNode_Core {
         public SubSet() {
-            super("subsetcore", VoidTypeNode.VoidNode);
+            super(Operator.SUB, SetTypeNode.WildcardSetNode());
 
-            SetTypeNode subSet = SetTypeNode.WildcardSetNode();
-
-            AddParameter("target", subSet, true);
-            AddParameter("set1", subSet, true);
-            AddParameter("set2", subSet, true);
+            AddParameter("set1", m_ReturnType);
+            AddParameter("set2", m_ReturnType);
 
             // Create temp variables
             m_Block.AddVariableDeclaration("i", PrimitiveTypeNode.IntNode);
 
             AccessNode_Variable set1Access = new AccessNode_Variable("set1");
             AccessNode_Variable set2Access = new AccessNode_Variable("set2");
-            AccessNode_Variable tempSetAccess = new AccessNode_Variable("target");
+            AccessNode_Variable tempSetAccess = new AccessNode_Variable(m_Name);
             AccessNode_Variable loopIndexAccess = new AccessNode_Variable("i");
             AccessNode_Array set1IndexAccess = new AccessNode_Array(set1Access, loopIndexAccess);
             AccessNode_Array set2IndexAccess = new AccessNode_Array(set2Access, loopIndexAccess);

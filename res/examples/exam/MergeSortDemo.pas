@@ -66,6 +66,7 @@ var
     i: integer;
  
 begin
+    writeln('READY');
     setlength(data, 8);
     writeln('The data before sorting:');
     for i := low(data) to high(data) do

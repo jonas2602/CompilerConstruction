@@ -30,11 +30,10 @@ public class RecordOperators implements StdBuilder {
                 if (rParam.HasExtendedType()) {
                     ParamContainer extended = slave.TryExtendType(lParam);
                     slave.StoreInVariable(extended, rParam);
-                    return null;
                 } else {
                     slave.CopyMemory(rParam, lParam);
-                    return null;
                 }
+                return null;
             });
         }
     }

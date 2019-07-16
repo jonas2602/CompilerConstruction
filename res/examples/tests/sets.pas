@@ -18,6 +18,7 @@ end.}
 var
     upper: set of integer;
 begin
+    writeln('READY');
     upper := [1, 2, 3, 4, 5];
     writeln(0 in upper,' ',1 in upper,' ',2 in upper);
     writeln(3 in upper,' ',4 in upper,' ',5 in upper);
