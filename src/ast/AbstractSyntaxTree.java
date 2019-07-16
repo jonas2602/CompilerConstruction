@@ -10,7 +10,12 @@ public abstract class AbstractSyntaxTree {
     private BlockNode m_OwningBlock;
 
     protected BlockNode GetOwningBlock() {
-        if (m_OwningBlock != null) {
+        return GetOwningBlock(true);
+    }
+
+
+    protected BlockNode GetOwningBlock(boolean allowCache) {
+        if (m_OwningBlock != null && allowCache) {
             return m_OwningBlock;
         }
 

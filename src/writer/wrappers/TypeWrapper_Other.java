@@ -36,6 +36,11 @@ public class TypeWrapper_Other extends TypeWrapper {
     }
 
     @Override
+    public int CalculateAlignment() {
+        return 1;
+    }
+
+    @Override
     public boolean CompareType(TypeWrapper otherType) {
         // Is Named Type?
         if (!(otherType instanceof TypeWrapper_Other)) {

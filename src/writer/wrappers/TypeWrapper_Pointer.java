@@ -35,6 +35,11 @@ public class TypeWrapper_Pointer extends TypeWrapper {
     }
 
     @Override
+    public int CalculateAlignment() {
+        return 8;
+    }
+
+    @Override
     public boolean CompareType(TypeWrapper otherType) {
         // Is Pointer?
         if (!(otherType instanceof TypeWrapper_Pointer)) {

@@ -96,6 +96,10 @@ public class ParamContainer {
         return m_RootType.IsExtended();
     }
 
+    public int GetTypeAlignment(){
+        return m_RootType.GetAlignment();
+    }
+
     @Override
     public String toString() {
         return CreateParameterString();

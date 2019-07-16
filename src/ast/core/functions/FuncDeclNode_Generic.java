@@ -29,6 +29,7 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         FuncDeclNode_Generic copy = (FuncDeclNode_Generic) super.clone();
         // TODO: use AddFunctionDeclaration of program blocknode
         copy.SetParent(ProgramNode.INSTANCE.GetBlock());
+        copy.GetOwningBlock(false);
 
         // Build unique name
         String genericName = m_Name;

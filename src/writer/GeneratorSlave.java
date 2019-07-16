@@ -96,7 +96,7 @@ public class GeneratorSlave {
         ValueWrapper_Variable var = ValueWrapper_Variable.CONSTARRAY(m_ConstantCounter++);
         TypeWrapper arrType = new TypeWrapper_Array(baseType, content.size());
         String contentString = CodeSnippetHelper.MakeSeperatedParams(", ", content);
-        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s [%s]", var, arrType, contentString);
+        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s [%s], alignment %d", var, arrType, contentString, baseType.GetAlignment());
         m_Constants.add(snippet);
 
         return new ParamContainer(new TypeWrapper_Pointer(baseType), var);
@@ -128,7 +128,7 @@ public class GeneratorSlave {
         // String constName = String.format("@.str.%d", m_ConstantCounter++);
         // CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.CreateTypeName());
 
-        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s c\"%s\\00\"", var, stringType, builder.toString());
+        CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s c\"%s\\00\", align %d", var, stringType, builder.toString(), stringType.GetAlignment());
 
         m_Constants.add(snippet);
 
@@ -228,9 +228,6 @@ public class GeneratorSlave {
         }
 
         CreateNativeCall(new NativeFunction_memcpy(target, source, blockSize, 8));
-
-        // CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
-        // GetScopeSnippetAsDef().AddStatement(stmt);
     }
 
     public void SetMemory(ParamContainer content, ParamContainer target) {
@@ -243,9 +240,6 @@ public class GeneratorSlave {
         }
 
         CreateNativeCall(new NativeFunction_memset(target, content, blockSize));
-
-        // CodeSnippet_Args stmt = new CodeSnippet_Args("call void @llvm.memcpy.p0i8.p0i8.i64(%s, %s, i64 %s, i1 false)", target, source, blockSize);
-        // GetScopeSnippetAsDef().AddStatement(stmt);
     }
 
     public ParamContainer BitCast(ParamContainer source, TypeWrapper targetType) {
@@ -459,7 +453,7 @@ public class GeneratorSlave {
 
     // Returns a pointer to the requested memory with size of the given type
     public ParamContainer AllocateMemory(TypeWrapper type) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("alloca %s", type); // TODO: alignment
+        CodeSnippet_Args stmt = new CodeSnippet_Args("alloca %s, align %d", type, type.GetAlignment()); // TODO: alignment
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         TypeWrapper MemoryPointer = new TypeWrapper_Pointer(type);
         return new ParamContainer(MemoryPointer, scopeVar);
@@ -476,7 +470,8 @@ public class GeneratorSlave {
     public void StoreInVariable(ParamContainer varAccess, ParamContainer valueParam) {
         String varParam = varAccess.CreateParameterString();
         String value = valueParam.CreateDataString();
-        String exp = String.format("store %s %s, %s", varAccess.GetRootType().GetChild(), value, varParam); // TODO: alignment
+        int alignment = varAccess.GetRootType().GetChild().GetAlignment();
+        String exp = String.format("store %s %s, %s, align %d", varAccess.GetRootType().GetChild(), value, varParam, alignment);
         GetScopeSnippetAsDef().AddStatement(exp);
     }
 
@@ -488,7 +483,7 @@ public class GeneratorSlave {
             return variable;
         }
 
-        CodeSnippet_Args stmt = new CodeSnippet_Args("load %s, %s", pointedType, variable); // TODO: alignment
+        CodeSnippet_Args stmt = new CodeSnippet_Args("load %s, %s, align %d", pointedType, variable, pointedType.GetAlignment());
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(pointedType, scopeVar);
     }
@@ -499,9 +494,10 @@ public class GeneratorSlave {
 
     public ParamContainer CreateArrayElementPtr(ParamContainer array, ValueWrapper index) {
         TypeWrapper arrType = array.GetRootType().GetChild();
-        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i32 0, i32 %s", arrType, array, index); // TODO: alignment
+        CodeSnippet_Args stmt = new CodeSnippet_Args("getelementptr inbounds %s, %s, i32 0, i32 %s", arrType, array, index);
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         TypeWrapper elementType = arrType.GetChild(index.CreateDataString());
+        elementType.SetAlignment(arrType.GetAlignment());
 
         return new ParamContainer(new TypeWrapper_Pointer(elementType), scopeVar);
     }

@@ -55,6 +55,16 @@ public class TypeWrapper_Struct extends TypeWrapper {
     }
 
     @Override
+    public int CalculateAlignment() {
+        int maxSize = 0;
+        for (TypeWrapper entry : m_EntryTypes) {
+            maxSize = Math.max(maxSize, entry.CalculateAlignment());
+        }
+
+        return maxSize;
+    }
+
+    @Override
     public boolean CompareType(TypeWrapper otherType) {
         // assuming, that all references of the same struct type use the same type wrapper object
         // it's only necessary to compare the object ptr

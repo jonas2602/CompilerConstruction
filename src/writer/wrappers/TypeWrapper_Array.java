@@ -36,6 +36,11 @@ public class TypeWrapper_Array extends TypeWrapper {
     }
 
     @Override
+    public int CalculateAlignment() {
+        return m_BaseType.CalculateAlignment();
+    }
+
+    @Override
     public boolean CompareType(TypeWrapper otherType) {
         // Is Array?
         if (!(otherType instanceof TypeWrapper_Array)) {

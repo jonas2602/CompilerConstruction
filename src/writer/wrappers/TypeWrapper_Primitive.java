@@ -39,6 +39,11 @@ public class TypeWrapper_Primitive extends TypeWrapper {
     }
 
     @Override
+    public int CalculateAlignment() {
+        return Math.max(GetTypeByteSize(), 1);
+    }
+
+    @Override
     public boolean CompareType(TypeWrapper otherType) {
         // Is Primitive?
         if (!(otherType instanceof TypeWrapper_Primitive)) {

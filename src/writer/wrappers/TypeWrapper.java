@@ -1,6 +1,8 @@
 package writer.wrappers;
 
 public abstract class TypeWrapper {
+    private int m_Alignment = -1;
+
     public abstract String CreateTypeName();
 
     public abstract TypeWrapper GetChild(int index);
@@ -31,6 +33,21 @@ public abstract class TypeWrapper {
 
         return actualSize;
     }
+
+    public void SetAlignment(int alignment) {
+        m_Alignment = alignment;
+    }
+
+    public int GetAlignment() {
+        if (m_Alignment < 0) {
+            m_Alignment = CalculateAlignment();
+        }
+
+        return m_Alignment;
+    }
+
+    // in bytes
+    protected abstract int CalculateAlignment();
 
     @Override
     public String toString() {
