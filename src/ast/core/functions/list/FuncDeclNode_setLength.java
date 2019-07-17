@@ -48,7 +48,7 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
         // arr.start = realloc(arr.start, newLength)
         FuncCallNode reallocCall = new FuncCallNode(Memory.REALLOC);
         reallocCall.AddParameter(startAccess);
-        reallocCall.AddParameter(new AccessNode_Variable("newLength"));
+        reallocCall.AddParameter(mulCall);
         AssignmentNode assignNodeRealloc = new AssignmentNode(startAccess, reallocCall);
 
         BranchNode branch = new BranchNode(greaterComparison, assignNodeRealloc, mallocCall);
