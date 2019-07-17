@@ -31,7 +31,7 @@ public class FuncDeclNode_setLength extends FuncDeclNode_Generic {
 
         // bytesize = newLength * sizeof(type)
         TypeNode genericType = GetParameter(0).GetType().GetTypeDetails();
-        int typeSize = genericType.GetWrappedType().GetTypeByteSize();
+        int typeSize = genericType.GetWrappedType().GetTypeByteSize(genericType.GetWrappedType().GetAlignment());
         FuncCallNode mulCall = new FuncCallNode(Operator.MUL);
         mulCall.AddParameter(new AccessNode_Variable("newLength"));
         mulCall.AddParameter(new ConstantNode(Integer.toString(typeSize), PrimitiveTypeNode.IntNode));

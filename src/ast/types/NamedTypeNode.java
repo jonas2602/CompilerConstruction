@@ -42,6 +42,10 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public TypeNode GetType() {
+        if(m_TypeDetails == null){
+            CheckType();
+        }
+
         return m_TypeDetails.GetType();
     }
 
@@ -57,6 +61,11 @@ public class NamedTypeNode extends TypeNode {
         // }
 
         // return null;
+    }
+
+    @Override
+    public ParamContainer GetDefaultValue() {
+        return m_TypeDetails.GetDefaultValue();
     }
 
     @Override

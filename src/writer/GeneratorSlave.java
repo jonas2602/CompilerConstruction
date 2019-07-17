@@ -455,7 +455,7 @@ public class GeneratorSlave {
 
     // Returns a pointer to the requested memory with size of the given type
     public ParamContainer AllocateMemory(TypeWrapper type) {
-        CodeSnippet_Args stmt = new CodeSnippet_Args("alloca %s, align %d", type, type.GetAlignment()); // TODO: alignment
+        CodeSnippet_Args stmt = new CodeSnippet_Args("alloca %s, align %d", type, type.GetAlignment());
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         TypeWrapper MemoryPointer = new TypeWrapper_Pointer(type);
         return new ParamContainer(MemoryPointer, scopeVar);
@@ -463,7 +463,7 @@ public class GeneratorSlave {
 
     public ParamContainer AllocateGlobalMemory(TypeWrapper type, ParamContainer defValue) {
         ValueWrapper_Variable var = ValueWrapper_Variable.GLOBALVAR(m_GlobalsCounter++);
-        CodeSnippet_Args stmt = new CodeSnippet_Args("%s = dso_local global %s", var, defValue); // TODO: alignment
+        CodeSnippet_Args stmt = new CodeSnippet_Args("%s = dso_local global %s, align %d", var, defValue, type.GetAlignment());
         m_GlobalVariables.add(stmt);
 
         return new ParamContainer(new TypeWrapper_Pointer(type), var);

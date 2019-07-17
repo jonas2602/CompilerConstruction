@@ -1,8 +1,10 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
+import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 import writer.wrappers.TypeWrapper_Pointer;
+import writer.wrappers.ValueWrapper_Constant;
 
 import java.util.Set;
 
@@ -81,6 +83,11 @@ public class PointerTypeNode extends TypeNode {
     @Override
     public TypeWrapper GetWrappedType() {
         return new TypeWrapper_Pointer(m_BaseType.GetWrappedType());
+    }
+
+    @Override
+    public ParamContainer GetDefaultValue() {
+        return new ParamContainer(GetWrappedType(), ValueWrapper_Constant.NULL);
     }
 
     @Override

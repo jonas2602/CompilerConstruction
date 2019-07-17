@@ -3,8 +3,10 @@ package ast.types;
 import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.expressions.ConstantNode;
+import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 import writer.wrappers.TypeWrapper_Array;
+import writer.wrappers.ValueWrapper_Constant;
 
 import java.util.Set;
 
@@ -97,6 +99,11 @@ public class ArrayTypeNode extends TypeNode {
         }
 
         return new TypeWrapper_Array(m_ElementType.GetWrappedType(), GetSize());
+    }
+
+    @Override
+    public ParamContainer GetDefaultValue() {
+        return new ParamContainer(GetWrappedType(), ValueWrapper_Constant.ZEROINITIALIZER);
     }
 
     @Override

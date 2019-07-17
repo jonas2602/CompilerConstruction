@@ -6,6 +6,7 @@ import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 import writer.wrappers.TypeWrapper_Struct;
+import writer.wrappers.ValueWrapper_Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,6 +114,11 @@ public class RecordTypeNode extends TypeNode {
         }
 
         return m_WrapperCache;
+    }
+
+    @Override
+    public ParamContainer GetDefaultValue() {
+        return new ParamContainer(GetWrappedType(), ValueWrapper_Constant.ZEROINITIALIZER);
     }
 
     @Override

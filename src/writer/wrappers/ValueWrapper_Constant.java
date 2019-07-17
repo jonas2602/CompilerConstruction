@@ -15,6 +15,9 @@ public class ValueWrapper_Constant extends ValueWrapper {
         return new ValueWrapper_Constant(Float.toString(data));
     }
 
+    public static ValueWrapper_Constant ZEROINITIALIZER = new ValueWrapper_Constant("zeroinitializer");
+    public static ValueWrapper_Constant NULL = new ValueWrapper_Constant("null");
+
 
     public ValueWrapper_Constant(String data) {
         m_Data = data;

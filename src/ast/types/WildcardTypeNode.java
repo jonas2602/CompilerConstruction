@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.AbstractSyntaxTree;
+import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper;
 
 import java.util.Set;
@@ -72,6 +73,11 @@ public class WildcardTypeNode extends TypeNode {
         }
 
         return null;
+    }
+
+    @Override
+    public ParamContainer GetDefaultValue() {
+        return m_FilledType.GetDefaultValue();
     }
 
     @Override
