@@ -23,13 +23,13 @@ public class TypeWrapper_Primitive extends TypeWrapper {
 
     @Override
     public TypeWrapper GetChild(int index) {
-        System.err.println("Reached bottom of TypeWrapper");
+        System.err.println("Reached bottom of TypeWrapper (Primitive)");
         return null;
     }
 
     @Override
     public TypeWrapper GetChild(String index) {
-        System.err.println("Reached bottom of TypeWrapper");
+        System.err.println("Reached bottom of TypeWrapper (Primitive)");
         return null;
     }
 

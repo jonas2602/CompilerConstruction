@@ -483,13 +483,13 @@ public class GeneratorSlave {
     }
 
     public ParamContainer LoadFromVariable(ParamContainer variable) {
-        TypeWrapper pointedType = variable.GetRootType().GetChild();
-        if (pointedType == null) {
-            // Seams, that the given variable is already a constant
-            // TODO: find better solution (relevant for inline functions that get a constant as parameter)
+        // assume that primitive wrapper are always loaded
+        // relevant for inline functions that get a constant as parameter
+        if(variable.GetRootType() instanceof TypeWrapper_Primitive){
             return variable;
         }
 
+        TypeWrapper pointedType = variable.GetRootType().GetChild();
         CodeSnippet_Args stmt = new CodeSnippet_Args("load %s, %s, align %d", pointedType, variable, pointedType.GetAlignment());
         ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
         return new ParamContainer(pointedType, scopeVar);
