@@ -11,6 +11,7 @@ import test.TestBattery;
 import visitors.ProgramVisitor;
 import writer.CodeGenerator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,8 +24,16 @@ public class App {
             return;
         }
 
+        File input = new File(args[0]);
+        if (!input.exists() || !input.isFile()) {
+            System.out.println("Input file does not exist or is not an directory");
+            return;
+        }
+
         Compile(args[0], args[1]);
 
+        System.out.println();
+        System.out.println("Starting program exectuion ...");
         LocalTester t = new LocalTester();
         t.Compile(args[1]);
 
@@ -39,6 +48,8 @@ public class App {
         // TODO: Add primitive types to std block
         // TODO: Remove all NamedTypeNodes and TypeDeclNodes while typechecking with actual type
 
+        System.out.println("Parsing the inputfile ...");
+
         // Tokenize input file
         PascalLexer lexer = new PascalLexer(CharStreams.fromFileName(sourcePath));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -48,8 +59,14 @@ public class App {
         ParseTree tree = parser.program();
 
         if (parser.getNumberOfSyntaxErrors() != 0) {
+            System.out.println("Failed to parse the inputfile");
             System.exit(0);
         }
+
+        System.out.println("Sucessfully parsed the inputfile");
+
+
+        System.out.print("Building AST ...");
 
         // convert parse tree to abstract syntax tree
         ProgramVisitor vis = new ProgramVisitor();
@@ -58,15 +75,23 @@ public class App {
         // attach parsed tree to the stdBlock to grant access to the additional functionality
         prog.SetParent(stdBlock);
 
+        System.out.println("SUCCEEDED");
+
+        System.out.print("Typechecking ...");
         // type checking
         try {
             stdBlock.CheckType();
             prog.CheckType();
         } catch (RuntimeException e) {
+            System.out.println("FAILED");
             e.printStackTrace();
             System.exit(0);
         }
 
-        CodeGenerator.CreateIntermediate(prog, stdBlock, targetFileName, false);
+        System.out.println("SUCCEEDED");
+
+        System.out.println("Generating code ...");
+        CodeGenerator.CreateIntermediate(prog, stdBlock, targetFileName, true);
+        System.out.println("Finished code generation");
     }
 }
