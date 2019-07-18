@@ -45,6 +45,7 @@ public class TestBattery {
         add("switch").AddSeperatorLines("MEH uppercase");
         add("sets").AddLines("0 1 1", "1 1 1", "0 0 0", " ", "0 1 1", "0 0 0", "0 0 0", "1", " ", "0 1 1", "0 0 1", "1 1 1", "1", " ");
         add("types").AddSeperatorLines("3 10");
+        add("with").AddLines("2 2 5", "12 11 10");
 
         //exam tests
         addExam("factorial").AddSeperatorLines("0!=1 1!=1 2!=2 3!=6 4!=24 5!=120 6!=720 7!=5040 8!=40320 9!=362880 10!=3628800 11!=39916800 12!=479001600 13!=1932053504 14!=1278945280 15!=2004310016 16!=2004189184");

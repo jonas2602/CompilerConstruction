@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.BlockNode;
 import ast.TypeCheckException;
 import ast.declarations.ParamDeclNode;
+import ast.declarations.RecordFieldWrapper;
 import ast.declarations.VarDeclNode;
 import ast.types.ArrayTypeNode_Dynamic;
 import ast.types.RecordTypeNode;
@@ -51,7 +52,9 @@ public class WithNode extends BlockNode {
             RecordTypeNode record = (RecordTypeNode) var.GetType().GetTypeDetails();
             int idx = record.GetFieldIndex(variableName);
             if (idx != -1) {
-                // TODO: fix me!
+                RecordFieldWrapper field = new RecordFieldWrapper(variableName ,var, record, idx);
+                AddVariableDeclaration(field);
+                return field;
             }
         }
 
