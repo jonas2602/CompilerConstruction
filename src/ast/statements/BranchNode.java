@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.expressions.AccessInterface;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.*;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.ValueWrapper;
@@ -40,7 +41,7 @@ public class BranchNode extends AbstractSyntaxTree {
             m_Else.CheckType();
         }
 
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     @Override
@@ -78,6 +79,6 @@ public class BranchNode extends AbstractSyntaxTree {
         }
         exitContainer.SetValueAccessor(exitValue);
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }

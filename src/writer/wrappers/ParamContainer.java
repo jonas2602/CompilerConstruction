@@ -41,10 +41,6 @@ public class ParamContainer {
         m_ValueAccessor = value;
     }
 
-    // Copy constructors
-//    public ParamContainer(ParamContainer InSourceContainer, String InConstant) {
-//        this(InSourceContainer.m_RootType, new ValueWrapper_Constant(InConstant));
-//    }
 
     public ParamContainer(ParamContainer sourceContainer, ValueWrapper value) {
         m_RootType = sourceContainer.m_RootType;

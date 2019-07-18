@@ -1,14 +1,15 @@
-package ast.core.functions.list;
+package ast.core.functions.array;
 
 import ast.core.FunctionNameWrapper;
 
-public enum List implements FunctionNameWrapper {
-    GETLEN("length"),
-    SETLEN("setlength");
+public enum ArrayFunction implements FunctionNameWrapper {
+    LENGTH("length"),
+    HIGH("high"),
+    LOW("low");
 
     private String m_FunctionName;
 
-    List(String functitionName) {
+    ArrayFunction(String functitionName) {
         m_FunctionName = functitionName;
     }
 

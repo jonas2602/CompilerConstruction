@@ -17,10 +17,6 @@ public interface AccessInterface {
             return ((AccessInterface) node).LoadValue(slave, pointer);
         }
 
-        // if (node instanceof ConstantNode_String) {
-        //     return slave.LoadFromVariable(pointer);
-        // }
-
         return pointer;
     }
 

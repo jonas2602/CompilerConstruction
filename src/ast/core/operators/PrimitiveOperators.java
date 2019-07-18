@@ -6,6 +6,7 @@ import ast.core.StdBuilder;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
+import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 
@@ -17,7 +18,7 @@ public class PrimitiveOperators implements StdBuilder {
 
     public static class AGNPrimitive extends PascalType_Operator {
         public AGNPrimitive() {
-            super(Operator.AGN, PrimitiveTypeNode.BoolNode, PrimitiveTypeNode.WildcardPrimitiveNode(), null);
+            super(Operator.AGN, VoidTypeNode.VoidNode, PrimitiveTypeNode.WildcardPrimitiveNode(), null);
         }
 
         @Override
@@ -29,7 +30,8 @@ public class PrimitiveOperators implements StdBuilder {
 
             rightParam = AccessInterface.TryLoadValue(slave, rParam, rightParam);
             slave.StoreInVariable(leftParam, rightParam);
-            return null;
+
+            return ParamContainer.VOIDCONTAINER();
         }
     }
 }

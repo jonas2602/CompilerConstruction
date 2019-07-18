@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.types.PrimitiveTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.ValueWrapper;
@@ -29,7 +30,7 @@ public class RepeatNode extends AbstractSyntaxTree {
         }
 
         m_Body.CheckType();
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     @Override
@@ -56,6 +57,6 @@ public class RepeatNode extends AbstractSyntaxTree {
         ValueWrapper exitLabel = slave.CreateLabel();
         exitBranch.SetValueAccessor(exitLabel);
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }

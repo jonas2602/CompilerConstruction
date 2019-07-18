@@ -125,8 +125,6 @@ public class GeneratorSlave {
 
         TypeWrapper stringType = TypeManager.STRING(content.length() + 1);
         ValueWrapper_Variable var = ValueWrapper_Variable.CONSTSTRING(m_ConstantCounter++);
-        // String constName = String.format("@.str.%d", m_ConstantCounter++);
-        // CodeSnippet_Plain constType = new CodeSnippet_Plain(stringWrapper.CreateTypeName());
 
         CodeSnippet_Base snippet = new CodeSnippet_Args("%s = constant %s c\"%s\\00\", align %d", var, stringType, builder.toString(), stringType.GetAlignment());
 

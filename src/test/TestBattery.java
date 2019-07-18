@@ -31,6 +31,7 @@ public class TestBattery {
 
         add("arrays").AddLines("a aba 1.000000", "afgh");
         add("branch").AddSeperatorLines("1000 2 0 -1");
+        add("CamelcaseStatic").AddLines("HelloWorldFromPascal");
         add("constant").AddSeperatorLines("0 1 2 3 4 5 5");
         add("enum").AddSeperatorLines("6 0 2").AddLines("Not start", "middle");
         add("goto").AddSeperatorLines("0 2");

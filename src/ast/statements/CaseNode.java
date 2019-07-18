@@ -11,6 +11,7 @@ import ast.expressions.FuncCallNode;
 import ast.types.PrimitiveTypeNode;
 import ast.types.RangeTypeNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.snippets.CodeSnippet_Switch;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
@@ -111,7 +112,7 @@ public class CaseNode extends AbstractSyntaxTree {
             }
         }
 
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     private int loadAccessVariableOrConstant(AbstractSyntaxTree a) {
@@ -201,6 +202,7 @@ public class CaseNode extends AbstractSyntaxTree {
 
         ValueWrapper exitValue = slave.CreateLabel();
         exitContainer.SetValueAccessor(exitValue);
-        return null;
+
+        return ParamContainer.VOIDCONTAINER();
     }
 }

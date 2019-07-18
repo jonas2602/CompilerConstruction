@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.LabelDeclNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 
@@ -22,13 +23,13 @@ public class GotoNode extends AbstractSyntaxTree {
             throw new TypeCheckException(this, "Label called " + m_LabelName + " is not declared");
         }
 
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         slave.CreateJump(m_LabelDecl.CreateSnippet(slave), false);
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }

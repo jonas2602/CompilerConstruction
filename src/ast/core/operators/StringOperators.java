@@ -4,10 +4,10 @@ import ast.BlockNode;
 import ast.core.FuncDeclNode_Core;
 import ast.core.FunctionNameWrapper;
 import ast.core.StdBuilder;
-import ast.core.functions.list.List;
+import ast.core.functions.array.ArrayFunction;
+import ast.core.functions.array.dynamic.List;
 import ast.core.functions.math.Math;
 import ast.core.functions.memory.Memory;
-import ast.declarations.FuncDeclNode;
 import ast.expressions.*;
 import ast.types.*;
 import writer.GeneratorSlave;
@@ -22,8 +22,6 @@ import writer.wrappers.TypeWrapper_Pointer;
 public class StringOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
-        std.AddFunctionDeclaration(new StringLength());
-        std.AddFunctionDeclaration(new CharPtrLength());
         std.AddFunctionDeclaration(new AssignCharPointerArray());
         std.AddFunctionDeclaration(new AssignCharArrayPointer());
 
@@ -37,50 +35,6 @@ public class StringOperators implements StdBuilder {
         std.AddFunctionDeclaration(new LEString());
         std.AddFunctionDeclaration(new GTString());
         std.AddFunctionDeclaration(new GEString());
-    }
-
-    public static class StringLength extends FuncDeclNode_Core {
-        public StringLength() {
-            super(Operator.LENGTH, PrimitiveTypeNode.IntNode);
-
-            m_bInline = true;
-            m_bCustomCallLogic = true;
-
-            AddParameter("str", ArrayTypeNode.CharArrayNode);
-        }
-
-        @Override
-        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            ParamContainer strArrParam = callNode.GetParameter(0).CreateSnippet(slave);
-            ParamContainer strStart = slave.CreateArrayElementPtr(strArrParam, 0);
-
-            ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strlen(strStart));
-            return slave.TruncToInt(outLong);
-        }
-    }
-
-    public static class CharPtrLength extends FuncDeclNode_Core {
-        public CharPtrLength() {
-            super(Operator.LENGTH, PrimitiveTypeNode.IntNode);
-
-            m_bInline = true;
-            m_bCustomCallLogic = true;
-
-            AddParameter("str", PointerTypeNode.CharPointerNode);
-        }
-
-        @Override
-        public FuncDeclNode ValidateCall(FuncCallNode callNode) {
-            return super.ValidateCall(callNode);
-        }
-
-        @Override
-        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-            ParamContainer charPtrParam = callNode.GetParameter(0).CreateSnippet(slave);
-
-            ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strlen(charPtrParam));
-            return slave.TruncToInt(outLong);
-        }
     }
 
     public static class TwoStringOperator extends FuncDeclNode_Core {
@@ -133,7 +87,7 @@ public class StringOperators implements StdBuilder {
             AccessNode_Variable strAccess = new AccessNode_Variable("str");
             AccessNode_Variable ptrAccess = new AccessNode_Variable("ptr");
 
-            FuncCallNode staticLength = new FuncCallNode(Operator.HIGH, strAccess);
+            FuncCallNode staticLength = new FuncCallNode(ArrayFunction.HIGH, strAccess);
             staticLength = new FuncCallNode(Operator.ADD, staticLength, ConstantNode.IntNode(1));
             FuncCallNode dynamicLength = new FuncCallNode(List.GETLEN, ptrAccess);
             dynamicLength = new FuncCallNode(Operator.ADD, dynamicLength, ConstantNode.IntNode(1));

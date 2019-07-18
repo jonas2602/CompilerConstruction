@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
     private List<CodeSnippet_Base> m_Statements;
     private int m_VariableCounter;
-    // private List<ValueWrapper_Variable> m_IndexElements = new ArrayList<>();
 
     public CodeSnippet_FuncDef(String name, TypeWrapper returnType, int varIndexOffset) {
         super(name, returnType);
@@ -18,20 +17,16 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
         m_Statements = new ArrayList<>();
     }
 
-    // @Override
     public void AddStatement(CodeSnippet_Base stmt) {
         m_Statements.add(stmt);
     }
 
-    // @Override
     public void AddStatement(String stmt) {
         m_Statements.add(new CodeSnippet_Plain(stmt));
     }
 
-    // @Override
     public ValueWrapper_Variable AddStatementWithStorage(CodeSnippet_Base stmt) {
         ValueWrapper_Variable var = ValueWrapper_Variable.SCOPEVAR(m_VariableCounter++);
-        // String finalStmt = String.format("%%%d = %s", m_VariableCounter, InStmt.Write());
         m_Statements.add(new CodeSnippet_Args("%s = %s", var, stmt));
         return var;
     }
@@ -56,9 +51,6 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
 
     @Override
     public List<String> WriteLines() {
-        // for (int i = 0; i < m_IndexElements.size(); i++) {
-        //     m_IndexElements.get(i).AssignScopeIndex(i);
-        // }
 
         List<String> lines = new ArrayList<>();
 
@@ -76,17 +68,6 @@ public class CodeSnippet_FuncDef extends CodeSnippet_FuncDecl {
 
     @Override
     public String Write() {
-//        String outString = "";
-//
-//        List<String> lines = WriteLines();
-//        for (int i = 0; i < lines.size(); i++) {
-//            if (i > 0) {
-//                outString += '\n';
-//            }
-//            outString += lines.get(i);
-//        }
-//
-//        return outString;
         return CodeSnippetHelper.MakeSeperatedString("\n", WriteLines());
     }
 }

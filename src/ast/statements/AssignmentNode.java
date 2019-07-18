@@ -7,10 +7,7 @@ import ast.declarations.ConstDeclNode;
 import ast.declarations.VarDeclNode;
 import ast.expressions.AccessInterface;
 import ast.expressions.FuncCallNode;
-import ast.types.ArrayTypeNode;
-import ast.types.PointerTypeNode;
-import ast.types.RecordTypeNode;
-import ast.types.TypeNode;
+import ast.types.*;
 import writer.*;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.TypeWrapper_Array;
@@ -49,7 +46,7 @@ public class AssignmentNode extends AbstractSyntaxTree {
         // Assignment is defined to not return a type.
         // In contrast to java,... a = b = 2; is not possible
         // throw new TypeCheckException(this, "Assignment of " + expType + " to " + varType + " is not allowed");
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     @Override
@@ -73,6 +70,6 @@ public class AssignmentNode extends AbstractSyntaxTree {
             slave.StoreInVariable(varAccess, exp);
         }
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }

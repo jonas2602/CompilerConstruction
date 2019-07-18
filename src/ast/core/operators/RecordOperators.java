@@ -16,12 +16,6 @@ public class RecordOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AGNStruct());
     }
 
-    // public static abstract class ArrayOperator extends PascalType_Assignment {
-    //     public ArrayOperator(Operator operator, TypeNode returnType, FunctionCallTwoParams operation) {
-    //         super(operator, returnType, ArrayTypeNode.WildCardArrayNode, ArrayTypeNode.WildCardArrayNode, operation);
-    //     }
-    // }
-
     public static class AGNStruct extends PascalType_Assignment {
         public AGNStruct() {
             super(Operator.AGN, new VoidTypeNode(), RecordTypeNode.WildcardRecordNode(), (slave, lParam, rParam) -> {
@@ -33,7 +27,7 @@ public class RecordOperators implements StdBuilder {
                 } else {
                     slave.CopyMemory(rParam, lParam);
                 }
-                return null;
+                return ParamContainer.VOIDCONTAINER();
             });
         }
     }

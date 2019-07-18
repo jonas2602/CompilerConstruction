@@ -93,11 +93,6 @@ public class FuncCallNode extends AbstractSyntaxTree {
             StringBuilder builder = new StringBuilder();
             for (AbstractSyntaxTree param : m_Params) {
                 builder.append("'" + param.GetType().toString() + "' ");
-//                if (type == null) {
-//                    builder.append(" " + param + " (Couldn't load WrappedType)");
-//                } else {
-//                    builder.append(" " + type.CreateTypeName());
-//                }
             }
 
             throw new TypeCheckException(this, "Function with Name " + m_FuncName + " is not overloaded for given types " + builder.toString());
@@ -108,10 +103,6 @@ public class FuncCallNode extends AbstractSyntaxTree {
 
     @Override
     public TypeNode GetType() {
-        // if (m_FuncDecl == null) {
-        //     m_FuncDecl = GetOwningBlock().GetFunctionDeclaration(m_FuncName);
-        // }
-
         return m_FuncDecl.GetType();
     }
 

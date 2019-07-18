@@ -22,7 +22,6 @@ public class ConstantNode_String extends ConstantNode implements AccessInterface
         }
 
         return m_GlobalParam;
-        // return slave.CreateArrayElementPtr(strConst, new ValueWrapper_Constant("0"));
     }
 
     @Override

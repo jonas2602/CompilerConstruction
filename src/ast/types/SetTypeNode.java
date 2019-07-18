@@ -44,11 +44,6 @@ public class SetTypeNode extends ArrayTypeNode {
         return m_SourceType;
     }
 
-    // @Override
-    // public TypeNode GetTypeDetails() {
-    //     return m_SourceType.GetType();
-    // }
-
     @Override
     public boolean CompareType(TypeNode otherTypeNode) {
         if (otherTypeNode == null) {

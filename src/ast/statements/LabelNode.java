@@ -4,6 +4,7 @@ import ast.AbstractSyntaxTree;
 import ast.TypeCheckException;
 import ast.declarations.LabelDeclNode;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
 import writer.wrappers.ValueWrapper;
@@ -29,7 +30,7 @@ public class LabelNode extends AbstractSyntaxTree {
         }
 
         labelDecl.SetLabelNode(this);
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     public ParamContainer GetLabelParam() {
@@ -45,7 +46,7 @@ public class LabelNode extends AbstractSyntaxTree {
         ValueWrapper labelValue = slave.CreateLabel();
         m_LabelContainer.SetValueAccessor(labelValue);
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }
 

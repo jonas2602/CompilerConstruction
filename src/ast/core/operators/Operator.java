@@ -30,12 +30,7 @@ public enum Operator implements FunctionNameWrapper {
     INC("inc"),
     DEC("dec"),
 
-    AGN(".operatoragn"),
-
-    HIGH("high"),
-    LOW("low"),
-
-    LENGTH("length");
+    AGN(".operatoragn");
 
     private String m_OperatorFunctionName;
 

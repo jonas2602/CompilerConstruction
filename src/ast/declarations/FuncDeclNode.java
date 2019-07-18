@@ -249,8 +249,6 @@ public class FuncDeclNode extends AbstractSyntaxTree {
             outParam = slave.TryExtendType(outParam);
             outParam = slave.LoadFromVariable(outParam);
             slave.CreateReturnStmt(outParam);
-            // String OutValue = varDecl.HasScopeIndex() ? "%" + varDecl.GetScopeIndex() : ((PrimitiveTypeNode) varDecl.GetType()).GetTypeDefault();
-            // funcDef.AddStatement(slave.CreateReturnStmt(funcTypeSnippet, OutValue));
         }
 
         // Remove Function from stack

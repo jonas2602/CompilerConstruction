@@ -20,24 +20,6 @@ public class FuncDeclNode_readln extends FuncDeclNode_Core {
         AddParameter(new ParamDeclNode("left", ArrayTypeNode.CharArrayNode));
     }
 
-//    @Override
-//    public boolean ValidateCall(FuncCallNode callNode) {
-//        // Allows any amount of parameters, as long as they are primitive/can get serialized
-//        // Compare given parameters to primitive types
-//        for (AbstractSyntaxTree param : callNode.GetParameterList()) {
-//            TypeNode CallParamType = param.GetType();
-//            // if (!NamedTypeNode.IsPrimitiveType(CallParamType, false)) {
-//            if (!(CallParamType instanceof PrimitiveTypeNode || PointerTypeNode.CharPointerNode.CompareType(CallParamType) || ArrayTypeNode.CharArrayNode.CompareType(CallParamType))) {
-//                throw new TypeCheckException(this, "writeln only supports primitive types or charptr/chararray(strings)");
-//            }
-//
-//            // TODO: check for tostring method
-//            //  signature: ([type]) -> char*
-//        }
-//
-//        return true;
-//    }
-
     @Override
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         // load format string

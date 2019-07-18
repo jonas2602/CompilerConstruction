@@ -2,6 +2,7 @@ package ast;
 
 import ast.declarations.*;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
@@ -10,20 +11,20 @@ import java.util.*;
 
 public class BlockNode extends AbstractSyntaxTree {
 
-    private HashMap<String, LabelDeclNode> m_LabelDeclMap;
-    private HashMap<String, ConstDeclNode> m_ConstDeclMap;
-    private HashMap<String, TypeDeclNode> m_TypeDeclMap;
-    private HashMap<String, VarDeclNode> m_VarDeclMap;
-    private HashMap<String, List<FuncDeclNode>> m_FuncDeclMap;
+    protected HashMap<String, LabelDeclNode> m_LabelDeclMap;
+    protected HashMap<String, ConstDeclNode> m_ConstDeclMap;
+    protected HashMap<String, TypeDeclNode> m_TypeDeclMap;
+    protected HashMap<String, VarDeclNode> m_VarDeclMap;
+    protected HashMap<String, List<FuncDeclNode>> m_FuncDeclMap;
 
     // TODO: add all names of consts, types, vars, ... to avoid collision
-    private HashSet<String> m_UsedNames;
+    protected HashSet<String> m_UsedNames;
 
-    private AbstractSyntaxTree m_CompoundStatement;
+    protected AbstractSyntaxTree m_CompoundStatement;
 
-    private boolean m_MainBlock;
-    private List<ParamDeclNode> m_PassDownParams;
-    private String m_Hierarchy;
+    protected boolean m_MainBlock;
+    protected List<ParamDeclNode> m_PassDownParams;
+    protected String m_Hierarchy;
 
     public BlockNode() {
         this(false);
@@ -254,7 +255,7 @@ public class BlockNode extends AbstractSyntaxTree {
             m_CompoundStatement.CheckType();
         }
 
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     public String BuildHierarchicalName() {
@@ -317,6 +318,6 @@ public class BlockNode extends AbstractSyntaxTree {
             return m_CompoundStatement.CreateSnippet(slave);
         }
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }

@@ -51,13 +51,14 @@ public abstract class MathFunction extends FuncDeclNode_Core {
 
         container = AccessInterface.TryLoadValue(slave, param, container);
 
-        //only int casting supported atm
+        // only int casting supported atm
         if(m_Cast) {
             container = slave.CastIntToFloat(container);
         }
 
         NativeFunction func = null;
 
+        // create a new native function call
         try {
             func = m_Function.getDeclaredConstructor(ParamContainer.class).newInstance(container);
         }

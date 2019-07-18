@@ -37,7 +37,7 @@ public class PointerOperators implements StdBuilder {
 
     public static class AGNPointer extends PointerOperator {
         public AGNPointer() {
-            super(Operator.AGN, PrimitiveTypeNode.BoolNode, null);
+            super(Operator.AGN, VoidTypeNode.VoidNode, null);
         }
 
         @Override
@@ -49,7 +49,7 @@ public class PointerOperators implements StdBuilder {
 
             rightParam = AccessInterface.TryLoadValue(slave, rParam, rightParam);
             slave.StoreInVariable(leftParam, rightParam);
-            return null;
+            return ParamContainer.VOIDCONTAINER();
         }
     }
 }

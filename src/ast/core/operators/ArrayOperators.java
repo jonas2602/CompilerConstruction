@@ -4,6 +4,7 @@ import ast.BlockNode;
 import ast.TypeCheckException;
 import ast.core.FuncDeclNode_Core;
 import ast.core.StdBuilder;
+import ast.core.functions.array.ArrayFunction;
 import ast.declarations.FuncDeclNode;
 import ast.expressions.AccessNode_Field;
 import ast.expressions.AccessNode_Variable;
@@ -19,52 +20,6 @@ public class ArrayOperators implements StdBuilder {
     @Override
     public void buildStd(BlockNode std) {
         std.AddFunctionDeclaration(new AGNArray());
-        std.AddFunctionDeclaration(new HighArray());
-        std.AddFunctionDeclaration(new LowArray());
-        std.AddFunctionDeclaration(new HighArrayDynamic());
-        std.AddFunctionDeclaration(new LowArrayDynamic());
-    }
-
-    // public static abstract class ArrayOperator extends PascalType_Assignment {
-    //     public ArrayOperator(Operator operator, TypeNode returnType, FunctionCallTwoParams operation) {
-    //         super(operator, returnType, ArrayTypeNode.WildCardArrayNode, ArrayTypeNode.WildCardArrayNode, operation);
-    //     }
-    // }
-
-    public static class HighArray extends PascalType_SingleOperator {
-        public HighArray() {
-            super(Operator.HIGH, PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> {
-                TypeWrapper_Array arr = (TypeWrapper_Array)lParam.GetRootType();
-                return ParamContainer.INTCONTAINER(arr.GetRawSize() - 1);
-            });
-        }
-    }
-
-    public static class LowArray extends PascalType_SingleOperator {
-        public LowArray() {
-            super(Operator.LOW, PrimitiveTypeNode.IntNode, ArrayTypeNode.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
-        }
-    }
-
-    public static class HighArrayDynamic extends FuncDeclNode_Core {
-        public HighArrayDynamic() {
-            super(Operator.HIGH, PrimitiveTypeNode.IntNode);
-            AddParameter("array", ArrayTypeNode_Dynamic.WildcardArrayNode());
-
-            m_bInline = true;
-
-            AccessNode_Variable arrAccess = new AccessNode_Variable("array");
-            AccessNode_Field fieldAccess = new AccessNode_Field(arrAccess, "length");
-            FuncCallNode subCall = new FuncCallNode(Operator.SUB, fieldAccess, ConstantNode.IntNode(1));
-
-            m_Block.SetCompoundStatement(subCall);
-        }
-    }
-
-    public static class LowArrayDynamic extends PascalType_SingleOperator {
-        public LowArrayDynamic() {
-            super(Operator.LOW, PrimitiveTypeNode.IntNode, ArrayTypeNode_Dynamic.WildcardArrayNode(), (slave, lParam) -> ParamContainer.INTCONTAINER(0));
-        }
     }
 
     public static class AGNArray extends PascalType_Assignment {

@@ -4,6 +4,7 @@ import writer.wrappers.TypeWrapper;
 import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CodeSnippet_FuncCall extends CodeSnippet_Base implements ScopeInterface {
@@ -18,22 +19,6 @@ public class CodeSnippet_FuncCall extends CodeSnippet_Base implements ScopeInter
         m_Parameters = new ArrayList<>();
         m_TypeExtension = new ArrayList<>();
     }
-
-//
-//    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType, List<CodeSnippet_Base> InParams) {
-//        this(InFunctionName, InReturnType, InParams, null);
-//    }
-//
-//    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType, CodeSnippet_Base InTypeExtension) {
-//        this(InFunctionName, InReturnType, new ArrayList<>(), InTypeExtension);
-//    }
-
-//    public CodeSnippet_FuncCall(String InFunctionName, CodeSnippet_Base InReturnType, List<CodeSnippet_Base> InParams, List<CodeSnippet_Base> InTypeExtension) {
-//        m_FunctionName = InFunctionName;
-//        m_ReturnType = InReturnType;
-//        m_Parameters = InParams;
-//        m_TypeExtension = InTypeExtension;
-//    }
 
     @Override
     public ValueWrapper_Variable AddParameter(CodeSnippet_Base param) {
@@ -55,9 +40,7 @@ public class CodeSnippet_FuncCall extends CodeSnippet_Base implements ScopeInter
 
     @Override
     public List<String> WriteLines() {
-        return new ArrayList<>() {{
-            add(Write());
-        }};
+        return Arrays.asList(Write());
     }
 
     @Override

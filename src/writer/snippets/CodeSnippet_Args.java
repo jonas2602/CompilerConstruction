@@ -12,12 +12,6 @@ public class CodeSnippet_Args extends CodeSnippet_Base {
         this(format, new ArrayList<>());
     }
 
-    public CodeSnippet_Args(String format, Object param) {
-        this(format, new ArrayList<>() {{
-            add(param);
-        }});
-    }
-
     public CodeSnippet_Args(String format, Object... params) {
         this(format, List.of(params));
     }

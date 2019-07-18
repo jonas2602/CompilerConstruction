@@ -37,6 +37,7 @@ public class FuncDeclNode_new extends FuncDeclNode_Core {
     public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
         ParamContainer targetParam = callNode.GetParameter(0).CreateSnippet(slave);
         TypeWrapper elementType = targetParam.GetRootType().GetChild().GetChild();
+
         ParamContainer heapPtr = slave.CreateNativeCall(new NativeFunction_malloc(elementType, 1));
         ParamContainer castPtr = slave.BitCast(heapPtr, targetParam.GetRootType().GetChild());
         slave.StoreInVariable(targetParam, castPtr);

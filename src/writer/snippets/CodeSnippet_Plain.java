@@ -1,6 +1,7 @@
 package writer.snippets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CodeSnippet_Plain extends CodeSnippet_Base {
@@ -12,9 +13,7 @@ public class CodeSnippet_Plain extends CodeSnippet_Base {
 
     @Override
     public List<String> WriteLines() {
-        return new ArrayList<>() {{
-            add(Write());
-        }};
+        return Arrays.asList(Write());
     }
 
     @Override

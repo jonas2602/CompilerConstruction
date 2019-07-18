@@ -4,6 +4,7 @@ import writer.wrappers.ParamContainer;
 import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CodeSnippet_Switch extends CodeSnippet_Base {
@@ -24,9 +25,7 @@ public class CodeSnippet_Switch extends CodeSnippet_Base {
 
     @Override
     public List<String> WriteLines() {
-        return new ArrayList<>() {{
-            add(Write());
-        }};
+        return Arrays.asList(Write());
     }
 
     @Override

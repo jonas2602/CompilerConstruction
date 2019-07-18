@@ -56,17 +56,6 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
         return new AssignmentNode(variable, expression);
     }
 
-    // @Override
-    // public AbstractSyntaxTree visitAssignmentStatement(PascalParser.AssignmentStatementContext ctx) {
-    //     AbstractSyntaxTree variable = new VariableAccessVisitor().visit(ctx.variable());
-    //     AbstractSyntaxTree expression = new ExpressionVisitor().visit(ctx.expression());
-    //     //return new AssignmentNode(variable, expression);
-    //     FuncCallNode funcCall = new FuncCallNode(Operator.AGN.GetFunctionName());
-    //     funcCall.AddParameter(variable);
-    //     funcCall.AddParameter(expression);
-    //     return funcCall;
-    // }
-
     @Override
     public AbstractSyntaxTree visitProcedureStatement(PascalParser.ProcedureStatementContext ctx) {
         String procName = ctx.identifier().IDENT().getText();
@@ -109,12 +98,6 @@ public class StatementVisitor extends PascalBaseVisitor<AbstractSyntaxTree> {
     @Override
     public AbstractSyntaxTree visitStatements(PascalParser.StatementsContext ctx) {
         CompStmtNode compStmt = new CompStmtNode();
-
-        // The last Statement is always an empty statement (if all semicolons are set). Therefore if the amount of stmts is not
-        // more than 2 (actually 1 valid) its not necessary to combine them in a compound statements
-        // if (ctx.statement().size() <= 2) {
-        //     return visitStatement(ctx.statement(0));
-        // }
 
         for (int i = 0; i < ctx.statement().size(); i++) {
             AbstractSyntaxTree stmtNode = visitStatement(ctx.statement(i));

@@ -56,11 +56,7 @@ public class NamedTypeNode extends TypeNode {
 
     @Override
     public TypeWrapper GetWrappedType() {
-        // if (m_TypeDetails != null) {
         return m_TypeDetails.GetWrappedType();
-        // }
-
-        // return null;
     }
 
     @Override

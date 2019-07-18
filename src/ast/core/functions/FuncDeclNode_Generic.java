@@ -51,7 +51,7 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         copy.GenerateBody(compNode);
         copy.m_Block.SetCompoundStatement(compNode);
 
-        // Copy parameter list
+        // Copy parameter dynamic
         copy.m_Params = new ArrayList<>();
         for (ParamDeclNode param : m_Params) {
             copy.AddParameter((ParamDeclNode) param.Copy());
@@ -126,14 +126,4 @@ public class FuncDeclNode_Generic extends FuncDeclNode_Core implements Cloneable
         // create function as usual
         return super.CreateSnippet(slave);
     }
-
-//    @Override
-//    public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
-//        CompStmtNode compNode = new CompStmtNode();
-//        m_Block.SetCompoundStatement(compNode);
-//
-//        GenerateBody(compNode);
-//
-//        return CreateSnippet(slave);
-//    }
 }

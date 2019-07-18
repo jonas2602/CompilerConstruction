@@ -40,9 +40,6 @@ public abstract class PascalType_SingleOperator extends FuncDeclNode_Core {
 
         // load value if requested from a variable
         paramContainer = AccessInterface.TryLoadValue(slave, param, paramContainer);
-        // if (param instanceof AccessInterface) {
-        //     paramContainer = slave.LoadFromVariable(paramContainer);
-        // }
 
         return m_Operation.createFunctionCall(slave, paramContainer);
     }

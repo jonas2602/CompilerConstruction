@@ -4,6 +4,7 @@ import writer.wrappers.TypeWrapper;
 import writer.wrappers.ValueWrapper_Variable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInterface {
@@ -30,19 +31,12 @@ public class CodeSnippet_FuncDecl extends CodeSnippet_Base implements ScopeInter
 
     @Override
     public List<String> WriteLines() {
-        return new ArrayList<>() {{
-            add(Write());
-        }};
+        return Arrays.asList(Write());
     }
 
     @Override
     public String Write() {
-        return String.format(
-                "declare %s @%s(%s)",
-                m_ReturnType.CreateTypeName(),
-                m_Name,
-                MakeParameterString()
-        );
+        return String.format("declare %s @%s(%s)", m_ReturnType.CreateTypeName(), m_Name, MakeParameterString());
     }
 
     String MakeParameterString() {

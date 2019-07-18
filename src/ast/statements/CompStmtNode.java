@@ -2,6 +2,7 @@ package ast.statements;
 
 import ast.AbstractSyntaxTree;
 import ast.types.TypeNode;
+import ast.types.VoidTypeNode;
 import writer.snippets.CodeSnippet_Base;
 import writer.GeneratorSlave;
 import writer.wrappers.ParamContainer;
@@ -34,15 +35,13 @@ public class CompStmtNode extends AbstractSyntaxTree {
             stmt.CheckType();
         }
 
-        return null;
+        return VoidTypeNode.VoidNode;
     }
 
     @Override
     public CodeSnippet_Base CreateSnippet(GeneratorSlave slave, CodeSnippet_Base ctx) {
         for (AbstractSyntaxTree node : m_Statements) {
-            // node.CreateSnippet(slave, ctx);
             node.CreateSnippet(slave);
-            // slave.GetScopeSnippet().AddStatement(stmt);
         }
 
         return null;
@@ -51,11 +50,9 @@ public class CompStmtNode extends AbstractSyntaxTree {
     @Override
     public ParamContainer CreateSnippet(GeneratorSlave slave) {
         for (AbstractSyntaxTree node : m_Statements) {
-            // node.CreateSnippet(slave, ctx);
             node.CreateSnippet(slave);
-            // slave.GetScopeSnippet().AddStatement(stmt);
         }
 
-        return null;
+        return ParamContainer.VOIDCONTAINER();
     }
 }
