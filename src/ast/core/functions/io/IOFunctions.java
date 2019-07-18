@@ -8,6 +8,7 @@ import ast.declarations.FuncDeclNode;
 import ast.declarations.VarDeclNode;
 import ast.expressions.*;
 import ast.statements.AssignmentNode;
+import ast.statements.BranchNode;
 import ast.statements.CompStmtNode;
 import ast.statements.ForNode;
 import ast.types.*;
@@ -65,12 +66,19 @@ public class IOFunctions implements StdBuilder {
             AssignmentNode assignFirst = new AssignmentNode(new AccessNode_Variable("tostring"), new ConstantNode_String("["));
 
             m_Block.AddVariableDeclaration("i", PrimitiveTypeNode.IntNode);
+
+            // append delimiter if i > 0
+            FuncCallNode appendDelim = new FuncCallNode(Operator.ADD, new AccessNode_Variable("tostring"), new ConstantNode_String(", "));
+            AssignmentNode assignDelim = new AssignmentNode(new AccessNode_Variable("tostring"), appendDelim);
+            BranchNode delimBranch = new BranchNode(new FuncCallNode(Operator.GT, new AccessNode_Variable("i"), ConstantNode.IntNode(0)), assignDelim);
+
+            // append next element
             FuncCallNode elemStrCall = new FuncCallNode("tostring", new AccessNode_Array(new AccessNode_Variable("arr"), new AccessNode_Variable("i")));
-            // FuncCallNode appendElem = new FuncCallNode(Operator.ADD, new AccessNode_Variable("tostring"), elemStrCall);
-            // AssignmentNode assignElem = new AssignmentNode(new AccessNode_Variable("tostring"), appendElem);
-            BlockNode forBlock = new BlockNode();
-            forBlock.SetCompoundStatement(elemStrCall);
-            ForNode forStmt = new ForNode(new AccessNode_Variable("i"), ConstantNode.IntNode(0), new FuncCallNode("high", new AccessNode_Variable("arr")), true, forBlock);
+            FuncCallNode appendElem = new FuncCallNode(Operator.ADD, new AccessNode_Variable("tostring"), elemStrCall);
+            AssignmentNode assignElem = new AssignmentNode(new AccessNode_Variable("tostring"), appendElem);
+
+            CompStmtNode forBody = new CompStmtNode(delimBranch, assignElem);
+            ForNode forStmt = new ForNode(new AccessNode_Variable("i"), ConstantNode.IntNode(0), new FuncCallNode("high", new AccessNode_Variable("arr")), true, forBody);
 
             FuncCallNode appendLast = new FuncCallNode(Operator.ADD, new AccessNode_Variable("tostring"), new ConstantNode_String("]"));
             AssignmentNode assignLast = new AssignmentNode(new AccessNode_Variable("tostring"), appendLast);

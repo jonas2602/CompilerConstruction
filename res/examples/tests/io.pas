@@ -8,6 +8,8 @@ var
 
 begin
     setlength(list, 2);
+    list[0] := 10;
+    list[1] := 20;
     b := false;
 
     i := 1234;
