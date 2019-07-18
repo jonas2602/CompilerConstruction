@@ -38,12 +38,13 @@ public class TestBattery {
         add("loops").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11").AddLines(" ").AddSeperatorLines("0 1 2 3 4 5 6 7 8 9 10 11 12");
         add("memory").AddSeperatorLines("42 99 12");
         add("pointer").AddLines("0 10 2 3 4, 10" ,"3");
-        add("string").AddSeperatorLines("14 8 1 1 1 0 1 1").AddLines("testabcd my random string test123");
+        add("string").AddSeperatorLines("14 8 TRUE TRUE TRUE FALSE TRUE TRUE").AddLines("testabcd my random string test123");
         add("innerfunctions").AddSeperatorLines("1 1 1");
         add("innerfunctions2").AddLines("4");
         add("innerfunctions3").AddSeperatorLines("test test2 test3");
+        add("io").AddLines("1234 abc FALSE[10, 20]");
         add("switch").AddSeperatorLines("MEH uppercase");
-        add("sets").AddLines("0 1 1", "1 1 1", "0 0 0", " ", "0 1 1", "0 0 0", "0 0 0", "1", " ", "0 1 1", "0 0 1", "1 1 1", "1", " ");
+        add("sets").AddLines("FALSE TRUE TRUE", "TRUE TRUE TRUE", "FALSE FALSE FALSE", " ", "FALSE TRUE TRUE", "FALSE FALSE FALSE", "FALSE FALSE FALSE", "TRUE", " ", "FALSE TRUE TRUE", "FALSE FALSE TRUE", "TRUE TRUE TRUE", "TRUE", " ");
         add("types").AddSeperatorLines("3 10");
         add("with").AddLines("2 2 5", "12 11 10");
 
@@ -130,7 +131,7 @@ public class TestBattery {
             prog.CheckType();
 
             try {
-                CodeGenerator.CreateIntermediate(prog, stdBlock, TESTFILENAME, true);
+                CodeGenerator.CreateIntermediate(prog, stdBlock, testFileName, true);
             } catch (IOException e) {
                 PrintError(c, e.getMessage());
                 continue;

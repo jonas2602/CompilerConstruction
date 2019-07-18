@@ -26,12 +26,9 @@ public class LocalTester {
     public void Compile(String fileName) {
         m_Context = LLVMContextCreate();
 
-        String fileSeparator = System.getProperty("file.separator");
-        String relativePath = "res" + fileSeparator + "llvm" + fileSeparator + fileName + ".ll";
-
         //load file
         LLVMMemoryBufferRef buf = new LLVMMemoryBufferRef();
-        BytePointer path = new BytePointer(relativePath);
+        BytePointer path = new BytePointer(fileName);
         int res = LLVMCreateMemoryBufferWithContentsOfFile(path, buf, m_Error);
         if(res == 1) {
             System.out.println("Error while loading file!");

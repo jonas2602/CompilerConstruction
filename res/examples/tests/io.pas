@@ -7,6 +7,7 @@ var
     b: boolean;
 
 begin
+    writeln('READY');
     setlength(list, 2);
     list[0] := 10;
     list[1] := 20;
@@ -14,8 +15,4 @@ begin
 
     i := 1234;
     writeln(i, ' abc ', b, list);
-
-    {writeln('Please enter a line of text:');
-    readln(text);
-    writeln('Echo: ', 'text', list);}
 end.

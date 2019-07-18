@@ -17,25 +17,16 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("START");
+        if(args.length < 2) {
+            System.out.println("Too few arguments.");
+            System.out.println("Usage: <input file> <output file>");
+            return;
+        }
 
-        List<String> sourceFiles = List.of("arrays", "branch", "constant", "dynamics", "enum", "goto", "innerfunctions", "innerfunctions2", "io", "loops", "memory", "pointer", "string", "switch", "types");
-
-        // for (String fileName : sourceFiles) {
-        //     try {
-        //         Compile(String.format("res/examples/tests/%s.pas", fileName), "gen");
-        //     } catch (Exception ex) {
-        //         System.out.println("Compiling failed at " + fileName);
-        //         ex.printStackTrace();
-        //     }
-        //
-        //     System.out.println(fileName + " succeeded");
-        // }
-
-        Compile("res/examples/tests/io.pas", "gen");
+        Compile(args[0], args[1]);
 
         LocalTester t = new LocalTester();
-        t.Compile("gen");
+        t.Compile(args[1]);
 
         // TestBattery battery = new TestBattery();
         // battery.Fire();
@@ -66,12 +57,6 @@ public class App {
 
         // attach parsed tree to the stdBlock to grant access to the additional functionality
         prog.SetParent(stdBlock);
-
-        // add dynamic types
-        // Set<TypeNode> dynamicTypes = TypeVisitor.m_DynamicTypes;
-        // for (TypeNode baseType : dynamicTypes) {
-        //     prog.GetBlock().AddTypeDeclaration(new TypeDeclNode(ArrayTypeNode_Dynamic.CreateDynamicArrayName(baseType), new ArrayTypeNode_Dynamic(baseType)));
-        // }
 
         // type checking
         try {

@@ -18,16 +18,14 @@ public class CodeGenerator {
     }
 
     public static File CreateFile(String fileName, boolean silent) throws IOException {
-        String fileSeparator = System.getProperty("file.separator");
-        String relativePath = "res" + fileSeparator + "llvm" + fileSeparator + fileName + ".ll";
-        File file = new File(relativePath);
+        File file = new File(fileName);
         if (file.createNewFile()) {
             if (!silent) {
-                System.out.println(relativePath + " File Created in Project root directory");
+                System.out.println("File " + fileName + " created");
             }
         } else {
             if (!silent) {
-                System.out.println("File " + relativePath + " already exists");
+                System.out.println("File " + fileName + " already exists");
             }
         }
 
