@@ -99,4 +99,10 @@ public class PointerTypeNode extends TypeNode {
     public AbstractSyntaxTree Copy() {
         return new PointerTypeNode(m_BaseType, m_bConstant);
     }
+
+
+    @Override
+    public String toString() {
+        return m_BaseType.toString() + " PTR";
+    }
 }

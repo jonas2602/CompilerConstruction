@@ -7,6 +7,7 @@ public enum Memory implements FunctionNameWrapper {
     GETMEM("getmem"),
     MOVE("move"),
     NEW("new"),
+    SIZE("sizeof"),
     REALLOC("reallocmem");
 
     private String m_FunctionName;

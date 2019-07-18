@@ -5,6 +5,7 @@ import ast.core.FunctionNameWrapper;
 public enum IO implements FunctionNameWrapper {
     READLN("readln"),
     WRITELN("writeln"),
+    TOSTRING("tostring"),
     WRITE("write");
 
     private String m_FunctionName;

@@ -28,6 +28,8 @@ public class StringOperators implements StdBuilder {
         std.AddFunctionDeclaration(new AddChar());
         std.AddFunctionDeclaration(new AddString());
         std.AddFunctionDeclaration(new AddStringPtr());
+        std.AddFunctionDeclaration(new AddStringArray());
+        std.AddFunctionDeclaration(new AddStringPtrPtr());
 
         std.AddFunctionDeclaration(new EQString());
         std.AddFunctionDeclaration(new NEString());
@@ -165,16 +167,60 @@ public class StringOperators implements StdBuilder {
         }
     }
 
+    public static class AddStringArray extends FuncDeclNode_Core {
+        public AddStringArray() {
+            super(Operator.ADD, PointerTypeNode.CharPointerNode);
+
+            AddParameter("str1", PointerTypeNode.CharPointerNode);
+            AddParameter("str2", ArrayTypeNode.CharArrayNode);
+
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            ParamContainer str1Ptr = callNode.GetParameter(0).CreateSnippet(slave);
+            str1Ptr = AccessInterface.TryLoadValue(slave, callNode.GetParameter(0), str1Ptr);
+            ParamContainer str2Param = callNode.GetParameter(1).CreateSnippet(slave);
+            ParamContainer str2Ptr = slave.CreateArrayElementPtr(str2Param, 0);
+
+            return StringOperators.BuildCat(slave, str1Ptr, str2Ptr);
+        }
+    }
+
+    public static class AddStringPtrPtr extends FuncDeclNode_Core {
+        public AddStringPtrPtr() {
+            super(Operator.ADD, PointerTypeNode.CharPointerNode);
+
+            AddParameter("str1", PointerTypeNode.CharPointerNode);
+            AddParameter("str2", PointerTypeNode.CharPointerNode);
+
+            m_bInline = true;
+            m_bCustomCallLogic = true;
+        }
+
+        @Override
+        public ParamContainer CreateFunctionCall(GeneratorSlave slave, FuncCallNode callNode) {
+            ParamContainer str1Ptr = callNode.GetParameter(0).CreateSnippet(slave);
+            str1Ptr = AccessInterface.TryLoadValue(slave, callNode.GetParameter(0), str1Ptr);
+            ParamContainer str2Ptr = callNode.GetParameter(1).CreateSnippet(slave);
+            str2Ptr = AccessInterface.TryLoadValue(slave, callNode.GetParameter(1), str2Ptr);
+
+            return StringOperators.BuildCat(slave, str1Ptr, str2Ptr);
+        }
+    }
+
     public static class AddString extends TwoStringOperator {
         public AddString() {
-            super(Operator.ADD, PointerTypeNode.CharPointerNode, (slave, lParam, rParam) -> StringOperators.BuildCat(slave, lParam, rParam));
+            super(Operator.ADD, PointerTypeNode.CharPointerNode, StringOperators::BuildCat);
         }
     }
 
     private static ParamContainer BuildCat(GeneratorSlave slave, ParamContainer str1Ptr, ParamContainer str2Ptr) {
         // get length of source string
         ParamContainer str1Len = slave.CreateNativeCall(new NativeFunction_strlen(str1Ptr));
-        ParamContainer str2Len = slave.CreateNativeCall(new NativeFunction_strlen(str1Ptr));
+        ParamContainer str2Len = slave.CreateNativeCall(new NativeFunction_strlen(str2Ptr));
         ParamContainer newSize = slave.AddIntInt(str1Len, str2Len);
         ParamContainer newSizeNull = slave.AddIntInt(newSize, ParamContainer.INTCONTAINER(1));
 
@@ -193,7 +239,7 @@ public class StringOperators implements StdBuilder {
 
     public static class EQString extends TwoStringOperator {
         public EQString() {
-            super(Operator.EQ, PrimitiveTypeNode.BoolNode,(slave, lParam, rParam) -> {
+            super(Operator.EQ, PrimitiveTypeNode.BoolNode, (slave, lParam, rParam) -> {
                 ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strcmp(lParam, rParam));
                 return slave.EQIType(outLong, ParamContainer.LONGCONTAINER(0l));
             });
@@ -202,7 +248,7 @@ public class StringOperators implements StdBuilder {
 
     public static class NEString extends TwoStringOperator {
         public NEString() {
-            super(Operator.NE, PrimitiveTypeNode.BoolNode,(slave, lParam, rParam) -> {
+            super(Operator.NE, PrimitiveTypeNode.BoolNode, (slave, lParam, rParam) -> {
                 ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strcmp(lParam, rParam));
                 return slave.NEIType(outLong, ParamContainer.LONGCONTAINER(0l));
             });
@@ -211,7 +257,7 @@ public class StringOperators implements StdBuilder {
 
     public static class LTString extends TwoStringOperator {
         public LTString() {
-            super(Operator.LT, PrimitiveTypeNode.BoolNode,(slave, lParam, rParam) -> {
+            super(Operator.LT, PrimitiveTypeNode.BoolNode, (slave, lParam, rParam) -> {
                 ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strcmp(lParam, rParam));
                 return slave.LTIType(outLong, ParamContainer.LONGCONTAINER(0l));
             });
@@ -220,7 +266,7 @@ public class StringOperators implements StdBuilder {
 
     public static class LEString extends TwoStringOperator {
         public LEString() {
-            super(Operator.LE, PrimitiveTypeNode.BoolNode,(slave, lParam, rParam) -> {
+            super(Operator.LE, PrimitiveTypeNode.BoolNode, (slave, lParam, rParam) -> {
                 ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strcmp(lParam, rParam));
                 ParamContainer equal = slave.EQIType(outLong, ParamContainer.LONGCONTAINER(0l));
                 ParamContainer lower = slave.LTIType(outLong, ParamContainer.LONGCONTAINER(0l));
@@ -231,7 +277,7 @@ public class StringOperators implements StdBuilder {
 
     public static class GTString extends TwoStringOperator {
         public GTString() {
-            super(Operator.GT, PrimitiveTypeNode.BoolNode,(slave, lParam, rParam) -> {
+            super(Operator.GT, PrimitiveTypeNode.BoolNode, (slave, lParam, rParam) -> {
                 ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strcmp(lParam, rParam));
                 return slave.GTIType(outLong, ParamContainer.LONGCONTAINER(0l));
             });
@@ -240,7 +286,7 @@ public class StringOperators implements StdBuilder {
 
     public static class GEString extends TwoStringOperator {
         public GEString() {
-            super(Operator.GE, PrimitiveTypeNode.BoolNode,(slave, lParam, rParam) -> {
+            super(Operator.GE, PrimitiveTypeNode.BoolNode, (slave, lParam, rParam) -> {
                 ParamContainer outLong = slave.CreateNativeCall(new NativeFunction_strcmp(lParam, rParam));
                 ParamContainer equal = slave.EQIType(outLong, ParamContainer.LONGCONTAINER(0l));
                 ParamContainer lower = slave.GTIType(outLong, ParamContainer.LONGCONTAINER(0l));

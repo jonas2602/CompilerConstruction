@@ -467,6 +467,13 @@ public class GeneratorSlave {
         return new ParamContainer(new TypeWrapper_Pointer(type), var);
     }
 
+    public ParamContainer CreateTernaryOperator(ParamContainer condition, ParamContainer thenParam, ParamContainer elseParam) {
+        CodeSnippet_Args stmt = new CodeSnippet_Args("select %s, %s, %s", condition, thenParam, elseParam);
+        ValueWrapper_Variable scopeVar = GetScopeSnippetAsDef().AddStatementWithStorage(stmt);
+        return new ParamContainer(thenParam.GetRootType(), scopeVar);
+
+    }
+
     public void StoreInVariable(ParamContainer varAccess, ParamContainer valueParam) {
         String varParam = varAccess.CreateParameterString();
         String value = valueParam.CreateDataString();

@@ -2,9 +2,18 @@ program io;
 
 var
     text: string[100];
+    list: array of integer;
+    i: integer;
+    b: boolean;
 
 begin
-    writeln('Please enter a line of text:');
+    setlength(list, 2);
+    b := false;
+
+    i := 1234;
+    writeln(i, ' abc ', b, list);
+
+    {writeln('Please enter a line of text:');
     readln(text);
-    writeln('Echo: ', text);
+    writeln('Echo: ', 'text', list);}
 end.

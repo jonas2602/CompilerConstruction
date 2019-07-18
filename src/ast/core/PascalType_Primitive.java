@@ -9,7 +9,7 @@ public enum PascalType_Primitive implements PascalType {
     FLOAT(EPrimitiveType.FLOAT, 32, true, "%f", "0.0", "f"),
     DOUBLE(EPrimitiveType.DOUBLE, 64, true, "%f", "0.0", "d"),
     CHAR(EPrimitiveType.CHAR, 8, false, "%c", "0", "c"),
-    BOOL(EPrimitiveType.BOOL, 1, false, "%d", "0", "b");
+    BOOL(EPrimitiveType.BOOL, 1, false, "%s", "0", "b");
 
     private EPrimitiveType m_Type;
     private int m_Size;

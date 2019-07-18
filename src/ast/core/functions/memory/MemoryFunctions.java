@@ -11,6 +11,7 @@ public class MemoryFunctions implements StdBuilder {
         std.AddFunctionDeclaration(new FuncDeclNode_getmem());
         std.AddFunctionDeclaration(new FuncDeclNode_move());
         std.AddFunctionDeclaration(new FuncDeclNode_new());
+        std.AddFunctionDeclaration(new FuncDeclNode_sizeof());
         std.AddFunctionDeclaration(new FuncDeclNode_reallocmem());
     }
 }
