@@ -28,6 +28,7 @@ public class ParamDeclNode extends VarDeclNode {
 
         // Wrap type with pointer
         m_TypeNode = new VarTypeNode(m_TypeNode);
+        m_TypeNode.SetParent(this);
     }
 
     public boolean IsByReference() {
